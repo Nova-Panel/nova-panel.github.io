@@ -1793,277 +1793,6 @@
             opacity: 0
         }
 
-        /* نوار منو */
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            padding: 12px 20px;
-            background: #ffffff;
-            border-radius: 14px;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15), 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 2px solid #e2e8f0;
-        }
-
-        html.dark-mode .nav-menu {
-            background: #1e293b;
-            border-color: #334155;
-            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-logo {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 20px;
-            color: #fff;
-            box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4);
-        }
-
-        .nav-brand-text {
-            font-weight: 900;
-            font-size: 17px;
-            background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.3));
-        }
-
-        html.dark-mode .nav-brand-text {
-            background: linear-gradient(135deg, #38bdf8, #a78bfa, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-items {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .nav-item {
-            padding: 6px 12px;
-            background: #f1f5f9;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #475569;
-            font-weight: 600;
-            font-size: 12px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .nav-item:hover {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .nav-item.active {
-            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-            color: #fff;
-            border-color: #0ea5e9;
-        }
-
-        html.dark-mode .nav-item {
-            background: #334155;
-            border-color: #475569;
-            color: #e2e8f0;
-        }
-
-        html.dark-mode .nav-item:hover {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-icon-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background: #fef3c7;
-            border: 2px solid #fde68a;
-            color: #d97706;
-        }
-
-        .nav-icon-btn:hover {
-            background: #f59e0b;
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-        }
-
-        .nav-logout {
-            background: #dbeafe;
-            border: 2px solid #bfdbfe;
-            color: #2563eb;
-        }
-
-        .nav-logout:hover {
-            background: #2563eb;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-        }
-
-        html.dark-mode .nav-icon-btn {
-            background: #78350f;
-            border-color: #92400e;
-            color: #fcd34d;
-        }
-
-        html.dark-mode .nav-icon-btn:hover {
-            background: #f59e0b;
-            color: #fff;
-        }
-
-        html.dark-mode .nav-logout {
-            background: #1e3a8a;
-            border-color: #1e40af;
-            color: #93c5fd;
-        }
-
-        html.dark-mode .nav-logout:hover {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .nav-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .nav-dropbtn {
-            padding: 6px 12px;
-            background: #f1f5f9;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            color: #475569;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Vazirmatn', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-dropbtn::after {
-            font-size: 8px;
-        }
-
-        .nav-dropdown:hover .nav-dropbtn {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-        }
-
-        .nav-dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: 160px;
-            background: #fff;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            z-index: 1000;
-            padding: 8px;
-            text-align: center;
-        }
-
-        .nav-dropdown:hover .nav-dropdown-content {
-            display: block;
-        }
-
-        .nav-dropdown-content a {
-            display: block;
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin: 2px 0;
-            text-decoration: none;
-            color: #475569;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .nav-dropdown-content a:hover {
-            background: #0ea5e9;
-            color: #fff;
-        }
-
-        html.dark-mode .nav-dropbtn {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        html.dark-mode .nav-dropdown-content {
-            background: #1e293b;
-            border-color: #334155;
-        }
-
-        html.dark-mode .nav-dropdown-content a {
-            color: #94a3b8;
-        }
-
-html.dark-mode .nav-dropdown-content a:hover {
-            background: #0ea5e9;
-            color: #fff;
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                gap: 6px;
-                padding: 10px;
-            }
-
-            .nav-item, .nav-dropbtn {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-        }
-
         .page-wrapper {
             justify-content: flex-start;
             align-items: flex-start
@@ -2082,7 +1811,15 @@ html.dark-mode .nav-dropdown-content a:hover {
         }
 
         .header {
-            display: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 16px;
+            border-top: 4px solid;
+            border-image: linear-gradient(90deg, #0ea5e9 0, #8b5cf6 50%, #0ea5e9 100%) 1
         }
 
         .header-title h1 {
@@ -2148,7 +1885,7 @@ html.dark-mode .nav-dropdown-content a:hover {
 
         /* مخفی کردن ماژول اطلاعات شبکه */
         #network-module {
-            display: block !important;
+            display: none !important;
         }
 
         .module-content {
@@ -2160,8 +1897,8 @@ html.dark-mode .nav-dropdown-content a:hover {
         }
 
         .module.collapsed .module-content {
-            max-height: 2000px;
-            opacity: 1
+            max-height: 0;
+            opacity: 0
         }
 
         .module .form-group,
@@ -3098,15 +2835,15 @@ html.dark-mode .nav-dropdown-content a:hover {
         }
 
         .simple-mode .advanced-module {
-            opacity: 1;
-            max-height: none;
-            transform: scaleY(1);
-            margin-top: inherit;
-            margin-bottom: inherit;
-            padding-top: inherit;
-            padding-bottom: inherit;
-            border-width: inherit;
-            pointer-events: auto;
+            opacity: 0;
+            max-height: 0;
+            transform: scaleY(0.95);
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0;
+            pointer-events: none;
         }
 
         /* استایل بخش پیکربندی Cloudflare */
@@ -5782,43 +5519,21 @@ html.dark-mode .nav-dropdown-content a:hover {
             <div class="success-message" id="successMsg"></div>
             <div class="error-message" id="errorMsg"></div>
 
-            <!-- نوار منو -->
-            <div class="nav-menu">
-                <div class="nav-brand">
-                    <div class="nav-logo">N</div>
-                    <span class="nav-brand-text">Nova Proxy</span>
+            <div class="header">
+                <div class="header-title">
+                    <h1 id="pageTitle">در حال بارگذاری...</h1>
                 </div>
-                <div class="nav-items">
-                    <a href="#" class="nav-item active" onclick="switchPage('dashboard'); return false;">🏠 داشبورد</a>
-                    <div class="nav-dropdown">
-                        <button class="nav-dropbtn">⚙️ کانفیگ‌ها ▾</button>
-                        <div class="nav-dropdown-content">
-                            <a href="#" onclick="switchPage('subscriptions'); return false;">🔗 لینک‌های اشتراک</a>
-                            <a href="#" onclick="switchPage('config'); return false;">⚙️ تنظیمات کانفیگ</a>
-                            <a href="#" onclick="switchPage('core'); return false;">🔧 مدیریت هسته</a>
-                            <a href="#" onclick="switchPage('doh'); return false;">🔒 پروکسی DoH</a>
-                            <a href="#" onclick="switchPage('wireguard'); return false;">🔐 وایرگارد</a>
-                        </div>
-                    </div>
-                    <div class="nav-dropdown">
-                        <button class="nav-dropbtn">⚙️ تنظیمات ▾</button>
-                        <div class="nav-dropdown-content">
-                            <a href="#" onclick="switchPage('network'); return false;">🌐 شبکه</a>
-                            <a href="#" onclick="switchPage('general'); return false;">⚙️ عمومی</a>
-                            <a href="#" onclick="switchPage('telegram'); return false;">📱 تلگرام</a>
-                        </div>
-                    </div>
-                    <a href="#" class="nav-item" onclick="switchPage('bestip'); return false;">⭐ ای‌پی برگزیده</a>
-                    <a href="#" class="nav-item" onclick="switchPage('edit'); return false;">📝 ویرایش</a>
-                </div>
-                <div class="nav-actions">
-                    <a href="#" class="nav-icon-btn nav-reset" onclick="resetConfigWithConfirm()" title="بازنشانی تنظیمات">⚠️</a>
-                    <a href="#" class="nav-icon-btn nav-logout" onclick="logout()" title="خروج از سیستم">👋</a>
+                <div class="header-buttons">
+                    <button type="button" class="btn btn-mode-toggle" id="modeToggleBtn" onclick="toggleUserMode()">🐣
+                        حالت ساده (مبتدی)</button>
+                    <button type="button" class="btn btn-danger btn-reset"
+                        onclick="resetConfigWithConfirm()">⚠️ بازنشانی تنظیمات</button>
+                    <button type="button" class="btn btn-primary" onclick="logout()">👋 خروج</button>
                 </div>
             </div>
 
             <!-- ماژول آمار استفاده Cloudflare Workers/Pages -->
-            <div class="module cf-usage-module" id="cfUsageModule">
+            <div class="module cf-usage-module collapsed" id="cfUsageModule">
                 <div class="module-title" onclick="toggleModule(this)">
                     آمار درخواست‌های Workers/Pages
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5950,7 +5665,7 @@ html.dark-mode .nav-dropdown-content a:hover {
                     <small style="font-size: 12px; color: #9ca3af; margin-top: 6px; display: block;">💡 <b>تست داخلی</b>
                         توسط <b>قوانین مسیریابی</b> فیلترشکن شما تعیین می‌شود،<b>تست خارجی</b> توسط <b>IP بهینه</b> شما تعیین می‌شود، و <b>CF، Twitter، ChatGPT</b> توسط
                         <b>PROXYIP</b> شما تعیین می‌شوند.</small>
-                    <div class="module-content" id="network-module-content">
+                    <div class="module-content" style="display: none;" id="network-module-content">
                         <!-- کارت‌های تست تاخیر -->
                         <div class="latency-cards" id="latency-cards">
                             <!-- کارت‌ها از طریق JavaScript به صورت پویا تولید می‌شوند -->
@@ -6036,7 +5751,7 @@ html.dark-mode .nav-dropdown-content a:hover {
             </div>
 
             <!-- ماژول 2: ویرایشگر تولید اشتراک -->
-            <div class="module">
+            <div class="module collapsed">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚡️ تولید اشتراک بهینه
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6119,7 +5834,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 3: اطلاعات پیکربندی جزئی -->
-            <div class="module advanced-module">
+            <div class="module collapsed advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚙️ اطلاعات پیکربندی جزئی
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6183,7 +5898,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
                 --->
                     <div class="checkbox-row">
-                        <div class="form-group" id="skipVerifyGroup">
+                        <div class="form-group" id="skipVerifyGroup" style="display: none;">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="skipVerify" title="نسخه Xray v26.1.31+ از رد کردن تأیید گواهی TLS پشتیبانی نمی‌کند"
@@ -6194,7 +5909,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="randomPathGroup">
+                        <div class="form-group" id="randomPathGroup" style="display: none;">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="randomPath" title="مسیر استتار تصادفی"
@@ -6204,7 +5919,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="enable0RTTGroup">
+                        <div class="form-group" id="enable0RTTGroup" style="display: none;">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="enable0RTT" title="فعال‌سازی 0-RTT (مبتدی‌ها استفاده نکنند)"
@@ -6215,7 +5930,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="tlsFragmentGroup">
+                        <div class="form-group" id="tlsFragmentGroup" style="display: none;">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="tlsFragmentShadowrocket"
@@ -6227,7 +5942,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="tlsFragmentHappGroup">
+                        <div class="form-group" id="tlsFragmentHappGroup" style="display: none;">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="tlsFragmentHapp" title="قابلیت تکه‌تکه کردن TLS مخصوص Happ"
@@ -6251,7 +5966,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 3.5: تنظیمات ECH (آزمایشی) -->
-            <div class="module advanced-module" id="echModule">
+            <div class="module collapsed advanced-module" id="echModule" style="display: none;">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔐 Encrypted Client Hello
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6272,10 +5987,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         </div>
                     </div>
 
-                    <div class="form-group" id="echDNSGroup" style="align-items: start;">
+                    <div class="form-group" id="echDNSGroup" style="display: none; align-items: start;">
                         <label for="echDNSSelect" style="padding-top: 10px;">سرویس DNS ECH</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="echDNSSelect" title="سرویس DNS ECH"
+                            <select id="echDNSSelect" title="سرویس DNS ECH" style="display: none;"
                                 onchange="onEchDNSSelectChange()">
                                 <option value="udp://208.67.220.220:443" data-region="بین‌المللی">
                                     udp://208.67.220.220:443 (OpenDNS) - پیشنهاد برای مبتدی‌ها!!!</option>
@@ -6305,15 +6020,15 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </select>
                             <input type="text" id="echDNSCustomInput" title="سرویس DNS ECH سفارشی"
                                 placeholder="udp://... یا https://..." onchange="onEchDNSCustomInput()"
-                                style="margin-top: 8px;">
+                                style="display: none; margin-top: 8px;">
                             <input type="hidden" id="echDNSValue">
                         </div>
                     </div>
 
-                    <div class="form-group" id="echSNIGroup" style="align-items: start;">
+                    <div class="form-group" id="echSNIGroup" style="display: none; align-items: start;">
                         <label for="echSNISelect" style="padding-top: 10px;">دامنه تجزیه ECH</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="echSNISelect" title="دامنه تجزیه ECH"
+                            <select id="echSNISelect" title="دامنه تجزیه ECH" style="display: none;"
                                 onchange="onEchSNISelectChange()">
                                 <option value="__AUTO__">دریافت خودکار (استفاده از دامنه استتار نود)</option>
                                 <option value="cloudflare-ech.com">cloudflare-ech.com (دامنه تست ECH Cloudflare) - پیشنهاد برای مبتدی‌ها!!!
@@ -6331,7 +6046,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </select>
                             <input type="text" id="echSNICustomInput" title="دامنه تجزیه ECH سفارشی"
                                 placeholder="cloudflare-ech.com" onchange="onEchSNICustomInput()"
-                                style="margin-top: 8px;">
+                                style="display: none; margin-top: 8px;">
                             <input type="hidden" id="echSNIValue">
                         </div>
                     </div>
@@ -6352,7 +6067,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 4: تنظیمات CDN Proxy -->
-            <div class="module advanced-module">
+            <div class="module collapsed advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🌐 تنظیمات دسترسی Cloudflare CDN
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6432,21 +6147,21 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         </button>
                         <button type="button" class="btn btn-ech-help btn-path-template-config"
                             id="pathTemplateConfigBtn" onclick="showPathTemplateConfigModal()"
-                            style="padding: 10px 16px;" title="پیکربندی قالب مسیر"
+                            style="display: none; padding: 10px 16px;" title="پیکربندی قالب مسیر">
                             ⚙️ پیکربندی قالب مسیر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="getMoreProxyIPBtn"
-                            onclick="showGetMoreProxyIPModal()" style="padding: 10px 16px;"
+                            onclick="showGetMoreProxyIPModal()" style="display: none; padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست ProxyIP">
                             🗺️ دریافت PROXYIP بیشتر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="exploreSocks5Btn"
-                            onclick="showExploreSocks5Modal()" style="padding: 10px 16px;"
+                            onclick="showExploreSocks5Modal()" style="display: none; padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست SOCKS5">
                             🔒 دریافت SOCKS5 بیشتر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="exploreHTTPBtn"
-                            onclick="showExploreHTTPModal()" style="padding: 10px 16px;"
+                            onclick="showExploreHTTPModal()" style="display: none; padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست HTTP">
                             🌐 دریافت HTTP بیشتر
                         </button>
@@ -6461,7 +6176,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 5: پیکربندی تبدیل اشتراک -->
-            <div class="module advanced-module">
+            <div class="module collapsed advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔄 پیکربندی تبدیل اشتراک
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6481,12 +6196,12 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     <div class="form-group" style="align-items: start;">
                         <label for="subConfigSelect" style="padding-top: 10px;">فایل پیکربندی تبدیل اشتراک</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="subConfigSelect" title="فایل پیکربندی تبدیل اشتراک">
+                            <select id="subConfigSelect" title="فایل پیکربندی تبدیل اشتراک" style="display: none;">
                                 <option value="">در حال بارگذاری...</option>
                             </select>
                             <input type="text" id="subConfigCustomInput" title="URL سفارشی فایل پیکربندی تبدیل اشتراک"
                                 placeholder="https://raw.githubusercontent.com/..." onchange="onSubConfigCustomInput()"
-                                style="margin-top: 8px;">
+                                style="display: none; margin-top: 8px;">
                             <input type="hidden" id="subConfig">
                         </div>
                     </div>
@@ -6513,7 +6228,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 6: تنظیمات اعلانات -->
-            <div class="module advanced-module">
+            <div class="module collapsed advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔔 تنظیمات اعلانات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6565,7 +6280,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 7: مشاهده تمام لاگ‌ها -->
-            <div class="module advanced-module">
+            <div class="module collapsed advanced-module">
                 <div class="module-title" onclick="toggleModule(this); loadLogsOnExpand(this)">
                     📋 مشاهده لاگ‌های عملیات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6730,7 +6445,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     <option value="">-- در حال بارگذاری، لطفاً صبر کنید --</option>
                 </select>
             </div>
-            <div class="form-group subapi-form-group" id="customSubAPIInputGroup">
+            <div class="form-group subapi-form-group" id="customSubAPIInputGroup" style="display: none;">
                 <label>آدرس بک‌اند سفارشی</label>
                 <input type="text" id="testSubAPIInput" placeholder="آدرس بک‌اند تبدیل اشتراک را وارد کنید">
             </div>
@@ -6991,7 +6706,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </button>
             </div>
             <!-- placeholder برای چیدمان موبایل -->
-            <div class="btn-append-results"></div>
+            <div class="btn-append-results" style="display: none;"></div>
         </div>
     </div>
     </div>
@@ -7002,7 +6717,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <button type="button" class="modal-close" onclick="closeProxyIPHelpModal()">×</button>
 
             <!-- حالت ساده -->
-            <div id="proxyIPHelpSimple">
+            <div id="proxyIPHelpSimple" style="display: none;">
                 <div class="api-docs">
                     <h2 class="section-title">🤔 چرا به حالت Proxy نیاز داریم؟ PROXYIP چیست؟</h2>
 
@@ -7477,7 +7192,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="proxyIPTemplateInput">مسیر PROXYIP</label>
-                    <div id="proxyIPTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
+                    <div id="proxyIPTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7491,7 +7206,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="socks5StandardTemplateInput">مسیر استاندارد SOCKS5</label>
-                    <div id="socks5StandardTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
+                    <div id="socks5StandardTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7505,7 +7220,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="socks5GlobalTemplateInput">مسیر سراسری SOCKS5</label>
-                    <div id="socks5GlobalTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
+                    <div id="socks5GlobalTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7519,7 +7234,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="httpStandardTemplateInput">مسیر استاندارد HTTP</label>
-                    <div id="httpStandardTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
+                    <div id="httpStandardTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7533,7 +7248,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="httpGlobalTemplateInput">مسیر سراسری HTTP</label>
-                    <div id="httpGlobalTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
+                    <div id="httpGlobalTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -9001,11 +8716,6 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
         }
 
         function toggleModule(titleEl) {
-            // All modules now stay open
-            return;
-        }
-
-        function toggleModule_DISABLED(titleEl) {
             const module = titleEl.parentElement;
             const content = module.querySelector('.module-content');
 
@@ -9922,20 +9632,19 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             });
         }
 
-        // مقداردهی اولیه منو
-        function initNav() {
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    navItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        }
+        // مقداردهی اولیه حالت کاربر
+        function initUserMode() {
+            const userMode = localStorage.getItem('userMode') || 'simple'; // پیش‌فرض حالت ساده
+            const cardContainer = document.querySelector('.card-container');
+            const btn = document.getElementById('modeToggleBtn');
 
-        function switchPage(page) {
-            console.log('Switching to page:', page);
+            if (userMode === 'simple') {
+                cardContainer.classList.add('simple-mode');
+                btn.textContent = '🚀 حالت پیشرفته (حرفه‌ای)';
+            } else {
+                cardContainer.classList.remove('simple-mode');
+                btn.textContent = '🐣 حالت ساده (مبتدی)';
+            }
         }
 
         function showToast(message, type = 'info') {
