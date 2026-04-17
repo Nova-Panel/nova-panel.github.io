@@ -3088,22 +3088,6 @@ html.dark-mode .nav-dropdown-content a:hover {
             display: none;
         }
 
-        /* استایل کانتینرهای صفحه */
-        .page-container {
-            display: none;
-        }
-        .page-container.active {
-            display: block;
-        }
-
-        /* ماژول‌های هر صفحه */
-        .module[data-page] {
-            display: none;
-        }
-        .module[data-page].active {
-            display: block;
-        }
-
         /* حالت ساده - مخفی کردن ماژول پیشرفته */
         .advanced-module {
             transition: opacity 0.4s ease-in-out, max-height 0.5s ease-in-out, transform 0.4s ease-in-out, margin 0.5s ease-in-out, padding 0.5s ease-in-out, border-width 0.5s ease-in-out;
@@ -5822,22 +5806,19 @@ html.dark-mode .nav-dropdown-content a:hover {
                             <a href="#" onclick="switchPage('network'); return false;">🌐 شبکه</a>
                             <a href="#" onclick="switchPage('general'); return false;">⚙️ عمومی</a>
                             <a href="#" onclick="switchPage('telegram'); return false;">📱 تلگرام</a>
-                            <a href="#" onclick="switchPage('logs'); return false;">📋 لاگ‌ها</a>
                         </div>
                     </div>
                     <a href="#" class="nav-item" onclick="switchPage('bestip'); return false;">⭐ ای‌پی برگزیده</a>
                     <a href="#" class="nav-item" onclick="switchPage('edit'); return false;">📝 ویرایش</a>
                 </div>
                 <div class="nav-actions">
-                    <button type="button" class="nav-icon-btn" id="themeToggle" title="تغییر به حالت روز" onclick="toggleTheme()">🌙</button>
                     <a href="#" class="nav-icon-btn nav-reset" onclick="resetConfigWithConfirm()" title="بازنشانی تنظیمات">⚠️</a>
                     <a href="#" class="nav-icon-btn nav-logout" onclick="logout()" title="خروج از سیستم">👋</a>
                 </div>
             </div>
 
-            <!-- صفحه داشبورد: آمار Cloudflare و شبکه -->
             <!-- ماژول آمار استفاده Cloudflare Workers/Pages -->
-            <div class="module cf-usage-module" id="cfUsageModule" data-page="dashboard">
+            <div class="module cf-usage-module" id="cfUsageModule">
                 <div class="module-title" onclick="toggleModule(this)">
                     آمار درخواست‌های Workers/Pages
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5888,87 +5869,8 @@ html.dark-mode .nav-dropdown-content a:hover {
                 </div>
             </div>
 
-            <!-- ماژول داشبورد: سه ستون + ساعت زیرش -->
-            <div class="module" data-page="dashboard">
-                <div class="module-title">
-                    📅 ⚡ 💻 داشبورد
-                </div>
-                <div class="module-content">
-                    <!-- سه ستون -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        
-                        <!-- تقویم شمسی -->
-                        <div style="text-align: center; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
-                            <div style="font-size: 1.1rem; font-weight: 700; color: #0ea5e9; margin-bottom: 5px;" id="persianMonth">-</div>
-                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 12px;" id="persianYear">-</div>
-                            <div id="persianCalendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;"></div>
-                        </div>
-                        
-                        <!-- دسترسی سریع -->
-                        <div style="display: flex; flex-direction: column; gap: 8px; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
-                            <div style="font-size: 0.8rem; font-weight: 600; color: #6b7280; margin-bottom: 5px;">⚡ دسترسی سریع</div>
-                            <a href="#" onclick="switchPage('subscriptions'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
-                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; font-size: 0.9rem;">🔗</div>
-                                <span style="font-size: 0.85rem; font-weight: 500;">اشتراک</span>
-                            </a>
-                            <a href="#" onclick="switchPage('config'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
-                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; font-size: 0.9rem;">⚙️</div>
-                                <span style="font-size: 0.85rem; font-weight: 500;">کانفیگ</span>
-                            </a>
-                            <a href="#" onclick="switchPage('network'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
-                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; font-size: 0.9rem;">🌐</div>
-                                <span style="font-size: 0.85rem; font-weight: 500;">شبکه</span>
-                            </a>
-                            <a href="#" onclick="switchPage('telegram'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
-                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; font-size: 0.9rem;">📱</div>
-                                <span style="font-size: 0.85rem; font-weight: 500;">تلگرام</span>
-                            </a>
-                        </div>
-                        
-                        <!-- اطلاعات سیستم -->
-                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
-                            <div style="font-size: 0.8rem; font-weight: 600; color: #6b7280; margin-bottom: 5px;">💻 اطلاعات سیستم</div>
-                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 8px;">
-                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">📡</div>
-                                <div>
-                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">آدرس IP</div>
-                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemIP">-</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px;">
-                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">🌍</div>
-                                <div>
-                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">موقعیت</div>
-                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemLocation">-</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 8px;">
-                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">💻</div>
-                                <div>
-                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">دستگاه</div>
-                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemDevice">-</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 8px;">
-                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">🌐</div>
-                                <div>
-                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">مرورگر</div>
-                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemBrowser">-</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- ساعت زیر تقویم -->
-                    <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 12px; padding: 15px; text-align: center;">
-                        <div id="dashboardClock" style="font-size: 2rem; font-weight: 700; color: white; font-family: 'Vazirmatn', monospace;">00:00:00</div>
-                        <div id="dashboardDate" style="font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-top: 5px;">-</div>
-                    </div>
-                </div>
-            </div>
-
             <!-- ماژول اطلاعات شبکه -->
-            <div class="module advanced-module" id="network-module" data-page="dashboard network">
+            <div class="module advanced-module" id="network-module">
                 <div class="module-title" onclick="toggleNetworkModule(this)">
                     🌍 اطلاعات شبکه فعلی
                     <svg class="collapse-icon" viewBox="0 0 24 24" style="transform: rotate(90deg);">
@@ -6063,9 +5965,8 @@ html.dark-mode .nav-dropdown-content a:hover {
                 </div>
             </div>
 
-            <!-- صفحه لینک‌های اشتراک -->
             <!-- ماژول 1: لینک‌های اشتراک -->
-            <div class="module" data-page="subscriptions">
+            <div class="module">
                 <div class="module-title" onclick="toggleModule(this)">
                     📋 دریافت لینک نودها
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6135,7 +6036,7 @@ html.dark-mode .nav-dropdown-content a:hover {
             </div>
 
             <!-- ماژول 2: ویرایشگر تولید اشتراک -->
-            <div class="module" data-page="subscriptions">
+            <div class="module">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚡️ تولید اشتراک بهینه
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6217,9 +6118,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <!-- صفحه تنظیمات کانفیگ -->
             <!-- ماژول 3: اطلاعات پیکربندی جزئی -->
-            <div class="module advanced-module" data-page="config">
+            <div class="module advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚙️ اطلاعات پیکربندی جزئی
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6351,7 +6251,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 3.5: تنظیمات ECH (آزمایشی) -->
-            <div class="module advanced-module" id="echModule" data-page="config">
+            <div class="module advanced-module" id="echModule">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔐 Encrypted Client Hello
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6451,9 +6351,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <!-- صفحه مدیریت هسته -->
             <!-- ماژول 4: تنظیمات CDN Proxy -->
-            <div class="module advanced-module" data-page="core">
+            <div class="module advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🌐 تنظیمات دسترسی Cloudflare CDN
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6562,7 +6461,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 5: پیکربندی تبدیل اشتراک -->
-            <div class="module advanced-module" data-page="config">
+            <div class="module advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔄 پیکربندی تبدیل اشتراک
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6613,9 +6512,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <!-- صفحه تلگرام -->
             <!-- ماژول 6: تنظیمات اعلانات -->
-            <div class="module advanced-module" data-page="telegram">
+            <div class="module advanced-module">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔔 تنظیمات اعلانات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6667,7 +6565,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 7: مشاهده تمام لاگ‌ها -->
-            <div class="module advanced-module" data-page="logs">
+            <div class="module advanced-module">
                 <div class="module-title" onclick="toggleModule(this); loadLogsOnExpand(this)">
                     📋 مشاهده لاگ‌های عملیات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6685,6 +6583,51 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
+            <div class="social-links">
+                <!-- دکمه تغییر تم -->
+                <button type="button" class="social-link theme-toggle" id="themeToggle" title="تغییر به حالت روز"
+                    onclick="toggleTheme()">
+                    <!-- آیکن خورشید (در حالت روز نمایش داده می‌شود) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="theme-icon sun-icon">
+                        <circle cx="12" cy="12" r="5" fill="currentColor" />
+                        <g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
+                            <line x1="12" y1="1" x2="12" y2="3" />
+                            <line x1="12" y1="21" x2="12" y2="23" />
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                            <line x1="1" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="12" x2="23" y2="12" />
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        </g>
+                    </svg>
+                    <!-- آیکن ماه (در حالت شب نمایش داده می‌شود) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="theme-icon moon-icon">
+                        <path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <!-- لینک GitHub -->
+                <a href="https://github.com/IRNova/Nova-Vless" target="_blank" rel="noopener" class="social-link"
+                    title="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385c.6.105.825-.255.825-.57c0-.285-.015-1.23-.015-2.235c-3.015.555-3.795-.735-4.035-1.41c-.135-.345-.72-1.41-1.23-1.695c-.42-.225-1.02-.78-.015-.795c.945-.015 1.62.87 1.845 1.23c1.08 1.815 2.805 1.305 3.495.99c.105-.78.42-1.305.765-1.605c-2.67-.3-5.46-1.335-5.46-5.925c0-1.305.465-2.385 1.23-3.225c-.12-.3-.54-1.53.12-3.18c0 0 1.005-.315 3.3 1.23c.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23c.66 1.65.24 2.88.12 3.18c.765.84 1.23 1.905 1.23 3.225c0 4.605-2.805 5.625-5.475 5.925c.435.375.81 1.095.81 2.22c0 1.605-.015 2.895-.015 3.3c0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" />
+                    </svg>
+                </a>
+                <!-- لینک Telegram -->
+                <a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" class="social-link" title="Telegram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635z" />
+                    </svg>
+                </a>
+                <!-- دکمه بازگشت به بالا -->
+                <button type="button" class="social-link" title="بازگشت به بالا" onclick="scrollToTop()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" d="M12 19V5M5 12l7-7l7 7" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -9979,21 +9922,6 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             });
         }
 
-        // مقداردهی اولیه حالت کاربر
-        function initUserMode() {
-            const cardContainer = document.querySelector('.card-container');
-            const btn = document.getElementById('modeToggleBtn');
-            const savedMode = localStorage.getItem('userMode');
-            
-            if (savedMode === 'simple') {
-                cardContainer.classList.add('simple-mode');
-                btn.textContent = '🚀 حالت پیشرفته (حرفه‌ای)';
-            } else if (savedMode === 'expert') {
-                cardContainer.classList.remove('simple-mode');
-                btn.textContent = '🐣 حالت ساده (مبتدی)';
-            }
-        }
-
         // مقداردهی اولیه منو
         function initNav() {
             const navItems = document.querySelectorAll('.nav-item');
@@ -10006,57 +9934,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             });
         }
 
-        // خواندن hash از URL و نمایش صفحه مربوطه
-        function initFromHash() {
-            let hash = window.location.hash.replace('#', '');
-            if (!hash || hash === '') hash = 'dashboard';
-            switchPage(hash);
+        function switchPage(page) {
+            console.log('Switching to page:', page);
         }
-
-        // تابع switchPage برای صفحات
-        function switchPage(page, updateUrl = true) {
-            // مخفی کردن همه ماژول‌ها
-            document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
-            
-            // نمایش ماژول‌های صفحه مورد نظر
-            const pageModules = document.querySelectorAll('.module[data-page*="' + page + '"]');
-            if (pageModules.length > 0) {
-                pageModules.forEach(m => m.style.display = 'block');
-            } else {
-                // اگر ماژول خاصی نبود، همه رو نشون بده
-                document.querySelectorAll('.module').forEach(m => m.style.display = 'block');
-            }
-            
-            // بروزرسانی فعال بودن آیتم‌های منو
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('onclick')?.includes(page)) {
-                    item.classList.add('active');
-                }
-            });
-            
-            // بروزرسانی URL بدون رفرش صفحه
-            if (updateUrl) {
-                history.replaceState(null, null, '#' + page);
-            }
-            
-            window.scrollTo(0, 0);
-        }
-
-        // خواندن صفحه از URL در بارگذاری اولیه
-        function initPageFromUrl() {
-            const hash = window.location.hash.slice(1);
-            const validPages = ['dashboard', 'bestip', 'edit', 'config', 'subscriptions', 'core', 'telegram', 'logs'];
-            
-            if (hash && validPages.includes(hash)) {
-                switchPage(hash, false);
-            } else {
-                switchPage('dashboard', false);
-            }
-        }
-
-        // اجرای اولیه در بارگذاری صفحه
-        document.addEventListener('DOMContentLoaded', initPageFromUrl);
 
         function showToast(message, type = 'info') {
             // حذف toast موجود
@@ -14743,165 +14623,21 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             }
         }
 
-// پردازش دکمه "متوجه شدم! 24 ساعت دیگر نشان نده"
+        // پردازش دکمه "متوجه شدم! 24 ساعت دیگر نشان نده"
         function dismissHostsMismatchNotification() {
             const cacheKey = 'hostsMismatchNotificationTime';
             const currentTime = Date.now();
+
+            // ذخیره timestamp فعلی در localStorage
             localStorage.setItem(cacheKey, currentTime.toString());
+
+            // بستن مودال
             closeHostsMismatchModal({ target: { id: 'hostsMismatchModal' } });
+
+            // نمایش toast تأیید
             showToast('🎉 24 ساعت دیگر نشان داده نخواهد شد', 'info');
         }
 
-        // ساعت و تاریخ داشبورد
-        const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
-        const persianDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
-        
-        function gregorianToJalali(gy, gm, gd) {
-            let g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-            let jy = (gy <= 1600) ? 0 : 979;
-            gy = (gy <= 1600) ? gy - 621 : gy - 1600;
-            let gy2 = (gm > 2) ? (gy + 1) : gy;
-            let days = (365 * gy) + (parseInt((gy2 + 3) / 4)) - (parseInt((gy2 + 99) / 100)) + (parseInt((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
-            jy += 33 * (parseInt(days / 12053));
-            days %= 12053;
-            jy += 4 * (parseInt(days / 1461));
-            days %= 1461;
-            jy += parseInt((days - 1) / 365);
-            if (days > 365) days = (days - 1) % 365;
-            let jm = (days < 186) ? 1 + parseInt(days / 31) : 7 + parseInt((days - 186) / 30);
-            let jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
-            return [jy, jm, jd];
-        }
-        
-        function isLeapYear(jy) {
-            return ((jy % 4 == 0) && (jy % 100 != 0)) || (jy % 400 == 0);
-        }
-        
-        function jalaliMonthLength(jy, jm) {
-            if (jm <= 6) return 31;
-            if (jm <= 11) return 30;
-            return isLeapYear(jy) ? 30 : 29;
-        }
-        
-        function renderDashboardClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
-            const dateStr = now.toLocaleDateString('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            if (document.getElementById('dashboardClock')) {
-                document.getElementById('dashboardClock').textContent = timeStr;
-            }
-            if (document.getElementById('dashboardDate')) {
-                document.getElementById('dashboardDate').textContent = dateStr;
-            }
-            
-            const jalali = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
-            const jy = jalali[0];
-            const jm = jalali[1];
-            const jd = jalali[2];
-            
-            if (document.getElementById('dashboardPersianDate')) {
-                document.getElementById('dashboardPersianDate').textContent = persianMonths[jm - 1] + ' ' + jd + '، ' + jy;
-            }
-            
-            if (document.getElementById('persianMonth')) {
-                document.getElementById('persianMonth').textContent = persianMonths[jm - 1];
-            }
-            if (document.getElementById('persianYear')) {
-                document.getElementById('persianYear').textContent = jy;
-            }
-            
-            renderPersianCalendarGrid(jy, jm, jd);
-        }
-        
-        function renderPersianCalendarGrid(jy, jm, jd) {
-            const grid = document.getElementById('persianCalendarGrid');
-            if (!grid) return;
-            
-            grid.innerHTML = '';
-            
-            persianDays.forEach(day => {
-                const dayName = document.createElement('div');
-                dayName.style.cssText = 'font-size: 0.7rem; font-weight: 600; color: #6b7280; padding: 4px 0;';
-                dayName.textContent = day;
-                grid.appendChild(dayName);
-            });
-            
-            const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-            const dayOfWeek = firstDayOfMonth.getDay();
-            
-            const prevMonthDays = jm > 1 ? jalaliMonthLength(jy, jm - 1) : jalaliMonthLength(jy - 1, 12);
-            for (let i = dayOfWeek - 1; i >= 0; i--) {
-                const day = document.createElement('div');
-                day.style.cssText = 'font-size: 0.8rem; color: #cbd5e1;';
-                day.textContent = prevMonthDays - i;
-                grid.appendChild(day);
-            }
-            
-            const monthLength = jalaliMonthLength(jy, jm);
-            for (let i = 1; i <= monthLength; i++) {
-                const day = document.createElement('div');
-                day.style.cssText = 'font-size: 0.8rem; font-weight: 500; padding: 4px; border-radius: 6px;';
-                day.textContent = i;
-                if (i === jd) {
-                    day.style.background = '#ef4444';
-                    day.style.color = 'white';
-                    day.style.fontWeight = '700';
-                } else {
-                    day.style.background = '#f1f5f9';
-                }
-                grid.appendChild(day);
-            }
-            
-            const totalCells = 42;
-            const filledCells = dayOfWeek + monthLength;
-            const remainingCells = totalCells - filledCells;
-            for (let i = 1; i <= remainingCells; i++) {
-                const day = document.createElement('div');
-                day.style.cssText = 'font-size: 0.8rem; color: #cbd5e1;';
-                day.textContent = i;
-                grid.appendChild(day);
-            }
-        }
-        
-        function updateSystemInfo() {
-            const ua = navigator.userAgent;
-            let browser = 'نامشخص';
-            let device = 'دسکتاپ';
-            
-            if (ua.includes('Firefox')) browser = 'Firefox';
-            else if (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'Chrome';
-            else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari';
-            else if (ua.includes('Edg')) browser = 'Edge';
-            else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
-            
-            if (ua.includes('Mobile') || ua.includes('Android') || ua.includes('iPhone')) device = 'موبایل';
-            else if (ua.includes('Tablet') || ua.includes('iPad')) device = 'تبلت';
-            
-            const countryFlags = { 'IR': '🇮🇷', 'US': '🇺🇸', 'UK': '🇬🇧', 'DE': '🇩🇪', 'FR': '🇫🇷' };
-            
-            if (document.getElementById('systemIP')) {
-                document.getElementById('systemIP').textContent = '-';
-            }
-            if (document.getElementById('systemLocation')) {
-                document.getElementById('systemLocation').textContent = '🌍 -';
-            }
-            if (document.getElementById('systemDevice')) {
-                document.getElementById('systemDevice').textContent = device;
-            }
-            if (document.getElementById('systemBrowser')) {
-                document.getElementById('systemBrowser').textContent = browser;
-            }
-        }
-        
-        // Initialize
-        renderDashboardClock();
-        updateSystemInfo();
-        setInterval(renderDashboardClock, 1000);
-        
-        // Initialize on load
-        initFromHash();
-        
     </script>
 </body>
 
