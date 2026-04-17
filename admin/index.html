@@ -17,6 +17,8 @@
     <!-- Leaflet Map Resources -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         /* تنظیمات راست‌چین فارسی */
         html[dir="rtl"] {
@@ -2171,14 +2173,12 @@ html.dark-mode .nav-dropdown-content a:hover {
             opacity: 1 !important;
         }
 
-        .module-always-open > .module-title {
-            cursor: default !important;
+        .module-title-fixed .collapse-icon {
+            display: none;
         }
 
-        .module-always-open .module-content {
-            display: block !important;
-            max-height: none !important;
-            opacity: 1 !important;
+        .module-title-fixed {
+            cursor: default !important;
         }
 
         .module-always-open:not(.collapsed) .module-content {
@@ -2200,6 +2200,457 @@ html.dark-mode .nav-dropdown-content a:hover {
         .module.collapsed .module-content {
             max-height: 2000px;
             opacity: 1
+        }
+
+        /* استایل صفحه DoH */
+        .doh-page-content {
+            padding: 20px;
+        }
+
+        .doh-page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .doh-page-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .doh-page-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .doh-section {
+            background: var(--bg-secondary, #ffffff);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 2px solid var(--border-color, #e5e7eb);
+        }
+
+        .doh-description {
+            background: #f0f9ff;
+            border-right: 4px solid #0ea5e9;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        html.dark-mode .doh-description {
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .doh-description p {
+            color: #334155;
+            font-size: 14px;
+        }
+
+        html.dark-mode .doh-description p {
+            color: var(--text-secondary);
+        }
+
+        .doh-url-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #0ea5e9;
+            color: #0369a1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        html.dark-mode .doh-url-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+            border-color: rgba(14, 165, 233, 0.5);
+        }
+
+        .doh-url-label {
+            font-size: 14px;
+            color: #0369a1;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        html.dark-mode .doh-url-label {
+            color: #38bdf8;
+        }
+
+        .doh-url-value {
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: #0ea5e9;
+            font-weight: 600;
+            word-break: break-all;
+            direction: ltr;
+            text-align: left;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        html.dark-mode .doh-url-value {
+            background: rgba(0,0,0,0.2);
+            color: #38bdf8;
+        }
+
+        .doh-url-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .doh-providers-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color, #e5e7eb);
+        }
+
+        .doh-providers-title,
+        .doh-features-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doh-provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .doh-provider-item {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color, #e5e7eb);
+            transition: all 0.3s;
+        }
+
+        html.dark-mode .doh-provider-item {
+            background: var(--input-bg);
+        }
+
+        .doh-provider-item:hover {
+            border-color: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        .doh-provider-name {
+            font-weight: 700;
+            color: #0ea5e9;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .doh-provider-desc {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .doh-features-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color, #e5e7eb);
+        }
+
+        .doh-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .doh-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            color: #166534;
+            font-size: 13px;
+        }
+
+        html.dark-mode .doh-feature-item {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+        }
+
+        .doh-feature-item i {
+            color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .doh-provider-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doh-feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doh-page-header h1 {
+                font-size: 22px;
+            }
+        }
+
+        /* استایل صفحه وایرگارد */
+        .wireguard-page-content {
+            padding: 20px;
+        }
+
+        .wg-page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .wg-page-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .wg-page-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .wg-section {
+            background: var(--bg-secondary, #ffffff);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 2px solid var(--border-color, #e5e7eb);
+        }
+
+        .wg-notice-box {
+            background: #fef3c7;
+            border-right: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        html.dark-mode .wg-notice-box {
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .wg-notice-box strong {
+            color: #92400e;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        html.dark-mode .wg-notice-box strong {
+            color: #fbbf24;
+        }
+
+        .wg-notice-box p {
+            color: #92400e;
+            font-size: 14px;
+        }
+
+        html.dark-mode .wg-notice-box p {
+            color: #d97706;
+        }
+
+        .wg-toggle-section {
+            margin-bottom: 20px;
+        }
+
+        .wg-toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 15px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #1e40af;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        html.dark-mode .wg-toggle-label {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-color: rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+        }
+
+        .wg-toggle-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .wg-toggle-label input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .wg-toggle-hint {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #64748b;
+            padding: 0 5px;
+        }
+
+        .wg-form {
+            margin-top: 20px;
+        }
+
+        .wg-form-group {
+            margin-bottom: 18px;
+        }
+
+        .wg-form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary, #1e293b);
+            font-size: 14px;
+        }
+
+        .wg-input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+        }
+
+        .wg-form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color, #e5e7eb);
+            border-radius: 8px;
+            font-family: 'Vazirmatn', 'Fira Code', monospace;
+            font-size: 13px;
+            transition: all 0.3s;
+            background-color: #f1f5f9;
+            opacity: 0.8;
+        }
+
+        .wg-form-input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .wg-form-input[readonly] {
+            background-color: #f1f5f9;
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .wg-form-input:not([readonly]) {
+            background-color: #ffffff;
+            opacity: 1;
+        }
+
+        html.dark-mode .wg-form-input {
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        html.dark-mode .wg-form-input[readonly] {
+            background-color: var(--input-bg);
+            opacity: 0.7;
+        }
+
+        .wg-btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .wg-config-output {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            display: none;
+        }
+
+        .wg-config-output.show {
+            display: block;
+        }
+
+        html.dark-mode .wg-config-output {
+            background: #0f172a;
+        }
+
+        .wg-config-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #0ea5e9;
+        }
+
+        .wg-config-content {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
+
+        .wg-config-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .wg-input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .wg-page-header h1 {
+                font-size: 22px;
+            }
+
+            .wg-btn-group {
+                flex-direction: column;
+            }
+
+            .wg-btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .wg-config-actions {
+                flex-direction: column;
+            }
+
+            .wg-config-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .module .form-group,
@@ -5998,13 +6449,13 @@ html.dark-mode .nav-dropdown-content a:hover {
                     <div class="nav-dropdown">
                         <button class="nav-dropbtn">⚙️ تنظیمات ▾</button>
                         <div class="nav-dropdown-content">
-                            <a href="#" onclick="switchPage('network'); return false;">🌐 شبکه</a>
-                            <a href="#" onclick="switchPage('general'); return false;">⚙️ عمومی</a>
-                            <a href="#" onclick="switchPage('telegram'); return false;">📱 تلگرام</a>
-                            <a href="#" onclick="switchPage('logs'); return false;">📋 لاگ‌ها</a>
+                            <a href="#" onclick="showToast('این بخش در دست توسعه می‌باشد'); return false;">🌐 شبکه</a>
+                            <a href="#" onclick="showToast('این بخش در دست توسعه می‌باشد'); return false;">⚙️ عمومی</a>
+                            <a href="#" onclick="switchPage('telegram'); return false;">🔔 اعلانات</a>
+                            <a href="#" onclick="switchPage('logs'); return false;">📋 مشاهده لاگ‌های عملیات</a>
                         </div>
                     </div>
-                    <a href="#" class="nav-item" onclick="switchPage('bestip'); return false;">⭐ ای‌پی برگزیده</a>
+                    <a href="#" class="nav-item" onclick="showToast('این بخش در دست توسعه می‌باشد'); return false;">⭐ ای‌پی برگزیده</a>
                     <a href="#" class="nav-item" onclick="switchPage('edit'); return false;">📝 ویرایش</a>
                 </div>
                 <div class="nav-actions">
@@ -6412,14 +6863,11 @@ html.dark-mode .nav-dropdown-content a:hover {
             </div>
 
             <!-- ماژول 2: ویرایشگر تولید اشتراک -->
-            <div class="module" data-page="subscriptions">
-                <div class="module-title" onclick="toggleModule(this)">
+            <div class="module" data-page="edit">
+                <div class="module-title module-title-fixed">
                     ⚡️ تولید اشتراک بهینه
-                    <svg class="collapse-icon" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5z" />
-                    </svg>
                 </div>
-                <div class="module-content">
+                <div class="module-content" style="display: block;">
 
                     <div class="form-group">
                         <label for="ipMode">حالت اشتراک بهینه</label>
@@ -6439,13 +6887,60 @@ html.dark-mode .nav-dropdown-content a:hover {
                     <div id="portSection" class="form-group hidden-section">
                         <label for="specifiedPort">پورت بهینه مشخص</label>
                         <select id="specifiedPort" onchange="markModified('sub')">
+                            <option value="all">همه پورت‌ها</option>
                             <option value="-1">پورت تصادفی</option>
+                            <option value="80">80</option>
                             <option value="443">443</option>
-                            <option value="2053">2053</option>
-                            <option value="2083">2083</option>
-                            <option value="2087">2087</option>
-                            <option value="2096">2096</option>
+                            <option value="8080">8080</option>
                             <option value="8443">8443</option>
+                            <option value="2052">2052</option>
+                            <option value="2053">2053</option>
+                            <option value="2082">2082</option>
+                            <option value="2083">2083</option>
+                            <option value="2086">2086</option>
+                            <option value="2087">2087</option>
+                            <option value="2095">2095</option>
+                            <option value="2096">2096</option>
+                            <option value="4433">4433</option>
+                            <option value="4443">4443</option>
+                            <option value="8880">8880</option>
+                            <option value="8888">8888</option>
+                            <option value="8890">8890</option>
+                            <option value="8900">8900</option>
+                            <option value="9000">9000</option>
+                            <option value="9001">9001</option>
+                            <option value="32768">32768</option>
+                            <option value="32769">32769</option>
+                            <option value="32770">32770</option>
+                            <option value="32771">32771</option>
+                            <option value="32772">32772</option>
+                            <option value="32773">32773</option>
+                            <option value="32774">32774</option>
+                            <option value="32775">32775</option>
+                            <option value="32776">32776</option>
+                            <option value="32777">32777</option>
+                            <option value="32778">32778</option>
+                            <option value="32779">32779</option>
+                            <option value="32780">32780</option>
+                            <option value="32781">32781</option>
+                            <option value="32782">32782</option>
+                            <option value="32783">32783</option>
+                            <option value="32784">32784</option>
+                            <option value="32785">32785</option>
+                            <option value="32786">32786</option>
+                            <option value="32787">32787</option>
+                            <option value="32788">32788</option>
+                            <option value="32789">32789</option>
+                            <option value="32790">32790</option>
+                            <option value="32791">32791</option>
+                            <option value="32792">32792</option>
+                            <option value="32793">32793</option>
+                            <option value="32794">32794</option>
+                            <option value="32795">32795</option>
+                            <option value="32796">32796</option>
+                            <option value="32797">32797</option>
+                            <option value="32798">32798</option>
+                            <option value="32799">32799</option>
                         </select>
                     </div>
 
@@ -6530,6 +7025,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         <select id="protocol" title="پروتکل نود" onchange="updateProtocol(); markModified('config')">
                             <option value="vless">VLESS</option>
                             <option value="trojan">Trojan</option>
+                            <option value="ترکیبی">ترکیبی (VLESS + Trojan)</option>
                         </select>
                     </div>
 
@@ -6890,16 +7386,218 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <!-- صفحه تلگرام -->
-            <!-- ماژول 6: تنظیمات اعلانات -->
-            <div class="module advanced-module" data-page="telegram">
-                <div class="module-title" onclick="toggleModule(this)">
-                    🔔 تنظیمات اعلانات
-                    <svg class="collapse-icon" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5z" />
-                    </svg>
+            <!-- صفحه پروکسی DoH -->
+            <div class="module" data-page="doh" style="display: none;">
+                <div class="module-content doh-page-content">
+                    
+                    <!-- هدر صفحه -->
+                    <div class="doh-page-header">
+                        <h1><i class="fas fa-shield-alt"></i> 🔒 پروکسی DoH</h1>
+                        <p>DNS-over-HTTPS (DoH) امن و پرسرعت</p>
+                    </div>
+
+                    <!-- بخش توضیحات -->
+                    <div class="doh-section">
+                        <div class="doh-description">
+                            <p>پروکسی DoH یک سرویس DNS امن است که از طریق HTTPS کار می‌کند و ترافیک DNS شما را رمزگذاری می‌کند.</p>
+                        </div>
+
+                        <!-- نشانی DoH -->
+                        <div class="doh-url-box">
+                            <div class="doh-url-label">🌐 نشانی DoH:</div>
+                            <div class="doh-url-value" id="dohUrlDisplay">-</div>
+                            <div class="doh-url-actions">
+                                <button class="btn btn-primary" onclick="copyDohUrl()">
+                                    <i class="fas fa-copy"></i> کپی نشانی
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ارائه‌دهندگان -->
+                        <div class="doh-providers-section">
+                            <div class="doh-providers-title">
+                                <i class="fas fa-satellite-dish"></i>
+                                ارائه‌دهندگان DNS پشتیبانی شده:
+                            </div>
+                            <div class="doh-provider-grid">
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">Cloudflare</div>
+                                    <div class="doh-provider-desc">سرعت بالا و امنیت</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">Google DNS</div>
+                                    <div class="doh-provider-desc">قابلیت اطمینان</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">Quad9</div>
+                                    <div class="doh-provider-desc">امنیت و حریم خصوصی</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">AdGuard</div>
+                                    <div class="doh-provider-desc">مسدودسازی تبلیغات</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">ControlD</div>
+                                    <div class="doh-provider-desc">کنترل محتوا</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">Mullvad</div>
+                                    <div class="doh-provider-desc">حریم خصوصی</div>
+                                </div>
+                                <div class="doh-provider-item">
+                                    <div class="doh-provider-name">NextDNS</div>
+                                    <div class="doh-provider-desc">فیلترینگ پیشرفته</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ویژگی‌ها -->
+                        <div class="doh-features-section">
+                            <div class="doh-features-title">
+                                <i class="fas fa-bolt"></i>
+                                ویژگی‌ها:
+                            </div>
+                            <div class="doh-feature-grid">
+                                <div class="doh-feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    رمزگذاری کامل ترافیک DNS
+                                </div>
+                                <div class="doh-feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    توازن بار بین ارائه‌دهندگان
+                                </div>
+                                <div class="doh-feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    جابجایی خودکار در صورت خطا
+                                </div>
+                                <div class="doh-feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    کش‌گذاری پاسخ‌ها برای سرعت بیشتر
+                                </div>
+                                <div class="doh-feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    پشتیبانی از مسدودسازی تبلیغات
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="module-content">
+            </div>
+
+            <!-- صفحه وایرگارد -->
+            <div class="module" data-page="wireguard" style="display: none;">
+                <div class="module-content wireguard-page-content">
+                    
+                    <!-- هدر صفحه -->
+                    <div class="wg-page-header">
+                        <h1><i class="fas fa-shield-alt"></i> 🔐 ساخت کانفیگ وایرگارد</h1>
+                        <p>تولید خودکار کانفیگ WireGuard با تنظیمات Cloudflare WARP</p>
+                    </div>
+
+                    <!-- بخش اصلی -->
+                    <div class="wg-section">
+                        <!-- راهنما -->
+                        <div class="wg-notice-box">
+                            <strong>⚠️ راهنمای استفاده</strong>
+                            <p>این ابزار برای ساخت کانفیگ WireGuard طراحی شده است. تنظیمات پیش‌فرض وارپ کلودفلر است.</p>
+                        </div>
+                        
+                        <!-- دکمه ویرایش -->
+                        <div class="wg-toggle-section">
+                            <label class="wg-toggle-label" onclick="toggleCustomConfig()">
+                                <input type="checkbox" id="customConfig" onchange="toggleCustomConfig()">
+                                <span>✏️ ویرایش تنظیمات (در صورت نیاز)</span>
+                            </label>
+                            <p class="wg-toggle-hint">
+                                ⚠️ اگر این گزینه فعال نباشد، تمام فیلدها غیرقابل ویرایش خواهند بود. برای تغییر مقادیر، این گزینه را فعال کنید.
+                            </p>
+                        </div>
+
+                        <!-- فرم تنظیمات -->
+                        <div class="wg-form" id="configForm">
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">🔑 کلید خصوصی (Private Key):</label>
+                                <div class="wg-input-row">
+                                    <input type="text" class="wg-form-input" id="wg-privateKey" value="R/pl11293DfjB8ZN4ymB9AAJINSmXC/Ff3WYK2+F66o=" readonly>
+                                    <button class="btn btn-secondary" onclick="generateWGKey()" disabled>
+                                        <i class="fas fa-sync-alt"></i> تولید کلید
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">🌐 آدرس IP (Address):</label>
+                                <input type="text" class="wg-form-input" id="wg-address" value="172.16.0.2/32, 2606:4700:110:89b6:4ba5:f9c0:abf2:5ae5/128" readonly>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">📡 DNS:</label>
+                                <input type="text" class="wg-form-input" id="wg-dns" value="1.1.1.1" readonly>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">🔢 MTU:</label>
+                                <input type="text" class="wg-form-input" id="wg-mtu" value="1280" readonly>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">🔒 کلید عمومی سرور (Public Key):</label>
+                                <input type="text" class="wg-form-input" id="wg-serverPublicKey" value="bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=" readonly>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">🖥️ سرور (Endpoint):</label>
+                                <div class="wg-input-row">
+                                    <input type="text" class="wg-form-input" id="wg-endpoint" value="engage.cloudflareclient.com" readonly>
+                                    <input type="text" class="wg-form-input" id="wg-port" value="2408" readonly style="text-align: center;">
+                                </div>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">⏱️ زمان نگهداری (PersistentKeepalive):</label>
+                                <input type="text" class="wg-form-input" id="wg-keepalive" value="25" readonly>
+                            </div>
+
+                            <div class="wg-form-group">
+                                <label class="wg-form-label">📝 نام کانفیگ (Name):</label>
+                                <input type="text" class="wg-form-input" id="wg-configName" value="WireGuard-WARP" readonly>
+                            </div>
+                        </div>
+                        
+                        <!-- دکمه‌ها -->
+                        <div class="wg-btn-group">
+                            <button class="btn btn-secondary" onclick="resetWGDefaults()">
+                                <i class="fas fa-undo"></i> بازنشانی پیش‌فرض
+                            </button>
+                            <button class="btn btn-primary" onclick="generateWGConfig()">
+                                <i class="fas fa-cog"></i> ساخت کانفیگ
+                            </button>
+                        </div>
+                        
+                        <!-- خروجی کانفیگ -->
+                        <div class="wg-config-output" id="wg-configOutput">
+                            <div class="wg-config-title">📋 کانفیگ WireGuard شما:</div>
+                            <pre class="wg-config-content" id="wg-configContent"></pre>
+                            <div class="wg-config-actions">
+                                <button class="btn btn-primary" onclick="copyWGConfig()">
+                                    <i class="fas fa-copy"></i> کپی کانفیگ
+                                </button>
+                                <button class="btn btn-success" onclick="downloadWGConfig()">
+                                    <i class="fas fa-download"></i> دانلود فایل
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحه اعلانات -->
+            <!-- ماژول 6: تنظیمات اعلانات -->
+            <div class="module advanced-module module-always-open" data-page="telegram">
+                <div class="module-title module-title-fixed">
+                    🔔 تنظیمات اعلانات
+                </div>
+                <div class="module-content" style="display: block;">
 
                     <!-- تنظیمات اعلان Telegram Bot -->
                     <div class="form-group notification-row">
@@ -6944,14 +7642,11 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 7: مشاهده تمام لاگ‌ها -->
-            <div class="module advanced-module" data-page="logs">
-                <div class="module-title" onclick="toggleModule(this); loadLogsOnExpand(this)">
+            <div class="module advanced-module module-always-open" data-page="logs">
+                <div class="module-title module-title-fixed">
                     📋 مشاهده لاگ‌های عملیات
-                    <svg class="collapse-icon" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5z" />
-                    </svg>
                 </div>
-                <div class="module-content">
+                <div class="module-content" style="display: block;">
                     <div id="logsContainer" class="logs-container">
                         <div class="logs-loading">در حال بارگذاری...</div>
                     </div>
@@ -8552,6 +9247,19 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             document.getElementById('loonLink-display').textContent = loonLink;
             document.getElementById('surgeLink-display').textContent = surgeLink;
 
+            // صفحه DoH - تنظیم نشانی
+            const dohUrl = `https://${host}/doh?token=${token}`;
+            const dohUrlDisplay = document.getElementById('dohUrlDisplay');
+            if (dohUrlDisplay) {
+                dohUrlDisplay.textContent = dohUrl;
+            }
+            document.getElementById('subLink-display').textContent = subLink;
+            document.getElementById('base64Link-display').textContent = base64Link;
+            document.getElementById('clashLink-display').textContent = clashLink;
+            document.getElementById('singboxLink-display').textContent = singboxLink;
+            document.getElementById('loonLink-display').textContent = loonLink;
+            document.getElementById('surgeLink-display').textContent = surgeLink;
+
             // ویرایش تولید اشتراک
             const local = currentConfig.优选订阅生成?.local ?? true;
             const randomIP = currentConfig.优选订阅生成?.本地IP库?.随机IP ?? true;
@@ -9604,6 +10312,121 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             });
         }
 
+        // کپی کردن نشانی DoH
+        function copyDohUrl() {
+            const dohUrl = document.getElementById('dohUrlDisplay').textContent;
+            if (dohUrl && dohUrl !== '-') {
+                navigator.clipboard.writeText(dohUrl).then(() => {
+                    showToast('✅ نشانی کپی شد!', 'success');
+                }).catch(() => {
+                    showToast('کپی ناموفق بود', 'error');
+                });
+            }
+        }
+
+        // وایرگارد - تغییر حالت ویرایش
+        function toggleCustomConfig() {
+            const checkbox = document.getElementById('customConfig');
+            const inputs = document.querySelectorAll('#configForm .wg-form-input');
+            const generateKeyBtn = document.querySelector('#configForm button[onclick="generateWGKey()"]');
+            const isEditable = checkbox.checked;
+
+            inputs.forEach(input => {
+                input.readOnly = !isEditable;
+                if (isEditable) {
+                    input.style.backgroundColor = '#ffffff';
+                    input.style.opacity = '1';
+                } else {
+                    input.style.backgroundColor = '#f1f5f9';
+                    input.style.opacity = '0.8';
+                }
+            });
+
+            if (generateKeyBtn) {
+                generateKeyBtn.disabled = !isEditable;
+                generateKeyBtn.style.opacity = isEditable ? '1' : '0.5';
+                generateKeyBtn.style.cursor = isEditable ? 'pointer' : 'not-allowed';
+            }
+        }
+
+        // وایرگارد - تولید کلید
+        function generateWGKey() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            const base64 = btoa(String.fromCharCode(...array));
+            document.getElementById('wg-privateKey').value = base64;
+            showToast('🔑 کلید جدید تولید شد!', 'success');
+        }
+
+        // وایرگارد - بازنشانی پیش‌فرض
+        function resetWGDefaults() {
+            document.getElementById('wg-privateKey').value = 'R/pl11293DfjB8ZN4ymB9AAJINSmXC/Ff3WYK2+F66o=';
+            document.getElementById('wg-address').value = '172.16.0.2/32, 2606:4700:110:89b6:4ba5:f9c0:abf2:5ae5/128';
+            document.getElementById('wg-dns').value = '1.1.1.1';
+            document.getElementById('wg-mtu').value = '1280';
+            document.getElementById('wg-serverPublicKey').value = 'bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=';
+            document.getElementById('wg-endpoint').value = 'engage.cloudflareclient.com';
+            document.getElementById('wg-port').value = '2408';
+            document.getElementById('wg-keepalive').value = '25';
+            document.getElementById('wg-configName').value = 'WireGuard-WARP';
+            showToast('✅ تنظیمات پیش‌فرض بازنشانی شد!', 'success');
+        }
+
+        // وایرگارد - ساخت کانفیگ
+        function generateWGConfig() {
+            const privateKey = document.getElementById('wg-privateKey').value;
+            const address = document.getElementById('wg-address').value;
+            const dns = document.getElementById('wg-dns').value;
+            const mtu = document.getElementById('wg-mtu').value;
+            const serverPublicKey = document.getElementById('wg-serverPublicKey').value;
+            const endpoint = document.getElementById('wg-endpoint').value;
+            const port = document.getElementById('wg-port').value;
+            const keepalive = document.getElementById('wg-keepalive').value;
+            const configName = document.getElementById('wg-configName').value;
+            
+            const config = `[Interface]
+PrivateKey = ${privateKey}
+Address = ${address}
+DNS = ${dns}
+MTU = ${mtu}
+
+[Peer]
+PublicKey = ${serverPublicKey}
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = ${endpoint}:${port}
+PersistentKeepalive = ${keepalive}`;
+            
+            document.getElementById('wg-configContent').textContent = config;
+            document.getElementById('wg-configOutput').classList.add('show');
+            showToast('✅ کانفیگ با موفقیت ساخته شد!', 'success');
+        }
+
+        // وایرگارد - کپی کانفیگ
+        function copyWGConfig() {
+            const config = document.getElementById('wg-configContent').textContent;
+            navigator.clipboard.writeText(config).then(() => {
+                showToast('✅ کانفیگ کپی شد!', 'success');
+            }).catch(() => {
+                showToast('کپی ناموفق بود', 'error');
+            });
+        }
+
+        // وایرگارد - دانلود فایل
+        function downloadWGConfig() {
+            const config = document.getElementById('wg-configContent').textContent;
+            const configName = document.getElementById('wg-configName').value;
+            const blob = new Blob([config], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = configName + '.conf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('📥 فایل دانلود شد!', 'success');
+        }
+
         function handleTLSFragmentChange(type) {
             const shadowrocket = document.getElementById('tlsFragmentShadowrocket');
             const happ = document.getElementById('tlsFragmentHapp');
@@ -10376,6 +11199,14 @@ container.classList.add('show');
                 const pageModules = document.querySelectorAll('.module[data-page*="config"]');
                 pageModules.forEach(m => m.style.display = 'block');
                 if (echModule) echModule.style.display = 'block';
+            } else if (page === 'doh') {
+                // DoH - نمایش صفحه DoH
+                const dohModule = document.querySelector('.module[data-page="doh"]');
+                if (dohModule) dohModule.style.display = 'block';
+            } else if (page === 'edit') {
+                // ویرایش - نمایش ماژول تولید اشتراک بهینه
+                const editModules = document.querySelectorAll('.module[data-page*="edit"]');
+                editModules.forEach(m => m.style.display = 'block');
             } else {
                 // سایر صفحات - ماژول شبکه و ECH رو حتماً مخفی کن
                 if (networkModule) networkModule.style.display = 'none';
@@ -10406,7 +11237,7 @@ container.classList.add('show');
         // خواندن صفحه از URL در بارگذاری اولیه
         function initPageFromUrl() {
             const hash = window.location.hash.slice(1);
-            const validPages = ['dashboard', 'bestip', 'edit', 'config', 'subscriptions', 'core', 'telegram', 'logs'];
+            const validPages = ['dashboard', 'bestip', 'edit', 'config', 'subscriptions', 'core', 'doh', 'wireguard', 'telegram', 'logs'];
             
             if (hash && validPages.includes(hash)) {
                 switchPage(hash, false);
@@ -13198,24 +14029,17 @@ container.classList.add('show');
                 return;
             }
 
-            // ایجاد تب‌ها - نمایش تعداد واقعی IP
-            countries.forEach((country, index) => {
-                const tab = document.createElement('div');
-                tab.className = 'optimize-tab';
-                if (index === 0) {
-                    tab.classList.add('active');
-                    currentSelectedCountry = country;
+            // نمایش همه نتایج بدون تفکیک کشور
+            const allResults = [];
+            for (const country in optimizeResults) {
+                for (const result of optimizeResults[country]) {
+                    allResults.push({...result, country: country});
                 }
-                const actualCount = optimizeResults[country].length;
-                tab.textContent = `${country} (${actualCount})`;
-                tab.onclick = () => selectCountryTab(country);
-                tabsContainer.appendChild(tab);
-            });
+            }
+            allResults.sort((a, b) => a.time - b.time);
+            showAllResultsWithoutCountry(allResults);
 
-            // نمایش نتایج اولین کشور
-            showCountryResults(currentSelectedCountry);
-
-            tabsContainer.classList.remove('hidden-section');
+            tabsContainer.classList.add('hidden-section');
             contentContainer.classList.remove('hidden-section');
 
             // فعال کردن دکمه‌های ذخیره
@@ -13253,9 +14077,23 @@ container.classList.add('show');
                 return;
             }
 
-            // پیش‌فرض فقط 16 مورد اول، با پارامتر showAll همه
-            const displayCount = showAll ? results.length : Math.min(16, results.length);
-            const displayResults = results.slice(0, displayCount);
+            showAllResultsWithoutCountry(results, country);
+        }
+
+        // نمایش همه نتایج بدون تفکیک کشور
+        function showAllResultsWithoutCountry(results, countryFilter = null) {
+            const contentContainer = document.getElementById('optimizeResultsContent');
+
+            if (!results || results.length === 0) {
+                contentContainer.innerHTML = '<div style="text-align: center; color: #6b7280;">داده‌ای موجود نیست</div>';
+                return;
+            }
+
+            // مرتب‌سازی همه بر اساس زمان
+            results.sort((a, b) => a.time - b.time);
+
+            // پیش‌فرض فقط 16 مورد اول
+            const displayResults = results.slice(0, 16);
 
             const html = displayResults.map(r => {
                 // تعیین رنگ بر اساس زمان تاخیر
@@ -13265,16 +14103,16 @@ container.classList.add('show');
                 } else if (r.time > 200) {
                     color = '#ef4444'; // بالای 201ms قرمز
                 }
-
-                return `<div class="optimize-result-item" style="color: ${color}; font-weight: bold;">${r.ip}:${r.port}#${r.remark} ${r.time}ms</div>`;
+                const countryTag = r.country ? `[${r.country}]` : '';
+                return `<div class="optimize-result-item" style="color: ${color}; font-weight: bold;">${countryTag} ${r.ip}:${r.port}#${r.remark} ${r.time}ms</div>`;
             }).join('');
 
             let finalHtml = html;
 
-            // اگر نتایج بیشتر و باز نشده، دکمه بازشو اضافه کن
-            if (!showAll && results.length > 16) {
+            // دکمه باز کردن همه
+            if (results.length > 16) {
                 finalHtml += `<div style="margin-top: 15px; text-align: center;">
-                    <button type="button" class="btn btn-secondary" onclick="showCountryResults('${country}', true)" style="padding: 8px 16px; font-size: 12px;">
+                    <button type="button" class="btn btn-secondary" onclick="showAllOptimizeResults()" style="padding: 8px 16px; font-size: 12px;">
                         📂 باز کردن همه IP (${results.length})
                     </button>
                 </div>`;
@@ -13283,22 +14121,44 @@ container.classList.add('show');
             contentContainer.innerHTML = finalHtml;
         }
 
+        // نمایش همه نتایج به صورت کامل
+        function showAllOptimizeResults() {
+            const allResults = [];
+            for (const country in optimizeResults) {
+                for (const result of optimizeResults[country]) {
+                    allResults.push({...result, country: country});
+                }
+            }
+            showAllResultsWithoutCountry(allResults);
+        }
+
+        // ذخیره نتایج (بدون محدودیت کشور)
+
         // ذخیره نتایج انتخاب
         async function saveOptimizeResults(mode) {
             console.log(`[انتخاب آنلاین] پیشرفت: ذخیره نتایج (حالت=${mode})`);
 
-            if (!currentSelectedCountry || !optimizeResults[currentSelectedCountry]) {
-                console.warn('[انتخاب آنلاین] کشوری انتخاب نشده یا داده نتایج موجود نیست');
-                showToast('لطفاً ابتدا یک کشور را انتخاب کنید', 'error');
+            // جمع‌آوری همه نتایج از همه کشورها
+            const allResults = [];
+            for (const country in optimizeResults) {
+                for (const result of optimizeResults[country]) {
+                    allResults.push({...result, country: country});
+                }
+            }
+
+            if (allResults.length === 0) {
+                console.warn('[انتخاب آنلاین] هشدار: هیچ نتیجه‌ای برای ذخیره موجود نیست');
+                showToast('هیچ نتیجه‌ای یافت نشد', 'error');
                 return;
             }
 
-            const allResults = optimizeResults[currentSelectedCountry];
+            // مرتب‌سازی بر اساس زمان
+            allResults.sort((a, b) => a.time - b.time);
             // فقط 16 مورد اول ذخیره شود
             const resultsToSave = allResults.slice(0, 16);
             // تغییر فرمت: شامل کشور، نوع و اطلاعات زمان
             const newContent = resultsToSave.map(r => `${r.ip}:${r.port}#${r.remark}|${r.time}ms`).join('\n');
-            console.log(`[انتخاب آنلاین] موفق: ${currentSelectedCountry} ذخیره ${resultsToSave.length} IP (مجموع ${allResults.length})`);
+            console.log(`[انتخاب آنلاین] موفق: ذخیره ${resultsToSave.length} IP از همه کشورها (مجموع ${allResults.length})`);
 
             const textarea = document.getElementById('customIPs');
 
