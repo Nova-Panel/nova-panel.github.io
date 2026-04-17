@@ -9979,6 +9979,21 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             });
         }
 
+        // مقداردهی اولیه حالت کاربر
+        function initUserMode() {
+            const cardContainer = document.querySelector('.card-container');
+            const btn = document.getElementById('modeToggleBtn');
+            const savedMode = localStorage.getItem('userMode');
+            
+            if (savedMode === 'simple') {
+                cardContainer.classList.add('simple-mode');
+                btn.textContent = '🚀 حالت پیشرفته (حرفه‌ای)';
+            } else if (savedMode === 'expert') {
+                cardContainer.classList.remove('simple-mode');
+                btn.textContent = '🐣 حالت ساده (مبتدی)';
+            }
+        }
+
         // مقداردهی اولیه منو
         function initNav() {
             const navItems = document.querySelectorAll('.nav-item');
