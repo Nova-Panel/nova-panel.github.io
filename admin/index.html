@@ -2151,6 +2151,44 @@ html.dark-mode .nav-dropdown-content a:hover {
             display: none;
         }
 
+        /* مخفی کردن ماژول ECH - فقط در کانفیگ نمایش */
+        #echModule {
+            display: none;
+        }
+
+/* ماژول‌های همیشه باز - بدون فلش و باز */
+        .module-always-open .collapse-icon {
+            display: none !important;
+        }
+
+        .module-always-open > .module-title {
+            cursor: default !important;
+        }
+
+        .module-always-open .module-content {
+            display: block !important;
+            max-height: none !important;
+            opacity: 1 !important;
+        }
+
+        .module-always-open > .module-title {
+            cursor: default !important;
+        }
+
+        .module-always-open .module-content {
+            display: block !important;
+            max-height: none !important;
+            opacity: 1 !important;
+        }
+
+        .module-always-open:not(.collapsed) .module-content {
+            display: block !important;
+        }
+
+        .module-always-open.collapsed .module-content {
+            display: block !important;
+        }
+
         .module-content {
             display: block;
             /* overflow: hidden; */
@@ -5952,7 +5990,7 @@ html.dark-mode .nav-dropdown-content a:hover {
                         <div class="nav-dropdown-content">
                             <a href="#" onclick="switchPage('subscriptions'); return false;">🔗 لینک‌های اشتراک</a>
                             <a href="#" onclick="switchPage('config'); return false;">⚙️ تنظیمات کانفیگ</a>
-                            <a href="#" onclick="switchPage('core'); return false;">🔧 مدیریت هسته</a>
+                            <a href="#" onclick="switchPage('core'); return false;">🌐 مدیریت CDN</a>
                             <a href="#" onclick="switchPage('doh'); return false;">🔒 پروکسی DoH</a>
                             <a href="#" onclick="switchPage('wireguard'); return false;">🔐 وایرگارد</a>
                         </div>
@@ -6458,7 +6496,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
             <!-- صفحه تنظیمات کانفیگ -->
             <!-- ماژول 3: اطلاعات پیکربندی جزئی -->
-            <div class="module advanced-module" data-page="config">
+            <div class="module advanced-module module-always-open" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚙️ اطلاعات پیکربندی جزئی
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6590,7 +6628,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 3.5: تنظیمات ECH (آزمایشی) -->
-            <div class="module advanced-module" id="echModule" data-page="config">
+            <div class="module advanced-module module-always-open" id="echModule" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔐 Encrypted Client Hello
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6690,9 +6728,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <!-- صفحه مدیریت هسته -->
+            <!-- صفحه مدیریت CDN -->
             <!-- ماژول 4: تنظیمات CDN Proxy -->
-            <div class="module advanced-module" data-page="core">
+            <div class="module advanced-module module-always-open" data-page="core">
                 <div class="module-title" onclick="toggleModule(this)">
                     🌐 تنظیمات دسترسی Cloudflare CDN
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6801,7 +6839,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 5: پیکربندی تبدیل اشتراک -->
-            <div class="module advanced-module" data-page="config">
+            <div class="module advanced-module module-always-open" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔄 پیکربندی تبدیل اشتراک
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -10311,14 +10349,16 @@ container.classList.add('show');
         // تابع switchPage برای صفحات
         function switchPage(page, updateUrl = true) {
             const networkModule = document.getElementById('network-module');
+            const echModule = document.getElementById('echModule');
             
             // مخفی کردن همه ماژول‌ها
             document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
             
             // صفحه اشتراک - فقط کارت‌های اشتراک نمایش داده بشه
             if (page === 'subscriptions') {
-                // حتماً ماژول شبکه رو مخفی کن
+                // حتماً ماژول شبکه و ECH رو مخفی کن
                 if (networkModule) networkModule.style.display = 'none';
+                if (echModule) echModule.style.display = 'none';
                 
                 const subModules = document.querySelectorAll('.module[data-page="subscriptions"]');
                 if (subModules.length > 0) {
@@ -10328,9 +10368,18 @@ container.classList.add('show');
                 // داشبورد - همه ماژول‌های داشبورد + شبکه
                 const pageModules = document.querySelectorAll('.module[data-page*="dashboard"]');
                 pageModules.forEach(m => m.style.display = 'block');
+                
+                // نمایش ماژول شبکه در داشبورد
+                if (networkModule) networkModule.style.display = 'block';
+            } else if (page === 'config') {
+                // کانفیگ - نمایش ECH
+                const pageModules = document.querySelectorAll('.module[data-page*="config"]');
+                pageModules.forEach(m => m.style.display = 'block');
+                if (echModule) echModule.style.display = 'block';
             } else {
-                // سایر صفحات - ماژول شبکه رو حتماً مخفی کن
+                // سایر صفحات - ماژول شبکه و ECH رو حتماً مخفی کن
                 if (networkModule) networkModule.style.display = 'none';
+                if (echModule) echModule.style.display = 'none';
                 
                 const pageModules = document.querySelectorAll('.module[data-page*="' + page + '"]');
                 if (pageModules.length > 0) {
