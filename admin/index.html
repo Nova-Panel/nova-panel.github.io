@@ -2146,9 +2146,9 @@ html.dark-mode .nav-dropdown-content a:hover {
             transform: rotate(90deg)
         }
 
-        /* مخفی کردن ماژول اطلاعات شبکه */
+        /* مخفی کردن ماژول اطلاعات شبکه - فقط در داشبورد نمایش */
         #network-module {
-            display: block !important;
+            display: none;
         }
 
         .module-content {
@@ -3102,6 +3102,147 @@ html.dark-mode .nav-dropdown-content a:hover {
         }
         .module[data-page].active {
             display: block;
+        }
+
+        /* استایل صفحه اشتراک - کارت‌های لینک */
+        .subscription-page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .subscription-page-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subscription-page-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sub-card {
+            background: var(--bg-secondary, #ffffff);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 2px solid var(--border-color, #e5e7eb);
+            transition: all 0.3s;
+        }
+
+        .sub-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: #0ea5e9;
+        }
+
+        .sub-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color, #e5e7eb);
+        }
+
+        .sub-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sub-icon.auto { background: linear-gradient(135deg, #0ea5e9, #8b5cf6); }
+        .sub-icon.base64 { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+        .sub-icon.clash { background: linear-gradient(135deg, #10b981, #059669); }
+        .sub-icon.singbox { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .sub-icon.loon { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .sub-icon.surge { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .sub-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .sub-subtitle {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .sub-url {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin-bottom: 12px;
+            direction: ltr;
+            text-align: left;
+            color: #1e293b;
+        }
+
+        html.dark-mode .sub-url {
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .sub-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sub-actions .btn {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+
+        .qr-container {
+            display: none;
+            justify-content: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .qr-container.show {
+            display: flex;
+        }
+
+        html.dark-mode .qr-container {
+            background: var(--input-bg);
+        }
+
+        @media (max-width: 768px) {
+            .subscription-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subscription-page-header h1 {
+                font-size: 22px;
+            }
         }
 
         /* حالت ساده - مخفی کردن ماژول پیشرفته */
@@ -6064,74 +6205,172 @@ html.dark-mode .nav-dropdown-content a:hover {
             </div>
 
             <!-- صفحه لینک‌های اشتراک -->
-            <!-- ماژول 1: لینک‌های اشتراک -->
-            <div class="module" data-page="subscriptions">
-                <div class="module-title" onclick="toggleModule(this)">
-                    📋 دریافت لینک نودها
-                    <svg class="collapse-icon" viewBox="0 0 24 24">
-                        <path d="M7 10l5 5 5-5z" />
-                    </svg>
+            <!-- ماژول اصلی لینک‌های اشتراک -->
+            <div class="module" data-page="subscriptions" style="display: block;">
+                <!-- هدر صفحه لینک‌های اشتراک -->
+                <div class="subscription-page-header">
+                    <h1><i class="fas fa-link" style="font-size: 24px;"></i> 📋 دریافت لینک نودها</h1>
+                    <p>لینک‌های subscription را در فرمت‌های مختلف دریافت کنید</p>
                 </div>
-                <div class="form-group">
-                    <label for="LinkURL">فرمت لینک نود</label>
-                    <div class="input-wrapper subscription-link-wrapper">
-                        <input type="text" id="LinkURL" title="فرمت لینک نود" readonly>
-                        <div class="btn-container">
-                            <button type="button" class="btn btn-qrcode" onclick="showQRCode('LinkURL')">📱 کد QR</button>
-                            <button type="button" class="btn btn-primary"
-                                onclick="copySubscription('LinkURL')">کپی نود</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="subLink">اشتراک تطبیقی</label>
-                    <div class="input-wrapper subscription-link-wrapper">
-                        <input type="text" id="subLink" title="اشتراک تطبیقی" readonly>
-                        <div class="btn-container">
-                            <button type="button" class="btn btn-qrcode" onclick="showQRCode('subLink')">📱 کد QR</button>
-                            <button type="button" class="btn btn-primary"
-                                onclick="copySubscription('subLink')">کپی اشتراک</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="module-content">
-                    <div class="form-group">
-                        <label for="base64Link">اشتراک Base64</label>
-                        <div class="input-wrapper subscription-link-wrapper">
-                            <input type="text" id="base64Link" title="اشتراک Base64" readonly>
-                            <div class="btn-container">
-                                <button type="button" class="btn btn-qrcode"
-                                    onclick="showQRCode('base64Link')">📱 کد QR</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="copySubscription('base64Link')">کپی اشتراک</button>
+                
+                <!-- کارت‌های لینک اشتراک -->
+                <div class="subscription-grid">
+                    <!-- لینک اصلی نود -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon auto">🔗</div>
+                            <div>
+                                <div class="sub-title">فرمت لینک نود</div>
+                                <div class="sub-subtitle">لینک اصلی نود</div>
                             </div>
                         </div>
+                        <div class="sub-url" id="LinkURL-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('LinkURL')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-node')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-node"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="clashLink">اشتراک Clash</label>
-                        <div class="input-wrapper subscription-link-wrapper">
-                            <input type="text" id="clashLink" title="اشتراک Clash" readonly>
-                            <div class="btn-container">
-                                <button type="button" class="btn btn-qrcode"
-                                    onclick="showQRCode('clashLink')">📱 کد QR</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="copySubscription('clashLink')">کپی اشتراک</button>
+
+                    <!-- اشتراک تطبیقی -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon auto">🔄</div>
+                            <div>
+                                <div class="sub-title">اشتراک تطبیقی</div>
+                                <div class="sub-subtitle">Auto subscription</div>
                             </div>
                         </div>
+                        <div class="sub-url" id="subLink-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('subLink')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-sub')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-sub"></div>
                     </div>
-                    <div class="form-group">
-                        <label for="singboxLink">اشتراک SingBox</label>
-                        <div class="input-wrapper subscription-link-wrapper">
-                            <input type="text" id="singboxLink" title="اشتراک SingBox" readonly>
-                            <div class="btn-container">
-                                <button type="button" class="btn btn-qrcode"
-                                    onclick="showQRCode('singboxLink')">📱 کد QR</button>
-                                <button type="button" class="btn btn-primary"
-                                    onclick="copySubscription('singboxLink')">کپی اشتراک</button>
+
+                    <!-- Base64 -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon base64">🔐</div>
+                            <div>
+                                <div class="sub-title">Base64</div>
+                                <div class="sub-subtitle">فرمت Base64</div>
                             </div>
                         </div>
+                        <div class="sub-url" id="base64Link-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('base64Link')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-b64')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-b64"></div>
+                    </div>
+
+                    <!-- Clash -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon clash">⚔️</div>
+                            <div>
+                                <div class="sub-title">Clash</div>
+                                <div class="sub-subtitle">کلش</div>
+                            </div>
+                        </div>
+                        <div class="sub-url" id="clashLink-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('clashLink')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-clash')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-clash"></div>
+                    </div>
+
+                    <!-- SingBox -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon singbox">📦</div>
+                            <div>
+                                <div class="sub-title">SingBox</div>
+                                <div class="sub-subtitle">سینگ باکس</div>
+                            </div>
+                        </div>
+                        <div class="sub-url" id="singboxLink-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('singboxLink')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-sb')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-sb"></div>
+                    </div>
+
+                    <!-- Loon -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon loon">🎈</div>
+                            <div>
+                                <div class="sub-title">Loon</div>
+                                <div class="sub-subtitle">لون</div>
+                            </div>
+                        </div>
+                        <div class="sub-url" id="loonLink-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('loonLink')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-loon')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-loon"></div>
+                    </div>
+
+                    <!-- Surge -->
+                    <div class="sub-card">
+                        <div class="sub-header">
+                            <div class="sub-icon surge">⚡</div>
+                            <div>
+                                <div class="sub-title">Surge</div>
+                                <div class="sub-subtitle">سورج</div>
+                            </div>
+                        </div>
+                        <div class="sub-url" id="surgeLink-display">-</div>
+                        <div class="sub-actions">
+                            <button class="btn btn-primary" onclick="copySubscription('surgeLink')">
+                                <i class="fas fa-copy"></i> کپی
+                            </button>
+                            <button class="btn btn-secondary" onclick="toggleSubQR('qr-surge')">
+                                <i class="fas fa-qrcode"></i> کد QR
+                            </button>
+                        </div>
+                        <div class="qr-container" id="qr-surge"></div>
                     </div>
                 </div>
+
+                <!-- مخفی کردن فیلدهای اصلی -->
+                <input type="hidden" id="LinkURL">
+                <input type="hidden" id="subLink">
+                <input type="hidden" id="base64Link">
+                <input type="hidden" id="clashLink">
+                <input type="hidden" id="singboxLink">
+                <input type="hidden" id="loonLink">
+                <input type="hidden" id="surgeLink">
             </div>
 
             <!-- ماژول 2: ویرایشگر تولید اشتراک -->
@@ -8249,11 +8488,31 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             const token = currentConfig.优选订阅生成?.TOKEN;
             const host = window.location.host;
             const link = currentConfig.LINK;
-            document.getElementById('LinkURL').value = currentConfig.LINK;
-            document.getElementById('subLink').value = `https://${host}/sub?token=${token}`;
-            document.getElementById('base64Link').value = `https://${host}/sub?token=${token}&b64`;
-            document.getElementById('clashLink').value = `https://${host}/sub?token=${token}&clash`;
-            document.getElementById('singboxLink').value = `https://${host}/sub?token=${token}&sb`;
+            const linkURL = currentConfig.LINK;
+            const subLink = `https://${host}/sub?token=${token}`;
+            const base64Link = `https://${host}/sub?token=${token}&b64`;
+            const clashLink = `https://${host}/sub?token=${token}&clash`;
+            const singboxLink = `https://${host}/sub?token=${token}&sb`;
+            const loonLink = `https://${host}/sub?token=${token}&loon`;
+            const surgeLink = `https://${host}/sub?token=${token}&surge`;
+
+            // فیلدهای hidden
+            document.getElementById('LinkURL').value = linkURL;
+            document.getElementById('subLink').value = subLink;
+            document.getElementById('base64Link').value = base64Link;
+            document.getElementById('clashLink').value = clashLink;
+            document.getElementById('singboxLink').value = singboxLink;
+            document.getElementById('loonLink').value = loonLink;
+            document.getElementById('surgeLink').value = surgeLink;
+
+            // نمایش در کارت‌ها
+            document.getElementById('LinkURL-display').textContent = linkURL;
+            document.getElementById('subLink-display').textContent = subLink;
+            document.getElementById('base64Link-display').textContent = base64Link;
+            document.getElementById('clashLink-display').textContent = clashLink;
+            document.getElementById('singboxLink-display').textContent = singboxLink;
+            document.getElementById('loonLink-display').textContent = loonLink;
+            document.getElementById('surgeLink-display').textContent = surgeLink;
 
             // ویرایش تولید اشتراک
             const local = currentConfig.优选订阅生成?.local ?? true;
@@ -9322,7 +9581,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             }
         }
 
-        function showQRCode(elementId) {
+function showQRCode(elementId) {
             const text = document.getElementById(elementId).value;
             const container = document.getElementById('qrcodeContainer');
             container.innerHTML = '';
@@ -9350,7 +9609,43 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             // اگر متن بیش از حد طولانی است، پیام خطا نمایش بده
                 console.error('خطا در تولید QR code:', error);
                 showToast('لینک بیش از حد طولانی است، امکان تولید QR code وجود ندارد. با نویسنده پروژه تماس بگیرید.', 'error');
-                container.innerHTML = '<div style="padding:20px;text-align:center;color:#f44336;">خطا در تولید QR code: محتوا بیش از حد طولانی است</div>';
+            }
+        }
+
+        // تابع نمایش QR در صفحه اشتراک
+        function toggleSubQR(containerId) {
+            const container = document.getElementById(containerId);
+            const idMap = {
+                'qr-node': 'LinkURL',
+                'qr-sub': 'subLink',
+                'qr-b64': 'base64Link',
+                'qr-clash': 'clashLink',
+                'qr-sb': 'singboxLink',
+                'qr-loon': 'loonLink',
+                'qr-surge': 'surgeLink'
+            };
+            const elementId = idMap[containerId];
+            const text = document.getElementById(elementId).value;
+
+            if (container.classList.contains('show')) {
+                container.classList.remove('show');
+                container.innerHTML = '';
+            } else {
+                // مخفی کردن همه QR های دیگر
+                document.querySelectorAll('.qr-container').forEach(el => {
+                    el.classList.remove('show');
+                    el.innerHTML = '';
+                });
+
+container.classList.add('show');
+                new QRCode(container, {
+                    text: text,
+                    width: 140,
+                    height: 140,
+                    colorDark: '#1e293b',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.M
+                });
             }
         }
 
@@ -10015,16 +10310,32 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
         // تابع switchPage برای صفحات
         function switchPage(page, updateUrl = true) {
+            const networkModule = document.getElementById('network-module');
+            
             // مخفی کردن همه ماژول‌ها
             document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
             
-            // نمایش ماژول‌های صفحه مورد نظر
-            const pageModules = document.querySelectorAll('.module[data-page*="' + page + '"]');
-            if (pageModules.length > 0) {
+            // صفحه اشتراک - فقط کارت‌های اشتراک نمایش داده بشه
+            if (page === 'subscriptions') {
+                // حتماً ماژول شبکه رو مخفی کن
+                if (networkModule) networkModule.style.display = 'none';
+                
+                const subModules = document.querySelectorAll('.module[data-page="subscriptions"]');
+                if (subModules.length > 0) {
+                    subModules[0].style.display = 'block';
+                }
+            } else if (page === 'dashboard') {
+                // داشبورد - همه ماژول‌های داشبورد + شبکه
+                const pageModules = document.querySelectorAll('.module[data-page*="dashboard"]');
                 pageModules.forEach(m => m.style.display = 'block');
             } else {
-                // اگر ماژول خاصی نبود، همه رو نشون بده
-                document.querySelectorAll('.module').forEach(m => m.style.display = 'block');
+                // سایر صفحات - ماژول شبکه رو حتماً مخفی کن
+                if (networkModule) networkModule.style.display = 'none';
+                
+                const pageModules = document.querySelectorAll('.module[data-page*="' + page + '"]');
+                if (pageModules.length > 0) {
+                    pageModules.forEach(m => m.style.display = 'block');
+                }
             }
             
             // بروزرسانی فعال بودن آیتم‌های منو
