@@ -11194,6 +11194,8 @@ container.classList.add('show');
                 
                 // نمایش ماژول شبکه در داشبورد
                 if (networkModule) networkModule.style.display = 'block';
+                // مخفی کردن ECH در داشبورد
+                if (echModule) echModule.style.display = 'none';
             } else if (page === 'config') {
                 // کانفیگ - نمایش ECH
                 const pageModules = document.querySelectorAll('.module[data-page*="config"]');
@@ -13451,18 +13453,10 @@ container.classList.add('show');
                 const displayIP = maskIP(ip);
                 let html = `<div class="ip-detection-info">IP فعلی: <strong id="ipDisplayElement" style="cursor: pointer; transition: all 0.2s ease;" title="کلیک برای تغییر حالت نمایش">${displayIP}</strong> | کشور دسترسی: <strong>${loc}</strong></div>`;
 
-                if (loc !== 'IR') {
-                    console.warn('[انتخاب آنلاین] هشدار: تشخیص دسترسی غیر IR، احتمالاً فیلترشکن روشن است');
-                    html += `<div class="ip-detection-warning" style="font-size: 16px; font-weight: 700; color: #dc2626; margin-top: 12px; line-height: 1.6;">⚠️ تشخیص داده شد که از فیلترشکن استفاده می‌کنید! لطفاً فیلترشکن را خاموش کنید تا نتایج تست دقیق‌تر باشند.</div>`;
-                    // منطقه غیر IR، دکمه شروع را غیرفعال کن
-                    btnStart.disabled = true;
-                    btnStart.textContent = 'فقط برای ایران';
-                } else {
-                    // منطقه IR، دکمه شروع را فعال کن
-                    btnStart.disabled = false;
-                    btnStart.textContent = 'شروع انتخاب';
-                    console.log('[انتخاب آنلاین] موفق: تشخیص منطقه IR، دکمه انتخاب فعال شد');
-                }
+                // قابلیت بهینه‌سازی برای همه کشورها فعال
+                btnStart.disabled = false;
+                btnStart.textContent = 'شروع انتخاب';
+                console.log('[انتخاب آنلاین] موفق: دکمه انتخاب برای همه کشورها فعال شد');
 
                 detectionBox.innerHTML = html;
 
@@ -13473,10 +13467,11 @@ container.classList.add('show');
                 }
             } catch (error) {
                 console.error('[انتخاب آنلاین] تشخیص ناموفق:', error);
-                detectionBox.innerHTML = '<div class="ip-detection-info">⚠️ دسترسی به https://speed.cloudflare.com/cdn-cgi/trace برای تشخیص محیط شبکه ممکن نیست، لطفاً اتصال شبکه را بررسی کنید یا پروکسی را خاموش کنید</div>';
-                // تشخیص ناموفق، دکمه را غیرفعال کن
-                btnStart.disabled = true;
-                btnStart.textContent = 'تشخیص ناموفق';
+                // خطا در تشخیص، ولی قابلیت را فعال نگه می‌داریم
+                detectionBox.innerHTML = '<div class="ip-detection-info">در حال تشخیص...</div>';
+                // قابلیت را فعال نگه می‌داریم
+                btnStart.disabled = false;
+                btnStart.textContent = 'شروع انتخاب';
             }
         }
 
