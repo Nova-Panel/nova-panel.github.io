@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>اعلانات - پنل مدیریت</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .notification-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notification-row:last-child {
+            border-bottom: none;
+        }
+
+        .notification-controls {
+            display: flex;
+            gap: 8px;
+            margin-right: auto;
+        }
+
+        .btn-notification-config {
+            background: linear-gradient(135deg, #3b82f6 0, #1d4ed8 100%);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-notification-config:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-clear-config {
+            background: var(--primary-gradient);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-config:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        html[dir="rtl"] .notification-row {
+            flex-direction: row-reverse;
+        }
+
+        html[dir="rtl"] .notification-controls {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        html.dark-mode .btn-notification-config {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+
+        html.dark-mode .btn-clear-config {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+
+        .subapi-modal-title {
+            margin-bottom: 20px;
+        }
+
+        .subapi-form-group {
+            grid-template-columns: 1fr;
+        }
+
+        .subapi-status {
+            margin: 15px 0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .subapi-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .subapi-buttons {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .btn-test-api {
+                grid-column: 1 / -1 !important;
+                grid-row: 1 !important;
+            }
+
+            .btn-confirm-api {
+                grid-column: 1 !important;
+                grid-row: 2 !important;
+            }
+
+            .btn-cancel-api {
+                grid-column: 2 !important;
+                grid-row: 2 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    
+    <div class="admin-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">⚡</div>
+                    <span class="sidebar-logo-text">Nova Panel</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-item-icon">🏠</span>
+                    <span>داشبورد</span>
+                </a>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">⚙️</span>
+                            <span>کانفیگ‌ها</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="nodes.html" class="nav-subitem">
+                            <span>🔗</span>
+                            <span>مدیریت لینک‌های اشتراک</span>
+                        </a>
+                        <a href="subscription.html" class="nav-subitem">
+                            <span>⚡</span>
+                            <span>تولید اشتراک بهینه</span>
+                        </a>
+                        <a href="config.html" class="nav-subitem">
+                            <span>⚙️</span>
+                            <span>اطلاعات پیکربندی جزئی</span>
+                        </a>
+                        <a href="ech.html" class="nav-subitem">
+                            <span>🔐</span>
+                            <span>ECH</span>
+                        </a>
+                        <a href="cdn.html" class="nav-subitem">
+                            <span>🌐</span>
+                            <span>تنظیمات CDN</span>
+                        </a>
+                        <a href="convert.html" class="nav-subitem">
+                            <span>🔄</span>
+                            <span>تبدیل اشتراک</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">🔧</span>
+                            <span>مدیریت هسته</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="wireguard.html" class="nav-subitem">
+                            <span>🔐</span>
+                            <span>وایرگارد</span>
+                        </a>
+                        <a href="doh.html" class="nav-subitem">
+                            <span>🔒</span>
+                            <span>پروکسی DoH</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">⚙️</span>
+                            <span>تنظیمات</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>🌐</span>
+                            <span>شبکه</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>⚙️</span>
+                            <span>عمومی</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                        <a href="notifications.html" class="nav-subitem">
+                            <span>🔔</span>
+                            <span>اعلانات</span>
+                        </a>
+                        <a href="logs.html" class="nav-subitem">
+                            <span>📋</span>
+                            <span>لاگ‌ها</span>
+                        </a>
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>📱</span>
+                            <span>تلگرام</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <span>⚙️</span>
+                            <span>عمومی</span>
+                        </a>
+                        <a href="notifications.html" class="nav-subitem active">
+                            <span>🔔</span>
+                            <span>اعلانات</span>
+                        </a>
+                        <a href="logs.html" class="nav-subitem">
+                            <span>📋</span>
+                            <span>لاگ‌ها</span>
+                        </a>
+                        <a href="#" class="nav-subitem">
+                            <span>📱</span>
+                            <span>تلگرام</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer sidebar-buttons-row">
+                <button class="sidebar-btn-icon sidebar-btn-theme" onclick="toggleTheme()" title="تغییر تم">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26a5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                </button>
+                <button class="sidebar-btn-icon sidebar-btn-reset" onclick="resetConfigWithConfirm()" title="بازنشانی">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </button>
+                <button class="sidebar-btn-icon sidebar-btn-logout" onclick="logout()" title="خروج">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">🔔 تنظیمات اعلانات</h1>
+            </div>
+            
+            <div class="module">
+                <div class="module-title">
+                    🔔 تنظیمات اعلانات
+                </div>
+                <div class="module-content">
+                    <div class="form-group notification-row">
+                        <label>
+                            تنظیمات اعلان Telegram Bot
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="telegramEnabled" title="فعال‌سازی اعلان TelegramBot"
+                                    onchange="markModified('notification')" disabled>
+                                <label for="telegramEnabled" class="checkbox-label">فعال‌سازی</label>
+                            </div>
+                        </label>
+                        <div class="notification-controls">
+                            <button type="button" class="btn btn-notification-config"
+                                onclick="openTelegramConfigModal()">⚙️ پیکربندی</button>
+                            <button type="button" class="btn btn-clear-config"
+                                onclick="clearTelegramConfig()">🗑️ پاک کردن</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group notification-row">
+                        <label>
+                            آمار درخواست‌های قابل استفاده Cloudflare Workers/Pages
+                        </label>
+                        <div class="notification-controls">
+                            <button type="button" class="btn btn-notification-config"
+                                onclick="openCloudflareConfigModal()">⚙️ پیکربندی</button>
+                            <button type="button" class="btn btn-clear-config"
+                                onclick="clearCloudflareConfig()">🗑️ پاک کردن</button>
+                        </div>
+                    </div>
+
+                    <div class="module-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" onclick="cancelEdit('notification')"
+                                disabled id="cancelNotificationBtn">انصراف</button>
+                            <button type="button" class="btn btn-primary" onclick="saveNotification()" disabled
+                                id="saveNotificationBtn">ذخیره</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div class="modal-overlay" id="telegramConfigModal">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeTelegramConfigModal()">×</button>
+            <h2 class="subapi-modal-title">🤖 پیکربندی پارامترهای اعلان TelegramBot</h2>
+            <div class="form-group subapi-form-group">
+                <label>Bot Token</label>
+                <input type="text" id="telegramBotToken" placeholder="Telegram Bot Token را وارد کنید">
+            </div>
+            <div class="form-group subapi-form-group">
+                <label>Chat ID</label>
+                <input type="text" id="telegramChatID" placeholder="Chat ID را وارد کنید">
+            </div>
+            <div id="telegramStatus" class="subapi-status"></div>
+            <div class="subapi-buttons">
+                <button type="button" class="btn btn-primary btn-test-api" onclick="testTelegramConfig()">بررسی دسترسی</button>
+                <button type="button" class="btn btn-primary btn-confirm-api" id="telegramConfirmBtn"
+                    onclick="confirmTelegramConfig()" disabled>ذخیره</button>
+                <button type="button" class="btn btn-secondary btn-cancel-api"
+                    onclick="closeTelegramConfigModal()">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="cloudflareConfigModal">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeCloudflareConfigModal()">×</button>
+            <h2 class="subapi-modal-title">☁️ آمار درخواست‌های قابل استفاده Workers/Pages</h2>
+
+            <div class="form-group subapi-form-group">
+                <label>روش درخواست</label>
+                <select id="cloudflareAuthMethod" title="روش درخواست" onchange="updateCloudflareAuthMethod()">
+                    <option id="usageapiOption" value="usageapi">UsageAPI</option>
+                    <option value="accountid">Account ID + API Token</option>
+                    <option value="email">Email + Global API Key</option>
+                </select>
+            </div>
+
+            <div id="cloudflareEmailSection">
+                <div class="form-group subapi-form-group">
+                    <label>Email</label>
+                    <input type="text" id="cloudflareEmail" placeholder="ایمیل حساب Cloudflare را وارد کنید">
+                </div>
+                <div class="form-group subapi-form-group">
+                    <label>Global API Key</label>
+                    <input type="password" id="cloudflareGlobalAPIKey" placeholder="Global API Key را وارد کنید">
+                </div>
+            </div>
+
+            <div id="cloudflareAccountIDSection" class="hidden-section">
+                <div class="form-group subapi-form-group">
+                    <label>Account ID</label>
+                    <input type="text" id="cloudflareAccountID" placeholder="Account ID را وارد کنید">
+                </div>
+                <div class="form-group subapi-form-group">
+                    <label>API Token</label>
+                    <input type="password" id="cloudflareAPIToken" placeholder="API Token را وارد کنید">
+                    <small style="font-size: 12px; color: #9ca3af; margin-top: 6px; display: block;">💡 برای مجوز API Token از
+                        قالب "خواندن داده‌های تحلیلی و لاگ‌ها" استفاده کنید</small>
+                </div>
+            </div>
+
+            <div id="cloudflareUsageAPISection" class="hidden-section">
+                <div class="form-group subapi-form-group">
+                    <label>آدرس UsageAPI</label>
+                    <input type="text" id="cloudflareUsageAPI"
+                        placeholder="https://usagepanel.pages.dev/usage.json?token=4941477918857b30d8234ac19441ebb2">
+                    <small style="font-size: 12px; color: #9ca3af; margin-top: 6px; display: block;">💡 پشتیبانی از تجمیع چند حساب، می‌توانید با استقرار پروژه <a
+                            href="https://github.com/cmliu/CF-Workers-UsagePanel" target="_blank" rel="noopener"
+                            style="color: #3b82f6; text-decoration: none;">UsagePanel</a> آدرس UsageAPI را دریافت کنید</small>
+                </div>
+            </div>
+
+            <div id="cloudflareStatus" class="subapi-status"></div>
+
+            <div class="subapi-buttons">
+                <button type="button" class="btn btn-primary btn-test-api"
+                    onclick="testCloudflareConfig()">بررسی دسترسی</button>
+                <button type="button" class="btn btn-primary btn-confirm-api" id="cloudflareConfirmBtn"
+                    onclick="confirmCloudflareConfig()" disabled>ذخیره</button>
+                <button type="button" class="btn btn-secondary btn-cancel-api"
+                    onclick="closeCloudflareConfigModal()">انصراف</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/app.js"></script>
+    <script>
+        function updateTelegramButtonStates(isConfigured) {
+            const telegramRow = document.querySelector('.notification-row:first-child');
+            const checkbox = document.getElementById('telegramEnabled');
+            if (isConfigured) {
+                checkbox.checked = true;
+                checkbox.disabled = false;
+            } else {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+            }
+        }
+
+        async function clearTelegramConfig() {
+            if (!confirm('آیا از پاک کردن پیکربندی Telegram اطمینان دارید؟')) return;
+
+            try {
+                const response = await fetch('/admin/tg.json', {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showToast('✅ پیکربندی Telegram پاک شد', 'success');
+                    currentConfig.TG = {
+                        启用: false
+                    };
+                    updateTelegramButtonStates(false);
+                    markModified('notification');
+                } else {
+                    throw new Error('پاک کردن ناموفق بود');
+                }
+            } catch (error) {
+                showToast('😢 ' + error.message, 'error');
+            }
+        }
+
+        function openTelegramConfigModal() {
+            document.getElementById('telegramConfigModal').classList.add('show');
+            const chatID = currentConfig.TG?.ChatID || currentConfig.通知?.Telegram?.ChatID || '';
+            document.getElementById('telegramBotToken').value = '';
+            document.getElementById('telegramChatID').value = chatID;
+
+            document.getElementById('telegramStatus').style.display = 'none';
+            document.getElementById('telegramStatus').textContent = '';
+            document.getElementById('telegramConfirmBtn').disabled = true;
+            document.getElementById('telegramConfirmBtn').style.opacity = '0.5';
+        }
+
+        function closeTelegramConfigModal(event) {
+            if (event && event.target.id !== 'telegramConfigModal') return;
+            document.getElementById('telegramConfigModal').classList.remove('show');
+        }
+
+        async function testTelegramConfig() {
+            const token = document.getElementById('telegramBotToken').value.trim();
+            const chatID = document.getElementById('telegramChatID').value.trim();
+            const statusEl = document.getElementById('telegramStatus');
+            const confirmBtn = document.getElementById('telegramConfirmBtn');
+            const testBtn = event.target;
+
+            if (!token || !chatID) {
+                statusEl.textContent = '❌ لطفاً Bot Token و Chat ID را پر کنید';
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                statusEl.style.color = '#fff';
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                return;
+            }
+
+            try {
+                testBtn.disabled = true;
+                statusEl.textContent = '⏳ در حال تأیید...';
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'linear-gradient(135deg, #3b82f6 0, #1d4ed8 100%)';
+                statusEl.style.color = '#fff';
+
+                const getMeUrl = `https://api.telegram.org/bot${token}/getMe`;
+                const getMeResponse = await fetch(getMeUrl);
+                if (!getMeResponse.ok) {
+                    throw new Error('Bot Token نامعتبر است');
+                }
+
+                const getMeData = await getMeResponse.json();
+                if (!getMeData.ok) {
+                    throw new Error('Bot Token نامعتبر: ' + (getMeData.description || 'خطای ناشناخته'));
+                }
+
+                const sendUrlParams = new URLSearchParams({
+                    chat_id: chatID,
+                    text: '✅ پیکربندی اعلان Telegram با موفقیت تأیید شد!'
+                });
+                const sendUrl = `https://api.telegram.org/bot${token}/sendMessage?${sendUrlParams}`;
+
+                const sendResponse = await fetch(sendUrl);
+                if (!sendResponse.ok) {
+                    throw new Error('ارسال پیام ناموفق بود، لطفاً صحت Chat ID را بررسی کنید');
+                }
+
+                const sendData = await sendResponse.json();
+                if (!sendData.ok) {
+                    throw new Error('Chat ID نامعتبر: ' + (sendData.description || 'خطای ناشناخته'));
+                }
+
+                statusEl.style.background = 'linear-gradient(135deg, #10b981 0, #059669 100%)';
+                statusEl.textContent = '✅ Bot Token و Chat ID هر دو معتبر هستند';
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+
+            } catch (error) {
+                statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                statusEl.textContent = '❌ تایید ناموفق بود: ' + error.message;
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+            } finally {
+                testBtn.disabled = false;
+            }
+        }
+
+        async function confirmTelegramConfig() {
+            const token = document.getElementById('telegramBotToken').value.trim();
+            const chatID = document.getElementById('telegramChatID').value.trim();
+            const confirmBtn = document.getElementById('telegramConfirmBtn');
+
+            if (confirmBtn.disabled) {
+                showToast('لطفاً ابتدا دکمه "اعتبارسنجی دسترس‌پذیری" را کلیک کنید', 'error');
+                return;
+            }
+
+            if (!token || !chatID) {
+                showToast('لطفاً Bot Token و Chat ID کامل را پر کنید', 'error');
+                return;
+            }
+
+            try {
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'در حال ذخیره...';
+
+                const response = await fetch('/admin/tg.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        BotToken: token,
+                        ChatID: chatID
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showToast('✅ پیکربندی TelegramBot ذخیره شد', 'success');
+                    closeTelegramConfigModal();
+
+                    currentConfig.TG = {
+                        BotToken: token,
+                        ChatID: chatID,
+                        启用: true
+                    };
+                    updateTelegramButtonStates(true);
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    throw new Error('ذخیره ناموفق بود');
+                }
+            } catch (error) {
+                showToast('😢 ' + error.message, 'error');
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'ذخیره';
+            }
+        }
+
+        function clearCloudflareConfig() {
+            if (!confirm('آیا از پاک کردن پیکربندی Cloudflare اطمینان دارید؟')) return;
+            currentConfig.CF = {
+                启用: false
+            };
+            markModified('notification');
+            showToast('✅ پیکربندی Cloudflare پاک شد', 'success');
+        }
+
+        function openCloudflareConfigModal() {
+            document.getElementById('cloudflareConfigModal').classList.add('show');
+
+            document.getElementById('cloudflareAuthMethod').value = 'accountid';
+            updateCloudflareAuthMethod();
+
+            document.getElementById('cloudflareEmail').value = '';
+            document.getElementById('cloudflareGlobalAPIKey').value = '';
+            document.getElementById('cloudflareAccountID').value = '';
+            document.getElementById('cloudflareAPIToken').value = '';
+            document.getElementById('cloudflareUsageAPI').value = '';
+
+            document.getElementById('cloudflareStatus').style.display = 'none';
+            document.getElementById('cloudflareStatus').textContent = '';
+            document.getElementById('cloudflareConfirmBtn').disabled = true;
+            document.getElementById('cloudflareConfirmBtn').style.opacity = '0.5';
+            document.getElementById('cloudflareConfirmBtn').dataset.testPassed = 'false';
+        }
+
+        function updateCloudflareAuthMethod() {
+            const method = document.getElementById('cloudflareAuthMethod').value;
+
+            document.getElementById('cloudflareEmailSection').style.display = 'none';
+            document.getElementById('cloudflareAccountIDSection').style.display = 'none';
+            document.getElementById('cloudflareUsageAPISection').style.display = 'none';
+
+            if (method === 'email') {
+                document.getElementById('cloudflareEmailSection').style.display = 'block';
+            } else if (method === 'accountid') {
+                document.getElementById('cloudflareAccountIDSection').style.display = 'block';
+            } else if (method === 'usageapi') {
+                document.getElementById('cloudflareUsageAPISection').style.display = 'block';
+            }
+
+            document.getElementById('cloudflareStatus').style.display = 'none';
+            document.getElementById('cloudflareStatus').textContent = '';
+            document.getElementById('cloudflareConfirmBtn').disabled = true;
+            document.getElementById('cloudflareConfirmBtn').style.opacity = '0.5';
+            document.getElementById('cloudflareConfirmBtn').dataset.testPassed = 'false';
+        }
+
+        function closeCloudflareConfigModal(event) {
+            if (event && event.target.id !== 'cloudflareConfigModal') return;
+            document.getElementById('cloudflareConfigModal').classList.remove('show');
+
+            document.getElementById('cloudflareEmail').value = '';
+            document.getElementById('cloudflareGlobalAPIKey').value = '';
+            document.getElementById('cloudflareAccountID').value = '';
+            document.getElementById('cloudflareAPIToken').value = '';
+            document.getElementById('cloudflareUsageAPI').value = '';
+            document.getElementById('cloudflareStatus').style.display = 'none';
+            document.getElementById('cloudflareStatus').textContent = '';
+        }
+
+        async function testCloudflareConfig() {
+            const method = document.getElementById('cloudflareAuthMethod').value;
+            let email = '', globalAPIKey = '', accountID = '', apiToken = '', usageAPI = '';
+
+            const statusEl = document.getElementById('cloudflareStatus');
+            const confirmBtn = document.getElementById('cloudflareConfirmBtn');
+            const testBtn = event.target;
+
+            if (method === 'email') {
+                email = document.getElementById('cloudflareEmail').value.trim();
+                globalAPIKey = document.getElementById('cloudflareGlobalAPIKey').value.trim();
+
+                if (!email || !globalAPIKey) {
+                    statusEl.textContent = '❌ لطفاً Email و Global API Key را پر کنید';
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                    statusEl.style.color = '#fff';
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                    confirmBtn.dataset.testPassed = 'false';
+                    return;
+                }
+            } else if (method === 'accountid') {
+                accountID = document.getElementById('cloudflareAccountID').value.trim();
+                apiToken = document.getElementById('cloudflareAPIToken').value.trim();
+
+                if (!accountID || !apiToken) {
+                    statusEl.textContent = '❌ لطفاً Account ID و API Token را پر کنید';
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                    statusEl.style.color = '#fff';
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                    confirmBtn.dataset.testPassed = 'false';
+                    return;
+                }
+            } else if (method === 'usageapi') {
+                usageAPI = document.getElementById('cloudflareUsageAPI').value.trim();
+
+                if (!usageAPI) {
+                    statusEl.textContent = '❌ لطفاً آدرس UsageAPI را پر کنید';
+                    statusEl.style.display = 'block';
+                    statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                    statusEl.style.color = '#fff';
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                    confirmBtn.dataset.testPassed = 'false';
+                    return;
+                }
+            }
+
+            try {
+                testBtn.disabled = true;
+                statusEl.textContent = '⏳ در حال بررسی...';
+                statusEl.style.display = 'block';
+                statusEl.style.background = 'linear-gradient(135deg, #3b82f6 0, #1d4ed8 100%)';
+                statusEl.style.color = '#fff';
+
+                let response;
+
+                if (method === 'usageapi') {
+                    response = await fetch(usageAPI);
+                } else {
+                    let queryParams = new URLSearchParams();
+                    if (method === 'email') {
+                        queryParams.append('Email', email);
+                        queryParams.append('GlobalAPIKey', globalAPIKey);
+                    } else if (method === 'accountid') {
+                        queryParams.append('AccountID', accountID);
+                        queryParams.append('APIToken', apiToken);
+                    }
+
+                    response = await fetch('/admin/getCloudflareUsage?' + queryParams.toString());
+                }
+
+                if (!response.ok) {
+                    throw new Error('درخواست ناموفق بود (HTTP ' + response.status + ')');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusEl.style.background = 'linear-gradient(135deg, #10b981 0, #059669 100%)';
+                    const maxQuota = data.max || 100000;
+                    const percentage = (data.total / maxQuota * 100).toFixed(2);
+                    statusEl.textContent = `✅ اعتبارسنجی موفق! سهمیه درخواست امروز: ${data.total}/${maxQuota} (${percentage}%)`;
+                    confirmBtn.disabled = false;
+                    confirmBtn.style.opacity = '1';
+                    confirmBtn.dataset.testPassed = 'true';
+
+                    confirmBtn.dataset.method = method;
+                    confirmBtn.dataset.email = email;
+                    confirmBtn.dataset.globalAPIKey = globalAPIKey;
+                    confirmBtn.dataset.accountID = accountID;
+                    confirmBtn.dataset.apiToken = apiToken;
+                    confirmBtn.dataset.usageAPI = usageAPI;
+                } else {
+                    statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                    statusEl.textContent = '❌ اعتبارسنجی ناموفق: ' + (data.msg || 'اعتبار نامعتبر یا بدون دسترسی');
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                    confirmBtn.dataset.testPassed = 'false';
+                }
+            } catch (error) {
+                statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
+                statusEl.textContent = '❌ تشخیص ناموفق: ' + error.message;
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                confirmBtn.dataset.testPassed = 'false';
+            } finally {
+                testBtn.disabled = false;
+            }
+        }
+
+        async function confirmCloudflareConfig() {
+            const confirmBtn = document.getElementById('cloudflareConfirmBtn');
+
+            if (confirmBtn.dataset.testPassed !== 'true') {
+                showToast('لطفاً ابتدا دکمه "اعتبارسنجی دسترس‌پذیری" را کلیک کنید تا تأیید شود', 'error');
+                return;
+            }
+
+            const method = confirmBtn.dataset.method;
+            const email = confirmBtn.dataset.email || '';
+            const globalAPIKey = confirmBtn.dataset.globalAPIKey || '';
+            const accountID = confirmBtn.dataset.accountID || '';
+            const apiToken = confirmBtn.dataset.apiToken || '';
+            const usageAPI = confirmBtn.dataset.usageAPI || '';
+
+            try {
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'در حال ذخیره...';
+
+                let payload;
+                if (method === 'usageapi') {
+                    payload = {
+                        Email: null,
+                        GlobalAPIKey: null,
+                        AccountID: null,
+                        APIToken: null,
+                        UsageAPI: usageAPI
+                    };
+                } else {
+                    payload = {
+                        Email: method === 'email' ? email : null,
+                        GlobalAPIKey: method === 'email' ? globalAPIKey : null,
+                        AccountID: method === 'accountid' ? accountID : null,
+                        APIToken: method === 'accountid' ? apiToken : null,
+                        UsageAPI: null
+                    };
+                }
+
+                const response = await fetch('/admin/cf.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showToast('✅ پیکربندی Cloudflare ذخیره شد', 'success');
+                    closeCloudflareConfigModal();
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    throw new Error('ذخیره ناموفق بود');
+                }
+            } catch (error) {
+                showToast('😢 ' + error.message, 'error');
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'ذخیره';
+            }
+        }
+
+        async function saveNotification() {
+            showToast('ذخیره تنظیمات...', 'info');
+        }
+
+        function cancelEdit(section) {
+            showToast('تنظیمات بازنشانی شد', 'info');
+        }
+
+        function markModified(section) {
+            document.getElementById('cancelNotificationBtn').disabled = false;
+            document.getElementById('saveNotificationBtn').disabled = false;
+        }
+
+        document.addEventListener('click', function(e) {
+            const toggle = e.target.closest('.nav-dropdown-toggle');
+            if (toggle) {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.closest('.nav-dropdown');
+                dropdown.classList.toggle('open');
+            }
+        });
+
+        function showDevToast(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const toast = document.getElementById('toast') || document.createElement('div');
+            toast.id = 'toast';
+            toast.className = 'toast';
+            toast.textContent = '🚧 این بخش در دست توسعه است';
+            toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#f59e0b;color:white;padding:12px 24px;border-radius:50px;font-weight:600;opacity:0;transition:all 0.3s;z-index:9999;';
+            if (!document.getElementById('toast')) document.body.appendChild(toast);
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

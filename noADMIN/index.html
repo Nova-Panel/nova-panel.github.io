@@ -88,6 +88,24 @@
             }
         }
 
+        @keyframes timerGlow {
+            0%, 100% {
+                box-shadow: 0 0 8px rgba(14, 165, 233, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(14, 165, 233, 0.6);
+            }
+        }
+
+        @keyframes borderMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
         #background-iframe {
             position: fixed;
             top: 0;
@@ -104,7 +122,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0, rgba(139, 92, 246, 0.12) 100%);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.06) 0, rgba(139, 92, 246, 0.08) 100%);
             -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             z-index: -2 !important;
@@ -134,7 +152,10 @@
             backdrop-filter: blur(20px);
             padding: 50px 40px;
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.15), 0 0 0 1px rgba(14, 165, 233, 0.1) inset;
+            box-shadow: 
+                0 25px 50px rgba(14, 165, 233, 0.12),
+                0 0 0 1px rgba(14, 165, 233, 0.08),
+                0 0 80px rgba(14, 165, 233, 0.06) inset;
             width: 100%;
             animation: containerAppear 1s ease-out .8s backwards, float 6s ease-in-out infinite;
             position: relative;
@@ -149,10 +170,10 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #0ea5e9 0, #8b5cf6 50%, #0ea5e9 100%);
+            height: 3px;
+            background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 25%, #8b5cf6 50%, #a78bfa 75%, #0ea5e9 100%);
             background-size: 200% 100%;
-            animation: gradientShift 3s ease infinite
+            animation: borderMove 3s linear infinite;
         }
 
         .card-container::after {
@@ -162,7 +183,7 @@
             right: -50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.04) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -175,19 +196,23 @@
             width: 90px;
             height: 90px;
             margin: 0 auto 24px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            border: 2px solid rgba(14, 165, 233, 0.2);
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.3);
+            box-shadow: 
+                0 15px 35px rgba(14, 165, 233, 0.15),
+                0 0 0 4px rgba(14, 165, 233, 0.05),
+                inset 0 2px 0 rgba(255, 255, 255, 0.8);
             animation: fadeIn .8s ease-out 1s backwards, pulse 3s ease-in-out infinite;
         }
 
         .page-icon svg {
             width: 44px;
             height: 44px;
-            fill: white
+            fill: url(#iconGradient);
         }
 
         .page-title {
@@ -274,6 +299,33 @@
 
         .footer-hint a:hover {
             color: #8b5cf6
+        }
+
+        .timer-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.15);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            animation: fadeIn 1s ease-out 1.8s backwards;
+            animation: timerGlow 2s ease-in-out infinite;
+        }
+
+        .timer-icon {
+            width: 18px;
+            height: 18px;
+            fill: #0ea5e9;
+        }
+
+        .timer-text {
+            color: #0ea5e9;
+            font-weight: 700;
         }
 
         @media(max-width:768px) {
@@ -425,14 +477,27 @@
             margin-top: 24px;
             padding: 24px 28px;
             border-radius: 16px;
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(139, 92, 246, 0.06) 100%);
             color: #1e293b;
             font-size: 15px;
             font-weight: 500;
             line-height: 1.6;
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.08);
             animation: fadeInError 0.5s ease-out;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-sub::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #0ea5e9 0%, #8b5cf6 100%);
+            border-radius: 0 4px 4px 0;
         }
 
         .error-sub strong {
@@ -451,10 +516,24 @@
             vertical-align: middle;
             margin-left: 8px;
         }
+
+        svg defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
     </style>
 </head>
 
 <body>
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#0ea5e9" />
+                <stop offset="100%" style="stop-color:#8b5cf6" />
+            </linearGradient>
+        </defs>
+    </svg>
     <div id="blur-overlay"></div>
 
     <div class="page-wrapper">
@@ -462,7 +541,7 @@
             <div class="page-header">
                 <div class="page-icon">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="white"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="url(#iconGradient)"/>
                     </svg>
                 </div>
                 <h1 class="page-title">رمز عبور تنظیم نشده است</h1>
@@ -474,11 +553,36 @@
                 </svg>
                 برای دسترسی به پنل مدیریت، باید یک متغیر محیطی با نام <strong>ADMIN</strong> تنظیم کنید
             </span>
+            <div class="timer-container">
+                <svg class="timer-icon" viewBox="0 0 24 24">
+                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                <span>تلاش خودکار در <span class="timer-text" id="timer">2:00</span></span>
+            </div>
             <div class="footer-hint">
                 طراحی شده توسط <a href="https://github.com/IRNova/novatunnel" target="_blank" rel="noopener">Nova Tunnel</a>
             </div>
         </div>
     </div>
+
+    <script>
+        let timeLeft = 120;
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                location.reload();
+            }
+        }
+        
+        setInterval(updateTimer, 1000);
+    </script>
 </body>
 
 </html>

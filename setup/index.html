@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>راه‌اندازی اولیه - Nova</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmont font@v33.003/Vazirmont/font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-light: #38bdf8;
+            --primary-dark: #0284c7;
+            --accent: #8b5cf6;
+            --accent-light: #a78bfa;
+            --bg: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Vazirmont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0 }
+            to { opacity: 1 }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0 }
+            100% { background-position: 200% 0 }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) }
+            50% { transform: translateY(-5px) }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg) }
+        }
+
+        @keyframes checkmark {
+            0% { stroke-dashoffset: 50 }
+            100% { stroke-dashoffset: 0 }
+        }
+
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -150px;
+            right: -150px;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 350px;
+            height: 350px;
+            background: var(--accent);
+            bottom: -100px;
+            left: -100px;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0.2;
+            top: 40%;
+            left: 60%;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        .setup-container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .setup-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .step-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            width: 32px;
+            border-radius: 5px;
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        .step-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .step-card {
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 36px 32px;
+            box-shadow: 
+                0 0 0 1px rgba(14, 165, 233, 0.08) inset,
+                0 20px 40px -12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .step-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--bg-secondary), #fff);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-icon svg {
+            width: 36px;
+            height: 36px;
+            fill: url(#stepGradient);
+        }
+
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .step-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .kv-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .kv-alert.connected {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .kv-alert.disconnected {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .kv-alert-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .kv-alert.connected .kv-alert-icon {
+            background: var(--success);
+        }
+
+        .kv-alert.disconnected .kv-alert-icon {
+            background: var(--warning);
+        }
+
+        .kv-alert-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        .kv-alert-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .kv-alert.connected .kv-alert-text h4 {
+            color: #065f46;
+        }
+
+        .kv-alert.disconnected .kv-alert-text h4 {
+            color: #92400e;
+        }
+
+        .kv-alert-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .info-box {
+            background: var(--bg-secondary);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .info-box-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box-title svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary);
+        }
+
+        .info-box p {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            text-align: right;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            color: var(--text);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            background: var(--bg);
+            box-shadow: 0 0 0 4px rgba(14, 165,233,0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            color: var(--error);
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+
+        .error-message svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--error);
+        }
+
+        .success-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+
+        .success-message svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--success);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .feature-item svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--success);
+            flex-shrink: 0;
+        }
+
+        .feature-item span {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .skip-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .skip-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-link a:hover {
+            text-decoration: underline;
+        }
+
+        .loading-wrapper {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-wrapper.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .loading-subtext {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .complete-wrapper {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .complete-wrapper.active {
+            display: block;
+        }
+
+        .complete-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--success), #34d399);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .complete-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .complete-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .complete-text {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #34d399);
+            border-radius: 4px;
+            animation: progressFill 2s ease-in-out forwards;
+        }
+
+        @keyframes progressFill {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        .footer-brand {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-brand a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media(max-width: 480px) {
+            .setup-container {
+                padding: 24px 16px;
+            }
+
+            .step-card {
+                padding: 28px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="stepGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#0ea5e9" />
+                <stop offset="100%" style="stop-color:#8b5cf6" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="setup-container" id="stepContainer">
+        <div class="setup-header">
+            <div class="step-indicators">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot" data-step="4"></div>
+            </div>
+        </div>
+
+        <div class="step-content" id="stepContent">
+            <div class="step-card">
+                <div class="step-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h1 class="step-title">خوش آمدگویی</h1>
+                <p class="step-subtitle">بهNova خوش آمدید! بیایید شروع کنیم</p>
+
+                <div class="kv-alert disconnected" id="kvAlert">
+                    <div class="kv-alert-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                    </div>
+                    <div class="kv-alert-text">
+                        <h4 id="kvTitle">در حال بررسی وضعیت...</h4>
+                        <p id="kvDesc">لطفاً صبر کنید</p>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>کانفیگ‌های پیشرفته</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>ای‌پی‌های اختصاصی</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>رابط کاربری ساده</span>
+                    </div>
+                    <div class="feature-item">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        <span>امنیت بالا</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span>راهنما</span>
+                    </div>
+                    <p>KV یک پایگاه داده ساده برای ذخیره‌سازی اطلاعات است. برای عملکرد کامل سیستم، KV را متصل کنید.</p>
+                </div>
+
+                <form id="stepForm">
+                    <input type="hidden" name="action" value="next">
+                    <button type="submit" class="btn btn-primary" id="nextBtn">
+                        <span>شروع</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+                            <path d="M10 17l5-5-5-5v3H4v4h6V17zm8-2v-4h-4v4h4zm2-1h-2V7c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v9h2v-5h4v5h2v-7h-2V7h2v7z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-wrapper" id="loadingWrapper">
+        <div class="spinner"></div>
+        <div class="loading-text">در حال بارگذاری...</div>
+        <div class="loading-subtext">لطفاً صبر کنید</div>
+    </div>
+
+    <div class="complete-wrapper" id="completeWrapper">
+        <div class="complete-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+        </div>
+        <h1 class="complete-title">پایان راه‌اندازی</h1>
+        <p class="complete-text">تنظیمات با موفقیت اعمال شد!</p>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        <a href="/admin" class="btn btn-primary">ورود به پنل</a>
+    </div>
+
+    <div class="footer-brand">
+        طراحی شده توسط <a href="https://github.com/IRNova/novatunnel" target="_blank">Nova Tunnel</a>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let kvConnected = false;
+
+        const kvAlert = document.getElementById('kvAlert');
+        const kvTitle = document.getElementById('kvTitle');
+        const kvDesc = document.getElementById('kvDesc');
+        const stepContent = document.getElementById('stepContent');
+        const stepForm = document.getElementById('stepForm');
+        const stepContainer = document.getElementById('stepContainer');
+        const loadingWrapper = document.getElementById('loadingWrapper');
+        const completeWrapper = document.getElementById('completeWrapper');
+
+        const stepsData = {
+            1: {
+                title: 'خوش آمدگویی',
+                subtitle: 'بهNova خوش آمدید! بیایید شروع کنیم',
+                icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
+                content: 'step1'
+            },
+            2: {
+                title: 'تنظیم رمز عبور',
+                subtitle: 'رمز عبور امن برای پنل انتخاب کنید',
+                icon: '<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>',
+                content: 'step2'
+            },
+            3: {
+                title: 'تنظیمات شبکه',
+                subtitle: 'تنظیمات پیش‌فرض را اعمال کنید',
+                icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.6c-.17-.51-.51-.96-.99-1.28l-1.47-1.47c-.41-.41-.82-.59-1.32-.59s-.91.18-1.24.51l-1.06 1.06c-.31.31-.47.71-.47 1.14s.16.83.47 1.14l1.47 1.47c.51.51 1.08.82 1.68.99l.58.14c.62.15 1.18.08 1.68-.19l.93-.93c.37-.37.57-.87.57-1.4s-.2-1.03-.57-1.4l-1.06-1.06c-.31-.31-.47-.71-.47-1.14s.16-.83.47-1.14l.87-.87c.31-.31.47-.71.47-1.14s-.16-.83-.47-1.14l-.87-.87c-.31-.31-.47-.71-.47-1.14s.16-.83.47-1.14l1.06-1.06c.31-.31.47-.71.47-1.14s-.16-.83-.47-1.14z"/>',
+                content: 'step3'
+            },
+            4: {
+                title: 'آماده‌اید!',
+                subtitle: 'همه چیز آماده است',
+                icon: '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>',
+                content: 'step4'
+            }
+        };
+
+        async function checkKVStatus() {
+            try {
+                const response = await fetch('/api/kv-status');
+                const data = await response.json();
+                
+                kvConnected = data.connected;
+                
+                if (data.connected) {
+                    kvAlert.classList.remove('disconnected');
+                    kvAlert.classList.add('connected');
+                    kvTitle.textContent = 'KV متصل است';
+                    kvDesc.textContent = 'سیستم آماده است';
+                    kvAlert.querySelector('.kv-alert-icon').innerHTML = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+                } else {
+                    kvAlert.classList.remove('connected');
+                    kvAlert.classList.add('disconnected');
+                    kvTitle.textContent = 'KV متصل نیست';
+                    kvDesc.textContent = 'می‌توانید ادامه دهید یا KV را متصل کنید';
+                }
+            } catch (error) {
+                kvAlert.classList.remove('connected');
+                kvAlert.classList.add('disconnected');
+                kvTitle.textContent = 'خطا در بررسی';
+                kvDesc.textContent = 'ادامه دهید';
+            }
+        }
+
+        function updateStepIndicators(step) {
+            const dots = document.querySelectorAll('.step-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index + 1 < step) {
+                    dot.classList.add('completed');
+                } else if (index + 1 === step) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function renderStepContent(step) {
+            const stepData = stepsData[step];
+            stepContainer.style.display = 'block';
+            loadingWrapper.classList.remove('active');
+            completeWrapper.classList.remove('active');
+            
+            let content = '';
+            
+            if (step === 1) {
+                content = `
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">${stepData.icon}</svg>
+                    </div>
+                    <h1 class="step-title">${stepData.title}</h1>
+                    <p class="step-subtitle">${stepData.subtitle}</p>
+                    
+                    <div class="kv-alert ${kvConnected ? 'connected' : 'disconnected'}" id="kvAlert">
+                        <div class="kv-alert-icon">
+                            <svg viewBox="0 0 24 24">${kvConnected ? '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>' : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>'}</svg>
+                        </div>
+                        <div class="kv-alert-text">
+                            <h4>${kvConnected ? 'KV متصل است' : 'KV متصل نیست'}</h4>
+                            <p>${kvConnected ? 'سیستم آماده است' : 'می‌توانید ادامه دهید'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>کانفیگ‌های پیشرفته</span></div>
+                        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>ای‌پی‌های اختصاصی</span></div>
+                        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>رابط کاربری ساده</span></div>
+                        <div class="feature-item"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>امنیت بالا</span></div>
+                    </div>
+                    
+                    <form id="stepForm">
+                        <input type="hidden" name="action" value="next">
+                        <button type="submit" class="btn btn-primary">
+                            <span>مرحله بعد</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M10 17l5-5-5-5v3H4v4h6V17zm8-2v-4h-4v4h4zm2-1h-2V7c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v9h2v-5h4v5h2v-7h-2V7h2v7z"/></svg>
+                        </button>
+                    </form>
+                `;
+            } else if (step === 2) {
+                content = `
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">${stepData.icon}</svg>
+                    </div>
+                    <h1 class="step-title">${stepData.title}</h1>
+                    <p class="step-subtitle">${stepData.subtitle}</p>
+                    
+                    ${!kvConnected ? `
+                    <div class="kv-alert disconnected">
+                        <div class="kv-alert-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                        <div class="kv-alert-text">
+                            <h4>KV متصل نیست</h4>
+                            <p>می‌توانید از PASSWORD env استفاده کنید</p>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="form-group">
+                        <label class="form-label">رمز عبور جدید</label>
+                        <input type="password" name="password" class="form-input" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">تکرار رمز عبور</label>
+                        <input type="password" name="confirmPassword" class="form-input" placeholder="رمز عبور را تکرار کنید" required>
+                    </div>
+                    
+                    <form id="stepForm">
+                        <input type="hidden" name="action" value="set_password">
+                        <button type="submit" class="btn btn-primary">
+                            <span>ذخیره و ادامه</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(${step - 1})" style="margin-top: 8px;">
+                            <span>قبلی</span>
+                        </button>
+                    </form>
+                `;
+            } else if (step === 3) {
+                content = `
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24">${stepData.icon}</svg>
+                    </div>
+                    <h1 class="step-title">${stepData.title}</h1>
+                    <p class="step-subtitle">${stepData.subtitle}</p>
+                    
+                    <div class="info-box">
+                        <div class="info-box-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            <span>تنظیمات اختیاری</span>
+                        </div>
+                        <p>این تنظیمات را می‌توانید بعداً از پنل تغییر دهید.</p>
+                    </div>
+                    
+                    <form id="stepForm">
+                        <input type="hidden" name="action" value="save_settings">
+                        <button type="submit" class="btn btn-primary">
+                            <span>ذخیره و پایان</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="goToStep(${step - 1})" style="margin-top: 8px;">
+                            <span>قبلی</span>
+                        </button>
+                    </form>
+                `;
+            } else if (step === 4) {
+                stepContainer.style.display = 'none';
+                completeWrapper.classList.add('active');
+            }
+            
+            stepContent.innerHTML = content;
+            updateStepIndicators(step);
+        }
+
+        async function goToStep(step) {
+            if (step < 1 || step > 4) return;
+            
+            currentStep = step;
+            
+            if (step === 4) {
+                stepContainer.style.display = 'none';
+                loadingWrapper.classList.add('active');
+                
+                await new Promise(r => setTimeout(r, 1500));
+                
+                loadingWrapper.classList.remove('active');
+                completeWrapper.classList.add('active');
+                return;
+            }
+            
+            renderStepContent(step);
+        }
+
+        stepForm?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const action = formData.get('action');
+            
+            if (currentStep === 1) {
+                if (!kvConnected) {
+                    const confirm = window.confirm('KV متصل نیست. ادامه می‌دهید؟');
+                    if (!confirm) return;
+                }
+                goToStep(2);
+                return;
+            }
+            
+            if (action === 'set_password') {
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirmPassword');
+                
+                if (password.length < 6) {
+                    alert('رمز عبور باید حداقل ۶ کاراکتر باشد');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('رمز عبور و تکرار آن مطابقت ندارند');
+                    return;
+                }
+            }
+            
+            if (action === 'save_settings') {
+                try {
+                    const config = {
+                        UUID: '', // Worker will set this
+                        HOST: window.location.hostname
+                    };
+                    
+                    const response = await fetch('/setup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(config)
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        window.location.href = data.redirect || '/admin';
+                    } else {
+                        alert(data.error || 'خطا در ذخیره تنظیمات');
+                    }
+                } catch (error) {
+                    console.error('Setup error:', error);
+                    alert('خطا در ارتباط با سرور');
+                }
+                return;
+            }
+        });
+
+        checkKVStatus();
+    </script>
+</body>
+
+</html>

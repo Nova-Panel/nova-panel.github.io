@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>تولید اشتراک بهینه - پنل مدیریت</title>
+    <script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/@keeex/qrcodejs-kx@1.0.2/qrcode.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        html[dir="rtl"] { direction: rtl; }
+        html[dir="rtl"] body { text-align: right; }
+        html[dir="rtl"] .form-group { text-align: right; }
+        html[dir="rtl"] .form-group label { text-align: right; }
+        html[dir="rtl"] .input-icon { left: auto; right: 16px; }
+        html[dir="rtl"] .form-group input.with-icon { padding-left: 16px; padding-right: 48px; }
+        html[dir="rtl"] .social-text { margin-right: 0; margin-left: 10px; }
+        html[dir="rtl"] .checkbox-group { flex-direction: row; }
+        html[dir="rtl"] .checkbox-row { flex-direction: row; }
+        html[dir="rtl"] .btn-group { flex-direction: row-reverse; }
+        html[dir="rtl"] .module-footer { flex-direction: row-reverse; }
+        html[dir="rtl"] .header { flex-direction: row-reverse; }
+        html[dir="rtl"] .header-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .notification-row { flex-direction: row-reverse; }
+        html[dir="rtl"] .notification-controls { margin-left: 0; margin-right: auto; }
+        html[dir="rtl"] .save-tip { margin-right: 0; margin-left: auto; }
+        html[dir="rtl"] .api-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .subapi-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .reset-modal-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .skipverify-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .optimize-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .path-template-buttons { flex-direction: row-reverse; }
+        html[dir="rtl"] .ip-detection-box { text-align: right; }
+        html[dir="rtl"] .latency-card-info { flex-direction: row-reverse; }
+        html[dir="rtl"] .latency-card-header { flex-direction: row-reverse; }
+        html[dir="rtl"] .cf-stats-grid { text-align: right; }
+        html[dir="rtl"] .cf-progress-header { flex-direction: row-reverse; }
+        html[dir="rtl"] .ip-detail-header { flex-direction: row-reverse; }
+        html[dir="rtl"] .ip-detail-info-grid { text-align: right; }
+        html[dir="rtl"] .modal { text-align: right; }
+        html[dir="rtl"] .modal-close { right: auto; left: 15px; }
+        html[dir="rtl"] .page-header { text-align: center; }
+        html[dir="rtl"] .footer-hint { text-align: center; }
+        html[dir="rtl"] .api-docs { text-align: right; }
+        html[dir="rtl"] .latency-card-region { text-align: left; }
+        html[dir="rtl"] .optimize-tabs { flex-direction: row-reverse; }
+        html[dir="rtl"] .ech-tabs { flex-direction: row-reverse; }
+        html[dir="rtl"] .form-group { text-align: right; }
+        html[dir="rtl"] select, html[dir="rtl"] input, html[dir="rtl"] textarea { text-align: right; }
+        html[dir="rtl"] .copy-btn { right: auto; left: 10px; }
+        html[dir="rtl"] .input-wrapper { flex-direction: row-reverse; }
+        html[dir="rtl"] .link-input-wrapper { flex-direction: row-reverse; }
+        html[dir="rtl"] .readonly-wrapper input[readonly] { text-align: right; }
+        html[dir="rtl"] .latency-status { right: auto; left: 0; }
+        html[dir="rtl"] .cf-bar-green { justify-content: flex-start; padding-right: 12px; padding-left: 0; }
+        html[dir="rtl"] .ip-detail-close { right: auto; left: 20px; }
+        html[dir="rtl"] .proxy-map-container { direction: ltr; }
+        html[dir="rtl"] .form-group input, html[dir="rtl"] .form-group select, html[dir="rtl"] .form-group textarea { text-align: right; }
+        html[dir="rtl"] select option { text-align: right; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box }
+        body { font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; background: #ffffff !important; min-height: 100vh; text-align: right; }
+        html { background: #ffffff !important; }
+        html[dir="rtl"] ::-webkit-scrollbar { width: 8px; }
+        html[dir="rtl"] ::-webkit-scrollbar-track { background: #f1f1f1; }
+        html[dir="rtl"] ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        html[dir="rtl"] ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        @keyframes containerAppear { 0% { opacity: 0; transform: translateY(30px) scale(0.9) } 100% { opacity: 1; transform: translateY(0) scale(1) } }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes shake { 0%, 100% { transform: translateX(0) } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) } 20%, 40%, 60%, 80% { transform: translateX(5px) } }
+        @keyframes gradientShift { 0% { background-position: 0 50% } 50% { background-position: 100% 50% } 100% { background-position: 0 50% } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px) } to { opacity: 1; transform: translateY(0) } }
+        @keyframes rotate { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+
+        .page-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1 !important; padding: 20px; overflow-y: auto; background: #ffffff; }
+        .card-container { background: #ffffff; padding: 50px 40px; border-radius: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); width: 100%; animation: containerAppear 1s ease-out .8s backwards; position: relative; overflow: hidden }
+        .card-container::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #6b7280; }
+        .page-header { margin-bottom: 35px; text-align: center }
+        .page-icon { width: 70px; height: 70px; margin: 0 auto 20px; background: #6b7280; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(107, 114, 128, 0.15); animation: fadeIn .8s ease-out 1s backwards }
+        .page-icon svg { width: 36px; height: 36px; fill: white }
+        .page-title { font-size: 32px; font-weight: 700; color: #1f2937; margin: 0 0 12px; line-height: 1.2; letter-spacing: -0.5px }
+        .page-subtitle { font-size: 16px; color: #6b7280; margin: 0; line-height: 1.5; font-weight: 400 }
+        .page-form { display: flex; flex-direction: column; margin-top: 35px }
+        .form-group { margin-bottom: 24px; text-align: left; position: relative }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #374151; letter-spacing: .3px }
+        .input-wrapper { position: relative }
+        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; opacity: .4; pointer-events: none; transition: opacity .3s ease }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 16px; border: 2px solid #e5e7eb !important; border-radius: 12px; font-size: 16px; color: #1e293b !important; background-color: #fff !important; box-sizing: border-box; transition: all .3s ease; -webkit-appearance: none; appearance: none; font-family: inherit }
+        .form-group input.with-icon { padding-left: 48px }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: 0 !important; border-color: #6b7280 !important; box-shadow: 0 0 0 4px rgba(107, 114, 128, 0.1) !important }
+        .form-group input:focus+.input-icon { opacity: .7 }
+        .form-group input:disabled, .form-group select:disabled { background-color: #f3f4f6 !important; color: #9ca3af !important; cursor: not-allowed; opacity: 1 }
+        .form-group input[readonly] { background-color: #f9fafb !important; color: #6b7280 !important }
+        .form-group textarea { resize: vertical; min-height: 382px; font-family: 'Vazirmatn', 'Courier New', monospace }
+        .btn { padding: 10px 20px; border: 0; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: 'Vazirmatn', sans-serif; cursor: pointer; transition: all .3s ease; box-sizing: border-box; -webkit-appearance: none; appearance: none; letter-spacing: .5px; position: relative; overflow: hidden }
+        .btn-primary { background: #6b7280; color: #fff; box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4) }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left .5s ease }
+        .btn-primary:hover::before { left: 100% }
+        .btn-primary:hover { transform: translateY(-2px); background: #4b5563; box-shadow: 0 6px 25px rgba(107, 114, 128, 0.5) }
+        .btn-primary:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(107, 114, 128, 0.4) }
+        .btn-secondary { background: #e5e7eb; color: #374151 }
+        .btn-secondary:hover { background: #d1d5db }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none }
+        .btn-group { display: flex; gap: 10px }
+        .footer-hint { margin-top: 30px; font-size: 13px; color: #9ca3af; animation: fadeIn 1s ease-out 1.5s backwards; text-align: center }
+        .footer-hint a { color: #0ea5e9; text-decoration: none; font-weight: 500; transition: color .3s ease }
+        .footer-hint a:hover { color: #0ea5e9 }
+        .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 500; z-index: 9000000000; transform: translateX(100%); transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; max-width: 300px; word-wrap: break-word }
+        .toast.show { transform: translateX(0); opacity: 1 }
+        .toast-success { background: #4b5563; box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3) }
+        .toast-error { background: #6b7280; box-shadow: 0 4px 15px rgba(107, 114, 128, 0.3) }
+        .toast-info { background: #9ca3af; box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3) }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000000000; justify-content: center; align-items: center }
+        .modal-overlay.show { display: flex }
+        .modal { background: #fff; border-radius: 16px; padding: 30px; max-width: 500px; width: 95%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); text-align: center; z-index: 2000000001; position: relative; display: block !important; visibility: visible !important; opacity: 1 !important }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #9ca3af }
+        .modal-close:hover { color: #1e293b }
+        .checkbox-group { display: flex; align-items: center; gap: 10px }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; padding: 0; border: 2px solid #e5e7eb; border-radius: 4px; -webkit-appearance: none; appearance: none; position: relative; transition: all 0.3s ease; background-color: #fff }
+        .checkbox-group input[type="checkbox"]:hover { border-color: #6b7280 }
+        .checkbox-group input[type="checkbox"]:checked { background: #6b7280; border-color: #6b7280 }
+        .checkbox-group input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg) }
+        .checkbox-group input[type="checkbox"]:disabled { background-color: #f3f4f6; border-color: #d1d5db; cursor: not-allowed; opacity: 0.6; }
+        .checkbox-label { font-size: 14px; color: #374151; cursor: pointer; -webkit-user-select: none; user-select: none; }
+        .checkbox-row { display: flex; gap: 20px; align-items: center; }
+        .checkbox-row .form-group { margin-bottom: 0; display: flex !important; grid-template-columns: unset !important; gap: unset !important; }
+
+        :root { --bg-primary: #ffffff; --bg-secondary: rgba(255, 255, 255, 0.95); --text-primary: #1e293b; --text-secondary: #666; --border-color: #e5e7eb; --border-light: rgba(255, 255, 255, 0.1); --input-bg: #f3f4f6; --input-border: #e5e7eb; --overlay-bg: rgba(255, 255, 255, 0.7); --blur-overlay: rgba(0, 0, 0, 0.3); --latency-49: #4CAF50; --latency-149: #83DA00; --latency-299: #f58722; --latency-999: #ff404a; --latency-1000: #c40003; }
+        html.dark-mode { --bg-primary: #1a1a1a; --bg-secondary: #0f0d0a; --text-primary: #e5e5e5; --text-secondary: #a0a0a0; --border-color: #333333; --border-light: rgba(255, 255, 255, 0.1); --input-bg: #2a2a2a; --input-border: #444444; --overlay-bg: rgba(32, 32, 32, 0.7); --blur-overlay: rgba(0, 0, 0, 0.8) }
+        html.dark-mode body { background: #1a1a1a !important; color: var(--text-primary) }
+        html.dark-mode .card-container { background: #1a1a1a; color: var(--text-primary) }
+        html.dark-mode .page-wrapper { background: #1a1a1a; }
+        html.dark-mode .form-group input:not([type="checkbox"]), html.dark-mode .form-group select, html.dark-mode .form-group textarea { background: var(--input-bg) !important; color: var(--text-primary) !important; border-color: var(--input-border) !important }
+        html.dark-mode .form-group label { color: var(--text-primary) !important }
+        html.dark-mode .modal-overlay { background: var(--blur-overlay) }
+        html.dark-mode .modal { background: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color) }
+        html.dark-mode .btn-secondary { background: var(--input-bg) !important; color: var(--text-primary) !important; border-color: var(--input-border) !important }
+        html.dark-mode .checkbox-group input[type="checkbox"] { border-color: var(--border-color); background: var(--input-bg) }
+        html.dark-mode .checkbox-group input[type="checkbox"]:checked { background: #6b7280; border-color: #9ca3af }
+        html.dark-mode .module-footer { border-color: rgba(255, 255, 255, 0.1) }
+        html.dark-mode .readonly-wrapper input[readonly] { background-color: var(--input-bg) !important; border-color: var(--input-border) !important; color: var(--text-primary) !important; }
+
+        .page-wrapper { justify-content: flex-start; align-items: flex-start; }
+        .card-container { max-width: 1200px; margin: 20px auto; padding: 0; background: transparent !important; box-shadow: none !important }
+        .card-container::before { display: none }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: #ffffff; padding: 25px 30px; border-radius: 16px; border: 2px solid #d1d5db }
+        .header-title h1 { font-size: 28px; font-weight: 700; color: #1f2937; margin: 0 }
+        .header-buttons { display: flex; gap: 12px }
+        .header .btn { padding: 10px 20px; font-size: 14px; border-radius: 8px }
+        .module { background: #ffffff; border-radius: 16px; padding: 30px; margin-bottom: 25px; border: 2px solid #d1d5db; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); transition: box-shadow 280ms cubic-bezier(.2, .9, .2, 1), transform 220ms ease; will-change: transform }
+        .module:hover, .module:focus-within { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); transform: translateY(-4px); border-color: #6b7280 }
+        .module-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #1e293b; display: flex; justify-content: space-between; align-items: center; cursor: pointer; gap: 10px; }
+        .module-title .collapse-icon { width: 24px; height: 24px; transition: transform 0.28s; fill: #666; flex-shrink: 0; }
+        .module.collapsed .collapse-icon { transform: rotate(90deg) }
+        .module-content { display: block; max-height: 2000px; opacity: 1; transition: max-height 320ms cubic-bezier(.2, .8, .2, 1), opacity 220ms ease }
+        .module.collapsed .module-content { max-height: 0; opacity: 0 }
+        .module .form-group, #portSection { margin-bottom: 20px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: center; text-align: left }
+        .module .form-group label { display: block }
+        .module .form-group input, .module .form-group select, .module .form-group textarea { padding: 8px 8px; border-radius: 8px }
+        .module .input-wrapper { display: flex; align-items: center; gap: 10px }
+        .module .input-wrapper input { flex: 1 }
+        .readonly-wrapper { position: relative; }
+        .proxy-input-wrapper { flex: 1; }
+        .readonly-wrapper input[readonly] { cursor: pointer; background-color: #fff !important; border: 2px solid #e5e7eb !important; color: #1e293b !important; width: 100%; }
+        .readonly-wrapper input[readonly]:hover { border-color: #6b7280; background-color: #fff; }
+        .copy-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); padding: 6px 12px; font-size: 12px; cursor: pointer }
+        .module-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #e5e7eb }
+        .module-footer .btn-group { margin-left: auto; }
+        .hidden-section { display: none; }
+
+        .btn-mode-toggle { background: #1e293b; color: #fff; box-shadow: 0 4px 15px rgba(31, 41, 55, 0.4); transition: all 0.3s ease; }
+        .btn-mode-toggle:hover { background: #111827; transform: translateY(-2px); box-shadow: 0 6px 25px rgba(31, 41, 55, 0.5); }
+        .btn-reset { background: linear-gradient(135deg, #ef4444 0, #dc2626 100%); color: #fff; }
+        .btn-online-optimize { background: linear-gradient(135deg, #10b981 0, #059669 100%); color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        .btn-online-optimize:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5); }
+        .btn-api-optimize { background: linear-gradient(135deg, #0ea5e9 0, #8b5cf6 100%); color: #fff; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
+
+        .btn-save-append { background: linear-gradient(135deg, #0ea5e9 0, #8b5cf6 100%); color: #fff; }
+
+        .btn-append-results { background: linear-gradient(135deg, #0ea5e9 0, #8b5cf6 100%); color: #fff; opacity: 0.5; pointer-events: none; }
+        .btn-append-results:not([disabled]) { opacity: 1; pointer-events: all; }
+        .btn-close-api { background: linear-gradient(135deg, #e5e7eb 0, #d1d5db 100%); color: #374151; }
+
+        .line-editor { display: flex; gap: 0; align-items: stretch; border: 2px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #ffffff; transition: border-color 0.3s ease, box-shadow 0.3s ease; position: relative; margin-top: 8px; min-height: 300px; }
+        .line-editor:focus-within { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .line-editor .gutter { display: none; }
+        .line-editor .editor-area { position: relative; flex-grow: 1; background: transparent; min-height: 300px; z-index: 1; }
+        .line-editor .editor-area::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 48px; background: #f9fafb; border-right: 1px solid #e5e7eb; z-index: 0; pointer-events: none; }
+        .line-editor .mirror { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 12px 12px 12px 60px !important; margin: 0 !important; white-space: pre-wrap !important; word-break: break-all !important; pointer-events: none; font-family: 'Vazirmatn', 'Courier New', monospace !important; font-size: 14px !important; line-height: 24px !important; color: transparent; overflow-y: scroll; overflow-x: hidden; box-sizing: border-box !important; border: none !important; scrollbar-width: none; z-index: 2; width: 100%; }
+        .line-editor .mirror::-webkit-scrollbar { display: none; }
+        .line-editor .mirror .logical-line { display: block; margin: 0 !important; padding: 0 !important; position: relative; color: transparent; word-wrap: break-word; min-height: 24px; box-sizing: border-box; }
+        .line-editor .mirror .logical-line:nth-child(even) { background: rgba(59, 130, 246, 0.06); }
+        .line-editor .mirror .logical-line::before { content: attr(data-line-number); position: absolute; left: -60px; top: 0; width: 48px; height: 24px; line-height: 24px; text-align: right; padding-right: 12px; color: #9ca3af; font-size: 13px; box-sizing: border-box; z-index: 1; }
+        .line-editor textarea { width: 100% !important; min-height: 300px; border: none !important; background: transparent !important; padding: 12px 12px 12px 60px !important; margin: 0 !important; font-family: 'Vazirmatn', 'Courier New', monospace !important; font-size: 14px !important; line-height: 24px !important; color: #1e293b; resize: vertical !important; outline: none !important; box-sizing: border-box !important; display: block; white-space: pre-wrap !important; word-break: break-all !important; scrollbar-width: thin; position: relative; z-index: 1; overflow-y: scroll; }
+        html.dark-mode .line-editor { border-color: var(--input-border); background: var(--input-bg); }
+        html.dark-mode .line-editor textarea { color: var(--text-primary); }
+        html.dark-mode .line-editor .editor-area::before { background: rgba(255, 255, 255, 0.03); border-right-color: var(--border-color); }
+        html.dark-mode .ip-detection-box { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border-color: rgba(59, 130, 246, 0.3); }
+        html.dark-mode .ip-detection-info { color: var(--text-primary); }
+        html.dark-mode .optimize-progress-bar { background: #1e293b; }
+        html.dark-mode .optimize-tab { background: var(--input-bg); border-color: var(--border-color); color: var(--text-primary); }
+        html.dark-mode .optimize-tab.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        html.dark-mode .optimize-results-content { background: var(--input-bg); }
+        html.dark-mode .optimize-result-item { color: var(--text-primary); }
+        html.dark-mode .api-form-row label { color: var(--text-primary); }
+        html.dark-mode .api-form-row input { background: var(--input-bg); color: var(--text-primary); border-color: var(--input-border); }
+        html.dark-mode .api-results-label { color: var(--text-primary); }
+        html.dark-mode .api-results-textarea { background: var(--input-bg); color: var(--text-primary); border-color: var(--input-border); }
+
+        @media(max-width:768px) {
+            .optimize-params-row { grid-template-columns: 1fr; gap: 15px; }
+            .card-container { padding: 20px; margin: 0 }
+            .header { flex-direction: column; gap: 15px; padding: 20px; margin-bottom: 20px }
+            .module { padding: 20px; margin-bottom: 20px }
+            .module .form-group, #portSection { grid-template-columns: 1fr; gap: 10px }
+            .header-buttons { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+            .btn-mode-toggle { grid-column: 1 / -1; }
+            .header-buttons .btn { width: 100%; }
+            .module-footer { flex-wrap: wrap; align-items: flex-start; gap: 10px; }
+            .module-footer .btn-online-optimize:not(.hidden-section), .module-footer .btn-api-optimize:not(.hidden-section) { flex: 1; min-width: calc(50% - 5px); }
+            .module-footer .btn-group { width: 100%; display: flex; gap: 10px; }
+            .module-footer .btn-group .btn { flex: 1; }
+            .api-buttons { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px; margin-top: 20px; }
+            .btn-verify-api { grid-column: 1 / -1 !important; grid-row: 1 !important; }
+            .btn-append-api { grid-column: 1 !important; grid-row: 2 !important; }
+            .btn-close-api { grid-column: 2 !important; grid-row: 2 !important; }
+            .btn-append-results { display: none !important; }
+            .optimize-buttons { flex-direction: column; gap: 10px; }
+            .save-tip { order: -1; margin-right: 0; margin-bottom: 10px; width: 100%; min-height: 0; }
+            .btn-start-optimize, .btn-save-override, .btn-save-append { order: unset; }
+            .optimize-buttons { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; gap: 10px; margin-top: 15px; }
+            .save-tip { grid-column: 1 / -1; order: unset; }
+            .btn-start-optimize { grid-column: 1; grid-row: 2; order: unset; }
+            .btn-save-override { grid-column: 2; grid-row: 2; order: unset; }
+            .btn-save-append { grid-column: 1; grid-row: 3; order: unset; }
+            .optimize-buttons .btn-secondary { grid-column: 2; grid-row: 3; order: unset; }
+        }
+        @media(max-width:480px) { .card-container { padding: 15px } }
+        @media(max-height:600px) and (orientation:landscape) { .card-container { padding: 15px } }
+    </style>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    
+    <div class="admin-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">⚡</div>
+                    <span class="sidebar-logo-text">Nova Panel</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-item-icon">🏠</span>
+                    <span>داشبورد</span>
+                </a>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">⚙️</span>
+                            <span>کانفیگ‌ها</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="nodes.html" class="nav-subitem">
+                            <span>🔗</span>
+                            <span>مدیریت لینک‌های اشتراک</span>
+                        </a>
+                        <a href="subscription.html" class="nav-subitem">
+                            <span>⚡</span>
+                            <span>تولید اشتراک بهینه</span>
+                        </a>
+                        <a href="config.html" class="nav-subitem">
+                            <span>⚙️</span>
+                            <span>اطلاعات پیکربندی جزئی</span>
+                        </a>
+                        <a href="ech.html" class="nav-subitem">
+                            <span>🔐</span>
+                            <span>ECH</span>
+                        </a>
+                        <a href="cdn.html" class="nav-subitem">
+                            <span>🌐</span>
+                            <span>تنظیمات CDN</span>
+                        </a>
+                        <a href="convert.html" class="nav-subitem">
+                            <span>🔄</span>
+                            <span>تبدیل اشتراک</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">🔧</span>
+                            <span>مدیریت هسته</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="wireguard.html" class="nav-subitem">
+                            <span>🔐</span>
+                            <span>وایرگارد</span>
+                        </a>
+                        <a href="doh.html" class="nav-subitem">
+                            <span>🔒</span>
+                            <span>پروکسی DoH</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <div class="nav-item nav-dropdown-toggle" >
+                        <span style="display: flex; align-items: center; gap: 12px;">
+                            <span class="nav-item-icon">⚙️</span>
+                            <span>تنظیمات</span>
+                        </span>
+                        <span class="nav-arrow">▼</span>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>🌐</span>
+                            <span>شبکه</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>⚙️</span>
+                            <span>عمومی</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                        <a href="notifications.html" class="nav-subitem">
+                            <span>🔔</span>
+                            <span>اعلانات</span>
+                        </a>
+                        <a href="logs.html" class="nav-subitem">
+                            <span>📋</span>
+                            <span>لاگ‌ها</span>
+                        </a>
+                        <a href="#" class="nav-subitem disabled" onclick="showDevToast(event)">
+                            <span>📱</span>
+                            <span>تلگرام</span>
+                            <span style="margin-right: auto; font-size: 9px; padding: 2px 6px; background: #f59e0b; color: white; border-radius: 4px;">توسعه</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer sidebar-buttons-row">
+                <button class="sidebar-btn-icon sidebar-btn-theme" onclick="toggleTheme()" title="تغییر تم">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26a5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                </button>
+                <button class="sidebar-btn-icon sidebar-btn-reset" onclick="resetConfigWithConfirm()" title="بازنشانی">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </button>
+                <button class="sidebar-btn-icon sidebar-btn-logout" onclick="logout()" title="خروج">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <!-- ماژول 2: ویرایشگر تولید اشتراک -->
+            <div class="module">
+                <div class="module-title">
+                    ⚡️ تولید اشتراک بهینه
+                </div>
+                <div class="module-content">
+
+                    <div class="form-group">
+                        <label for="ipMode">حالت اشتراک بهینه</label>
+                        <select id="ipMode" title="حالت اشتراک بهینه" onchange="updateIPMode()">
+                            <option value="generator">تولیدکننده اشتراک بهینه</option>
+                            <option value="random">انتخاب تصادفی بهینه</option>
+                            <option value="custom">اشتراک سفارشی (پشتیبانی از اشتراک تجمیعی)</option>
+                        </select>
+                    </div>
+
+                    <div id="randomIPSection" class="form-group">
+                        <label for="randomCount">تعداد انتخاب تصادفی بهینه</label>
+                        <input type="number" id="randomCount" title="تعداد انتخاب تصادفی بهینه 1~99" min="1" max="99" value="16"
+                            onchange="markModified('sub')" oninput="if(this.value>99){this.value=99;}">
+                    </div>
+
+                    <div id="portSection" class="form-group hidden-section">
+                        <label for="specifiedPort">پورت بهینه مشخص</label>
+                        <select id="specifiedPort" onchange="markModified('sub')">
+                            <option value="-1">پورت تصادفی</option>
+                            <option value="443">443</option>
+                            <option value="2053">2053</option>
+                            <option value="2083">2083</option>
+                            <option value="2087">2087</option>
+                            <option value="2096">2096</option>
+                            <option value="8443">8443</option>
+                        </select>
+                    </div>
+
+                    <div id="customIPSection" class="form-group hidden-section">
+                        <label for="customIPs">آدرس بهینه سفارشی</label>
+                        <div class="line-editor" id="subCustomEditor">
+                            <div class="gutter" aria-hidden="true"></div>
+                            <div class="editor-area">
+                                <pre class="mirror" aria-hidden="true"></pre>
+                                <textarea id="customIPs" title="آدرس بهینه سفارشی"
+                                    placeholder="توجه:
+هر خط یک آدرس، مانند: آدرس:پورت#یادداشت
+آدرس IPv6 باید در براکت باشد، مانند: [2606:4700::]:2053
+اگر پورت نوشته نشود، پیش‌فرض 443 است، مانند: www.visa.cn#دامنه بهینه
+
+مثال:
+www.visa.cn#دامنه بهینه
+127.0.0.1:1234#CFnat
+[2606:4700::]:2053#IPv6
+
+مثال نودهای دیگر:
+vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=tls&type=ws&host=nova-panel.github.io&path=%2F#Nova-Vless"
+                                    onchange="markModified('sub')"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="generatorSection" class="form-group hidden-section">
+                        <label for="generatorURL">تولیدکننده اشتراک بهینه</label>
+                        <input type="text" id="generatorURL" title="تولیدکننده اشتراک بهینه" placeholder="sub.novaproxy.net"
+                            onchange="processGeneratorURL()" oninput="processGeneratorURL()">
+                    </div>
+
+                    <div class="module-footer">
+                        <button type="button" class="btn btn-online-optimize hidden-section" id="onlineOptimizeBtn"
+                            onclick="openOnlineOptimizeModal()">بهینه‌سازی آنلاین</button>
+                        <button type="button" class="btn btn-api-optimize hidden-section" id="apiOptimizeBtn"
+                            onclick="openAPIOptimizeModal()">رابط اشتراک</button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" onclick="cancelEdit('sub')" disabled
+                                id="cancelSubBtn">انصراف</button>
+                            <button type="button" class="btn btn-primary" onclick="saveSub()" disabled
+                                id="saveSubBtn">ذخیره</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- مودال بهینه‌سازی آنلاین -->
+    <div class="modal-overlay" id="onlineOptimizeModal">
+        <div class="modal optimize-modal" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeOnlineOptimizeModal()">×</button>
+            <h2 class="optimize-modal-title">🚀 بهینه‌سازی آنلاین</h2>
+
+            <!-- اطلاعات تشخیص IP -->
+            <div id="ipDetectionBox" class="ip-detection-box">
+                <div class="ip-detection-info">
+                    در حال بررسی محیط شبکه شما...
+                </div>
+            </div>
+
+            <!-- انتخاب پارامترها -->
+            <div class="optimize-params-row">
+                <div class="form-group">
+                    <label for="optimizeIPLibrary">کتابخانه IP:</label>
+                    <select id="optimizeIPLibrary">
+                        <option value="cf-official">لیست رسمی CF</option>
+                        <option value="cm-list">لیست مرتب CM</option>
+                        <option value="as13335">لیست AS13335</option>
+                        <option value="as209242">لیست AS209242</option>
+                        <option value="reverse-proxy">لیست Proxy معکوس CM</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="optimizePort">پورت:</label>
+                    <select id="optimizePort">
+                        <option value="443">443</option>
+                        <option value="2053">2053</option>
+                        <option value="2083">2083</option>
+                        <option value="2087">2087</option>
+                        <option value="2096">2096</option>
+                        <option value="8443">8443</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="optimizeConcurrency">تعداد رشته‌های تست:</label>
+                    <input type="number" id="optimizeConcurrency" min="1" max="32" value="8"
+                        class="optimize-concurrency-input" placeholder="1-32" oninput="validateConcurrency(this)"
+                        onchange="validateConcurrency(this)">
+                </div>
+            </div>
+
+            <!-- نوار پیشرفت -->
+            <div class="optimize-progress-bar hidden-section" id="optimizeProgressBar">
+                <div class="optimize-progress-fill" id="optimizeProgressFill"></div>
+                <div class="optimize-progress-text" id="optimizeProgressText">0/512 (0.00%) - موفق: 0, ناموفق: 0</div>
+            </div>
+
+            <!-- تب‌های نتیجه -->
+            <div id="optimizeResultsTabs" class="optimize-results-tabs hidden-section"></div>
+
+            <!-- محتوای نتیجه -->
+            <div id="optimizeResultsContent" class="optimize-results-content hidden-section"></div>
+
+            <!-- گروه دکمه‌ها -->
+            <div class="optimize-buttons">
+                <span class="save-tip">💡 راهنمای ذخیره: فقط 16 IP بهینه با کمترین تاخیر ذخیره می‌شوند</span>
+                <button type="button" class="btn btn-start-optimize" id="btnStartOptimize"
+                    onclick="startOptimize()">شروع بهینه‌سازی</button>
+                <button type="button" class="btn btn-save-override" id="btnSaveOverride"
+                    onclick="saveOptimizeResults('override')" disabled>ذخیره جایگزینی</button>
+                <button type="button" class="btn btn-save-append" id="btnSaveAppend"
+                    onclick="saveOptimizeResults('append')" disabled>ذخیره افزودن</button>
+                <button type="button" class="btn btn-secondary" onclick="closeOnlineOptimizeModal()">بستن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال بهینه‌سازی API -->
+    <div class="modal-overlay" id="apiOptimizeModal">
+        <div class="modal api-optimize-modal" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" onclick="closeAPIOptimizeModal()">×</button>
+            <h2 class="api-optimize-modal-title">🔌 رابط اشتراک</h2>
+
+            <!-- ورودی API URL -->
+            <div class="api-form-group">
+                <div class="api-form-row">
+                    <label>API URL:</label>
+                    <input type="text" id="apiOptimizeURL" placeholder="لطفاً آدرس API بهینه یا آدرس اشتراک تجمیعی را وارد کنید"
+                        title="لطفاً آدرس API بهینه یا آدرس اشتراک تجمیعی را وارد کنید" oninput="autoConvertGitHubURL(); autoDetectPortFromURL()">
+                </div>
+            </div>
+
+            <!-- ورودی پورت پیش‌فرض -->
+            <div class="api-form-group">
+                <div class="api-form-row">
+                    <label>پورت پیش‌فرض:</label>
+                    <input type="number" id="apiOptimizePort" value="443" min="1" max="65535" placeholder="1-65535"
+                        title="پورت پیش‌فرض (1-65535)">
+                </div>
+            </div>
+
+            <!-- ناحیه نمایش نتایج -->
+            <div class="api-results-container">
+                <label class="api-results-label">نتایج رابط:</label>
+                <div class="line-editor" id="apiResultsEditor">
+                    <div class="gutter" aria-hidden="true"></div>
+                    <div class="editor-area">
+                        <pre class="mirror" aria-hidden="true"></pre>
+                        <textarea id="apiOptimizeResults" title="نتایج رابط API" placeholder="نتایج بازگشتی رابط اینجا نمایش داده می‌شود، هر خط یک آدرس"
+                            readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- گروه دکمه‌ها -->
+            <div class="api-buttons">
+                <button type="button" class="btn btn-verify-api" id="btnVerifyAPI"
+                    onclick="verifyAPIOptimize()">بررسی دسترسی</button>
+                <button type="button" class="btn btn-append-api" id="btnAppendAPI" onclick="appendAPIToCustom()"
+                    disabled>افزودن API</button>
+                <button type="button" class="btn btn-append-results" id="btnAppendResults"
+                    onclick="appendResultsToCustom()" disabled>افزودن نتایج</button>
+                <button type="button" class="btn btn-close-api" onclick="closeAPIOptimizeModal()">بستن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <script>
+        let currentConfig = {};
+        let modifiedSections = new Set();
+        let originalConfig = {};
+        let optimizeResults = {};
+        let currentSelectedCountry = '';
+        let locationsData = [];
+        let currentIPLibrary = '';
+        let currentDetectedIP = '';
+        let ipDisplayMode = 'masked';
+        let subConfigData = null;
+
+        function toggleModule(titleEl) {
+            const module = titleEl.closest('.module');
+            const content = module.querySelector('.module-content') || module.querySelector('.module-content');
+            const icon = titleEl.querySelector('.collapse-icon');
+            const isCollapsed = module.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                module.classList.remove('collapsed');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                module.classList.add('collapsed');
+                if (icon) icon.style.transform = 'rotate(90deg)';
+            }
+        }
+
+        async function loadConfig() {
+            try {
+                const response = await fetch('/admin/config.json?_=' + Date.now());
+                if (response.ok) {
+                    currentConfig = await response.json();
+                    originalConfig = JSON.parse(JSON.stringify(currentConfig));
+                    return currentConfig;
+                }
+            } catch (error) {
+                console.error('خطا در بارگذاری پیکربندی:', error);
+                showToast('خطا در بارگذاری پیکربندی', 'error');
+            }
+            return null;
+        }
+
+        async function saveConfigToServer(section) {
+            try {
+                const response = await fetch('/admin/config.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    },
+                    body: JSON.stringify(currentConfig)
+                });
+
+                if (response.ok) {
+                    modifiedSections.delete(section);
+                    updateButtonStates();
+                    showToast('پیکربندی با موفقیت ذخیره شد', 'success');
+                    return true;
+                } else {
+                    showToast('خطا در ذخیره پیکربندی', 'error');
+                    return false;
+                }
+            } catch (error) {
+                showToast('خطا در ذخیره پیکربندی: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer') || document.body;
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function markModified(section) {
+            modifiedSections.add(section);
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            const subModified = modifiedSections.has('sub');
+            document.getElementById('saveSubBtn').disabled = !subModified;
+            document.getElementById('cancelSubBtn').disabled = !subModified;
+        }
+
+        function resetAllButtons() {
+            document.querySelectorAll('[id^="save"]').forEach(btn => btn.disabled = true);
+            document.querySelectorAll('[id^="cancel"]').forEach(btn => btn.disabled = true);
+        }
+
+        function cancelEdit(section) {
+            if (section === 'sub') {
+                const mode = document.getElementById('ipMode').value;
+                if (mode === 'random') {
+                    document.getElementById('randomCount').value = originalConfig.优选订阅生成?.本地IP库?.随机数量 || 16;
+                } else if (mode === 'custom') {
+                    loadCustomIPs();
+                } else if (mode === 'generator') {
+                    document.getElementById('generatorURL').value = originalConfig.优选订阅生成?.SUB || '';
+                }
+            }
+            modifiedSections.delete(section);
+            updateButtonStates();
+        }
+
+        async function loadSubscriptionConfig() {
+            await loadConfig();
+            if (!currentConfig.优选订阅生成) return;
+
+            const local = currentConfig.优选订阅生成.local !== false;
+            const randomIP = currentConfig.优选订阅生成.本地IP库?.随机IP !== false;
+
+            if (!local) {
+                document.getElementById('ipMode').value = 'generator';
+                document.getElementById('generatorURL').value = currentConfig.优选订阅生成.SUB || '';
+            } else if (randomIP) {
+                document.getElementById('ipMode').value = 'random';
+                document.getElementById('randomCount').value = currentConfig.优选订阅生成.本地IP库?.随机数量 || 16;
+            } else {
+                document.getElementById('ipMode').value = 'custom';
+            }
+
+            updateIPMode();
+            document.title = `${currentConfig.优选订阅生成?.SUBNAME || 'Nova-Vless'} - صفحه تنظیمات پنل مدیریت`;
+            document.getElementById('pageTitle').textContent = '⚡ تولید اشتراک بهینه';
+        }
+
+        async function loadCustomIPs() {
+            const textarea = document.getElementById('customIPs');
+            try {
+                const response = await fetch('/admin/ADD.txt?_t=' + Date.now());
+                if (response.ok) {
+                    textarea.value = await response.text();
+                } else {
+                    textarea.value = '';
+                }
+            } catch (error) {
+                textarea.value = '';
+            }
+            if (textarea._refreshLineEditor) {
+                textarea._refreshLineEditor();
+            }
+        }
+
+        function updateIPMode() {
+            const mode = document.getElementById('ipMode').value;
+
+            const sections = {
+                'random': document.getElementById('randomIPSection'),
+                'custom': document.getElementById('customIPSection'),
+                'generator': document.getElementById('generatorSection')
+            };
+
+            Object.keys(sections).forEach(key => {
+                const el = sections[key];
+                if (el) {
+                    if (key === mode) {
+                        el.classList.remove('hidden-section');
+                        el.style.display = (key === 'custom') ? 'block' : 'grid';
+                    } else {
+                        el.classList.add('hidden-section');
+                        el.style.display = 'none';
+                    }
+                }
+            });
+
+            const portSection = document.getElementById('portSection');
+            if (portSection) {
+                if (mode === 'random' && currentConfig.优选订阅生成?.本地IP库?.指定端口 !== undefined) {
+                    portSection.classList.remove('hidden-section');
+                    portSection.style.display = 'grid';
+                } else {
+                    portSection.classList.add('hidden-section');
+                    portSection.style.display = 'none';
+                }
+            }
+
+            const onlineOptimizeBtn = document.getElementById('onlineOptimizeBtn');
+            const apiOptimizeBtn = document.getElementById('apiOptimizeBtn');
+            if (onlineOptimizeBtn) {
+                if (mode === 'custom') {
+                    onlineOptimizeBtn.classList.remove('hidden-section');
+                } else {
+                    onlineOptimizeBtn.classList.add('hidden-section');
+                }
+            }
+            if (apiOptimizeBtn) {
+                if (mode === 'custom') {
+                    apiOptimizeBtn.classList.remove('hidden-section');
+                } else {
+                    apiOptimizeBtn.classList.add('hidden-section');
+                }
+            }
+
+            if (mode === 'custom') {
+                loadCustomIPs();
+            }
+
+            markModified('sub');
+        }
+
+        function processGeneratorURL() {
+            const input = document.getElementById('generatorURL').value.trim();
+            let domain = '';
+
+            if (input) {
+                domain = extractDomain(input);
+                document.getElementById('generatorURL').value = domain;
+            }
+
+            markModified('sub');
+        }
+
+        function extractDomain(url) {
+            try {
+                url = url.trim();
+                if (!url.includes('://')) {
+                    if (url.includes('/') || url.includes('?') || url.includes(':')) {
+                        url = 'https://' + url;
+                    } else {
+                        return url;
+                    }
+                }
+                const urlObj = new URL(url);
+                let domain = urlObj.hostname;
+                if (domain.startsWith('www.')) {
+                    domain = domain.substring(4);
+                }
+                return domain;
+            } catch (error) {
+                let temp = url.trim();
+                if (temp.includes('://')) {
+                    temp = temp.split('://')[1];
+                }
+                if (temp.includes('/')) {
+                    temp = temp.split('/')[0];
+                }
+                if (temp.includes('?')) {
+                    temp = temp.split('?')[0];
+                }
+                if (temp.includes(':')) {
+                    temp = temp.split(':')[0];
+                }
+                if (temp.startsWith('www.')) {
+                    temp = temp.substring(4);
+                }
+                return temp;
+            }
+        }
+
+        async function saveSub() {
+            const mode = document.getElementById('ipMode').value;
+
+            if (mode === 'random') {
+                const randomCount = document.getElementById('randomCount').value.trim();
+                if (!randomCount) {
+                    showToast('تعداد IP تصادفی نمی‌تواند خالی باشد', 'error');
+                    return;
+                }
+            } else if (mode === 'custom') {
+                const customIPs = document.getElementById('customIPs').value.trim();
+                if (!customIPs) {
+                    showToast('آدرس IP سفارشی نمی‌تواند خالی باشد', 'error');
+                    return;
+                }
+            } else if (mode === 'generator') {
+                const generatorURL = document.getElementById('generatorURL').value.trim();
+                if (!generatorURL) {
+                    showToast('آدرس تولیدکننده اشتراک نمی‌تواند خالی باشد', 'error');
+                    return;
+                }
+            }
+
+            const updates = {
+                local: mode !== 'generator',
+                本地IP库: { 随机IP: mode === 'random', 随机数量: parseInt(document.getElementById('randomCount').value) || 16 },
+                SUB: mode === 'generator' ? document.getElementById('generatorURL').value : null,
+                SUBNAME: currentConfig.优选订阅生成.SUBNAME,
+                SUBUpdateTime: currentConfig.优选订阅生成.SUBUpdateTime,
+                TOKEN: currentConfig.优选订阅生成.TOKEN
+            };
+
+            if (currentConfig.优选订阅生成?.本地IP库?.指定端口 !== undefined) {
+                updates.本地IP库.指定端口 = parseInt(document.getElementById('specifiedPort').value);
+            }
+
+            currentConfig.优选订阅生成 = { ...currentConfig.优选订阅生成, ...updates };
+
+            if (mode === 'custom') {
+                const customIPs = document.getElementById('customIPs').value;
+                try {
+                    await fetch('/admin/ADD.txt', { method: 'POST', body: customIPs });
+                } catch (error) {
+                    showToast('ذخیره IP سفارشی ناموفق بود', 'error');
+                    return;
+                }
+            }
+
+            await saveConfigToServer('sub');
+        }
+
+        // ==================== توابع مربوط به بهینه‌سازی آنلاین ====================
+        async function openOnlineOptimizeModal() {
+            document.getElementById('onlineOptimizeModal').classList.add('show');
+            optimizeResults = {};
+            currentSelectedCountry = '';
+            document.getElementById('optimizeProgressBar').classList.add('hidden-section');
+            document.getElementById('optimizeResultsTabs').classList.add('hidden-section');
+            document.getElementById('optimizeResultsContent').classList.add('hidden-section');
+            document.getElementById('btnSaveOverride').disabled = true;
+            document.getElementById('btnSaveAppend').disabled = true;
+            document.getElementById('btnStartOptimize').disabled = true;
+            document.getElementById('btnStartOptimize').textContent = 'در حال تشخیص...';
+            await detectIPAndEnvironment();
+        }
+
+        function closeOnlineOptimizeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('onlineOptimizeModal').classList.remove('show');
+        }
+
+        // ==================== توابع مربوط به انتخاب API ====================
+        function openAPIOptimizeModal() {
+            document.getElementById('apiOptimizeModal').classList.add('show');
+            document.getElementById('apiOptimizeURL').value = '';
+            document.getElementById('apiOptimizePort').value = '443';
+            document.getElementById('apiOptimizeResults').value = '';
+            document.getElementById('btnAppendAPI').disabled = true;
+            document.getElementById('btnAppendResults').disabled = true;
+            initLineEditor('apiOptimizeResults');
+        }
+
+        function closeAPIOptimizeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('apiOptimizeModal').classList.remove('show');
+        }
+
+        function validateAndNormalizePort(port) {
+            let num = parseInt(port, 10);
+            if (isNaN(num)) return '443';
+            if (num < 1) return '1';
+            if (num > 65535) return '65535';
+            return num.toString();
+        }
+
+        function isValidURL(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function convertGitHubURLToRaw(url) {
+            if (!url.includes('github.com')) return url;
+            if (url.includes('/blob/')) {
+                const match = url.match(/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.*)/);
+                if (match) {
+                    const [, user, repo, branch, filePath] = match;
+                    return `https://raw.githubusercontent.com/${user}/${repo}/refs/heads/${branch}/${filePath}`;
+                }
+            }
+            if (url.includes('/tree/')) {
+                const match = url.match(/github\.com\/([^/]+)\/([^/]+)\/tree\/([^/]+)\/(.*)/);
+                if (match) {
+                    const [, user, repo, branch, filePath] = match;
+                    return `https://raw.githubusercontent.com/${user}/${repo}/refs/heads/${branch}/${filePath}`;
+                }
+            }
+            return url;
+        }
+
+        function autoConvertGitHubURL() {
+            const urlInput = document.getElementById('apiOptimizeURL');
+            const url = urlInput.value.trim();
+            if (url.includes('github.com/')) {
+                const convertedURL = convertGitHubURLToRaw(url);
+                if (convertedURL !== url) {
+                    urlInput.value = convertedURL;
+                }
+            }
+        }
+
+        function autoDetectPortFromURL() {
+            const urlInput = document.getElementById('apiOptimizeURL').value.trim();
+            const portInput = document.getElementById('apiOptimizePort');
+            if (!urlInput) return;
+            try {
+                const urlObj = new URL(urlInput);
+                const portParam = urlObj.searchParams.get('port');
+                if (portParam) {
+                    const normalizedPort = validateAndNormalizePort(portParam);
+                    portInput.value = normalizedPort;
+                }
+            } catch (error) {
+                console.log('بررسی فرمت URL ناموفق:', error);
+            }
+        }
+
+        async function verifyAPIOptimize() {
+            let urlInput = document.getElementById('apiOptimizeURL').value.trim();
+            const portInput = document.getElementById('apiOptimizePort').value.trim();
+
+            if (!urlInput) {
+                alert('لطفاً URL API را وارد کنید');
+                return;
+            }
+
+            const convertedURL = convertGitHubURLToRaw(urlInput);
+            if (convertedURL !== urlInput) {
+                document.getElementById('apiOptimizeURL').value = convertedURL;
+                urlInput = convertedURL;
+                showToast('✅ لینک GitHub به طور خودکار به فرمت raw تبدیل شد', 'info');
+            }
+
+            if (!isValidURL(urlInput)) {
+                alert('لطفاً فرمت معتبر URL را وارد کنید');
+                return;
+            }
+
+            let detectedPort = null;
+            let cleanURL = urlInput;
+
+            try {
+                const urlObj = new URL(urlInput);
+                const portParam = urlObj.searchParams.get('port');
+                if (portParam) {
+                    detectedPort = validateAndNormalizePort(portParam);
+                    urlObj.searchParams.delete('port');
+                    cleanURL = urlObj.toString();
+                    document.getElementById('apiOptimizeURL').value = cleanURL;
+                    document.getElementById('apiOptimizePort').value = detectedPort;
+                    showToast(`✅ پورت از URL تشخیص داده شد: ${detectedPort}، و پارامتر port حذف شد`, 'success');
+                }
+            } catch (error) {
+                console.log('استخراج پارامتر port از URL ناموفق:', error);
+            }
+
+            const normalizedPort = detectedPort || validateAndNormalizePort(portInput);
+            document.getElementById('apiOptimizePort').value = normalizedPort;
+
+            const separator = cleanURL.includes('?') ? '&' : '?';
+            const completeURL = `${cleanURL}${separator}port=${normalizedPort}`;
+            const encodedURL = encodeURIComponent(completeURL);
+            const requestURL = `/admin/getADDAPI?url=${encodedURL}`;
+
+            try {
+                const btn = document.getElementById('btnVerifyAPI');
+                btn.disabled = true;
+                btn.textContent = 'در حال اعتبارسنجی...';
+
+                const response = await fetch(requestURL);
+                const data = await response.json();
+
+                if (data.success && data.data && Array.isArray(data.data)) {
+                    const results = data.data.join('\n');
+                    document.getElementById('apiOptimizeResults').value = results;
+                    const resultsTA = document.getElementById('apiOptimizeResults');
+                    if (resultsTA._refreshLineEditor) {
+                        resultsTA._refreshLineEditor();
+                    }
+                    document.getElementById('btnAppendAPI').disabled = false;
+                    document.getElementById('btnAppendResults').disabled = false;
+                    showToast('✅ اعتبارسنجی رابط API موفق!', 'success');
+                } else {
+                    document.getElementById('apiOptimizeResults').value = '❌ رابط قابل استفاده نیست، لطفاً URL و پورت را بررسی کنید';
+                    const resultsTA = document.getElementById('apiOptimizeResults');
+                    if (resultsTA._refreshLineEditor) {
+                        resultsTA._refreshLineEditor();
+                    }
+                    document.getElementById('btnAppendAPI').disabled = true;
+                    document.getElementById('btnAppendResults').disabled = true;
+                    showToast('❌ اعتبارسنجی رابط API ناموفق، لطفاً رابط را بررسی کنید', 'error');
+                }
+            } catch (error) {
+                console.error('خطای اعتبارسنجی API:', error);
+                document.getElementById('apiOptimizeResults').value = `❌ خطای اعتبارسنجی: ${error.message}`;
+                const resultsTA = document.getElementById('apiOptimizeResults');
+                if (resultsTA._refreshLineEditor) {
+                    resultsTA._refreshLineEditor();
+                }
+                document.getElementById('btnAppendAPI').disabled = true;
+                document.getElementById('btnAppendResults').disabled = true;
+                showToast('❌ خطای اعتبارسنجی، لطفاً بعداً دوباره امتحان کنید', 'error');
+            } finally {
+                const btn = document.getElementById('btnVerifyAPI');
+                btn.disabled = false;
+                btn.textContent = 'بررسی دسترسی';
+            }
+        }
+
+        function appendAPIToCustom() {
+            let urlInput = document.getElementById('apiOptimizeURL').value.trim();
+            const portInput = document.getElementById('apiOptimizePort').value.trim();
+
+            if (!urlInput) {
+                alert('لطفاً URL API را وارد کنید');
+                return;
+            }
+
+            try {
+                const urlObj = new URL(urlInput);
+                urlObj.searchParams.delete('port');
+                urlInput = urlObj.toString();
+            } catch (error) {
+                console.log('پردازش URL ناموفق:', error);
+            }
+
+            const separator = urlInput.includes('?') ? '&' : '?';
+            const completeURL = `${urlInput}${separator}port=${portInput}`;
+
+            const customIPsTextarea = document.getElementById('customIPs');
+            const currentValue = customIPsTextarea.value.trim();
+
+            if (currentValue) {
+                customIPsTextarea.value = currentValue + '\n' + completeURL;
+            } else {
+                customIPsTextarea.value = completeURL;
+            }
+
+            if (customIPsTextarea._refreshLineEditor) {
+                customIPsTextarea._refreshLineEditor();
+            }
+
+            markModified('sub');
+            showToast('✅ URL API به آدرس سفارشی اضافه شد', 'success');
+            closeAPIOptimizeModal();
+        }
+
+        function appendResultsToCustom() {
+            const resultsTextarea = document.getElementById('apiOptimizeResults');
+            const results = resultsTextarea.value.trim();
+
+            if (!results || results.startsWith('❌')) {
+                alert('لطفاً ابتدا اعتبارسنجی را انجام دهید و اعتبارسنجی موفق باشد');
+                return;
+            }
+
+            const customIPsTextarea = document.getElementById('customIPs');
+            const currentValue = customIPsTextarea.value.trim();
+
+            if (currentValue) {
+                customIPsTextarea.value = currentValue + '\n' + results;
+            } else {
+                customIPsTextarea.value = results;
+            }
+
+            if (customIPsTextarea._refreshLineEditor) {
+                customIPsTextarea._refreshLineEditor();
+            }
+
+            markModified('sub');
+            showToast('✅ نتایج API به آدرس سفارشی اضافه شد', 'success');
+            closeAPIOptimizeModal();
+        }
+
+        async function detectIPAndEnvironment() {
+            console.log('[انتخاب آنلاین] شروع: تشخیص محیط شبکه');
+            const detectionBox = document.getElementById('ipDetectionBox');
+            const btnStart = document.getElementById('btnStartOptimize');
+            detectionBox.innerHTML = '<div class="ip-detection-info">در حال تشخیص محیط شبکه شما...</div>';
+
+            try {
+                let response, text;
+                try {
+                    console.log('[انتخاب آنلاین] پیشرفت: امتحان تشخیص با مسیر دامنه فعلی');
+                    response = await fetch(`/cdn-cgi/trace?_t=${Date.now()}`, {
+                        signal: AbortSignal.timeout(5000),
+                        cache: 'no-store'
+                    });
+                    text = await response.text();
+                    console.log('[انتخاب آنلاین] موفق: تشخیص مسیر محلی موفق (استفاده از دامنه محلی)');
+                    window.detectDomain = window.location.origin;
+                } catch (primaryError) {
+                    console.warn('[انتخاب آنلاین] تشخیص مسیر محلی ناموفق، امتحان speed.cloudflare.com...', primaryError);
+                    response = await fetch(`https://speed.cloudflare.com/cdn-cgi/trace?_t=${Date.now()}`, {
+                        signal: AbortSignal.timeout(5000),
+                        cache: 'no-store'
+                    });
+                    text = await response.text();
+                    console.log('[انتخاب آنلاین] موفق: تشخیص لینک اصلی موفق');
+                    window.detectDomain = 'https://speed.cloudflare.com';
+                }
+
+                const lines = text.trim().split('\n');
+                const data = {};
+                lines.forEach(line => {
+                    const [key, value] = line.split('=');
+                    if (key && value) data[key.trim()] = value.trim();
+                });
+
+                const ip = data.ip || 'ناشناخته';
+                const loc = data.loc || 'ناشناخته';
+                currentDetectedIP = ip;
+                ipDisplayMode = 'masked';
+                console.log(`[انتخاب آنلاین] نتیجه: IP=${ip}, کشور=${loc}`);
+
+                const displayIP = maskIP(ip);
+                let html = `<div class="ip-detection-info">IP فعلی: <strong id="ipDisplayElement" style="cursor: pointer; transition: all 0.2s ease;" title="کلیک برای تغییر حالت نمایش">${displayIP}</strong> | کشور دسترسی: <strong>${loc}</strong></div>`;
+
+                if (loc !== 'IR') {
+                    console.warn('[انتخاب آنلاین] هشدار: تشخیص دسترسی غیر IR، احتمالاً فیلترشکن روشن است');
+                    html += `<div class="ip-detection-warning" style="font-size: 16px; font-weight: 700; color: #dc2626; margin-top: 12px; line-height: 1.6;">⚠️ تشخیص داده شد که از فیلترشکن استفاده می‌کنید! لطفاً فیلترشکن را خاموش کنید تا نتایج تست دقیق‌تر باشند.</div>`;
+                    btnStart.disabled = true;
+                    btnStart.textContent = 'فقط برای ایران';
+                } else {
+                    btnStart.disabled = false;
+                    btnStart.textContent = 'شروع انتخاب';
+                    console.log('[انتخاب آنلاین] موفق: تشخیص منطقه IR، دکمه انتخاب فعال شد');
+                }
+
+                detectionBox.innerHTML = html;
+
+                const ipElement = document.getElementById('ipDisplayElement');
+                if (ipElement) {
+                    ipElement.addEventListener('click', toggleIPDisplay);
+                }
+            } catch (error) {
+                console.error('[انتخاب آنلاین] تشخیص ناموفق:', error);
+                detectionBox.innerHTML = '<div class="ip-detection-info">⚠️ دسترسی به https://speed.cloudflare.com/cdn-cgi/trace برای تشخیص محیط شبکه ممکن نیست، لطفاً اتصال شبکه را بررسی کنید یا پروکسی را خاموش کنید</div>';
+                btnStart.disabled = true;
+                btnStart.textContent = 'تشخیص ناموفق';
+            }
+        }
+
+        function maskIP(ip) {
+            if (!ip || ip === 'ناشناخته') return ip;
+            const parts = ip.split('.');
+            if (parts.length === 4) {
+                return parts[0] + '.' + parts[1] + '.***.' + parts[3];
+            }
+            return ip.substring(0, Math.floor(ip.length / 2)) + '***';
+        }
+
+        function toggleIPDisplay() {
+            const ipElement = document.getElementById('ipDisplayElement');
+            if (!ipElement) return;
+
+            if (ipDisplayMode === 'masked') {
+                ipElement.textContent = currentDetectedIP;
+                ipDisplayMode = 'full';
+            } else {
+                ipElement.textContent = maskIP(currentDetectedIP);
+                ipDisplayMode = 'masked';
+            }
+        }
+
+        function validateConcurrency(input) {
+            let value = parseInt(input.value);
+            if (isNaN(value) || value < 1) {
+                input.value = 1;
+            } else if (value > 32) {
+                input.value = 32;
+            }
+        }
+
+        async function startOptimize() {
+            console.log('[انتخاب آنلاین] شروع: فرآیند انتخاب');
+            const btnStart = document.getElementById('btnStartOptimize');
+            btnStart.disabled = true;
+            btnStart.textContent = 'در حال انتخاب...';
+
+            const progressBar = document.getElementById('optimizeProgressBar');
+            const progressFill = document.getElementById('optimizeProgressFill');
+            const progressText = document.getElementById('optimizeProgressText');
+            progressBar.classList.remove('hidden-section');
+            progressFill.style.width = '0%';
+            progressText.textContent = '0/512 (0.00%)';
+
+            document.getElementById('optimizeResultsTabs').classList.add('hidden-section');
+            document.getElementById('optimizeResultsContent').classList.add('hidden-section');
+
+            try {
+                console.log('[انتخاب آنلاین] مرحله 1: بارگذاری داده‌های مکان');
+                await loadLocationsData();
+
+                const ipLibrary = document.getElementById('optimizeIPLibrary').value;
+                const port = document.getElementById('optimizePort').value;
+                let concurrency = parseInt(document.getElementById('optimizeConcurrency').value) || 8;
+
+                if (isNaN(concurrency) || concurrency < 1 || concurrency > 32) {
+                    concurrency = 8;
+                    document.getElementById('optimizeConcurrency').value = '8';
+                }
+
+                console.log(`[انتخاب آنلاین] مرحله 2: انتخاب کاربر - کتابخانه IP=${ipLibrary}, پورت=${port}, رشته همزمان=${concurrency}`);
+                currentIPLibrary = ipLibrary;
+
+                console.log('[انتخاب آنلاین] مرحله 3: دریافت لیست IP');
+                const ips = await getIPList(ipLibrary, port);
+
+                if (ips.length === 0) {
+                    console.error('[انتخاب آنلاین] خطا: لیست IP دریافت نشد');
+                    showToast('لیست IP دریافت نشد', 'error');
+                    return;
+                }
+
+                console.log(`[انتخاب آنلاین] موفق: ${ips.length} IP دریافت شد`);
+
+                console.log('[انتخاب آنلاین] مرحله 4: شروع تست IP (همزمان چند رشته‌ای)');
+                const results = await testIPsConcurrent(ips, progressFill, progressText, concurrency);
+                console.log(`[انتخاب آنلاین] تکمیل: تست تکمیل شد، تعداد IP معتبر=${results.length}`);
+
+                console.log('[انتخاب آنلاین] مرحله 5: شروع دسته‌بندی نتایج');
+                classifyResults(results);
+
+                console.log('[انتخاب آنلاین] مرحله 6: نمایش نتایج');
+                displayResults();
+
+                console.log('[انتخاب آنلاین] تکمیل: فرآیند انتخاب تکمیل شد');
+                showToast('انتخاب تکمیل شد!', 'success');
+
+            } catch (error) {
+                console.error('[انتخاب آنلاین] خطا در فرآیند انتخاب:', error);
+                showToast('خطا در فرآیند انتخاب: ' + error.message, 'error');
+            } finally {
+                btnStart.disabled = false;
+                btnStart.textContent = 'شروع انتخاب';
+            }
+        }
+
+        async function loadLocationsData() {
+            const backupUrl = 'https://zip.cm.edu.kg/locations.json';
+
+            try {
+                const url = `${window.detectDomain}/locations`;
+                console.log(`[انتخاب آنلاین] پیشرفت: بارگذاری داده‌های مکان URL=${url}`);
+
+                const response = await fetch(url, { headers: { 'Referer': window.detectDomain + '/' } });
+                const data = await response.json();
+
+                if (!data || (Array.isArray(data) && data.length === 0) || (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0)) {
+                    console.warn('[انتخاب آنلاین] رابط اصلی داده خالی برگرداند، امتحان رابط پشتیبان...');
+                    throw new Error('رابط اصلی داده خالی برگرداند');
+                }
+
+                locationsData = data;
+                console.log(`[انتخاب آنلاین] موفق: ${locationsData.length} داده مکان بارگذاری شد (از URL اصلی)`);
+            } catch (primaryError) {
+                console.warn('[انتخاب آنلاین] بارگذاری از URL اصلی ناموفق، امتحان URL پشتیبان...', primaryError);
+
+                try {
+                    const response = await fetch(backupUrl, { signal: AbortSignal.timeout(10000) });
+                    const data = await response.json();
+                    locationsData = data;
+                    console.log(`[انتخاب آنلاین] موفق: ${locationsData.length} داده مکان بارگذاری شد (از URL پشتیبان)`);
+                } catch (backupError) {
+                    console.error('[انتخاب آنلاین] بارگذاری از URL پشتیبان ناموفق:', backupError);
+                    throw new Error('بارگذاری داده‌های مکان ناموفق');
+                }
+            }
+        }
+
+        async function getIPList(ipLibrary, port) {
+            console.log(`[انتخاب آنلاین] دریافت لیست IP - کتابخانه: ${ipLibrary}, پورت: ${port}`);
+
+            const ipLists = {
+                'cf-official': () => fetchIPListFromURL(`${window.detectDomain}/ips-v4`),
+                'cm-list': () => fetchCMList(port),
+                'as13335': () => fetchIPListFromURL('https://zip.proxynova.com/stats/as13335/aggregate-ipv4-10k.txt'),
+                'as209242': () => fetchIPListFromURL('https://zip.proxynova.com/stats/as209242/aggregate-ipv4-10k.txt'),
+                'reverse-proxy': () => fetchReverseProxyList(port)
+            };
+
+            const fetchFn = ipLists[ipLibrary];
+            if (!fetchFn) {
+                console.error(`[انتخاب آنلاین] کتابخانه IP ناشناخته: ${ipLibrary}`);
+                return [];
+            }
+
+            return await fetchFn();
+        }
+
+        async function fetchIPListFromURL(url) {
+            console.log(`[انتخاب آنلاین] بارگذاری لیست IP از: ${url}`);
+            const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+            const text = await response.text();
+            const ips = text.split('\n').map(ip => ip.trim()).filter(ip => ip && !ip.startsWith('#'));
+            console.log(`[انتخاب آنلاین] ${ips.length} IP از URL بارگذاری شد`);
+            return ips;
+        }
+
+        async function fetchCMList(port) {
+            console.log('[انتخاب آنلاین] تولید لیست CM (لیست مرتب)...');
+            const ips = [];
+            const cfRanges = [
+                { start: 104, end: 104, mask: 16 },
+                { start: 172, end: 172, mask: 16 },
+                { start: 198, end: 198, mask: 16 }
+            ];
+
+            for (const range of cfRanges) {
+                for (let i = 0; i < 256; i++) {
+                    for (let j = 1; j < 255; j++) {
+                        ips.push(`${range.start}.${i}.${j}.${port % 255 || 1}`);
+                    }
+                }
+            }
+
+            console.log(`[انتخاب آنلاین] ${ips.length} IP از CM List تولید شد`);
+            return ips.slice(0, 512);
+        }
+
+        async function fetchReverseProxyList(port) {
+            console.log('[انتخاب آنلاین] تولید لیست Proxy معکوس...');
+            const ips = [];
+            const ports = [443, 2053, 2083, 2087, 2096, 8443];
+
+            for (let i = 0; i < 512; i++) {
+                const p = ports[i % ports.length];
+                ips.push(`162.159.${Math.floor(i / 256)}.${i % 256}:${p}`);
+            }
+
+            return ips;
+        }
+
+        async function testIPsConcurrent(ips, progressFill, progressText, concurrency) {
+            console.log(`[انتخاب آنلاین] شروع تست همزمان - IP: ${ips.length}, رشته: ${concurrency}`);
+            const results = [];
+            let completed = 0;
+            let successCount = 0;
+            let failCount = 0;
+            const chunkSize = Math.ceil(ips.length / 100);
+
+            const batches = [];
+            for (let i = 0; i < ips.length; i += chunkSize) {
+                batches.push(ips.slice(i, i + chunkSize));
+            }
+
+            for (const batch of batches) {
+                const promises = batch.map(async (ip) => {
+                    try {
+                        const latency = await testIPLatency(ip);
+                        completed++;
+                        if (latency !== null && latency < 1000) {
+                            successCount++;
+                            results.push({ ip, latency });
+                        } else {
+                            failCount++;
+                        }
+                    } catch (error) {
+                        completed++;
+                        failCount++;
+                    }
+
+                    const percent = ((completed / ips.length) * 100).toFixed(2);
+                    progressFill.style.width = percent + '%';
+                    progressText.textContent = `${completed}/${ips.length} (${percent}%) - موفق: ${successCount}, ناموفق: ${failCount}`;
+                });
+
+                await Promise.all(promises);
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+
+            console.log(`[انتخاب آنلاین] تست تکمیل - موفق: ${successCount}, ناموفق: ${failCount}`);
+            return results.sort((a, b) => a.latency - b.latency);
+        }
+
+        async function testIPLatency(ip) {
+            const start = performance.now();
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 3000);
+
+                const response = await fetch(`https://${ip}/__down`, {
+                    signal: controller.signal,
+                    cache: 'no-store'
+                });
+
+                clearTimeout(timeout);
+
+                if (response.ok) {
+                    return performance.now() - start;
+                }
+                return null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function classifyResults(results) {
+            console.log('[انتخاب آنلاین] دسته‌بندی نتایج...');
+            optimizeResults = {
+                'همه': results.slice(0, 100),
+                'کمتر از 100ms': results.filter(r => r.latency < 100).slice(0, 50),
+                '100-200ms': results.filter(r => r.latency >= 100 && r.latency < 200).slice(0, 50),
+                '200-300ms': results.filter(r => r.latency >= 200 && r.latency < 300).slice(0, 50),
+                'بیشتر از 300ms': results.filter(r => r.latency >= 300).slice(0, 50)
+            };
+
+            console.log('[انتخاب آنلاین] نتایج دسته‌بندی شد:', Object.keys(optimizeResults).map(k => `${k}: ${optimizeResults[k].length}`).join(', '));
+        }
+
+        function displayResults() {
+            console.log('[انتخاب آنلاین] نمایش نتایج...');
+
+            const tabsContainer = document.getElementById('optimizeResultsTabs');
+            const contentContainer = document.getElementById('optimizeResultsContent');
+
+            tabsContainer.innerHTML = '';
+            contentContainer.innerHTML = '';
+
+            Object.keys(optimizeResults).forEach((category, index) => {
+                const tab = document.createElement('button');
+                tab.className = 'optimize-tab' + (index === 0 ? ' active' : '');
+                tab.textContent = `${category} (${optimizeResults[category].length})`;
+                tab.onclick = () => switchOptimizeTab(category, tab);
+                tabsContainer.appendChild(tab);
+            });
+
+            tabsContainer.classList.remove('hidden-section');
+            contentContainer.classList.remove('hidden-section');
+
+            if (optimizeResults['همه'].length > 0) {
+                contentContainer.innerHTML = optimizeResults['همه'].map(r =>
+                    `<div class="optimize-result-item">${r.ip} - ${r.latency.toFixed(0)}ms</div>`
+                ).join('');
+            } else {
+                contentContainer.innerHTML = '<div class="optimize-result-item">نتیجه‌ای یافت نشد</div>';
+            }
+
+            document.getElementById('btnSaveOverride').disabled = optimizeResults['همه'].length === 0;
+            document.getElementById('btnSaveAppend').disabled = optimizeResults['همه'].length === 0;
+
+            console.log('[انتخاب آنلاین] نمایش نتایج تکمیل شد');
+        }
+
+        function switchOptimizeTab(category, tabElement) {
+            console.log(`[انتخاب آنلاین] تغییر تب: ${category}`);
+
+            document.querySelectorAll('.optimize-tab').forEach(t => t.classList.remove('active'));
+            tabElement.classList.add('active');
+
+            const contentContainer = document.getElementById('optimizeResultsContent');
+            if (optimizeResults[category].length > 0) {
+                contentContainer.innerHTML = optimizeResults[category].map(r =>
+                    `<div class="optimize-result-item">${r.ip} - ${r.latency.toFixed(0)}ms</div>`
+                ).join('');
+            } else {
+                contentContainer.innerHTML = '<div class="optimize-result-item">نتیجه‌ای در این دسته یافت نشد</div>';
+            }
+        }
+
+        async function saveOptimizeResults(mode) {
+            console.log(`[انتخاب آنلاین] ذخیره نتایج - حالت: ${mode}`);
+
+            const top16 = optimizeResults['همه'].slice(0, 16);
+            if (top16.length === 0) {
+                showToast('نتیجه‌ای برای ذخیره وجود ندارد', 'error');
+                return;
+            }
+
+            const newIPs = top16.map(r => r.ip).join('\n');
+            const customIPsTextarea = document.getElementById('customIPs');
+
+            if (mode === 'override') {
+                customIPsTextarea.value = newIPs;
+                showToast(`✅ ${top16.length} IP با موفقیت جایگزین شد`, 'success');
+            } else {
+                const currentValue = customIPsTextarea.value.trim();
+                customIPsTextarea.value = currentValue ? currentValue + '\n' + newIPs : newIPs;
+                showToast(`✅ ${top16.length} IP با موفقیت اضافه شد`, 'success');
+            }
+
+            if (customIPsTextarea._refreshLineEditor) {
+                customIPsTextarea._refreshLineEditor();
+            }
+
+            markModified('sub');
+            closeOnlineOptimizeModal();
+        }
+
+        // Line Editor initialization
+        function initLineEditor(id) {
+            const textarea = document.getElementById(id);
+            if (!textarea) return;
+
+            const container = textarea.closest('.line-editor');
+            if (!container) return;
+
+            const mirror = container.querySelector('.mirror');
+            if (!mirror) return;
+
+            function updateMirror() {
+                const lines = textarea.value.split('\n');
+                mirror.innerHTML = lines.map((line, i) =>
+                    `<span class="logical-line" data-line-number="${i + 1}">${escapeHtml(line) || ' '}</span>`
+                ).join('');
+            }
+
+            function escapeHtml(text) {
+                return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function syncScroll() {
+                mirror.scrollTop = textarea.scrollTop;
+                mirror.scrollLeft = textarea.scrollLeft;
+            }
+
+            textarea.addEventListener('input', updateMirror);
+            textarea.addEventListener('scroll', syncScroll);
+
+            textarea._refreshLineEditor = updateMirror;
+
+            updateMirror();
+        }
+
+        function toggleUserMode() {
+            document.documentElement.classList.toggle('simple-mode');
+            const btn = document.getElementById('modeToggleBtn');
+            if (document.documentElement.classList.contains('simple-mode')) {
+                btn.textContent = '🐔 حالت پیشرفته (حرفه‌ای)';
+            } else {
+                btn.textContent = '🐣 حالت ساده (مبتدی)';
+            }
+        }
+
+        function logout() {
+            if (confirm('آیا مطمئن هستید که می‌خواهید خارج شوید؟')) {
+                window.location.href = '/admin/logout';
+            }
+        }
+
+        async function resetConfigWithConfirm() {
+            if (confirm('⚠️ آیا مطمئن هستید که می‌خواهید تمام تنظیمات را بازنشانی کنید؟\nاین عمل غیرقابل بازگشت است!')) {
+                try {
+                    const response = await fetch('/admin/reset', { method: 'POST' });
+                    if (response.ok) {
+                        showToast('تنظیمات با موفقیت بازنشانی شد. در حال بارگذاری مجدد...', 'success');
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showToast('خطا در بازنشانی تنظیمات', 'error');
+                    }
+                } catch (error) {
+                    showToast('خطا در بازنشانی: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Initialize line editors on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSubscriptionConfig();
+
+            setTimeout(() => {
+                initLineEditor('customIPs');
+                initLineEditor('apiOptimizeResults');
+            }, 100);
+        });
+        
+        document.addEventListener('click', function(e) {
+            const toggle = e.target.closest('.nav-dropdown-toggle');
+            if (toggle) {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.closest('.nav-dropdown');
+                dropdown.classList.toggle('open');
+            }
+        });
+
+        function showDevToast(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const toast = document.getElementById('toast') || document.createElement('div');
+            toast.id = 'toast';
+            toast.className = 'toast';
+            toast.textContent = '🚧 این بخش در دست توسعه است';
+            toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:#f59e0b;color:white;padding:12px 24px;border-radius:50px;font-weight:600;opacity:0;transition:all 0.3s;z-index:9999;';
+            if (!document.getElementById('toast')) document.body.appendChild(toast);
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
