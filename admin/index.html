@@ -7844,10 +7844,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 <div class="form-group subapi-form-group">
                     <label>آدرس UsageAPI</label>
                     <input type="text" id="cloudflareUsageAPI"
-                        placeholder="https://usagepanel.pages.dev/usage.json?token=4941477918857b30d8234ac19441ebb2">
-                    <small style="font-size: 12px; color: #9ca3af; margin-top: 6px; display: block;">💡 پشتیبانی از تجمیع چند حساب، می‌توانید با استقرار پروژه <a
-                            href="https://github.com/cmliu/CF-Workers-UsagePanel" target="_blank" rel="noopener"
-                            style="color: #3b82f6; text-decoration: none;">UsagePanel</a> آدرس UsageAPI را دریافت کنید</small>
+                        placeholder="https://usagepanel.pages.dev/usage.json?token=xxxxx">
                 </div>
             </div>
 
@@ -10648,7 +10645,8 @@ container.classList.add('show');
 
             // اگر پورت مشخص شده وجود دارد، به IP محلی اضافه کن
             if (currentConfig.优选订阅生成?.本地IP库?.指定端口 !== undefined) {
-                updates.本地IP库.指定端口 = parseInt(document.getElementById('specifiedPort').value);
+                const portValue = document.getElementById('specifiedPort').value;
+                updates.本地IP库.指定端口 = portValue === 'all' ? 'all' : parseInt(portValue);
             }
 
             currentConfig.优选订阅生成 = { ...currentConfig.优选订阅生成, ...updates };
