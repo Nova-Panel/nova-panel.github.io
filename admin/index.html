@@ -1793,6 +1793,277 @@
             opacity: 0
         }
 
+        /* نوار منو */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            padding: 12px 20px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15), 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e2e8f0;
+        }
+
+        html.dark-mode .nav-menu {
+            background: #1e293b;
+            border-color: #334155;
+            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4);
+        }
+
+        .nav-brand-text {
+            font-weight: 900;
+            font-size: 17px;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.3));
+        }
+
+        html.dark-mode .nav-brand-text {
+            background: linear-gradient(135deg, #38bdf8, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-item {
+            padding: 6px 12px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: #fff;
+            border-color: #0ea5e9;
+        }
+
+        html.dark-mode .nav-item {
+            background: #334155;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+
+        html.dark-mode .nav-item:hover {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+            color: #fff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #fef3c7;
+            border: 2px solid #fde68a;
+            color: #d97706;
+        }
+
+        .nav-icon-btn:hover {
+            background: #f59e0b;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .nav-logout {
+            background: #dbeafe;
+            border: 2px solid #bfdbfe;
+            color: #2563eb;
+        }
+
+        .nav-logout:hover {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        html.dark-mode .nav-icon-btn {
+            background: #78350f;
+            border-color: #92400e;
+            color: #fcd34d;
+        }
+
+        html.dark-mode .nav-icon-btn:hover {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        html.dark-mode .nav-logout {
+            background: #1e3a8a;
+            border-color: #1e40af;
+            color: #93c5fd;
+        }
+
+        html.dark-mode .nav-logout:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-dropbtn {
+            padding: 6px 12px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            color: #475569;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Vazirmatn', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-dropbtn::after {
+            font-size: 8px;
+        }
+
+        .nav-dropdown:hover .nav-dropbtn {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+            color: #fff;
+        }
+
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 160px;
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 1000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+
+        .nav-dropdown-content a {
+            display: block;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin: 2px 0;
+            text-decoration: none;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-dropdown-content a:hover {
+            background: #0ea5e9;
+            color: #fff;
+        }
+
+        html.dark-mode .nav-dropbtn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        html.dark-mode .nav-dropdown-content {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        html.dark-mode .nav-dropdown-content a {
+            color: #94a3b8;
+        }
+
+html.dark-mode .nav-dropdown-content a:hover {
+            background: #0ea5e9;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 6px;
+                padding: 10px;
+            }
+
+            .nav-item, .nav-dropbtn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
         .page-wrapper {
             justify-content: flex-start;
             align-items: flex-start
@@ -1811,15 +2082,7 @@
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            background: #ffffff;
-            padding: 25px 30px;
-            border-radius: 16px;
-            border-top: 4px solid;
-            border-image: linear-gradient(90deg, #0ea5e9 0, #8b5cf6 50%, #0ea5e9 100%) 1
+            display: none;
         }
 
         .header-title h1 {
@@ -1885,7 +2148,7 @@
 
         /* مخفی کردن ماژول اطلاعات شبکه */
         #network-module {
-            display: none !important;
+            display: block !important;
         }
 
         .module-content {
@@ -1897,8 +2160,8 @@
         }
 
         .module.collapsed .module-content {
-            max-height: 0;
-            opacity: 0
+            max-height: 2000px;
+            opacity: 1
         }
 
         .module .form-group,
@@ -2825,6 +3088,22 @@
             display: none;
         }
 
+        /* استایل کانتینرهای صفحه */
+        .page-container {
+            display: none;
+        }
+        .page-container.active {
+            display: block;
+        }
+
+        /* ماژول‌های هر صفحه */
+        .module[data-page] {
+            display: none;
+        }
+        .module[data-page].active {
+            display: block;
+        }
+
         /* حالت ساده - مخفی کردن ماژول پیشرفته */
         .advanced-module {
             transition: opacity 0.4s ease-in-out, max-height 0.5s ease-in-out, transform 0.4s ease-in-out, margin 0.5s ease-in-out, padding 0.5s ease-in-out, border-width 0.5s ease-in-out;
@@ -2835,15 +3114,15 @@
         }
 
         .simple-mode .advanced-module {
-            opacity: 0;
-            max-height: 0;
-            transform: scaleY(0.95);
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            border-width: 0;
-            pointer-events: none;
+            opacity: 1;
+            max-height: none;
+            transform: scaleY(1);
+            margin-top: inherit;
+            margin-bottom: inherit;
+            padding-top: inherit;
+            padding-bottom: inherit;
+            border-width: inherit;
+            pointer-events: auto;
         }
 
         /* استایل بخش پیکربندی Cloudflare */
@@ -5519,21 +5798,46 @@
             <div class="success-message" id="successMsg"></div>
             <div class="error-message" id="errorMsg"></div>
 
-            <div class="header">
-                <div class="header-title">
-                    <h1 id="pageTitle">در حال بارگذاری...</h1>
+            <!-- نوار منو -->
+            <div class="nav-menu">
+                <div class="nav-brand">
+                    <div class="nav-logo">N</div>
+                    <span class="nav-brand-text" id="pageTitle">Nova Proxy</span>
                 </div>
-                <div class="header-buttons">
-                    <button type="button" class="btn btn-mode-toggle" id="modeToggleBtn" onclick="toggleUserMode()">🐣
-                        حالت ساده (مبتدی)</button>
-                    <button type="button" class="btn btn-danger btn-reset"
-                        onclick="resetConfigWithConfirm()">⚠️ بازنشانی تنظیمات</button>
-                    <button type="button" class="btn btn-primary" onclick="logout()">👋 خروج</button>
+                <div class="nav-items">
+                    <a href="#" class="nav-item active" onclick="switchPage('dashboard'); return false;">🏠 داشبورد</a>
+                    <div class="nav-dropdown">
+                        <button class="nav-dropbtn">⚙️ کانفیگ‌ها ▾</button>
+                        <div class="nav-dropdown-content">
+                            <a href="#" onclick="switchPage('subscriptions'); return false;">🔗 لینک‌های اشتراک</a>
+                            <a href="#" onclick="switchPage('config'); return false;">⚙️ تنظیمات کانفیگ</a>
+                            <a href="#" onclick="switchPage('core'); return false;">🔧 مدیریت هسته</a>
+                            <a href="#" onclick="switchPage('doh'); return false;">🔒 پروکسی DoH</a>
+                            <a href="#" onclick="switchPage('wireguard'); return false;">🔐 وایرگارد</a>
+                        </div>
+                    </div>
+                    <div class="nav-dropdown">
+                        <button class="nav-dropbtn">⚙️ تنظیمات ▾</button>
+                        <div class="nav-dropdown-content">
+                            <a href="#" onclick="switchPage('network'); return false;">🌐 شبکه</a>
+                            <a href="#" onclick="switchPage('general'); return false;">⚙️ عمومی</a>
+                            <a href="#" onclick="switchPage('telegram'); return false;">📱 تلگرام</a>
+                            <a href="#" onclick="switchPage('logs'); return false;">📋 لاگ‌ها</a>
+                        </div>
+                    </div>
+                    <a href="#" class="nav-item" onclick="switchPage('bestip'); return false;">⭐ ای‌پی برگزیده</a>
+                    <a href="#" class="nav-item" onclick="switchPage('edit'); return false;">📝 ویرایش</a>
+                </div>
+                <div class="nav-actions">
+                    <button type="button" class="nav-icon-btn" id="themeToggle" title="تغییر به حالت روز" onclick="toggleTheme()">🌙</button>
+                    <a href="#" class="nav-icon-btn nav-reset" onclick="resetConfigWithConfirm()" title="بازنشانی تنظیمات">⚠️</a>
+                    <a href="#" class="nav-icon-btn nav-logout" onclick="logout()" title="خروج از سیستم">👋</a>
                 </div>
             </div>
 
+            <!-- صفحه داشبورد: آمار Cloudflare و شبکه -->
             <!-- ماژول آمار استفاده Cloudflare Workers/Pages -->
-            <div class="module cf-usage-module collapsed" id="cfUsageModule">
+            <div class="module cf-usage-module" id="cfUsageModule" data-page="dashboard">
                 <div class="module-title" onclick="toggleModule(this)">
                     آمار درخواست‌های Workers/Pages
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5584,8 +5888,87 @@
                 </div>
             </div>
 
+            <!-- ماژول داشبورد: سه ستون + ساعت زیرش -->
+            <div class="module" data-page="dashboard">
+                <div class="module-title">
+                    📅 ⚡ 💻 داشبورد
+                </div>
+                <div class="module-content">
+                    <!-- سه ستون -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        
+                        <!-- تقویم شمسی -->
+                        <div style="text-align: center; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #0ea5e9; margin-bottom: 5px;" id="persianMonth">-</div>
+                            <div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 12px;" id="persianYear">-</div>
+                            <div id="persianCalendarGrid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;"></div>
+                        </div>
+                        
+                        <!-- دسترسی سریع -->
+                        <div style="display: flex; flex-direction: column; gap: 8px; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #6b7280; margin-bottom: 5px;">⚡ دسترسی سریع</div>
+                            <a href="#" onclick="switchPage('subscriptions'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
+                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; font-size: 0.9rem;">🔗</div>
+                                <span style="font-size: 0.85rem; font-weight: 500;">اشتراک</span>
+                            </a>
+                            <a href="#" onclick="switchPage('config'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
+                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; font-size: 0.9rem;">⚙️</div>
+                                <span style="font-size: 0.85rem; font-weight: 500;">کانفیگ</span>
+                            </a>
+                            <a href="#" onclick="switchPage('network'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
+                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; font-size: 0.9rem;">🌐</div>
+                                <span style="font-size: 0.85rem; font-weight: 500;">شبکه</span>
+                            </a>
+                            <a href="#" onclick="switchPage('telegram'); return false;" style="display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer;">
+                                <div style="width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; font-size: 0.9rem;">📱</div>
+                                <span style="font-size: 0.85rem; font-weight: 500;">تلگرام</span>
+                            </a>
+                        </div>
+                        
+                        <!-- اطلاعات سیستم -->
+                        <div style="display: flex; flex-direction: column; gap: 10px; padding: 15px; background: var(--bg-primary); border-radius: 12px; border: 2px solid var(--border-color);">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #6b7280; margin-bottom: 5px;">💻 اطلاعات سیستم</div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 8px;">
+                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">📡</div>
+                                <div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">آدرس IP</div>
+                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemIP">-</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px;">
+                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">🌍</div>
+                                <div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">موقعیت</div>
+                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemLocation">-</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 8px;">
+                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">💻</div>
+                                <div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">دستگاه</div>
+                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemDevice">-</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 8px;">
+                                <div style="width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); color: white;">🌐</div>
+                                <div>
+                                    <div style="font-size: 0.7rem; color: rgba(255,255,255,0.8);">مرورگر</div>
+                                    <div style="font-size: 0.85rem; font-weight: 600; color: white;" id="systemBrowser">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ساعت زیر تقویم -->
+                    <div style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 12px; padding: 15px; text-align: center;">
+                        <div id="dashboardClock" style="font-size: 2rem; font-weight: 700; color: white; font-family: 'Vazirmatn', monospace;">00:00:00</div>
+                        <div id="dashboardDate" style="font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-top: 5px;">-</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ماژول اطلاعات شبکه -->
-            <div class="module advanced-module" id="network-module">
+            <div class="module advanced-module" id="network-module" data-page="dashboard network">
                 <div class="module-title" onclick="toggleNetworkModule(this)">
                     🌍 اطلاعات شبکه فعلی
                     <svg class="collapse-icon" viewBox="0 0 24 24" style="transform: rotate(90deg);">
@@ -5665,7 +6048,7 @@
                     <small style="font-size: 12px; color: #9ca3af; margin-top: 6px; display: block;">💡 <b>تست داخلی</b>
                         توسط <b>قوانین مسیریابی</b> فیلترشکن شما تعیین می‌شود،<b>تست خارجی</b> توسط <b>IP بهینه</b> شما تعیین می‌شود، و <b>CF، Twitter، ChatGPT</b> توسط
                         <b>PROXYIP</b> شما تعیین می‌شوند.</small>
-                    <div class="module-content" style="display: none;" id="network-module-content">
+                    <div class="module-content" id="network-module-content">
                         <!-- کارت‌های تست تاخیر -->
                         <div class="latency-cards" id="latency-cards">
                             <!-- کارت‌ها از طریق JavaScript به صورت پویا تولید می‌شوند -->
@@ -5680,8 +6063,9 @@
                 </div>
             </div>
 
+            <!-- صفحه لینک‌های اشتراک -->
             <!-- ماژول 1: لینک‌های اشتراک -->
-            <div class="module">
+            <div class="module" data-page="subscriptions">
                 <div class="module-title" onclick="toggleModule(this)">
                     📋 دریافت لینک نودها
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5751,7 +6135,7 @@
             </div>
 
             <!-- ماژول 2: ویرایشگر تولید اشتراک -->
-            <div class="module collapsed">
+            <div class="module" data-page="subscriptions">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚡️ تولید اشتراک بهینه
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5833,8 +6217,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
+            <!-- صفحه تنظیمات کانفیگ -->
             <!-- ماژول 3: اطلاعات پیکربندی جزئی -->
-            <div class="module collapsed advanced-module">
+            <div class="module advanced-module" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     ⚙️ اطلاعات پیکربندی جزئی
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5898,7 +6283,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
                 --->
                     <div class="checkbox-row">
-                        <div class="form-group" id="skipVerifyGroup" style="display: none;">
+                        <div class="form-group" id="skipVerifyGroup">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="skipVerify" title="نسخه Xray v26.1.31+ از رد کردن تأیید گواهی TLS پشتیبانی نمی‌کند"
@@ -5909,7 +6294,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="randomPathGroup" style="display: none;">
+                        <div class="form-group" id="randomPathGroup">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="randomPath" title="مسیر استتار تصادفی"
@@ -5919,7 +6304,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="enable0RTTGroup" style="display: none;">
+                        <div class="form-group" id="enable0RTTGroup">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="enable0RTT" title="فعال‌سازی 0-RTT (مبتدی‌ها استفاده نکنند)"
@@ -5930,7 +6315,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="tlsFragmentGroup" style="display: none;">
+                        <div class="form-group" id="tlsFragmentGroup">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="tlsFragmentShadowrocket"
@@ -5942,7 +6327,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </div>
                         </div>
 
-                        <div class="form-group" id="tlsFragmentHappGroup" style="display: none;">
+                        <div class="form-group" id="tlsFragmentHappGroup">
                             <div class="input-wrapper">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="tlsFragmentHapp" title="قابلیت تکه‌تکه کردن TLS مخصوص Happ"
@@ -5966,7 +6351,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 3.5: تنظیمات ECH (آزمایشی) -->
-            <div class="module collapsed advanced-module" id="echModule" style="display: none;">
+            <div class="module advanced-module" id="echModule" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔐 Encrypted Client Hello
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -5987,10 +6372,10 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         </div>
                     </div>
 
-                    <div class="form-group" id="echDNSGroup" style="display: none; align-items: start;">
+                    <div class="form-group" id="echDNSGroup" style="align-items: start;">
                         <label for="echDNSSelect" style="padding-top: 10px;">سرویس DNS ECH</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="echDNSSelect" title="سرویس DNS ECH" style="display: none;"
+                            <select id="echDNSSelect" title="سرویس DNS ECH"
                                 onchange="onEchDNSSelectChange()">
                                 <option value="udp://208.67.220.220:443" data-region="بین‌المللی">
                                     udp://208.67.220.220:443 (OpenDNS) - پیشنهاد برای مبتدی‌ها!!!</option>
@@ -6020,15 +6405,15 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </select>
                             <input type="text" id="echDNSCustomInput" title="سرویس DNS ECH سفارشی"
                                 placeholder="udp://... یا https://..." onchange="onEchDNSCustomInput()"
-                                style="display: none; margin-top: 8px;">
+                                style="margin-top: 8px;">
                             <input type="hidden" id="echDNSValue">
                         </div>
                     </div>
 
-                    <div class="form-group" id="echSNIGroup" style="display: none; align-items: start;">
+                    <div class="form-group" id="echSNIGroup" style="align-items: start;">
                         <label for="echSNISelect" style="padding-top: 10px;">دامنه تجزیه ECH</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="echSNISelect" title="دامنه تجزیه ECH" style="display: none;"
+                            <select id="echSNISelect" title="دامنه تجزیه ECH"
                                 onchange="onEchSNISelectChange()">
                                 <option value="__AUTO__">دریافت خودکار (استفاده از دامنه استتار نود)</option>
                                 <option value="cloudflare-ech.com">cloudflare-ech.com (دامنه تست ECH Cloudflare) - پیشنهاد برای مبتدی‌ها!!!
@@ -6046,7 +6431,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             </select>
                             <input type="text" id="echSNICustomInput" title="دامنه تجزیه ECH سفارشی"
                                 placeholder="cloudflare-ech.com" onchange="onEchSNICustomInput()"
-                                style="display: none; margin-top: 8px;">
+                                style="margin-top: 8px;">
                             <input type="hidden" id="echSNIValue">
                         </div>
                     </div>
@@ -6066,8 +6451,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
+            <!-- صفحه مدیریت هسته -->
             <!-- ماژول 4: تنظیمات CDN Proxy -->
-            <div class="module collapsed advanced-module">
+            <div class="module advanced-module" data-page="core">
                 <div class="module-title" onclick="toggleModule(this)">
                     🌐 تنظیمات دسترسی Cloudflare CDN
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6147,21 +6533,21 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         </button>
                         <button type="button" class="btn btn-ech-help btn-path-template-config"
                             id="pathTemplateConfigBtn" onclick="showPathTemplateConfigModal()"
-                            style="display: none; padding: 10px 16px;" title="پیکربندی قالب مسیر">
+                            style="padding: 10px 16px;" title="پیکربندی قالب مسیر"
                             ⚙️ پیکربندی قالب مسیر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="getMoreProxyIPBtn"
-                            onclick="showGetMoreProxyIPModal()" style="display: none; padding: 10px 16px;"
+                            onclick="showGetMoreProxyIPModal()" style="padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست ProxyIP">
                             🗺️ دریافت PROXYIP بیشتر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="exploreSocks5Btn"
-                            onclick="showExploreSocks5Modal()" style="display: none; padding: 10px 16px;"
+                            onclick="showExploreSocks5Modal()" style="padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست SOCKS5">
                             🔒 دریافت SOCKS5 بیشتر
                         </button>
                         <button type="button" class="btn btn-search-proxy" id="exploreHTTPBtn"
-                            onclick="showExploreHTTPModal()" style="display: none; padding: 10px 16px;"
+                            onclick="showExploreHTTPModal()" style="padding: 10px 16px;"
                             title="انتخاب پروکسی از لیست HTTP">
                             🌐 دریافت HTTP بیشتر
                         </button>
@@ -6176,7 +6562,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 5: پیکربندی تبدیل اشتراک -->
-            <div class="module collapsed advanced-module">
+            <div class="module advanced-module" data-page="config">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔄 پیکربندی تبدیل اشتراک
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6196,12 +6582,12 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     <div class="form-group" style="align-items: start;">
                         <label for="subConfigSelect" style="padding-top: 10px;">فایل پیکربندی تبدیل اشتراک</label>
                         <div class="input-wrapper" style="flex-direction: column; align-items: stretch;">
-                            <select id="subConfigSelect" title="فایل پیکربندی تبدیل اشتراک" style="display: none;">
+                            <select id="subConfigSelect" title="فایل پیکربندی تبدیل اشتراک">
                                 <option value="">در حال بارگذاری...</option>
                             </select>
                             <input type="text" id="subConfigCustomInput" title="URL سفارشی فایل پیکربندی تبدیل اشتراک"
                                 placeholder="https://raw.githubusercontent.com/..." onchange="onSubConfigCustomInput()"
-                                style="display: none; margin-top: 8px;">
+                                style="margin-top: 8px;">
                             <input type="hidden" id="subConfig">
                         </div>
                     </div>
@@ -6227,8 +6613,9 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
+            <!-- صفحه تلگرام -->
             <!-- ماژول 6: تنظیمات اعلانات -->
-            <div class="module collapsed advanced-module">
+            <div class="module advanced-module" data-page="telegram">
                 <div class="module-title" onclick="toggleModule(this)">
                     🔔 تنظیمات اعلانات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6280,7 +6667,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             </div>
 
             <!-- ماژول 7: مشاهده تمام لاگ‌ها -->
-            <div class="module collapsed advanced-module">
+            <div class="module advanced-module" data-page="logs">
                 <div class="module-title" onclick="toggleModule(this); loadLogsOnExpand(this)">
                     📋 مشاهده لاگ‌های عملیات
                     <svg class="collapse-icon" viewBox="0 0 24 24">
@@ -6298,51 +6685,6 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </div>
             </div>
 
-            <div class="social-links">
-                <!-- دکمه تغییر تم -->
-                <button type="button" class="social-link theme-toggle" id="themeToggle" title="تغییر به حالت روز"
-                    onclick="toggleTheme()">
-                    <!-- آیکن خورشید (در حالت روز نمایش داده می‌شود) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="theme-icon sun-icon">
-                        <circle cx="12" cy="12" r="5" fill="currentColor" />
-                        <g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
-                            <line x1="12" y1="1" x2="12" y2="3" />
-                            <line x1="12" y1="21" x2="12" y2="23" />
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                            <line x1="1" y1="12" x2="3" y2="12" />
-                            <line x1="21" y1="12" x2="23" y2="12" />
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                        </g>
-                    </svg>
-                    <!-- آیکن ماه (در حالت شب نمایش داده می‌شود) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="theme-icon moon-icon">
-                        <path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                </button>
-                <!-- لینک GitHub -->
-                <a href="https://github.com/IRNova/Nova-Vless" target="_blank" rel="noopener" class="social-link"
-                    title="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385c.6.105.825-.255.825-.57c0-.285-.015-1.23-.015-2.235c-3.015.555-3.795-.735-4.035-1.41c-.135-.345-.72-1.41-1.23-1.695c-.42-.225-1.02-.78-.015-.795c.945-.015 1.62.87 1.845 1.23c1.08 1.815 2.805 1.305 3.495.99c.105-.78.42-1.305.765-1.605c-2.67-.3-5.46-1.335-5.46-5.925c0-1.305.465-2.385 1.23-3.225c-.12-.3-.54-1.53.12-3.18c0 0 1.005-.315 3.3 1.23c.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23c.66 1.65.24 2.88.12 3.18c.765.84 1.23 1.905 1.23 3.225c0 4.605-2.805 5.625-5.475 5.925c.435.375.81 1.095.81 2.22c0 1.605-.015 2.895-.015 3.3c0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" />
-                    </svg>
-                </a>
-                <!-- لینک Telegram -->
-                <a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" class="social-link" title="Telegram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="currentColor"
-                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635z" />
-                    </svg>
-                </a>
-                <!-- دکمه بازگشت به بالا -->
-                <button type="button" class="social-link" title="بازگشت به بالا" onclick="scrollToTop()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" d="M12 19V5M5 12l7-7l7 7" />
-                    </svg>
-                </button>
             </div>
         </div>
     </div>
@@ -6445,7 +6787,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     <option value="">-- در حال بارگذاری، لطفاً صبر کنید --</option>
                 </select>
             </div>
-            <div class="form-group subapi-form-group" id="customSubAPIInputGroup" style="display: none;">
+            <div class="form-group subapi-form-group" id="customSubAPIInputGroup">
                 <label>آدرس بک‌اند سفارشی</label>
                 <input type="text" id="testSubAPIInput" placeholder="آدرس بک‌اند تبدیل اشتراک را وارد کنید">
             </div>
@@ -6706,7 +7048,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 </button>
             </div>
             <!-- placeholder برای چیدمان موبایل -->
-            <div class="btn-append-results" style="display: none;"></div>
+            <div class="btn-append-results"></div>
         </div>
     </div>
     </div>
@@ -6717,7 +7059,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <button type="button" class="modal-close" onclick="closeProxyIPHelpModal()">×</button>
 
             <!-- حالت ساده -->
-            <div id="proxyIPHelpSimple" style="display: none;">
+            <div id="proxyIPHelpSimple">
                 <div class="api-docs">
                     <h2 class="section-title">🤔 چرا به حالت Proxy نیاز داریم؟ PROXYIP چیست؟</h2>
 
@@ -7192,7 +7534,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="proxyIPTemplateInput">مسیر PROXYIP</label>
-                    <div id="proxyIPTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
+                    <div id="proxyIPTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7206,7 +7548,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="socks5StandardTemplateInput">مسیر استاندارد SOCKS5</label>
-                    <div id="socks5StandardTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
+                    <div id="socks5StandardTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7220,7 +7562,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="socks5GlobalTemplateInput">مسیر سراسری SOCKS5</label>
-                    <div id="socks5GlobalTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
+                    <div id="socks5GlobalTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7234,7 +7576,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="httpStandardTemplateInput">مسیر استاندارد HTTP</label>
-                    <div id="httpStandardTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
+                    <div id="httpStandardTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -7248,7 +7590,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             <div class="form-group">
                 <div style="display: flex; align-items: center; gap: 4px;">
                     <label for="httpGlobalTemplateInput">مسیر سراسری HTTP</label>
-                    <div id="httpGlobalTemplateError" style="display: none; font-size: 12px; color: #ef4444;">placeholder
+                    <div id="httpGlobalTemplateError" style="font-size: 12px; color: #ef4444;">placeholder
                         {{IP:PORT}} وجود ندارد</div>
                 </div>
                 <div class="path-template-input-wrapper">
@@ -8716,6 +9058,11 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
         }
 
         function toggleModule(titleEl) {
+            // All modules now stay open
+            return;
+        }
+
+        function toggleModule_DISABLED(titleEl) {
             const module = titleEl.parentElement;
             const content = module.querySelector('.module-content');
 
@@ -9634,18 +9981,82 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
         // مقداردهی اولیه حالت کاربر
         function initUserMode() {
-            const userMode = localStorage.getItem('userMode') || 'simple'; // پیش‌فرض حالت ساده
             const cardContainer = document.querySelector('.card-container');
             const btn = document.getElementById('modeToggleBtn');
-
-            if (userMode === 'simple') {
+            const savedMode = localStorage.getItem('userMode');
+            
+            if (savedMode === 'simple') {
                 cardContainer.classList.add('simple-mode');
                 btn.textContent = '🚀 حالت پیشرفته (حرفه‌ای)';
-            } else {
+            } else if (savedMode === 'expert') {
                 cardContainer.classList.remove('simple-mode');
                 btn.textContent = '🐣 حالت ساده (مبتدی)';
             }
         }
+
+        // مقداردهی اولیه منو
+        function initNav() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // خواندن hash از URL و نمایش صفحه مربوطه
+        function initFromHash() {
+            let hash = window.location.hash.replace('#', '');
+            if (!hash || hash === '') hash = 'dashboard';
+            switchPage(hash);
+        }
+
+        // تابع switchPage برای صفحات
+        function switchPage(page, updateUrl = true) {
+            // مخفی کردن همه ماژول‌ها
+            document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
+            
+            // نمایش ماژول‌های صفحه مورد نظر
+            const pageModules = document.querySelectorAll('.module[data-page*="' + page + '"]');
+            if (pageModules.length > 0) {
+                pageModules.forEach(m => m.style.display = 'block');
+            } else {
+                // اگر ماژول خاصی نبود، همه رو نشون بده
+                document.querySelectorAll('.module').forEach(m => m.style.display = 'block');
+            }
+            
+            // بروزرسانی فعال بودن آیتم‌های منو
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick')?.includes(page)) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // بروزرسانی URL بدون رفرش صفحه
+            if (updateUrl) {
+                history.replaceState(null, null, '#' + page);
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        // خواندن صفحه از URL در بارگذاری اولیه
+        function initPageFromUrl() {
+            const hash = window.location.hash.slice(1);
+            const validPages = ['dashboard', 'bestip', 'edit', 'config', 'subscriptions', 'core', 'telegram', 'logs'];
+            
+            if (hash && validPages.includes(hash)) {
+                switchPage(hash, false);
+            } else {
+                switchPage('dashboard', false);
+            }
+        }
+
+        // اجرای اولیه در بارگذاری صفحه
+        document.addEventListener('DOMContentLoaded', initPageFromUrl);
 
         function showToast(message, type = 'info') {
             // حذف toast موجود
@@ -14332,21 +14743,165 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             }
         }
 
-        // پردازش دکمه "متوجه شدم! 24 ساعت دیگر نشان نده"
+// پردازش دکمه "متوجه شدم! 24 ساعت دیگر نشان نده"
         function dismissHostsMismatchNotification() {
             const cacheKey = 'hostsMismatchNotificationTime';
             const currentTime = Date.now();
-
-            // ذخیره timestamp فعلی در localStorage
             localStorage.setItem(cacheKey, currentTime.toString());
-
-            // بستن مودال
             closeHostsMismatchModal({ target: { id: 'hostsMismatchModal' } });
-
-            // نمایش toast تأیید
             showToast('🎉 24 ساعت دیگر نشان داده نخواهد شد', 'info');
         }
 
+        // ساعت و تاریخ داشبورد
+        const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+        const persianDays = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+        
+        function gregorianToJalali(gy, gm, gd) {
+            let g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            let jy = (gy <= 1600) ? 0 : 979;
+            gy = (gy <= 1600) ? gy - 621 : gy - 1600;
+            let gy2 = (gm > 2) ? (gy + 1) : gy;
+            let days = (365 * gy) + (parseInt((gy2 + 3) / 4)) - (parseInt((gy2 + 99) / 100)) + (parseInt((gy2 + 399) / 400)) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * (parseInt(days / 12053));
+            days %= 12053;
+            jy += 4 * (parseInt(days / 1461));
+            days %= 1461;
+            jy += parseInt((days - 1) / 365);
+            if (days > 365) days = (days - 1) % 365;
+            let jm = (days < 186) ? 1 + parseInt(days / 31) : 7 + parseInt((days - 186) / 30);
+            let jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
+        
+        function isLeapYear(jy) {
+            return ((jy % 4 == 0) && (jy % 100 != 0)) || (jy % 400 == 0);
+        }
+        
+        function jalaliMonthLength(jy, jm) {
+            if (jm <= 6) return 31;
+            if (jm <= 11) return 30;
+            return isLeapYear(jy) ? 30 : 29;
+        }
+        
+        function renderDashboardClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
+            const dateStr = now.toLocaleDateString('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            if (document.getElementById('dashboardClock')) {
+                document.getElementById('dashboardClock').textContent = timeStr;
+            }
+            if (document.getElementById('dashboardDate')) {
+                document.getElementById('dashboardDate').textContent = dateStr;
+            }
+            
+            const jalali = gregorianToJalali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+            const jy = jalali[0];
+            const jm = jalali[1];
+            const jd = jalali[2];
+            
+            if (document.getElementById('dashboardPersianDate')) {
+                document.getElementById('dashboardPersianDate').textContent = persianMonths[jm - 1] + ' ' + jd + '، ' + jy;
+            }
+            
+            if (document.getElementById('persianMonth')) {
+                document.getElementById('persianMonth').textContent = persianMonths[jm - 1];
+            }
+            if (document.getElementById('persianYear')) {
+                document.getElementById('persianYear').textContent = jy;
+            }
+            
+            renderPersianCalendarGrid(jy, jm, jd);
+        }
+        
+        function renderPersianCalendarGrid(jy, jm, jd) {
+            const grid = document.getElementById('persianCalendarGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            persianDays.forEach(day => {
+                const dayName = document.createElement('div');
+                dayName.style.cssText = 'font-size: 0.7rem; font-weight: 600; color: #6b7280; padding: 4px 0;';
+                dayName.textContent = day;
+                grid.appendChild(dayName);
+            });
+            
+            const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            const dayOfWeek = firstDayOfMonth.getDay();
+            
+            const prevMonthDays = jm > 1 ? jalaliMonthLength(jy, jm - 1) : jalaliMonthLength(jy - 1, 12);
+            for (let i = dayOfWeek - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.style.cssText = 'font-size: 0.8rem; color: #cbd5e1;';
+                day.textContent = prevMonthDays - i;
+                grid.appendChild(day);
+            }
+            
+            const monthLength = jalaliMonthLength(jy, jm);
+            for (let i = 1; i <= monthLength; i++) {
+                const day = document.createElement('div');
+                day.style.cssText = 'font-size: 0.8rem; font-weight: 500; padding: 4px; border-radius: 6px;';
+                day.textContent = i;
+                if (i === jd) {
+                    day.style.background = '#ef4444';
+                    day.style.color = 'white';
+                    day.style.fontWeight = '700';
+                } else {
+                    day.style.background = '#f1f5f9';
+                }
+                grid.appendChild(day);
+            }
+            
+            const totalCells = 42;
+            const filledCells = dayOfWeek + monthLength;
+            const remainingCells = totalCells - filledCells;
+            for (let i = 1; i <= remainingCells; i++) {
+                const day = document.createElement('div');
+                day.style.cssText = 'font-size: 0.8rem; color: #cbd5e1;';
+                day.textContent = i;
+                grid.appendChild(day);
+            }
+        }
+        
+        function updateSystemInfo() {
+            const ua = navigator.userAgent;
+            let browser = 'نامشخص';
+            let device = 'دسکتاپ';
+            
+            if (ua.includes('Firefox')) browser = 'Firefox';
+            else if (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'Chrome';
+            else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari';
+            else if (ua.includes('Edg')) browser = 'Edge';
+            else if (ua.includes('Opera') || ua.includes('OPR')) browser = 'Opera';
+            
+            if (ua.includes('Mobile') || ua.includes('Android') || ua.includes('iPhone')) device = 'موبایل';
+            else if (ua.includes('Tablet') || ua.includes('iPad')) device = 'تبلت';
+            
+            const countryFlags = { 'IR': '🇮🇷', 'US': '🇺🇸', 'UK': '🇬🇧', 'DE': '🇩🇪', 'FR': '🇫🇷' };
+            
+            if (document.getElementById('systemIP')) {
+                document.getElementById('systemIP').textContent = '-';
+            }
+            if (document.getElementById('systemLocation')) {
+                document.getElementById('systemLocation').textContent = '🌍 -';
+            }
+            if (document.getElementById('systemDevice')) {
+                document.getElementById('systemDevice').textContent = device;
+            }
+            if (document.getElementById('systemBrowser')) {
+                document.getElementById('systemBrowser').textContent = browser;
+            }
+        }
+        
+        // Initialize
+        renderDashboardClock();
+        updateSystemInfo();
+        setInterval(renderDashboardClock, 1000);
+        
+        // Initialize on load
+        initFromHash();
+        
     </script>
 </body>
 
