@@ -1,4 +1,4 @@
-# پنل Nova-Vless
+# پنل Nova Proxy
 
 > ⚡ پنل مدیریت VLESS برای Cloudflare Workers
 
@@ -163,7 +163,7 @@ SFSD/
   "ECH": false,
   "优选订阅生成": {
     "local": true,
-    "SUBNAME": "Nova-Vless"
+    "SUBNAME": "Nova Proxy"
   }
 }
 ```
@@ -215,5 +215,5 @@ SOCKS5=username:password@host:port
 ---
 
 <p align="center">
-  <a href="https://github.com/IRNova/Nova-Vless">🌟 Star us on GitHub</a>
+  <a href="https://github.com/IRNova/Nova Proxy">🌟 Star us on GitHub</a>
 </p>

@@ -6858,7 +6858,7 @@ www.visa.cn#دامنه بهینه
 [2606:4700::]:2053#IPv6
 
 مثال نودهای دیگر:
-vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=tls&type=ws&host=nova-panel.github.io&path=%2F#Nova-Vless"
+vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=tls&type=ws&host=nova-panel.github.io&path=%2F#Nova Proxy"
                                     onchange="markModified('sub')"></textarea>
                             </div>
                         </div>
@@ -7386,6 +7386,14 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         <p>یک پنل مدیریت پیشرفته برای پروکسی مبتنی بر Cloudflare Workers با امکانات کامل مدیریت اشتراک، نود، پروکسی و تبدیل</p>
                     </div>
 
+                    <!-- Install Guide -->
+                    <div style="text-align:center;margin:24px 0 8px;animation:fadeIn .5s ease-out .3s backwards;">
+                        <a href="/install" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(6,182,212,.3);transition:all .25s ease;">
+                            <i class="ri-book-open-line"></i> راهنمای راه‌اندازی
+                            <i class="ri-external-link-line" style="font-size:13px;"></i>
+                        </a>
+                    </div>
+
                     <!-- Grid -->
                     <div class="about-grid">
                         <!-- Developer -->
@@ -7393,7 +7401,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             <h3 class="about-card-title"><i class="ri-code-line"></i> توسعه‌دهنده</h3>
                             <p style="margin:0 0 16px;font-size:14px;color:#64748b;"><strong>Nova Team</strong></p>
                             <div>
-                                <a href="https://github.com/IRNova/Nova-Vless" target="_blank" rel="noopener" class="about-link-item">
+                                <a href="https://github.com/IRNova/Nova Proxy" target="_blank" rel="noopener" class="about-link-item">
                                     <div class="about-link-icon github">
                                         <i class="ri-github-fill"></i>
                                     </div>
@@ -7959,7 +7967,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         <strong>ساده‌ترین توضیح:</strong><br><br>
 
                         <strong>🚀 مشکل چیست:</strong><br>
-                        سرویس Nova-Vless ما روی Cloudflare Workers مستقر است. اما Cloudflare محدودیتی دارد - Workers آن‌ها نمی‌توانند مستقیماً به سرویس‌های خود Cloudflare دسترسی داشته باشند.<br><b>مثل اینکه Cloudflare نمی‌تواند خودش را در آینه ببیند.</b><br><br>
+                        سرویس Nova Proxy ما روی Cloudflare Workers مستقر است. اما Cloudflare محدودیتی دارد - Workers آن‌ها نمی‌توانند مستقیماً به سرویس‌های خود Cloudflare دسترسی داشته باشند.<br><b>مثل اینکه Cloudflare نمی‌تواند خودش را در آینه ببیند.</b><br><br>
 
                         <strong><i class="ri-lightbulb-line"></i> راه‌حل:</strong><br>
                         برای حل این مشکل، نیاز به سرورهای خارجی (ProxyIP، SOCKS5 یا HTTP) به عنوان «پل» داریم، تا از طریق این سرورهای شخص ثالث به سرویس‌های Cloudflare دسترسی پیدا کنیم.<br><b>مثل اینکه یک آینه (ProxyIP/SOCKS5/HTTP) پیدا کرده‌ایم تا Cloudflare بتواند خودش را در آن ببیند.</b><br><br>
@@ -7996,7 +8004,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     </p>
 
                     <p style="margin-bottom: 16px; line-height: 1.8; color: var(--text-secondary);">
-                        <b>Nova-Vless</b> ما یک سرویس Proxy روی Cloudflare Workers است. طبق سیاست‌های محدودکننده Cloudflare Workers،
+                        <b>Nova Proxy</b> ما یک سرویس Proxy روی Cloudflare Workers است. طبق سیاست‌های محدودکننده Cloudflare Workers،
                         نودهای Workers نمی‌توانند مستقیماً به محدوده IPهای Cloudflare متصل شوند. این یعنی:
                     </p>
                     <ul style="margin: 12px 0 16px; padding-left: 20px; line-height: 1.8;">
@@ -9134,7 +9142,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 var ls = document.getElementById('authLoadingScreen');
                 if (ls) ls.style.display = 'none';
                 renderUI();
-                document.title = `${currentConfig.优选订阅生成?.SUBNAME || 'Nova-Vless'} صفحه تنظیمات - پنل مدیریت`;
+                document.title = `${currentConfig.优选订阅生成?.SUBNAME || 'Nova Proxy'} صفحه تنظیمات - پنل مدیریت`;
             } catch (error) {
                 if (redirectOnFail !== false) {
                     window.location.href = '/login';
@@ -9146,7 +9154,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
         function renderUI() {
             // عنوان
-            var pt = (currentConfig.优选订阅生成?.SUBNAME || 'Nova-Vless') + ' صفحه تنظیمات';
+            var pt = (currentConfig.优选订阅生成?.SUBNAME || 'Nova Proxy') + ' صفحه تنظیمات';
             document.getElementById('pageTitle').textContent = pt;
             window._originalPageTitle = pt;
 
@@ -9460,23 +9468,11 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             dateEl.textContent = now.toLocaleDateString('fa-IR',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
         }
 
-        function initDashboard() {
+        async function initDashboard() {
             renderCalendar();
             updateClock();
             setInterval(updateClock, 1000);
-            // System info
-            var ipEl = document.getElementById('overseas-ip');
-            var countryEl = document.getElementById('overseas-country');
-            if(ipEl && ipEl.textContent !== '-') {
-                document.getElementById('sysIP').textContent = ipEl.textContent;
-            } else {
-                var ipip = document.getElementById('ipip-ip');
-                if(ipip) document.getElementById('sysIP').textContent = ipip.textContent || '-';
-            }
-            if(countryEl) {
-                document.getElementById('sysLocation').textContent = countryEl.textContent;
-            }
-            // Device
+            // Device & Browser (always from client)
             var ua = navigator.userAgent;
             var device = 'کامپیوتر';
             if(/mobile|android|iphone|ipad/i.test(ua)) device = 'موبایل';
@@ -9489,34 +9485,98 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             else if(ua.includes('Edge')) browser = 'اج';
             else if(ua.includes('Opera')) browser = 'اپرا';
             document.getElementById('sysBrowser').textContent = browser;
-            // Connection status
-            var connBadge = document.getElementById('connBadge');
-            var connText = document.getElementById('connBadgeText');
-            if(ipEl && ipEl.textContent !== '-' && ipEl.textContent !== 'در حال بارگذاری...') {
-                connBadge.className = 'conn-badge connected';
-                connText.textContent = 'متصل';
+            // Fetch system info from worker
+            try {
+                const resp = await fetch('/admin/system.json?_t=' + Date.now(), { cache: 'no-store' });
+                if (resp.ok) {
+                    const data = await resp.json();
+                    document.getElementById('sysIP').textContent = data.ip || '-';
+                    var locParts = [];
+                    if (data.city) locParts.push(data.city);
+                    if (data.region) locParts.push(data.region);
+                    if (data.country) locParts.push(data.country);
+                    document.getElementById('sysLocation').textContent = locParts.join(' - ') || data.country || '-';
+                    var subEl = document.getElementById('sysCity');
+                    if (subEl) {
+                        var subParts = [];
+                        if (data.asOrganization) subParts.push(data.asOrganization);
+                        if (data.asn) subParts.push('AS' + data.asn);
+                        if (data.colo) subParts.push(data.colo);
+                        subEl.textContent = subParts.join(' | ') || '-';
+                    }
+                    // KV status from worker
+                    var kvBadge = document.getElementById('kvBadge');
+                    var kvText = document.getElementById('kvBadgeText');
+                    var sysKV = document.getElementById('sysKV');
+                    if (data.kvOk) {
+                        if (kvBadge) { kvBadge.className = 'conn-badge kv-ok'; kvText.textContent = 'KV فعال'; }
+                        if (sysKV) sysKV.textContent = 'فعال';
+                    } else if (data.kvConnected) {
+                        if (kvBadge) { kvBadge.className = 'conn-badge kv-warn'; kvText.textContent = 'KV متصل نیست'; }
+                        if (sysKV) sysKV.textContent = 'غیرفعال';
+                    } else {
+                        if (kvBadge) { kvBadge.className = 'conn-badge kv-err'; kvText.textContent = 'KV غیرفعال'; }
+                        if (sysKV) sysKV.textContent = 'غیرفعال';
+                    }
+                    // Connection status
+                    var connBadge = document.getElementById('connBadge');
+                    var connText = document.getElementById('connBadgeText');
+                    if (connBadge && data.ip) {
+                        connBadge.className = 'conn-badge connected';
+                        connText.textContent = 'متصل';
+                    }
+                    // Uptime from worker start time
+                    if (data.workerStartTime) {
+                        window._workerStart = data.workerStartTime;
+                    }
+                }
+            } catch (e) {
+                console.log('System info from worker failed, using client fallback', e);
+                // Fallback: try reading from network test elements
+                var ipEl = document.getElementById('overseas-ip');
+                var countryEl = document.getElementById('overseas-country');
+                if(ipEl && ipEl.textContent !== '-') {
+                    document.getElementById('sysIP').textContent = ipEl.textContent;
+                } else {
+                    var ipip = document.getElementById('ipip-ip');
+                    if(ipip) document.getElementById('sysIP').textContent = ipip.textContent || '-';
+                }
+                if(countryEl) {
+                    document.getElementById('sysLocation').textContent = countryEl.textContent;
+                }
+                var connBadge = document.getElementById('connBadge');
+                var connText = document.getElementById('connBadgeText');
+                if(ipEl && ipEl.textContent !== '-' && ipEl.textContent !== 'در حال بارگذاری...') {
+                    connBadge.className = 'conn-badge connected';
+                    connText.textContent = 'متصل';
+                }
             }
-            // KV status - check if config loaded
+            // KV status fallback (if worker endpoint didn't set it)
             var kvBadge = document.getElementById('kvBadge');
             var kvText = document.getElementById('kvBadgeText');
             var sysKV = document.getElementById('sysKV');
-            if(typeof currentConfig !== 'undefined' && currentConfig && currentConfig.LINK) {
-                kvBadge.className = 'conn-badge kv-ok';
-                kvText.textContent = 'KV فعال';
-                if(sysKV) sysKV.textContent = 'فعال';
-            } else {
-                kvBadge.className = 'conn-badge kv-err';
-                kvText.textContent = 'KV غیرفعال';
-                if(sysKV) sysKV.textContent = 'غیرفعال';
+            if (!kvBadge?.className?.includes('kv-ok') && !kvBadge?.className?.includes('kv-warn')) {
+                if(typeof currentConfig !== 'undefined' && currentConfig && currentConfig.LINK) {
+                    if (kvBadge) { kvBadge.className = 'conn-badge kv-ok'; kvText.textContent = 'KV فعال'; }
+                    if(sysKV) sysKV.textContent = 'فعال';
+                } else {
+                    if (kvBadge) { kvBadge.className = 'conn-badge kv-err'; kvText.textContent = 'KV غیرفعال'; }
+                    if(sysKV) sysKV.textContent = 'غیرفعال';
+                }
             }
-            // Uptime - since config load
-            if(window._startTime) {
-                var elapsed = Math.floor((Date.now() - window._startTime)/1000);
-                var h = Math.floor(elapsed/3600);
-                var m = Math.floor((elapsed%3600)/60);
-                var s = elapsed%60;
-                document.getElementById('sysUptime').textContent = h+'h '+m+'m '+s+'s';
+            // Uptime - use worker start if available, else page load
+            function updateUptime() {
+                var start = window._workerStart || window._startTime;
+                if(start) {
+                    var elapsed = Math.floor((Date.now() - start)/1000);
+                    var h = Math.floor(elapsed/3600);
+                    var m = Math.floor((elapsed%3600)/60);
+                    var s = elapsed%60;
+                    document.getElementById('sysUptime').textContent = h+'h '+m+'m '+s+'s';
+                }
             }
+            updateUptime();
+            setInterval(updateUptime, 1000);
         }
 
         // Store start time for uptime
@@ -10631,7 +10691,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
             await saveConfigToServer('config');
             // بروزرسانی عنوان صفحه وب
-            document.title = `${currentConfig.优选订阅生成?.SUBNAME || 'Nova-Vless'} - صفحه تنظیمات پنل مدیریت`;
+            document.title = `${currentConfig.优选订阅生成?.SUBNAME || 'Nova Proxy'} - صفحه تنظیمات پنل مدیریت`;
         }
 
         async function saveEch() {
@@ -11050,7 +11110,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             // ایجاد toast جدید
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            toast.textContent = message;
+            toast.innerHTML = message;
             document.body.appendChild(toast);
 
             // انیمیشن نمایش
@@ -11306,7 +11366,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     statusEl.style.background = 'linear-gradient(135deg, #ef4444 0, #dc2626 100%)';
                     statusEl.style.padding = '16px';
                     statusEl.style.borderRadius = '8px';
-                    statusEl.innerHTML = '<i class="ri-close-circle-line"></i> <strong>نسخه backend قدیمی است</strong><br/><small style="opacity: 0.9;">لطفاً کد Nova-Vless را ارتقا دهید</small>';
+                    statusEl.innerHTML = '<i class="ri-close-circle-line"></i> <strong>نسخه backend قدیمی است</strong><br/><small style="opacity: 0.9;">لطفاً کد Nova Proxy را ارتقا دهید</small>';
                     document.getElementById('proxyConfirmBtn').disabled = true;
                     document.getElementById('proxyConfirmBtn').style.opacity = '0.5';
                 } else if (data.success === false) {
