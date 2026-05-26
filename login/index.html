@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ورود به پنل مدیریت</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css"/>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Vazirmatn',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; overflow:hidden; background:#f8fafc; color:#1e293b; }
+        @keyframes containerAppear { 0%{opacity:0;transform:translateY(24px) scale(.95)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+        @keyframes formFade { 0%{opacity:0;transform:translateY(10px)} 100%{opacity:1;transform:translateY(0)} }
+        @keyframes spin { to { transform:rotate(360deg) } }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-4px)} 20%,40%,60%,80%{transform:translateX(4px)} }
+
+        body::before { content:''; position:fixed; inset:0; background:linear-gradient(135deg,rgba(6,182,212,.03) 0,rgba(8,145,178,.06) 100%); z-index:-2; }
+        body::after { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(6,182,212,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,.04) 1px,transparent 1px); background-size:60px 60px; z-index:-1; }
+
+        .page-wrapper { position:fixed; inset:0; display:flex; justify-content:center; align-items:center; z-index:1; padding:20px; overflow-y:auto; }
+
+        .card { background:#fff; padding:36px 36px 32px; border-radius:24px; width:100%; max-width:400px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04); animation:containerAppear .7s ease-out .1s backwards; position:relative; }
+
+        .logo { display:flex; justify-content:center; margin-bottom:8px; }
+        .logo img { width:72px; height:72px; display:block; }
+
+        .page-title { font-size:22px; font-weight:700; color:#1e293b; margin:0 0 4px; letter-spacing:-.3px; animation:containerAppear .7s ease-out .25s backwards; }
+        .page-sub { font-size:13px; color:#94a3b8; margin-bottom:28px; animation:containerAppear .7s ease-out .35s backwards; }
+
+        .page-form { display:flex; flex-direction:column; gap:16px; animation:formFade .5s ease-out .5s backwards; }
+        .form-group { position:relative; text-align:right; }
+        .input-wrapper { position:relative; }
+        .input-wrapper input { width:100%; padding:14px 44px 14px 16px; border:1.5px solid #e2e8f0; border-radius:12px; font-size:15px; color:#1e293b; background:#fff; box-sizing:border-box; transition:all .25s ease; font-family:inherit; -webkit-appearance:none; appearance:none; }
+        .input-wrapper input::placeholder { color:#94a3b8; }
+        .input-wrapper input:focus { outline:0; border-color:#06b6d4; box-shadow:0 0 0 3px rgba(6,182,212,.1); }
+        .input-icon { position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:18px; pointer-events:none; transition:color .25s ease; }
+        .input-wrapper input:focus ~ .input-icon { color:#06b6d4; }
+
+        .btn { padding:14px 20px; border:0; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; transition:all .25s ease; box-sizing:border-box; -webkit-appearance:none; appearance:none; position:relative; overflow:hidden; font-family:inherit; }
+        .btn-primary { background:linear-gradient(135deg,#06b6d4,#0891b2); color:#fff; box-shadow:0 4px 14px rgba(6,182,212,.3); }
+        .btn-primary:hover { transform:translateY(-1.5px); box-shadow:0 8px 22px rgba(6,182,212,.35); }
+        .btn-primary:active { transform:translateY(0); }
+        .btn:disabled { opacity:.5; cursor:not-allowed; pointer-events:none; }
+        .btn-full-width { width:100%; }
+        .btn-loading { position:relative; color:transparent !important; }
+        .btn-loading::after { content:''; position:absolute; width:16px; height:16px; top:50%; left:50%; margin:-8px 0 0 -8px; border:2.5px solid rgba(255,255,255,.3); border-radius:50%; border-top-color:#fff; animation:spin .7s linear infinite; }
+
+        .login-error { padding:12px 16px; border-radius:12px; background:#fef2f2; border:1px solid #fecaca; color:#dc2626; font-size:13px; font-weight:500; line-height:1.5; display:flex; align-items:center; gap:8px; animation:shake .35s ease-in-out; }
+        .login-error-hidden { display:none; }
+        .login-error i { flex-shrink:0; font-size:16px; color:#ef4444; }
+
+        .footer-hint { margin-top:24px; font-size:12px; color:#94a3b8; animation:formFade .5s ease-out .7s backwards; text-align:center; }
+        .footer-hint a { color:#06b6d4; text-decoration:none; font-weight:600; transition:color .2s ease; }
+        .footer-hint a:hover { color:#0891b2; }
+
+        @media(max-width:768px) {
+            .page-wrapper { padding:16px; }
+            .card { padding:28px 24px 28px; border-radius:20px; }
+            .logo img { width:64px; height:64px; }
+            .page-title { font-size:19px; }
+            .page-sub { margin-bottom:24px; }
+        }
+        @media(max-width:480px) {
+            .card { padding:24px 20px 24px; }
+            .logo img { width:64px; height:64px; }
+            .page-title { font-size:17px; }
+            .page-sub { font-size:12px; margin-bottom:20px; }
+        }
+        @media(max-height:600px) and (orientation:landscape) {
+            .page-wrapper { align-items:flex-start; padding-top:16px; }
+            .card { padding:20px 28px; }
+            .logo img { width:48px; height:48px; }
+            .page-title { font-size:15px; }
+            .page-sub { font-size:11px; margin-bottom:14px; }
+            .page-form { gap:12px; }
+            .btn { padding:10px 16px; font-size:13px; }
+            .footer-hint { margin-top:14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer"></div>
+    <div class="bg-grid"></div>
+    <div class="blur-overlay"></div>
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="logo">
+                <img src="/admin/logo.svg" alt="Nova Panel">
+            </div>
+            <h1 class="page-title">ورود به پنل مدیریت</h1>
+            <p class="page-sub">برای دسترسی به تنظیمات، رمز عبور را وارد کنید</p>
+            <form id="loginForm" class="page-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="رمز عبور مدیر را وارد کنید" required disabled>
+                        <i class="ri-lock-line input-icon"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full-width" id="loginBtn" disabled>
+                    <i class="ri-login-box-line"></i> ورود به پنل
+                </button>
+                <div id="errorMsg" class="login-error login-error-hidden">
+                    <i class="ri-close-circle-line"></i>
+                    <span id="errorText"></span>
+                </div>
+            </form>
+            <div class="footer-hint">
+                ساخته شده توسط <a href="https://github.com/IRNova/" target="_blank" rel="noopener">گروه نوا پروکسی</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('loginBtn');
+            passwordInput.removeAttribute('disabled');
+            loginBtn.removeAttribute('disabled');
+            passwordInput.focus();
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('errorMsg');
+            const errorText = document.getElementById('errorText');
+            const passwordInput = document.getElementById('password');
+
+            errorMsg.classList.add('login-error-hidden');
+            loginBtn.disabled = true;
+            loginBtn.classList.add('btn-loading');
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'password=' + encodeURIComponent(password)
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        if (data.success) {
+                            window.location.href = '/admin';
+                        }
+                    } else {
+                        errorText.textContent = 'رمز عبور اشتباه است';
+                        errorMsg.classList.remove('login-error-hidden');
+                        passwordInput.focus();
+                        passwordInput.select();
+                    }
+                } else {
+                    errorText.textContent = 'ورود ناموفق بود، لطفاً دوباره تلاش کنید';
+                    errorMsg.classList.remove('login-error-hidden');
+                }
+            } catch (error) {
+                console.error('خطا در ورود:', error);
+                errorText.textContent = 'خطای شبکه، لطفاً اتصال خود را بررسی کنید';
+                errorMsg.classList.remove('login-error-hidden');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.classList.remove('btn-loading');
+            }
+        });
+    </script>
+</body>
+</html>
