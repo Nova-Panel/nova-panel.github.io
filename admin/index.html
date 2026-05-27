@@ -5981,7 +5981,6 @@
             border-color: rgba(239, 68, 68, 0.2);
             color: #ef4444;
         }
-        #versionBadge:hover { color: #667eea !important; }
         html.dark-mode .sidebar-footer-btn.logout-btn:hover {
             background: rgba(239, 68, 68, 0.2);
             border-color: rgba(239, 68, 68, 0.35);
@@ -6733,9 +6732,6 @@
                 <i class="ri-logout-box-r-line"></i>
                 خروج
             </button>
-            <div id="versionBadge" style="display:none;padding:6px 16px;font-size:11px;font-family:'Fira Code',monospace;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);margin-top:4px;text-align:center;cursor:pointer;" onclick="showVersionInfoModal()" title="نسخه هسته">
-                <i class="ri-code-s-slash-line" style="font-size:12px;"></i> <span id="versionValue">...</span>
-            </div>
         </div>
     </nav>
 
@@ -7166,7 +7162,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         <label for="ssMethod">روش رمزنگاری</label>
                         <select id="ssMethod" onchange="markModified('config')">
                             <option value="aes-128-gcm">aes-128-gcm (مصرف CPU کم و سرعت بالا)</option>
-                            <option value="aes-256-gcm">aes-256-gcm (در دستگاه‌های قدیمی،速度 رمزگشایی کاهش می‌یابد)</option>
+                            <option value="aes-256-gcm">aes-256-gcm (در دستگاه‌های قدیمی، سرعت رمزگشایی کاهش می‌یابد)</option>
                         </select>
                     </div>
 
@@ -7732,7 +7728,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
                     <!-- Install Guide -->
                     <div style="text-align:center;margin:24px 0 8px;animation:fadeIn .5s ease-out .3s backwards;">
-                        <a href="/install" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(6,182,212,.3);transition:all .25s ease;">
+                        <a href="javascript:switchPage('install')" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;box-shadow:0 4px 14px rgba(6,182,212,.3);transition:all .25s ease;">
                             <i class="ri-book-open-line"></i> راهنمای راه‌اندازی
                             <i class="ri-external-link-line" style="font-size:13px;"></i>
                         </a>
@@ -7799,6 +7795,30 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             <i class="ri-arrow-down-s-line toggle-icon" id="changelogToggleIcon"></i>
                         </div>
                         <div class="about-changelog-body" id="changelogBody" style="display:none;">
+                            <div class="about-version-item">
+                                <div class="about-version-header" onclick="toggleVersion(this)">
+                                    <span class="version-title">نسخه 2.1 — قابلیت‌های جدید</span>
+                                    <i class="ri-arrow-down-s-line version-icon"></i>
+                                </div>
+                                <div class="about-version-body" style="display:none;">
+
+                                    <div class="change-section">── پروکسی ──</div>
+                                    <div class="change-item"><span class="dot">•</span> پشتیبانی از پروکسی HTTPS با تأیید در دسترس بودن</div>
+                                    <div class="change-item"><span class="dot">•</span> پشتیبانی از پروکسی TURN با تأیید در دسترس بودن</div>
+                                    <div class="change-item"><span class="dot">•</span> پشتیبانی از پروکسی SSTP با تأیید در دسترس بودن</div>
+                                    <div class="change-item"><span class="dot">•</span> پراکسی زنجیره‌ای (Chain Proxy) با مودال مدیریت و تأیید</div>
+
+                                    <div class="change-section">── پروتکل‌های انتقال ──</div>
+                                    <div class="change-item"><span class="dot">•</span> پشتیبانی از Shadowsocks (SS) با انتخاب روش رمزنگاری و TLS</div>
+                                    <div class="change-item"><span class="dot">•</span> پشتیبانی از gRPC با انتخاب حالت (gun/multi) و User-Agent</div>
+                                    <div class="change-item"><span class="dot">•</span> تنظیمات TLS Fragment برای کلاینت‌های Shadowrocket و Happ</div>
+                                    <div class="change-item"><span class="dot">•</span> گزینه فعال‌سازی 0-RTT</div>
+
+                                    <div class="change-section">── رابط کاربری ──</div>
+                                    <div class="change-item"><span class="dot">•</span> نمایش نسخه هسته در سایدبار با قابلیت کلیک</div>
+
+                                </div>
+                            </div>
                             <div class="about-version-item">
                                 <div class="about-version-header" onclick="toggleVersion(this)">
                                     <span class="version-title">نسخه 2.0 — Nova Panel</span>
@@ -7870,6 +7890,61 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                         <p>© 2026 Nova Tunnel. تمام حقوق محفوظ است.</p>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- Page: Install -->
+            <div class="page-content" data-page="install">
+                <div class="about-page">
+                    <div class="about-hero">
+                        <h1><i class="ri-book-open-line"></i> راهنمای راه‌اندازی</h1>
+                        <p>مراحل نصب و استقرار Nova Tunnel روی Cloudflare Workers</p>
+                    </div>
+
+                    <div class="about-grid" style="grid-template-columns:1fr;">
+                        <div class="about-card">
+                            <h3 class="about-card-title"><i class="ri-cloud-line"></i> مرحله ۱: استقرار روی Cloudflare Workers</h3>
+                            <p style="margin:0 0 12px;font-size:14px;color:#64748b;line-height:1.8;">
+                                ۱. فایل <code>good.js</code> را از ریپازیتوری دانلود کنید.<br>
+                                ۲. وارد <a href="https://dash.cloudflare.com/" target="_blank" rel="noopener" style="color:var(--primary-color);">Cloudflare Dashboard</a> شوید.<br>
+                                ۳. به بخش Workers & Pages بروید و یک Worker جدید بسازید.<br>
+                                ۴. محتوای <code>good.js</code> را در ویرایشگر Worker کپی کنید.<br>
+                                ۵. متغیرهای محیطی (UUID و غیره) را تنظیم کنید.<br>
+                                ۶. Worker را ذخیره و استقرار دهید.
+                            </p>
+                        </div>
+                        <div class="about-card">
+                            <h3 class="about-card-title"><i class="ri-pages-line"></i> مرحله ۲: استقرار فرانت‌اند</h3>
+                            <p style="margin:0 0 12px;font-size:14px;color:#64748b;line-height:1.8;">
+                                ۱. پوشه <code>admin</code> را از ریپازیتوری دانلود کنید.<br>
+                                ۲. به Cloudflare Dashboard > Workers & Pages بروید.<br>
+                                ۳. یک Pages project جدید بسازید و به GitHub متصل کنید.<br>
+                                ۴. ریپازیتوری را انتخاب کرده و پوشه <code>admin</code> را به عنوان روت تنظیم کنید.<br>
+                                ۵. دامنه Pages (مثلاً <code>nova-panel.github.io</code>) را در Worker خود تنظیم کنید.<br>
+                                ۶. پس از استقرار، پنل از طریق دامنه Pages قابل دسترسی خواهد بود.
+                            </p>
+                        </div>
+                        <div class="about-card">
+                            <h3 class="about-card-title"><i class="ri-key-line"></i> مرحله ۳: تنظیمات اولیه</h3>
+                            <p style="margin:0 0 12px;font-size:14px;color:#64748b;line-height:1.8;">
+                                ۱. پس از ورود به پنل، به بخش Settings بروید.<br>
+                                ۲. UUID و سایر تنظیمات امنیتی را پیکربندی کنید.<br>
+                                ۳. در بخش Subscription، اشتراک خود را تنظیم کنید.<br>
+                                ۴. پروکسی مورد نظر (SOCKS5/HTTP/HTTPS/TURN/SSTP) را فعال کنید.<br>
+                                ۵. نودهای خود را در بخش Nodes مدیریت کنید.
+                            </p>
+                        </div>
+                        <div class="about-card">
+                            <h3 class="about-card-title"><i class="ri-question-line"></i> منابع مفید</h3>
+                            <p style="margin:0 0 12px;font-size:14px;color:#64748b;line-height:1.8;">
+                                <a href="https://github.com/IRNova/Nova%20Proxy" target="_blank" rel="noopener" style="color:var(--primary-color);text-decoration:none;">📦 ریپازیتوری GitHub</a><br>
+                                <a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" style="color:var(--primary-color);text-decoration:none;">✈️ کانال تلگرام</a>
+                            </p>
+                            <div style="margin-top:20px;text-align:center;">
+                                <button class="btn btn-close-api" onclick="switchPage('about')">بازگشت به درباره ما</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -8031,7 +8106,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                             یا HOST مستقیماً از دامنه <strong>*.workers.dev</strong> اختصاص داده شده استفاده کند.
                         </li>
                         <li>
-                            پورت‌های优选IP/دامنه استفاده شده باید از نوع <strong>HTTP</strong> باشند، مانند:
+                            پورت‌های IP/دامنه بهینه استفاده شده باید از نوع <strong>HTTP</strong> باشند، مانند:
                             <strong>80، 8080، 8880، 2052، 2082، 2086، 2095</strong>.
                         </li>
                     </ol>
@@ -9647,26 +9722,6 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
         }
 
         // بارگذاری نسخه هسته از سرور
-        async function loadVersionBadge() {
-            try {
-                const uuid = currentConfig?.UUID;
-                if (!uuid || !document.getElementById('versionBadge')) return;
-                const resp = await fetch(`/version?uuid=${uuid}&_t=${Date.now()}`);
-                if (!resp.ok) return;
-                const data = await resp.json();
-                if (data && data.Version) {
-                    const v = String(data.Version);
-                    const datePart = v.length >= 8 ? `${v.slice(0,4)}/${v.slice(4,6)}/${v.slice(6,8)}` : v;
-                    document.getElementById('versionValue').textContent = datePart;
-                    document.getElementById('versionBadge').style.display = 'block';
-                }
-            } catch (e) { console.log('version fetch failed', e); }
-        }
-
-        function showVersionInfoModal() {
-            switchPage('about');
-        }
-
         async function loadConfig(redirectOnFail) {
             try {
                 const response = await fetch('/admin/config.json?_t=' + Date.now(), {
@@ -9917,14 +9972,14 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             document.getElementById('emoji').checked = currentConfig.订阅转换配置?.SUBEMOJI || false;
 
             // تنظیمات اعلان پیام - سازگاری با دو ساختار کانفیگ
-            // اول فیلد TG را بخوان، اگر نبود 通知.Telegram را بخوان
+            // اول فیلد TG را بخوان، اگر نبود Notification.Telegram را بخوان
             const telegramBotToken = currentConfig.TG?.BotToken || currentConfig.通知?.Telegram?.BotToken;
             const telegramChatID = currentConfig.TG?.ChatID || currentConfig.通知?.Telegram?.ChatID;
             const telegramCheckbox = document.getElementById('telegramEnabled');
 
             // تشخیص اینکه آیا پیکربندی TG کامل است (هر دو BotToken و ChatID غیر-null و غیر رشته خالی)
             if (telegramBotToken && telegramChatID) {
-                // هر دو وجود دارند، checkbox را فعال کن، و وضعیت TG.启用 را بارگذاری کن
+                // هر دو وجود دارند، checkbox را فعال کن، و وضعیت TG.فعال را بارگذاری کن
                 telegramCheckbox.disabled = false;
                 telegramCheckbox.checked = currentConfig.TG?.启用 ?? false;
                 // دکمه "پیکربندی پارامترها" به رنگ سبز، یعنی پیکربندی شده
@@ -9954,9 +10009,6 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
 
             // بررسی اینکه آیا دامنه فعلی در آرایه HOSTS است
             checkHostsMismatch();
-
-            // بارگذاری نسخه هسته
-            loadVersionBadge();
         }
 
         // تابع نمایش میزان استفاده CF
@@ -10367,7 +10419,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 const currentFingerprint = fingerprintSelect?.value;
                 if (currentFingerprint && !supportECH.includes(currentFingerprint)) {
                     fingerprintSelect.value = 'chrome';
-                    // 同时标记详细配置模块为已修改
+                    // همزمان ماژول پیکربندی جزئی را به‌عنوان ویرایش شده علامت بزن
                     markModified('config');
                 }
             }
@@ -12472,7 +12524,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             const safeBadgeRegion = escapeMarkdownHtml(extractChainProxyCountryCode(loc) || loc || 'ناشناخته');
             const safePreferred = escapeMarkdownHtml(buildChainProxyPreferredEndpoint(preferredHost, preferredPort));
             const safeProtocol = escapeMarkdownHtml(protocol || 'socks5');
-            const safeProtocolLabel = escapeMarkdownHtml(`${protocol || 'socks5'}代理`);
+            const safeProtocolLabel = escapeMarkdownHtml(`${protocol || 'socks5'} پراکسی`);
             const safeProxyAddress = escapeMarkdownHtml(maskChainProxyAddressForDisplay(proxyAddress || ''));
             return `
                 <div class="chain-verify-card">
@@ -14522,7 +14574,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             const backupUrl = 'https://zip.cm.edu.kg/locations.json';
 
             try {
-                // استفاده از دامنه فعلی برای بارگذاری داده‌های مکان، جلوگیری از مشکل跨域
+                // استفاده از دامنه فعلی برای بارگذاری داده‌های مکان، جلوگیری از مشکل CORS
                 const url = `${window.detectDomain}/locations`;
                 console.log(`[انتخاب آنلاین] پیشرفت: بارگذاری داده‌های مکان URL=${url}`);
 
@@ -15104,7 +15156,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     const uniqueLinesSet = new Set(existingLines);
                     let addedCount = 0;
 
-                    // اضافه کردن خطوط جدید،同时 شمارش تعداد واقعی اضافه شده
+                    // اضافه کردن خطوط جدید، همزمان شمارش تعداد واقعی اضافه شده
                     newLines.forEach(line => {
                         if (!uniqueLinesSet.has(line)) {
                             uniqueLinesSet.add(line);
@@ -16149,7 +16201,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     : `${emoji}[${statusText}]${proxy.city},AS${proxy.asn},${proxy.asOrganization}`;
 
                 const disabled = !isSelectable || status.status !== 'success';
-                // ProxyIP نیاز به انتخاب پیش‌فرض ندارد، چون چندانفعلي触发 است
+                // ProxyIP نیاز به انتخاب پیش‌فرض ندارد، چون چندان فعال نیست
                 const selected = type !== 'proxyip' && isSelectable && status.status === 'success' && successfulProxies.indexOf(proxy) === 0 ? 'selected' : '';
                 return `<option value="${proxy.proxy}" ${disabled ? 'disabled' : ''} ${selected}>${label}</option>`;
             }
@@ -16713,7 +16765,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 const cleanProxy = proxyUrl.replace(protocol + '://', '');
                 const checkUrl = `/admin/check?${protocol}=${encodeURIComponent(cleanProxy)}&_t=${Date.now()}`;
 
-                // اگر از قبل终止 شده، مستقیم برگردید
+                // اگر از قبل متوقف شده، مستقیم برگردید
                 if (signal && signal.aborted) {
                     return resolve();
                 }
@@ -16844,7 +16896,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             }
         }
 
-        // بررسی اینکه آیا باید提示 عدم تطابق HOSTS نمایش داده شود
+        // بررسی اینکه آیا باید اخطار عدم تطابق HOSTS نمایش داده شود
         function shouldShowHostsMismatchNotification() {
             const cacheKey = 'hostsMismatchNotificationTime';
             const cachedTime = localStorage.getItem(cacheKey);
@@ -16862,7 +16914,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             return (currentTime - lastNotificationTime) > twentyFourHours;
         }
 
-        // نمایش提示 عدم تطابق HOSTS
+        // نمایش اخطار عدم تطابق HOSTS
         function showHostsMismatchNotification(currentHostname, hosts) {
             // پر کردن محتوای مودال
             const currentHostnameEl = document.getElementById('currentHostname');
@@ -16900,7 +16952,7 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
             }
         }
 
-        // بستن مودال提示 عدم تطابق HOSTS
+        // بستن مودال اخطار عدم تطابق HOSTS
         function closeHostsMismatchModal(event) {
             // اگر شیء رویداد وجود دارد و روی خود overlay کلیک نشده، برگردید
             if (event && event.target && event.target.id !== 'hostsMismatchModal') {
@@ -16990,7 +17042,8 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                     'notification': 'اعلان‌ها',
                     'logs': 'لاگ‌ها',
                     'settings': 'تنظیمات پنل',
-                    'about': 'درباره ما'
+                    'about': 'درباره ما',
+                    'install': 'راهنمای راه‌اندازی'
                 };
                 if (titles[pageName]) {
                     titleEl.textContent = titles[pageName];
