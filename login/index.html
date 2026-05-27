@@ -140,14 +140,11 @@
                     body: JSON.stringify({ password })
                 });
 
-                if (response.ok) {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        const data = await response.json();
-                        if (data.success) {
-                            window.location.href = '/admin';
-                        }
-                    } else {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else if (response.ok) {
+                    const data = await response.json();
+                    if (!data.success) {
                         errorText.textContent = 'رمز عبور اشتباه است';
                         errorMsg.classList.remove('login-error-hidden');
                         passwordInput.focus();
