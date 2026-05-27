@@ -7009,6 +7009,28 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group" id="dualProtocolGroup" style="display: none;">
+                            <div class="input-wrapper">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="dualProtocol" title="خروجی هم‌زمان VLESS و Trojan برای هر آدرس"
+                                        onchange="markModified('config')">
+                                    <label for="dualProtocol" class="checkbox-label"
+                                        title="خروجی هم‌زمان VLESS و Trojan برای هر آدرس">پروتکل دوگانه (VLESS + Trojan)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="ipv6Group" style="display: none;">
+                            <div class="input-wrapper">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="enableIPv6" title="افزودن آدرس‌های IPv6 به اشتراک"
+                                        onchange="markModified('config')">
+                                    <label for="enableIPv6" class="checkbox-label"
+                                        title="افزودن آدرس‌های IPv6 به اشتراک">پشتیبانی IPv6</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="module-footer">
@@ -9286,6 +9308,26 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 enable0RTTGroup.style.setProperty('display', 'none', 'important');
             }
 
+            // بررسی وجود فیلد پروتکل دوگانه
+            const dualProtocolGroup = document.getElementById('dualProtocolGroup');
+            const dualProtocolCheckbox = document.getElementById('dualProtocol');
+            if (currentConfig['双协议'] !== undefined) {
+                dualProtocolGroup.style.setProperty('display', 'flex', 'important');
+                dualProtocolCheckbox.checked = currentConfig['双协议'] || false;
+            } else {
+                dualProtocolGroup.style.setProperty('display', 'none', 'important');
+            }
+
+            // بررسی وجود فیلد IPv6
+            const ipv6Group = document.getElementById('ipv6Group');
+            const ipv6Checkbox = document.getElementById('enableIPv6');
+            if (currentConfig['IPv6'] !== undefined) {
+                ipv6Group.style.setProperty('display', 'flex', 'important');
+                ipv6Checkbox.checked = currentConfig['IPv6'] || false;
+            } else {
+                ipv6Group.style.setProperty('display', 'none', 'important');
+            }
+
             // بررسی وجود فیلد TLS Fragment
             const tlsFragmentGroup = document.getElementById('tlsFragmentGroup');
             const tlsFragmentHappGroup = document.getElementById('tlsFragmentHappGroup');
@@ -10675,6 +10717,16 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 currentConfig['启用0RTT'] = document.getElementById('enable0RTT').checked;
             }
 
+            // ذخیره پروتکل دوگانه (اگر فیلد وجود دارد)
+            if (currentConfig['双协议'] !== undefined) {
+                currentConfig['双协议'] = document.getElementById('dualProtocol').checked;
+            }
+
+            // ذخیره IPv6 (اگر فیلد وجود دارد)
+            if (currentConfig['IPv6'] !== undefined) {
+                currentConfig['IPv6'] = document.getElementById('enableIPv6').checked;
+            }
+
             // ذخیره TLS Fragmentation (اگر فیلد وجود دارد)
             if (currentConfig['TLS分片'] !== undefined) {
                 const shadowrocket = document.getElementById('tlsFragmentShadowrocket').checked;
@@ -10944,6 +10996,16 @@ vless://7b102311-43fd-4e8f-977e-8090623c101d@nova-panel.github.io:443?security=t
                 // بازنشانی فعال‌سازی 0RTT (اگر فیلد وجود دارد)
                 if (currentConfig['启用0RTT'] !== undefined) {
                     document.getElementById('enable0RTT').checked = currentConfig['启用0RTT'] || false;
+                }
+
+                // بازنشانی پروتکل دوگانه (اگر فیلد وجود دارد)
+                if (currentConfig['双协议'] !== undefined) {
+                    document.getElementById('dualProtocol').checked = currentConfig['双协议'] || false;
+                }
+
+                // بازنشانی IPv6 (اگر فیلد وجود دارد)
+                if (currentConfig['IPv6'] !== undefined) {
+                    document.getElementById('enableIPv6').checked = currentConfig['IPv6'] || false;
                 }
 
                 // بازنشانی TLS Fragmentation (اگر فیلد وجود دارد)
