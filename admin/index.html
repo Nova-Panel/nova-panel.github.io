@@ -215,6 +215,8 @@ html[dir=rtl] .kpi-sub{text-align:start}
 .policy-row .meta .ds{font-size:11.5px;color:var(--mu);margin-top:1px}
 .policy-row .st{font-size:10.5px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;width:60px;text-align:end}
 .policy-row.on .st{color:var(--ok)}
+.policy-row .ds.pwarn{color:var(--dg);font-weight:600;margin-top:2px}
+.policy-row.warn{background:color-mix(in srgb,var(--dg) 4%,transparent)}
 
 /* ---- Toggle switch ---- */
 .sw{width:40px;height:23px;flex:0 0 auto;border-radius:999px;background:var(--bd2);position:relative;transition:.16s;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--bd) 70%,transparent)}
@@ -453,8 +455,8 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
         <a data-view="guide" title="Guide" aria-label="Guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></a>
       </div>
       <a class="logout" href="/logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span data-i18n="logout">Logout</span></a>
-      <div class="ver"><span data-i18n="ver_panel">Panel</span><b>V3</b></div>
-      <div class="ver"><span data-i18n="ver_worker">Worker</span><b>V3 b16.5</b></div>
+      <div class="ver"><span data-i18n="ver_panel">Panel</span><b>V3.1</b></div>
+      <div class="ver"><span data-i18n="ver_worker">Worker</span><b>V3.1</b></div>
     </div>
   </aside>
 
@@ -495,8 +497,8 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
           <div class="card" id="policy-card">
             <div class="card-h">
               <div>
-                <h3 data-i18n="policy_title">Resilience policy</h3>
-                <div class="sub" data-i18n="policy_profile">Profile: Iran / high-censorship</div>
+                <h3 data-i18n="policy_title">Resistance Policy</h3>
+                <div class="sub" data-i18n="policy_profile">Profile: Iran / High Censorship</div>
               </div>
               <div class="right">
                 <span class="chip ok" id="policy-badge"><span class="dot"></span><span id="policy-badge-txt" data-i18n="policy_active">Active</span></span>
@@ -673,7 +675,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
             <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="ci_speed_s">Find the fastest clean IPs for your current network and apply them automatically.</p>
             <div id="ci-isp" style="font-size:12px;color:var(--mu);margin-bottom:11px"></div>
             <div class="set-grid">
-              <div class="fg"><label data-i18n="ci_src">Source</label><select class="inp" id="ci-src"><option value="random">Random Cloudflare</option><option value="official">Cloudflare official ranges</option><option value="as13335">AS13335 (Cloudflare)</option><option value="cm">CF-CIDR (community)</option><option value="proxyip">ProxyIP pool</option><option value="dominos">Nova domains (DNS)</option></select></div>
+              <div class="fg"><label data-i18n="ci_src">Source</label><select class="inp" id="ci-src" onchange="var w=document.getElementById('ci-country-wrap');if(w)w.style.display=this.value==='country'?'':'none'"><option value="country">🌍 By location (country)</option><option value="random">Random Cloudflare</option><option value="official">Cloudflare official ranges</option><option value="as13335">AS13335 (Cloudflare)</option><option value="cm">CF-CIDR (community)</option><option value="proxyip">ProxyIP pool</option><option value="dominos">Nova domains (DNS)</option></select></div><div class="fg" id="ci-country-wrap" style="display:none"><label data-i18n="ci_country">Location</label><select class="inp" id="ci-country"><option value="DE">🇩🇪 Germany</option><option value="NL">🇳🇱 Netherlands</option><option value="US">🇺🇸 United States</option><option value="GB">🇬🇧 United Kingdom</option><option value="FR">🇫🇷 France</option><option value="FI">🇫🇮 Finland</option><option value="SE">🇸🇪 Sweden</option><option value="AT">🇦🇹 Austria</option><option value="CH">🇨🇭 Switzerland</option><option value="PL">🇵🇱 Poland</option><option value="CZ">🇨🇿 Czechia</option><option value="JP">🇯🇵 Japan</option><option value="SG">🇸🇬 Singapore</option><option value="CA">🇨🇦 Canada</option><option value="AE">🇦🇪 UAE</option><option value="TR">🇹🇷 Turkey</option><option value="CN">🇨🇳 China</option><option value="HK">🇭🇰 Hong Kong</option><option value="IN">🇮🇳 India</option><option value="AU">🇦🇺 Australia</option><option value="ES">🇪🇸 Spain</option><option value="IT">🇮🇹 Italy</option></select></div>
               <div class="fg"><label data-i18n="ci_port">Port</label><select class="inp" id="ci-port"><option>443</option><option>2053</option><option>2083</option><option>2087</option><option>2096</option><option>8443</option></select></div>
               <div class="fg"><label data-i18n="ci_keep">Keep best</label><input class="inp" id="ci-keep" type="number" min="1" max="50" value="10"></div>
               <div class="fg"><label data-i18n="ci_total">IPs to test</label><input class="inp" id="ci-total" type="number" min="10" max="400" value="120"></div>
@@ -946,8 +948,9 @@ const I18N = {
     kpi_network_sub:'AS13335 · Cloudflare', kpi_storage_sub:'KV namespace', kpi_worker_sub:'requests today', kpi_traffic_sub:'across 312 sessions',
     healthy:'Healthy', online:'Online', live:'Live',
     /* policy */
-    policy_title:'Resilience policy', policy_profile:'Profile: Iran / high-censorship', policy_active:'Active',
-    policy_apply:'Apply policy', policy_last:'Last applied', policy_summary:'{n} of {t} controls active',
+    policy_title:'Resistance Policy', policy_profile:'Profile: Iran / High Censorship', policy_active:'Active',
+    policy_apply:'Apply policy', policy_last:'Last applied', policy_summary:'{n} of {t} optimal for Iran',
+    policy_iran_warn:'Not working in Iran right now. Turning it on will break your connection (no ping).',
     p_protocols:'All protocols', p_protocols_d:'VLESS, Trojan, and Shadowsocks',
     p_ports:'Port spread', p_ports_d:'Fan each node across all TLS ports',
     p_fragment:'TLS fragment', p_fragment_d:'Split the TLS hello to evade DPI',
@@ -994,7 +997,7 @@ const I18N = {
     warp_h:'WARP (Cloudflare WireGuard)', warp_en:'Enable WARP', warp_en_h:'add a WireGuard outbound to every config', warp_mode:'Mode', warp_ep:'Endpoint (if the default is blocked)', warp_ep_h:'If the default WARP endpoint is filtered, pick an alternative from the list (the same key works on every endpoint), then Save.', warp_amnezia:'AmneziaWG obfuscation', warp_amnezia_h:"junk packets so DPI can't fingerprint WARP", warp_acc:'WARP account', warp_register:'Register', warp_central:'From central pool', warp_lic:'WARP+ license (optional)', warp_apply:'Apply', warp_dl_lbl:'Download WARP configs (50 endpoints)', wn_mode:'Noise mode', wn_count:'Noise count', wn_size:'Noise size', wn_delay:'Noise delay',
     mirror_h:'GitHub mirror (blocked-domain failover)', mirror_intro:'Publishes your sub to a GitHub repo so users keep a permanent raw.githubusercontent.com link even if your domain gets filtered.', mirror_en:'Enable mirror', mirror_en_h:'also auto-publishes hourly', mirror_repo:'Repo (owner/name)', mirror_branch:'Branch', mirror_path:'Path (optional)', mirror_token:'GitHub token', mirror_publish:'Publish now',
     nav_cleanips:'Clean IPs', sub_cleanips:'Pick clean Cloudflare IPs, or speed-test for the fastest.',
-    ci_speed_h:'🚀 Speed test', ci_speed_s:'Find the fastest clean IPs for your current network and apply them automatically.', ci_src:'Source', ci_port:'Port', ci_keep:'Keep best', ci_total:'IPs to test', ci_speed_btn:'Speed test & apply best', ci_lat:'Latency', ci_jit:'Jitter', ci_loss:'Loss',
+    ci_speed_h:'🚀 Speed test', ci_speed_s:'Find the fastest clean IPs for your current network and apply them automatically.', ci_src:'Source', ci_country:'Location', ci_port:'Port', ci_keep:'Keep best', ci_total:'IPs to test', ci_speed_btn:'Speed test & apply best', ci_lat:'Latency', ci_jit:'Jitter', ci_loss:'Loss',
     ci_mode_h:'IP selection mode', ci_m_smart:'Smart (per-ISP)', ci_m_custom:'Custom list', ci_m_random:'Random', ci_poolapi:'Smart IP API (per-ISP database)', ci_poolapi_h:'Serves each user IPs tuned to their ISP.', ci_custom_ips:'Custom clean IPs (ip:port#name)', ci_rcount:'Random count', ci_rport:'Port (-1 = mixed)',
     dns_h:'Secure DNS', dns_doh:'DNS-over-HTTPS', dns_doh_h:'encrypt DNS lookups', dns_dohprov:'DoH provider', dns_antisanc:'Anti-sanction DNS', dns_antisanc_h:'reach Google, GitHub, npm and other geo-blocked services', dns_antiprov:'Anti-sanction provider', dns_custom:'Custom DNS (if Custom)', dns_local:'Local DNS', dns_local_h:'resolve some names on the device', dns_localip:'Local DNS IP', dns_localport:'Local DNS port', dns_fake:'Fake DNS', dns_fake_h:'faster connections, lower latency', dns_fakeip:'Fake DNS range', dns_log:'Log level',
     lbl_path:'Transport path', lbl_grpcmode:'gRPC mode', lbl_frag:'TLS fragment (DPI evasion)', frag_off:'Off', frag_custom:'Custom', frag_len:'Fragment length', frag_int:'Fragment interval', frag_pkt:'Fragment packets', lbl_proxyip:'PROXYIP (reverse proxy, optional)', lbl_chain:'Chain proxy / fix IP (optional)', chain_test:'Test', lbl_uuid:'UUID (used in your configs)',
@@ -1023,7 +1026,8 @@ const I18N = {
     kpi_network_sub:'AS13335 · کلودفلر', kpi_storage_sub:'فضای KV', kpi_worker_sub:'درخواست امروز', kpi_traffic_sub:'در ۳۱۲ نشست',
     healthy:'سالم', online:'آنلاین', live:'زنده',
     policy_title:'سیاست مقاومت', policy_profile:'پروفایل: ایران / سانسور بالا', policy_active:'فعال',
-    policy_apply:'اعمال سیاست', policy_last:'آخرین اعمال', policy_summary:'{n} از {t} کنترل فعال',
+    policy_apply:'اعمال سیاست', policy_last:'آخرین اعمال', policy_summary:'{n} از {t} برای ایران بهینه',
+    policy_iran_warn:'الان در ایران کار نمی‌کند. اگر روشنش کنید، اتصال و پینگ شما قطع می‌شود.',
     p_protocols:'همهٔ پروتکل‌ها', p_protocols_d:'VLESS، Trojan و Shadowsocks',
     p_ports:'پخش پورت', p_ports_d:'پخش هر نود روی همهٔ پورت‌های TLS',
     p_fragment:'تکه‌تکه‌سازی TLS', p_fragment_d:'شکستن TLS hello برای عبور از DPI',
@@ -1064,7 +1068,7 @@ const I18N = {
     warp_h:'WARP (وایرگارد کلودفلر)', warp_en:'فعال‌سازی WARP', warp_en_h:'افزودن یک خروجی WireGuard به هر کانفیگ', warp_mode:'حالت', warp_ep:'اندپوینت (اگر پیش‌فرض مسدود بود)', warp_ep_h:'اگر اندپوینت پیش‌فرض WARP فیلتر شد، یکی از موارد فهرست را انتخاب کنید (همان کلید روی همهٔ اندپوینت‌ها کار می‌کند) و ذخیره کنید.', warp_amnezia:'مبهم‌سازی AmneziaWG', warp_amnezia_h:'بسته‌های اضافی تا DPI نتواند WARP را شناسایی کند', warp_acc:'حساب WARP', warp_register:'ثبت', warp_central:'از استخر مرکزی', warp_lic:'لایسنس WARP+ (اختیاری)', warp_apply:'اعمال', warp_dl_lbl:'دانلود کانفیگ‌های WARP (۵۰ اندپوینت)', wn_mode:'حالت نویز', wn_count:'تعداد نویز', wn_size:'اندازه نویز', wn_delay:'تأخیر نویز',
     mirror_h:'آینه گیت‌هاب (پشتیبان دامنه مسدودشده)', mirror_intro:'ساب شما را در یک ریپو گیت‌هاب منتشر می‌کند تا کاربران یک لینک دائمی raw.githubusercontent.com داشته باشند حتی اگر دامنه‌تان فیلتر شود.', mirror_en:'فعال‌سازی آینه', mirror_en_h:'هر ساعت هم خودکار منتشر می‌شود', mirror_repo:'ریپو (owner/name)', mirror_branch:'شاخه', mirror_path:'مسیر (اختیاری)', mirror_token:'توکن گیت‌هاب', mirror_publish:'انتشار فوری',
     nav_cleanips:'آی‌پی‌های تمیز', sub_cleanips:'آی‌پی‌های تمیز کلودفلر را انتخاب کنید یا سریع‌ترین را تست کنید.',
-    ci_speed_h:'🚀 تست سرعت', ci_speed_s:'سریع‌ترین آی‌پی‌های تمیز را برای شبکهٔ فعلی‌تان پیدا و خودکار اعمال کنید.', ci_src:'منبع', ci_port:'پورت', ci_keep:'نگه‌داشتن بهترین', ci_total:'تعداد تست', ci_speed_btn:'تست سرعت و اعمال بهترین', ci_lat:'تأخیر', ci_jit:'جیتر', ci_loss:'افت',
+    ci_speed_h:'🚀 تست سرعت', ci_speed_s:'سریع‌ترین آی‌پی‌های تمیز را برای شبکهٔ فعلی‌تان پیدا و خودکار اعمال کنید.', ci_src:'منبع', ci_country:'موقعیت', ci_port:'پورت', ci_keep:'نگه‌داشتن بهترین', ci_total:'تعداد تست', ci_speed_btn:'تست سرعت و اعمال بهترین', ci_lat:'تأخیر', ci_jit:'جیتر', ci_loss:'افت',
     ci_mode_h:'حالت انتخاب آی‌پی', ci_m_smart:'هوشمند (هر اپراتور)', ci_m_custom:'لیست سفارشی', ci_m_random:'تصادفی', ci_poolapi:'API آی‌پی هوشمند (دیتابیس هر اپراتور)', ci_poolapi_h:'به هر کاربر آی‌پی متناسب با اپراتورش می‌دهد.', ci_custom_ips:'آی‌پی‌های تمیز سفارشی (ip:port#name)', ci_rcount:'تعداد تصادفی', ci_rport:'پورت (۱- = ترکیبی)',
     dns_h:'DNS امن', dns_doh:'DNS-over-HTTPS', dns_doh_h:'رمزگذاری جست‌وجوهای DNS', dns_dohprov:'ارائه‌دهندهٔ DoH', dns_antisanc:'DNS ضدتحریم', dns_antisanc_h:'دسترسی به گوگل، گیت‌هاب، npm و سرویس‌های جغرافیایی مسدود', dns_antiprov:'ارائه‌دهندهٔ ضدتحریم', dns_custom:'DNS سفارشی (اگر سفارشی)', dns_local:'DNS محلی', dns_local_h:'حل برخی نام‌ها روی دستگاه', dns_localip:'آی‌پی DNS محلی', dns_localport:'پورت DNS محلی', dns_fake:'Fake DNS', dns_fake_h:'اتصال سریع‌تر، تأخیر کمتر', dns_fakeip:'بازهٔ Fake DNS', dns_log:'سطح لاگ',
     lbl_path:'مسیر حمل‌ونقل', lbl_grpcmode:'حالت gRPC', lbl_frag:'تکه‌تکه‌سازی TLS (عبور از DPI)', frag_off:'خاموش', frag_custom:'سفارشی', frag_len:'طول فرگمنت', frag_int:'فاصله فرگمنت', frag_pkt:'بسته‌های فرگمنت', lbl_proxyip:'PROXYIP (پروکسی معکوس، اختیاری)', lbl_chain:'پراکسی زنجیره‌ای / آی‌پی ثابت (اختیاری)', chain_test:'تست', lbl_uuid:'UUID (در کانفیگ‌های شما)',
@@ -1091,8 +1095,8 @@ const MOCK = {
     { id:'traffic', icon:'pulse',   label:'kpi_traffic', traffic:{down:'4.2 GB',up:'0.9 GB'}, sub:'kpi_traffic_sub', chip:'live', chipKind:'info' },
   ],
   policy: [
-    { key:'p_ports', on:true },{ key:'p_fragment', on:true },
-    { key:'p_ech', on:true },{ key:'p_ipv6', on:true },{ key:'p_quic', on:true },
+    { key:'p_ports', on:true },{ key:'p_fragment', on:false },
+    { key:'p_ech', on:false },{ key:'p_ipv6', on:true },{ key:'p_quic', on:false },
     { key:'p_domestic', on:true },{ key:'p_adblock', on:true },{ key:'p_routing', on:false },
   ],
   clients: [
@@ -1168,15 +1172,19 @@ function renderKPIs(){
       ${val}<div class="kpi-sub">${t(k.sub)}</div>${meter}</div>`;
   }).join('');
 }
+const POLICY_WARN = ['p_fragment','p_ech','p_quic'];
 function policyToggleRow(p){
-  return `<div class="policy-row ${p.on?'on':''}" data-policy="${p.key}">
-    <div class="meta"><div class="nm">${t(p.key)}</div><div class="ds">${t(p.key+'_d')}</div></div>
-    <span class="st">${p.on?t('status_on'):t('status_off')}</span>
+  const warn = POLICY_WARN.includes(p.key);
+  const st = (warn && p.on) ? `<span class="st" style="color:var(--dg)">${t('status_on')}</span>` : `<span class="st">${p.on?t('status_on'):t('status_off')}</span>`;
+  const wln = warn ? `<div class="ds pwarn">⚠ ${t('policy_iran_warn')}</div>` : '';
+  return `<div class="policy-row ${p.on?'on':''} ${warn?'warn':''}" data-policy="${p.key}">
+    <div class="meta"><div class="nm">${t(p.key)}</div><div class="ds">${t(p.key+'_d')}</div>${wln}</div>
+    ${st}
     <div class="sw ${p.on?'on':''}"><span class="k"></span></div></div>`;
 }
 function renderPolicy(){
   $('#policy-rows').innerHTML = MOCK.policy.map(policyToggleRow).join('');
-  const on = MOCK.policy.filter(p=>p.on).length, total = MOCK.policy.length;
+  const on = MOCK.policy.filter(p=>POLICY_WARN.includes(p.key)?!p.on:p.on).length, total = MOCK.policy.length;
   $('#policy-summary').textContent = t('policy_summary').replace('{n}',on).replace('{t}',total);
   const allOn = on===total;
   const badge = $('#policy-badge'); badge.className = 'chip '+(allOn?'ok':'warn');
@@ -1931,21 +1939,21 @@ async function runSpeedTest(){
   const $g=(id)=>document.getElementById(id);
   const btn=$g('ci-speedtest'), msg=$g('ci-stmsg'), pbar=$g('ci-pbar'), pfill=pbar.querySelector('i');
   const port=Number($g('ci-port').value)||443, keep=Math.max(1,Number($g('ci-keep').value)||10), total=Math.min(400,Math.max(10,Number($g('ci-total').value)||120)), timeout=2000;
-  const src=$g('ci-src').value||'random';
+  const src=$g('ci-src').value||'random'; const loadSrc=(src==='country')?('country:'+((document.getElementById('ci-country')||{}).value||'DE')):src;
   btn.disabled=true; pbar.style.display='block'; pbar.classList.add('indet'); pfill.style.width='0%';
   msg.textContent=lang==='fa'?'در حال آماده‌سازی…':'Preparing…';
   let ips=[]; const seen=new Set();
   if(src==='random'){ while(ips.length<total){ const ip=randCfIp(); if(!seen.has(ip)){ seen.add(ip); ips.push(ip); } } }
   else {
     msg.textContent=lang==='fa'?'در حال دریافت آی‌پی‌ها…':'Fetching candidate IPs…';
-    try{ const r=await fetch('/admin/bestip?loadIPs='+encodeURIComponent(src)+'&port='+port+'&_t='+Date.now()); const d=await r.json();
-      for(const x of ((d&&d.ips)||[])){ const ip=String(x).split('#')[0].split(':')[0].trim(); if(/^\d+\.\d+\.\d+\.\d+$/.test(ip)&&!seen.has(ip)){ seen.add(ip); ips.push(ip); } } }catch(e){}
+    try{ const r=await fetch('/admin/bestip?loadIPs='+encodeURIComponent(loadSrc)+'&port='+port+'&_t='+Date.now()); const d=await r.json();
+      for(const x of ((d&&d.ips)||[])){ const ip=String(x).split('#')[0].split(':')[0].trim(); if(/^\d+\.\d+\.\d+\.\d+$/.test(ip)&&!seen.has(ip)){ seen.add(ip); ips.push(String(x).split('#')[0].trim()); } } }catch(e){}
     ips.sort(()=>Math.random()-0.5); if(ips.length>total) ips=ips.slice(0,total);
     if(!ips.length){ msg.textContent=lang==='fa'?'آی‌پی پیدا نشد':'no candidate IPs'; btn.disabled=false; pbar.style.display='none'; return; }
   }
   const totalN=ips.length; let tested=0, alive=[]; const conc=12, probes=3; pbar.classList.remove('indet');
-  async function worker(){ while(ips.length){ const ip=ips.pop(); const samples=[]; for(let i=0;i<probes;i++){ const ms=await pingIp(ip,port,timeout); if(ms!=null) samples.push(ms); } tested++;
-    if(samples.length){ const avg=Math.round(samples.reduce((a,b)=>a+b,0)/samples.length); const jitter=Math.round(Math.max(...samples)-Math.min(...samples)); const loss=Math.round((1-samples.length/probes)*100); alive.push({ip,port,ms:avg,jitter,loss,score:avg+jitter*0.5+loss*20}); }
+  async function worker(){ while(ips.length){ const cand=ips.pop(); const _ci=String(cand).split(':'); const ip=_ci[0]; const usePort=(_ci[1]&&/^\d+$/.test(_ci[1]))?Number(_ci[1]):port; const samples=[]; for(let i=0;i<probes;i++){ const ms=await pingIp(ip,usePort,timeout); if(ms!=null) samples.push(ms); } tested++;
+    if(samples.length){ const avg=Math.round(samples.reduce((a,b)=>a+b,0)/samples.length); const jitter=Math.round(Math.max(...samples)-Math.min(...samples)); const loss=Math.round((1-samples.length/probes)*100); alive.push({ip,port:usePort,ms:avg,jitter,loss,score:avg+jitter*0.5+loss*20}); }
     pfill.style.width=Math.max(3,Math.round(tested/totalN*100))+'%';
     msg.textContent=(lang==='fa'?('در حال تست… '+tested+'/'+totalN+' ('+alive.length+' سالم)'):('Testing… '+tested+'/'+totalN+' ('+alive.length+' alive)')); } }
   await Promise.all(Array.from({length:conc},worker));
