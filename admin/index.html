@@ -949,8 +949,8 @@ const I18N = {
     healthy:'Healthy', online:'Online', live:'Live',
     /* policy */
     policy_title:'Resistance Policy', policy_profile:'Profile: Iran / High Censorship', policy_active:'Active',
-    policy_apply:'Apply policy', policy_last:'Last applied', policy_summary:'{n} of {t} controls active',
-    policy_iran_warn:'Not working in Iran right now. Turning it on lowers your score (-1).',
+    policy_apply:'Apply policy', policy_last:'Last applied', policy_summary:'{n} of {t} optimal for Iran',
+    policy_iran_warn:'Not working in Iran right now. Turning it on will break your connection (no ping).',
     p_protocols:'All protocols', p_protocols_d:'VLESS, Trojan, and Shadowsocks',
     p_ports:'Port spread', p_ports_d:'Fan each node across all TLS ports',
     p_fragment:'TLS fragment', p_fragment_d:'Split the TLS hello to evade DPI',
@@ -1026,8 +1026,8 @@ const I18N = {
     kpi_network_sub:'AS13335 · کلودفلر', kpi_storage_sub:'فضای KV', kpi_worker_sub:'درخواست امروز', kpi_traffic_sub:'در ۳۱۲ نشست',
     healthy:'سالم', online:'آنلاین', live:'زنده',
     policy_title:'سیاست مقاومت', policy_profile:'پروفایل: ایران / سانسور بالا', policy_active:'فعال',
-    policy_apply:'اعمال سیاست', policy_last:'آخرین اعمال', policy_summary:'{n} از {t} کنترل فعال',
-    policy_iran_warn:'الان در ایران کار نمی‌کند. روشن کردنش امتیاز را کم می‌کند (۱-).',
+    policy_apply:'اعمال سیاست', policy_last:'آخرین اعمال', policy_summary:'{n} از {t} برای ایران بهینه',
+    policy_iran_warn:'الان در ایران کار نمی‌کند. اگر روشنش کنید، اتصال و پینگ شما قطع می‌شود.',
     p_protocols:'همهٔ پروتکل‌ها', p_protocols_d:'VLESS، Trojan و Shadowsocks',
     p_ports:'پخش پورت', p_ports_d:'پخش هر نود روی همهٔ پورت‌های TLS',
     p_fragment:'تکه‌تکه‌سازی TLS', p_fragment_d:'شکستن TLS hello برای عبور از DPI',
@@ -1175,7 +1175,7 @@ function renderKPIs(){
 const POLICY_WARN = ['p_fragment','p_ech','p_quic'];
 function policyToggleRow(p){
   const warn = POLICY_WARN.includes(p.key);
-  const st = (warn && p.on) ? '<span class="st" style="color:var(--dg)">-1</span>' : `<span class="st">${p.on?t('status_on'):t('status_off')}</span>`;
+  const st = (warn && p.on) ? `<span class="st" style="color:var(--dg)">${t('status_on')}</span>` : `<span class="st">${p.on?t('status_on'):t('status_off')}</span>`;
   const wln = warn ? `<div class="ds pwarn">⚠ ${t('policy_iran_warn')}</div>` : '';
   return `<div class="policy-row ${p.on?'on':''} ${warn?'warn':''}" data-policy="${p.key}">
     <div class="meta"><div class="nm">${t(p.key)}</div><div class="ds">${t(p.key+'_d')}</div>${wln}</div>
