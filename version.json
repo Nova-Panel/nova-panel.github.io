@@ -1,6 +1,6 @@
 {
-  "version": "3.5.3",
+  "version": "3.5.5",
   "released": "2026-06",
-  "notes": "Moved the backend installer (nova-backend.sh) to IRNova/Tools and updated the panel command + guides to the raw URL. Script kept readable (not obfuscated) so users can verify it before running as root. Versions aligned (panel = worker = 3.5.x). All prior features intact.",
-  "worker_url": "https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/worker.js"
+  "notes": "Version bump to 3.5.5 (panel = worker). Includes the DoH fix: backend mode never intercepts /dns-query, /doh, or Nova's own endpoints (admin/login/bot/sub/warp/install) — only real client proxy traffic is forwarded. Secure DNS works with backend mode on or off.",
+  "worker_url": "https://raw.githubusercontent.com/iiviirv/panel/main/worker.js"
 }
