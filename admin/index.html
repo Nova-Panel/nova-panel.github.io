@@ -1984,7 +1984,7 @@ function wgInit(){
   var copy=document.getElementById('wg-copy'); if(copy) copy.onclick=function(){ var v=document.getElementById('wg-out').value||wgBuild(); navigator.clipboard.writeText(v).then(function(){toast(t('copied'));}).catch(function(){}); };
   var dl=document.getElementById('wg-dl'); if(dl) dl.onclick=function(){ var v=document.getElementById('wg-out').value||wgBuild(); var name=(wgVal('wg-name')||'nova-wg').replace(/[^a-zA-Z0-9_-]/g,'_'); var bl=new Blob([v],{type:'text/plain'}); var u=URL.createObjectURL(bl); var a=document.createElement('a'); a.href=u; a.download=name+'.conf'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u); };
   var qr=document.getElementById('wg-qr'); if(qr) qr.onclick=function(){ var v=document.getElementById('wg-out').value||wgBuild(); var box=document.getElementById('wg-qrbox'); if(!box) return; box.style.display='block'; box.innerHTML=''; try{ new QRCode(box,{text:v,width:220,height:220,correctLevel:QRCode.CorrectLevel.L}); }catch(e){ box.textContent='QR error'; } };
-  var w=document.getElementById('wg-warp'); if(w) w.onclick=async function(){ try{ var r=await fetch('/admin/warp.json?_t='+Date.now()); var j=await r.json(); var conf=j&&(j.conf||j.config||(j.w&&j.w.conf)); if(conf){ wgParseInto(conf); toast(t('wg_loaded')); } else { toast(t('wg_nowarp')); } }catch(e){ toast(t('wg_nowarp')); } };
+  var w=document.getElementById('wg-warp'); if(w) w.onclick=async function(){ try{ var r=await fetch('/admin/warp.json?_t='+Date.now()); var j=await r.json(); var conf=j&&(j.conf||j.config||(j.w&&j.w.conf)); if(conf){ wgParseInto(conf); toast(t('wg_loaded')); } else { toast(lang==='fa'?'هنوز حساب WARP ثبت نشده. اول برو «شبکه و آی‌پی» → WARP → دکمهٔ «ثبت». اگر از ایران ثبت نشد، «از استخر مرکزی» را بزن یا اندپوینت را عوض کن.':'No WARP account yet. Go to Network & IPs → WARP → Register first. If registering fails from Iran, try "From central pool" or change the endpoint.',1); } }catch(e){ toast(lang==='fa'?'خطا در دریافت WARP — اول WARP را ثبت کنید':'WARP fetch error — register WARP first',1); } };
 }
 
 /* ---- About: fill worker version + changelog from version.json / system.json ---- */
@@ -2011,14 +2011,15 @@ async function pxSave(){
   c.proxy=c.proxy||{};
   if(m==='proxyip'){ c.proxy.PROXYIP=(document.getElementById('px-proxyip').value||'').trim(); c.chainProxy=''; }
   else { var a=(document.getElementById('px-addr').value||'').trim(); c.chainProxy=a?(m+'://'+a):''; }
-  var _ok=await API.post('config.json', c); toast(savedMsg(_ok)); flashSaved('px-save', _ok);
+  var _ok=await API.post('config.json', c); flashSaved('px-save', _ok);
+  if(_ok){ toast(lang==='fa'?'ذخیره شد ✓ — برای اعمال، اشتراک را دوباره بگیرید و در برنامه وصل شوید':'Saved ✓ — re-fetch your subscription and reconnect in the app to apply'); } else { toast(savedMsg(false),1); }
 }
 async function pxVerify(){
   if(!LIVE) return previewToast();
   var msg=document.getElementById('px-msg'); var m=document.getElementById('px-mode').value;
   var val=(m==='proxyip')?(document.getElementById('px-proxyip').value||'').trim():(document.getElementById('px-addr').value||'').trim();
   if(!val){ msg.className='msg bad'; msg.textContent=(lang==='fa'?'یک پروکسی وارد کنید':'Enter a proxy first'); return; }
-  if(m==='proxyip'){ msg.className='msg'; msg.textContent=(lang==='fa'?'PROXYIP در دریافت اشتراک بررسی می‌شود.':'PROXYIP is validated when a subscription is fetched.'); return; }
+  if(m==='proxyip'){ msg.className='msg ok'; msg.textContent=(lang==='fa'?'✓ PROXYIP نیازی به تست جداگانه ندارد — موقع دریافت اشتراک و اتصال خودکار بررسی می‌شود. فقط ذخیره کنید.':'✓ PROXYIP needs no separate test — it is checked automatically when you fetch the subscription and connect. Just hit Save.'); return; }
   msg.className='msg'; msg.textContent=(lang==='fa'?'در حال بررسی…':'Probing…');
   try{
     var r=await fetch('/admin/check?'+encodeURIComponent(m)+'='+encodeURIComponent(val)+'&_t='+Date.now());
@@ -2357,7 +2358,15 @@ async function warpPost(body, okMsg, needPlus){ const el=document.getElementById
     const why = (w&&w.error) || (needPlus ? (lang==='fa'?'لایسنس پذیرفته نشد (WARP+ نیست، منقضی شده، یا قبلاً استفاده شده)':'License not accepted (not WARP+, expired, or already in use)') : ('HTTP '+r.status));
     toast('⚠️ '+why); loadWarpStatus(); return false;
   }catch(e){ toast('⚠️ '+e.message); return false; } }
-function warpRegister(){ if(!LIVE) return previewToast(); warpPost({ wow: document.getElementById('w2-mode').value==='wow' }, savedMsg(true), false); }
+async function warpRegister(){ if(!LIVE) return previewToast();
+  const ok = await warpPost({ wow: document.getElementById('w2-mode').value==='wow' }, lang==='fa'?'WARP ثبت شد ✓':'WARP registered ✓', false);
+  if(!ok){
+    // Direct registration to api.cloudflareclient.com often fails from Iran (429/blocked).
+    // Auto-try the central pool, which routes around it, if a central API is configured.
+    const el=document.getElementById('warp-status'); if(el) el.textContent=(lang==='fa'?'تلاش از استخر مرکزی…':'Trying central pool…');
+    await warpPost({ fromCentral:true }, lang==='fa'?'WARP از استخر مرکزی ثبت شد ✓':'WARP registered from central pool ✓', false);
+  }
+}
 function warpCentral(){ if(!LIVE) return previewToast(); warpPost({ fromCentral:true }, lang==='fa'?'WARP+ از استخر اعمال شد ✓':'WARP+ applied from pool ✓', true); }
 function warpLicense(){ if(!LIVE) return previewToast(); const lic=(document.getElementById('w2-lic').value||'').trim(); if(!lic){ toast(lang==='fa'?'لایسنس را وارد کنید':'Enter a license key'); return; } warpPost({ license:lic }, lang==='fa'?'لایسنس معتبر بود؛ WARP+ فعال شد ✓':'License valid, WARP+ enabled ✓', true).then(ok=>{ if(ok) document.getElementById('w2-lic').value=''; }); }
 /* ---- GitHub mirror: save config + publish now ---- */

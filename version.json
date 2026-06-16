@@ -1,6 +1,6 @@
 {
-  "version": "3.3.0",
+  "version": "3.3.1",
   "released": "2026-06",
-  "notes": "Stage 2: VMess config-level support (vmess:// links in Clash/sing-box/raw/base64 — Workers can't run VMess crypto, so config-only, like BPB). Telegram-driven Cloudflare auto-deploy: /install in the bot creates D1, uploads the worker, sets UUID+PASSWORD secrets, binds D1, enables workers.dev — CF API token used in-memory only, never stored. Builds on v3.2.0 (chart, user limits, routing catalog, 1101 fix).",
+  "notes": "UX fixes: PROXYIP 'Verify' now explains it needs no separate test (was looking dead); Proxy 'Save' reminds you to re-fetch the subscription + reconnect; WireGuard 'Load from WARP' tells you to Register first; WARP 'Register' now auto-falls-back to the central pool if direct registration is blocked (helps Iran). No worker logic change from 3.3.0.",
   "worker_url": "https://raw.githubusercontent.com/iiviirv/panel/main/worker.js"
 }
