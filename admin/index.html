@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Nova Proxy — Control Plane</title>
-<meta name="nova-panel-version" content="3.6.3" />
+<meta name="nova-panel-version" content="3.7.0" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -553,8 +553,8 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
         <a data-view="guide" title="Guide" aria-label="Guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></a>
       </div>
       <a class="logout" href="/logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span data-i18n="logout">Logout</span></a>
-      <div class="ver"><span data-i18n="ver_panel">Panel</span><b>V3.5.9</b></div>
-      <div class="ver"><span data-i18n="ver_worker">Worker</span><b>V3.5.9</b></div>
+      <div class="ver"><span data-i18n="ver_panel">Panel</span><b>V3.7</b></div>
+      <div class="ver"><span data-i18n="ver_worker">Worker</span><b>V3.7</b></div>
     </div>
   </aside>
 
@@ -797,6 +797,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
                 <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="be_s">Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP) — but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).</p>
                 <div class="field-row"><div class="l" data-i18n="be_en">Enable backend mode<small data-i18n="be_en_h">when on, Nova bridges to the backend below</small></div><div class="sw" id="t2-backend"><span class="k"></span></div></div>
                 <div class="fg" style="margin-top:11px"><label data-i18n="be_url">Backend URL</label><input class="inp" id="be-url" placeholder="https://your-server.com:8443/path or http://1.2.3.4:8080"></div>
+                <div id="be-port-warn" class="msg bad" style="display:none;margin-top:7px;font-size:12px"></div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" id="be-check" data-i18n="be_check">Health check</button></div>
                 <div style="margin-top:14px;padding:12px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)">
                   <div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:8px" data-i18n="be_quick">⚡ Quick install (run on your VPS as root)</div>
@@ -2309,7 +2310,7 @@ function syncFormValues(){
   on('t2-antisanc', n.enableAntiSanctionDNS); set('d2-antiprov', n.antiSanctionDNSProvider||'shekan'); set('d2-anticustom', n.antiSanctionCustomDNS||'');
   on('t2-localdns', n.enableLocalDNS); set('d2-localip', n.localDNSIP||'8.8.8.8'); set('d2-localport', n.localDNSPort||'53');
   on('t2-fakedns', n.enableFakeDNS); set('d2-fakeip', n.fakeDNSIP||'198.51.100.1'); set('d2-loglevel', n.logLevel||'error');
-  on('t2-backend', n.backendMode); set('be-url', n.backendUrl||''); try{ renderBackendClient(); }catch(e){}
+  on('t2-backend', n.backendMode); set('be-url', n.backendUrl||''); try{ renderBackendClient(); }catch(e){} try{ checkBackendPort(); }catch(e){}
   // Clean IPs (config) — mode + pool API + random params; custom list loaded from ADD.txt
   const osg=c.optimizedSubGeneration||{}, pool=osg.localIPPool||{};
   set('ci-poolapi', c.POOL_API||'https://nova-deploy.pages.dev/api/pool');
@@ -2418,12 +2419,43 @@ function backendClientLink(){
   var ep=encodeURIComponent(path);
   return 'vless://'+uuid+'@'+domain+':443?security=tls&type=ws&host='+domain+'&sni='+domain+'&path='+ep+'&encryption=none#Nova-Backend';
 }
+// Cloudflare Workers can only fetch() a fixed set of ports. If the Backend URL uses anything else
+// (e.g. 10000, 3080), the Worker silently can't reach the VPS — the #1 cause of "backend not
+// reachable". Warn the moment a bad port is typed so it's caught before saving.
+var CF_HTTP_PORTS=[80,8080,8880,2052,2082,2086,2095];
+var CF_HTTPS_PORTS=[443,2053,2083,2087,2096,8443];
+function checkBackendPort(){
+  var box=document.getElementById('be-port-warn'); if(!box) return true;
+  var u=((document.getElementById('be-url')||{}).value||'').trim();
+  if(!/^https?:\/\//i.test(u)){ box.style.display='none'; return true; }
+  var parsed; try{ parsed=new URL(u); }catch(e){ box.style.display='none'; return true; }
+  var isHttps=parsed.protocol==='https:';
+  // default port (no :port) is fine: 443 for https, and http with no port means 80 (allowed)
+  var portStr=parsed.port;
+  if(!portStr){ box.style.display='none'; return true; }
+  var port=parseInt(portStr,10);
+  var allowed=isHttps?CF_HTTPS_PORTS:CF_HTTP_PORTS;
+  if(allowed.indexOf(port)>=0){ box.style.display='none'; return true; }
+  // bad port → warn (do not block; user may still save, but they're told why it'll fail)
+  var list=allowed.join(', ');
+  box.style.display='block';
+  box.textContent=(lang==='fa'
+    ? ('⚠ پورت '+port+' جزو پورت‌های مجاز Cloudflare نیست. ورکر نمی‌تواند به آن وصل شود. برای '+(isHttps?'HTTPS':'HTTP')+' یکی از این پورت‌ها را استفاده کن: '+list)
+    : ('⚠ Port '+port+' is NOT a Cloudflare-allowed port — the Worker can’t reach it. For '+(isHttps?'HTTPS':'HTTP')+' use one of: '+list));
+  return false;
+}
 function renderBackendClient(){
   var wrap=document.getElementById('be-client-wrap'); if(!wrap) return;
   var enabled=isOn2('t2-backend');
   var u=((document.getElementById('be-url')||{}).value||'').trim();
   var link=(enabled && /^https?:\/\//i.test(u)) ? backendClientLink() : '';
-  if(!link){ wrap.style.display='none'; return; }
+  if(!link){
+    // No backend / empty URL → hide AND wipe any previously-rendered QR + link so nothing stale remains.
+    wrap.style.display='none';
+    var oc=document.getElementById('be-vless'); if(oc) oc.textContent='';
+    var ob=document.getElementById('be-qr'); if(ob) ob.innerHTML='';
+    return;
+  }
   wrap.style.display='block';
   var code=document.getElementById('be-vless'); if(code) code.textContent=link;
   var box=document.getElementById('be-qr'); if(box){ box.innerHTML=''; if(window.QRCode){ try{ new QRCode(box,{text:link,width:132,height:132,correctLevel:QRCode.CorrectLevel.M}); }catch(e){} } else { box.textContent='QR'; } }
@@ -2448,6 +2480,9 @@ async function saveNetwork(){
   [['malware','t2-bk-malware'],['phishing','t2-bk-phishing'],['cryptominers','t2-bk-crypto']].forEach(([c,id])=>{ if(isOn(id)) cats.push(c); });
   n.blockCategories=cats;
   { const _nok=await API.post('network-settings.json', n); toast(savedMsg(_nok)); flashSaved('save-network2', _nok); };
+  // Refresh the backend client preview after saving so the QR/link reflects what was just saved.
+  // (Clearing the Backend URL or turning backend mode off must remove the QR, not leave a stale one.)
+  try{ renderBackendClient(); }catch(e){}
 }
 /* ---- WARP account: register / WARP+ license / central pool ---- */
 // Known-good WARP endpoints (Cloudflare anycast). If the default engage.cloudflareclient.com:2408
@@ -2703,7 +2738,7 @@ document.addEventListener('click', (e)=>{
 });
 { const bf=document.getElementById('backup-file2'); if(bf) bf.onchange=(e)=>{ const f=e.target.files&&e.target.files[0]; if(f) backupImport(f); e.target.value=''; }; }
 { const ff=document.getElementById('f2-frag'); if(ff) ff.addEventListener('change',function(){ const b=document.getElementById('f2-frag-custom'); if(b) b.style.display=this.value==='custom'?'block':'none'; }); }
-{ const bu=document.getElementById('be-url'); if(bu) bu.addEventListener('input',function(){ try{ renderBackendClient(); }catch(_e){} }); }
+{ const bu=document.getElementById('be-url'); if(bu) bu.addEventListener('input',function(){ try{ renderBackendClient(); }catch(_e){} try{ checkBackendPort(); }catch(_e){} }); }
 $('#menu-btn').addEventListener('click', openDrawer)
 /* Collapsible "Network Settings" submenu (closed by default, state remembered) */
 ;(function(){
