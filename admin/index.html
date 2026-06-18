@@ -1197,7 +1197,7 @@ const I18N = {
     env_prod:'Production', grp_ops:'Operations', grp_network:'Network', grp_netset:'Network Settings', grp_config:'Configuration', grp_system:'System', grp_admin:'Administration', grp_tools:'Tools', nav_collapse:'Collapse',
     nav_wireguard:'WireGuard', nav_about:'About', nav_proxy:'Proxy / CDN', nav_corenode:'Core Node', sub_wireguard:'Build a WireGuard config for WARP or a custom peer.', sub_about:'Panel version, changelog and links.', sub_proxy:'How the Worker reaches Cloudflare — PROXYIP / SOCKS5 / HTTP / HTTPS / TURN / SSTP.', sub_corenode:'Your node on every Cloudflare TLS port, on the domain itself.',
     cn_h:'🧩 Core Node', cn_s:'Your node on every Cloudflare TLS port, using the Worker domain directly — separate from the subscription. Copy or scan any port.', cn_copy:'Copy',
-    be_h:'🛰 Backend mode (advanced)', be_s:'Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP) — but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).', be_en:'Enable backend mode', be_en_h:'when on, Nova bridges to the backend below', be_url:'Backend URL', be_check:'Health check', be_quick:'⚡ Quick install (run on your VPS as root)', be_quick_h:'Paste this one line into your VPS over SSH. It installs Xray, writes the config, opens the firewall, and prints the exact Backend URL to paste above. Your VPS credentials are never sent anywhere — you run it yourself on your own server.', be_warn:'✅ Setup checklist (all required): 1) Run the install command on your VPS — it sets up Xray. 2) Backend port must be Cloudflare-allowed: 8080, 8880, 2052, 2082, 2086, 2095 (NOT 10000). 3) Backend URL must use a DOMAIN, not a raw IP — in Cloudflare DNS add an A record (e.g. vps.yourdomain.com → your VPS IP) set to DNS-only (GRAY cloud). 4) The VPS Xray UUID must match this panel\'s UUID. 5) Click Health check to verify, then scan the QR below. (The "Health check" runs a real test — green ✓ means it works.)', be_client_h:'📱 Ready-to-use client config', be_client_s:'Scan this QR with Hiddify / v2rayNG to connect through your backend. It already points at this panel\'s domain — just scan and connect.', be_client_copy:'Copy link', be_client_qr:'Show big QR', be_client_iran:'🇮🇷 In Iran, *.workers.dev is filtered — add a Custom Domain to the Worker and the QR will use it automatically.',
+    be_h:'🛰 Backend mode (advanced)', be_s:'Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP) — but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).', be_en:'Enable backend mode', be_en_h:'when on, Nova bridges to the backend below', be_url:'Backend URL', be_check:'Health check', be_quick:'⚡ Quick install (run on your VPS as root)', be_quick_h:'Paste this one line into your VPS over SSH. Your panel\'s UUID is already baked into the command, so the backend matches automatically — no manual step. It installs Xray, writes the config, opens the firewall, asks for your gray-cloud domain, and prints the exact Backend URL to paste above. Your VPS credentials are never sent anywhere — you run it yourself on your own server.', be_warn:'✅ Setup checklist (all required): 1) Run the install command on your VPS — it sets up Xray. 2) Backend port must be Cloudflare-allowed: 8080, 8880, 2052, 2082, 2086, 2095 (NOT 10000). 3) Backend URL must use a DOMAIN, not a raw IP — in Cloudflare DNS add an A record (e.g. vps.yourdomain.com → your VPS IP) set to DNS-only (GRAY cloud). 4) The VPS Xray UUID must match this panel\'s UUID. 5) Click Health check to verify, then scan the QR below. (The "Health check" runs a real test — green ✓ means it works.)', be_client_h:'📱 Ready-to-use client config', be_client_s:'This appears only after a successful Health check, so you know the backend really works. Scan it with Hiddify / v2rayNG to connect through your backend — it already points at this panel\'s domain.', be_client_copy:'Copy link', be_client_qr:'Show big QR', be_client_iran:'🇮🇷 In Iran, *.workers.dev is filtered — add a Custom Domain to the Worker and the QR will use it automatically.',
     px_h:'🛡️ Cloudflare CDN access', px_s:"How the Worker reaches Cloudflare's network. Choose a mode, enter the proxy, hit Verify to probe it, then Save. This is the single source of truth — configs pull from here.", px_mode:'Mode', px_proxyip:'PROXYIP address', px_addr:'Proxy address', px_verify:'Verify', px_more_h:'Find proxies', px_more_load:'Load list', px_country:'Country', px_pick:'Proxy', px_use:'Use selected', px_more_s:'Fetch public lists (PROXYIP from IRNova/Tools, SOCKS5/HTTP/HTTPS from proxifly), pick by country, then Use. The PROXYIP list is large (~10MB) — give it a moment. Free public proxies vary in quality; test before relying on one.',
     wg_h:'🔐 WireGuard config', wg_s:'Build a WireGuard .conf to import into the WireGuard app. Defaults target Cloudflare WARP — edit any field as needed.', wg_loadwarp:'Load from WARP', wg_name:'Name', wg_addr:'Address', wg_dns:'DNS', wg_mtu:'MTU', wg_priv:'Private key', wg_pub:'Peer public key', wg_ep:'Endpoint', wg_port:'Port', wg_ka:'Keepalive', wg_build:'Build config', wg_copy:'Copy', wg_dl:'Download .conf', wg_qrbtn:'QR', wg_loaded:'Loaded from WARP', wg_nowarp:'No WARP config available — register WARP in Network & IPs first.',
     ab_panel:'Panel', ab_worker:'Worker', ab_desc:'Nova Proxy control panel — manage subscriptions, clean IPs, routing, WARP and DNS for your Cloudflare Worker.', ab_changelog:'Changelog', ab_links:'Links',
@@ -1285,7 +1285,7 @@ const I18N = {
     env_prod:'محیط عملیاتی', grp_ops:'عملیات', grp_network:'شبکه', grp_netset:'تنظیمات شبکه', grp_config:'پیکربندی', grp_system:'سیستم', grp_admin:'مدیریت', grp_tools:'ابزارها', nav_collapse:'جمع کردن',
     nav_wireguard:'وایرگارد', nav_about:'درباره', nav_proxy:'پروکسی / CDN', nav_corenode:'نود اصلی', sub_wireguard:'ساخت کانفیگ وایرگارد برای WARP یا پیر دلخواه.', sub_about:'نسخهٔ پنل، تغییرات و پیوندها.', sub_proxy:'نحوه‌ی دسترسی ورکر به کلودفلر — PROXYIP / SOCKS5 / HTTP / HTTPS / TURN / SSTP.', sub_corenode:'نود شما روی همه‌ی پورت‌های TLS کلودفلر، روی خود دامنه.',
     cn_h:'🧩 نود اصلی', cn_s:'نود شما روی همه‌ی پورت‌های TLS کلودفلر، با استفاده‌ی مستقیم از دامنه‌ی ورکر — جدا از اشتراک. هر پورت را کپی یا اسکن کنید.', cn_copy:'کپی',
-    be_h:'🛰 حالت backend (پیشرفته)', be_s:'ترافیک را به‌جای پردازش در ورکر، به سرور Xray/sing-box خودت بفرست. این تنها راه داشتن VMess و تماس صوتی/تصویری (UDP) است — ولی نیاز به یک سرور backend (VPS) داری. برای حالت رایگانِ معمولی (VLESS/Trojan) خاموش بگذار.', be_en:'فعال‌سازی حالت backend', be_en_h:'وقتی روشن باشد، Nova به backend زیر پل می‌زند', be_url:'آدرس backend', be_check:'بررسی سلامت', be_quick:'⚡ نصب سریع (روی VPS خودت با root اجرا کن)', be_quick_h:'این یک خط را از طریق SSH روی VPS بچسبان. Xray را نصب می‌کند، کانفیگ را می‌نویسد، فایروال را باز می‌کند و آدرس backend دقیق را برای گذاشتن در بالا چاپ می‌کند. اطلاعات VPS تو هیچ‌جا فرستاده نمی‌شود — خودت روی سرور خودت اجرایش می‌کنی.', be_warn:'✅ چک‌لیست راه‌اندازی (همه لازم است): ۱) دستور نصب را روی VPS اجرا کن — Xray را نصب می‌کند. ۲) پورت backend باید جزو پورت‌های مجاز Cloudflare باشد: 8080, 8880, 2052, 2082, 2086, 2095 (نه 10000). ۳) آدرس backend باید با دامنه باشد، نه IP خام — در Cloudflare DNS یک رکورد A بساز (مثل vps.yourdomain.com → IP سرورت) با حالت DNS-only (ابر خاکستری). ۴) UUIDِ Xray روی VPS باید با UUIDِ این پنل یکی باشد. ۵) دکمهٔ «بررسی سلامت» را بزن تا تأیید شود، بعد QR زیر را اسکن کن. (دکمهٔ «بررسی سلامت» یک تست واقعی اجرا می‌کند — تیک سبز ✓ یعنی کار می‌کند.)', be_client_h:'📱 کانفیگ آمادهٔ کلاینت', be_client_s:'این QR را با هیدیفای / v2rayNG اسکن کن تا از طریق backend وصل شوی. همین حالا به دامنهٔ این پنل اشاره می‌کند — فقط اسکن کن و وصل شو.', be_client_copy:'کپی لینک', be_client_qr:'نمایش QR بزرگ', be_client_iran:'🇮🇷 در ایران، *.workers.dev فیلتر است — یک دامنهٔ اختصاصی به ورکر اضافه کن تا QR خودکار از آن استفاده کند.',
+    be_h:'🛰 حالت backend (پیشرفته)', be_s:'ترافیک را به‌جای پردازش در ورکر، به سرور Xray/sing-box خودت بفرست. این تنها راه داشتن VMess و تماس صوتی/تصویری (UDP) است — ولی نیاز به یک سرور backend (VPS) داری. برای حالت رایگانِ معمولی (VLESS/Trojan) خاموش بگذار.', be_en:'فعال‌سازی حالت backend', be_en_h:'وقتی روشن باشد، Nova به backend زیر پل می‌زند', be_url:'آدرس backend', be_check:'بررسی سلامت', be_quick:'⚡ نصب سریع (روی VPS خودت با root اجرا کن)', be_quick_h:'این یک خط را از طریق SSH روی VPS بچسبان. UUIDِ پنل از قبل داخل دستور قرار گرفته، پس backend به‌طور خودکار با پنل هماهنگ می‌شود — بدون مرحلهٔ دستی. Xray را نصب می‌کند، کانفیگ را می‌نویسد، فایروال را باز می‌کند، نام دامنهٔ ابرخاکستری را می‌پرسد و آدرس backend دقیق را برای گذاشتن در بالا چاپ می‌کند. اطلاعات VPS تو هیچ‌جا فرستاده نمی‌شود — خودت روی سرور خودت اجرایش می‌کنی.', be_warn:'✅ چک‌لیست راه‌اندازی (همه لازم است): ۱) دستور نصب را روی VPS اجرا کن — Xray را نصب می‌کند. ۲) پورت backend باید جزو پورت‌های مجاز Cloudflare باشد: 8080, 8880, 2052, 2082, 2086, 2095 (نه 10000). ۳) آدرس backend باید با دامنه باشد، نه IP خام — در Cloudflare DNS یک رکورد A بساز (مثل vps.yourdomain.com → IP سرورت) با حالت DNS-only (ابر خاکستری). ۴) UUIDِ Xray روی VPS باید با UUIDِ این پنل یکی باشد. ۵) دکمهٔ «بررسی سلامت» را بزن تا تأیید شود، بعد QR زیر را اسکن کن. (دکمهٔ «بررسی سلامت» یک تست واقعی اجرا می‌کند — تیک سبز ✓ یعنی کار می‌کند.)', be_client_h:'📱 کانفیگ آمادهٔ کلاینت', be_client_s:'این فقط بعد از «بررسی سلامت» موفق نمایش داده می‌شود تا مطمئن شوی backend واقعاً کار می‌کند. آن را با هیدیفای / v2rayNG اسکن کن تا از طریق backend وصل شوی — همین حالا به دامنهٔ این پنل اشاره می‌کند.', be_client_copy:'کپی لینک', be_client_qr:'نمایش QR بزرگ', be_client_iran:'🇮🇷 در ایران، *.workers.dev فیلتر است — یک دامنهٔ اختصاصی به ورکر اضافه کن تا QR خودکار از آن استفاده کند.',
     px_h:'🛡️ دسترسی CDN کلودفلر', px_s:'نحوه‌ی دسترسی ورکر به شبکه‌ی کلودفلر. یک حالت را انتخاب کنید، پروکسی را وارد کنید، با Verify بررسی کنید و سپس ذخیره کنید. این تنها منبع معتبر است — کانفیگ‌ها از همین‌جا می‌خوانند.', px_mode:'حالت', px_proxyip:'آدرس PROXYIP', px_addr:'آدرس پروکسی', px_verify:'بررسی', px_more_h:'یافتن پروکسی', px_more_load:'دریافت فهرست', px_country:'کشور', px_pick:'پروکسی', px_use:'استفاده از انتخاب', px_more_s:'فهرست‌های عمومی (PROXYIP از IRNova/Tools و SOCKS5/HTTP/HTTPS از proxifly) را دریافت کنید، بر اساس کشور انتخاب و سپس استفاده کنید. فهرست PROXYIP بزرگ است (~۱۰مگابایت). کیفیت پروکسی‌های عمومی متغیر است؛ قبل از استفاده تست کنید.',
     wg_h:'🔐 کانفیگ وایرگارد', wg_s:'یک فایل .conf وایرگارد بسازید تا در برنامهٔ WireGuard وارد کنید. مقادیر پیش‌فرض برای WARP کلودفلر تنظیم شده‌اند — در صورت نیاز ویرایش کنید.', wg_loadwarp:'دریافت از WARP', wg_name:'نام', wg_addr:'آدرس', wg_dns:'DNS', wg_mtu:'MTU', wg_priv:'کلید خصوصی', wg_pub:'کلید عمومی پیر', wg_ep:'اندپوینت', wg_port:'پورت', wg_ka:'Keepalive', wg_build:'ساخت کانفیگ', wg_copy:'کپی', wg_dl:'دانلود .conf', wg_qrbtn:'QR', wg_loaded:'از WARP بارگذاری شد', wg_nowarp:'کانفیگ WARP موجود نیست — ابتدا در شبکه و آی‌پی WARP را ثبت کنید.',
     ab_panel:'پنل', ab_worker:'ورکر', ab_desc:'پنل مدیریت Nova Proxy — مدیریت اشتراک‌ها، آی‌پی‌های تمیز، مسیریابی، WARP و DNS برای ورکر کلودفلر شما.', ab_changelog:'تغییرات', ab_links:'پیوندها',
@@ -2310,7 +2310,7 @@ function syncFormValues(){
   on('t2-antisanc', n.enableAntiSanctionDNS); set('d2-antiprov', n.antiSanctionDNSProvider||'shekan'); set('d2-anticustom', n.antiSanctionCustomDNS||'');
   on('t2-localdns', n.enableLocalDNS); set('d2-localip', n.localDNSIP||'8.8.8.8'); set('d2-localport', n.localDNSPort||'53');
   on('t2-fakedns', n.enableFakeDNS); set('d2-fakeip', n.fakeDNSIP||'198.51.100.1'); set('d2-loglevel', n.logLevel||'error');
-  on('t2-backend', n.backendMode); set('be-url', n.backendUrl||''); try{ renderBackendClient(); }catch(e){} try{ checkBackendPort(); }catch(e){}
+  on('t2-backend', n.backendMode); set('be-url', n.backendUrl||''); try{ renderBackendClient(); }catch(e){} try{ checkBackendPort(); }catch(e){} try{ fillBackendInstallCmd(); }catch(e){}
   // Clean IPs (config) — mode + pool API + random params; custom list loaded from ADD.txt
   const osg=c.optimizedSubGeneration||{}, pool=osg.localIPPool||{};
   set('ci-poolapi', c.POOL_API||'https://nova-deploy.pages.dev/api/pool');
@@ -2393,7 +2393,12 @@ async function backendHealthCheck(){ var el=document.getElementById('be-msg'); v
     if(!resp){ if(el){ el.className='msg'; el.textContent=(lang==='fa'?'تست در دسترس نیست (ورکر را به آخرین نسخه آپدیت کن). با یک کلاینت واقعی تست کن.':'Diagnostic unavailable (update the Worker to the latest version). Test with a real client.'); } return; }
     var j=await resp.json().catch(function(){return null;});
     if(!j){ if(el){ el.className='msg'; el.textContent=(lang==='fa'?'پاسخ نامعتبر. با یک کلاینت واقعی تست کن.':'Unexpected response. Test with a real client.'); } return; }
-    if(j.ok){ if(el){ el.className='msg ok'; el.textContent='✅ '+(lang==='fa'?('backend کار می‌کند! Nova با موفقیت به آن وصل شد (۱۰۱). در '+(j.elapsedMs||'?')+'ms. حالا با کلاینت وصل شو.'):('Backend works! Nova reached it (101) in '+(j.elapsedMs||'?')+'ms. Connect with a client now.')); } return; }
+    if(j.ok){ if(el){ el.className='msg ok'; el.textContent='✅ '+(lang==='fa'?('backend کار می‌کند! Nova با موفقیت به آن وصل شد (۱۰۱). در '+(j.elapsedMs||'?')+'ms. حالا با کلاینت وصل شو.'):('Backend works! Nova reached it (101) in '+(j.elapsedMs||'?')+'ms. Connect with a client now.')); }
+        // Backend proven reachable → unlock the client QR/link for THIS exact URL.
+        window.__backendVerified=u; try{ renderBackendClient(); }catch(e){}
+        return; }
+    // any non-ok result → make sure the QR is hidden (backend not proven)
+    window.__backendVerified=null; try{ renderBackendClient(); }catch(e){}
     // not ok — show the specific reason from the diagnostic
     var step=(j.steps&&j.steps[0])?j.steps[0]:'';
     var hint='';
@@ -2444,11 +2449,29 @@ function checkBackendPort(){
     : ('⚠ Port '+port+' is NOT a Cloudflare-allowed port — the Worker can’t reach it. For '+(isHttps?'HTTPS':'HTTP')+' use one of: '+list));
   return false;
 }
+// Bake THIS panel's UUID into the one-line VPS install command, so the backend installs with the
+// matching UUID automatically (no manual sed step, no "random UUID won't match" warning). Falls back
+// to the plain command if the UUID isn't loaded yet.
+function backendInstallCmd(){
+  var uuid=((STATE.config||{}).UUID||'').trim();
+  var base='bash <(curl -fsSL https://raw.githubusercontent.com/IRNova/Tools/main/nova-backend.sh)';
+  return uuid ? ('NOVA_UUID='+uuid+' '+base) : base;
+}
+function fillBackendInstallCmd(){
+  var el=document.getElementById('be-cmd'); if(!el) return;
+  el.textContent=backendInstallCmd();
+}
+// The client QR/link is only shown once the backend is PROVEN reachable by a Health check (sets
+// window.__backendVerified to the exact URL that passed). Just enabling the toggle or typing a URL
+// is NOT enough — showing a QR for an unverified/broken backend gave users a config that silently
+// failed. If the URL changes after a successful check, the flag no longer matches and the QR hides
+// again until they re-run Health check.
 function renderBackendClient(){
   var wrap=document.getElementById('be-client-wrap'); if(!wrap) return;
   var enabled=isOn2('t2-backend');
   var u=((document.getElementById('be-url')||{}).value||'').trim();
-  var link=(enabled && /^https?:\/\//i.test(u)) ? backendClientLink() : '';
+  var verified=(window.__backendVerified && window.__backendVerified===u);
+  var link=(enabled && verified && /^https?:\/\//i.test(u)) ? backendClientLink() : '';
   if(!link){
     // No backend / empty URL → hide AND wipe any previously-rendered QR + link so nothing stale remains.
     wrap.style.display='none';
@@ -2677,7 +2700,7 @@ document.addEventListener('click', (e)=>{
   if(e.target.closest('#policy-apply')){ applyPolicy(); return; }
   if(e.target.closest('#save-settings2')){ saveSettings(); return; }
   if(e.target.closest('#be-check')){ backendHealthCheck(); return; }
-  if(e.target.closest('#be-cmd-copy')){ var cmd=(document.getElementById('be-cmd')||{}).textContent||''; copy(cmd); return; }
+  if(e.target.closest('#be-cmd-copy')){ var cmd; try{ cmd=backendInstallCmd(); }catch(_e){ cmd=(document.getElementById('be-cmd')||{}).textContent||''; } copy(cmd); return; }
   if(e.target.closest('#be-vless-copy')){ copy((document.getElementById('be-vless')||{}).textContent||''); return; }
   if(e.target.closest('#be-vless-qr') || e.target.closest('#be-qr')){ var l=(document.getElementById('be-vless')||{}).textContent||''; if(l) showQR(l,'Nova Backend'); return; }
   if(e.target.closest('#save-network2')){ saveNetwork(); return; }
@@ -2738,7 +2761,7 @@ document.addEventListener('click', (e)=>{
 });
 { const bf=document.getElementById('backup-file2'); if(bf) bf.onchange=(e)=>{ const f=e.target.files&&e.target.files[0]; if(f) backupImport(f); e.target.value=''; }; }
 { const ff=document.getElementById('f2-frag'); if(ff) ff.addEventListener('change',function(){ const b=document.getElementById('f2-frag-custom'); if(b) b.style.display=this.value==='custom'?'block':'none'; }); }
-{ const bu=document.getElementById('be-url'); if(bu) bu.addEventListener('input',function(){ try{ renderBackendClient(); }catch(_e){} try{ checkBackendPort(); }catch(_e){} }); }
+{ const bu=document.getElementById('be-url'); if(bu) bu.addEventListener('input',function(){ window.__backendVerified=null; try{ renderBackendClient(); }catch(_e){} try{ checkBackendPort(); }catch(_e){} }); }
 $('#menu-btn').addEventListener('click', openDrawer)
 /* Collapsible "Network Settings" submenu (closed by default, state remembered) */
 ;(function(){
