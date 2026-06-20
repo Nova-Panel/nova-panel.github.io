@@ -1,6 +1,6 @@
 {
   "version": "3.8.0",
   "released": "2026-06-18",
-  "notes": "Dashboard (UX) v3.8.0. In-panel self-update, backend mode with health-gated QR, UUID auto-injection, port validation, auto-save, light-theme contrast fixes, and live version badges. Pairs with worker v3.8.0.",
-  "panel_url": "https://raw.githubusercontent.com/Nova-Panel/nova-panel.github.io/main/"
+  "notes": "In-panel self-update (Settings > Update panel) preserving DB/settings/password; live version badges; clean-IP importer now accepts Chinese-header scanner CSVs (XIU2 CloudflareSpeedTest) as well as English; plus all v3.7 backend reliability fixes.",
+  "worker_url": "https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/worker.js"
 }
