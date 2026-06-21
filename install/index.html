@@ -72,6 +72,7 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
  .mono{word-break:break-all;white-space:normal}
 }
 </style>
+<script>/* apply theme before first paint (no flash); fall back to system preference */(function(){try{var t=localStorage.getItem('nova-theme');if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
 <div class="wrap">
@@ -161,7 +162,7 @@ var L={
   vars:[['ADMIN','opt','Admin password; not needed if you create one here'],['KEY','opt','Encryption key; auto-generated if KV is present'],['UUID','opt','Custom UUID; otherwise derived automatically'],['PROXYIP','opt','Reverse-proxy IP'],['HOST','opt','Custom domain'],['POOL_API','opt','Per-ISP smart IP API URL']],
   finish:'Open the panel',finishw:'Create a password first'}};
 var lang='fa',theme='light';
-try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;}catch(e){}
+try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)theme='dark';}catch(e){}
 function $(i){return document.getElementById(i)}
 function setSt(id,state,txt){var e=$(id);e.className='st'+(state?(' '+state):'');$(id.replace('-st','-l')).textContent=txt;}
 function render(){var t=L[lang];document.documentElement.dir=t.dir;document.documentElement.lang=lang;
