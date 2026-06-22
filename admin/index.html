@@ -594,6 +594,8 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
     <main class="content">
       <div id="update-bar" style="display:none;align-items:center;gap:12px;margin:0 0 16px;padding:11px 16px;border:1px solid var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:12px;font-size:13px"><span style="font-size:16px">🔔</span><span style="flex:1" id="update-txt"></span><a id="update-link" class="btn primary sm" href="#" target="_blank" rel="noopener">Get update</a><button id="update-x" aria-label="dismiss" style="background:none;border:none;color:var(--mu);cursor:pointer;font-size:18px;line-height:1">×</button></div>
 
+      <div id="cf-connect-bar" style="display:none;align-items:center;gap:12px;margin:0 0 16px;padding:11px 16px;border:1px solid var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:12px;font-size:13px"><span style="font-size:16px">☁️</span><span style="flex:1" id="cf-bar-txt"></span><button id="cf-bar-go" class="btn primary sm" type="button">Connect token</button><button id="cf-bar-x" type="button" aria-label="dismiss" style="background:none;border:none;color:var(--mu);cursor:pointer;font-size:18px;line-height:1">×</button></div>
+
       <div id="kill-banner" style="display:none;align-items:center;gap:8px;background:var(--dg);color:#fff;padding:11px 16px;border-radius:12px;margin-bottom:14px;font-size:13px;font-weight:600">🚨 <span data-i18n="kill_banner">Service is paused. All proxy traffic and subscription fetches are stopped. Turn the kill switch off in Settings to resume.</span></div>
 
       <!-- ============ DASHBOARD ============ -->
@@ -1896,7 +1898,7 @@ async function cfConnect(extra){
   try{
     const r=await fetch('/admin/cf-usage-setup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const j=await r.json().catch(()=>null);
-    if(j && j.success){ STATE.config.CF=STATE.config.CF||{}; STATE.config.CF.Usage=j.usage; if(j.accountId){ const a=document.getElementById('cf-accid'); if(a) a.value=j.accountId; } const w=document.getElementById('cf-acct-wrap'); if(w){ w.style.display='none'; w.innerHTML=''; } renderWorker(); renderKPIs(); if(msg) msg.textContent=lang==='fa'?'وصل شد ✓':'Connected ✓'; return; }
+    if(j && j.success){ STATE.config.CF=STATE.config.CF||{}; STATE.config.CF.Usage=j.usage; if(j.accountId){ const a=document.getElementById('cf-accid'); if(a) a.value=j.accountId; } const w=document.getElementById('cf-acct-wrap'); if(w){ w.style.display='none'; w.innerHTML=''; } renderWorker(); renderKPIs(); try{ var _cb=document.getElementById('cf-connect-bar'); if(_cb) _cb.style.display='none'; localStorage.removeItem('nova-cf-dismiss'); }catch(e){} if(msg) msg.textContent=lang==='fa'?'وصل شد ✓':'Connected ✓'; return; }
     if(j && j.error==='multiple_accounts' && Array.isArray(j.accounts)){
       const w=document.getElementById('cf-acct-wrap');
       if(w){ w.style.display='block'; w.innerHTML='<div style="font-size:12px;color:var(--mu);margin-bottom:6px">'+(lang==='fa'?'چند حساب پیدا شد — یکی را انتخاب کن:':'Multiple accounts — pick one:')+'</div>'+j.accounts.map(function(a){ return '<button class="btn ghost sm cf-acct" data-acct="'+String(a.id).replace(/"/g,'&quot;')+'" style="margin:0 6px 6px 0">'+String(a.name||a.id).replace(/</g,'&lt;')+'</button>'; }).join(''); }
@@ -2989,6 +2991,24 @@ let _updVer='';
 // Update banner: shows ONLY when the running worker is older than the latest published version.
 // The "Update" button takes the user straight to Settings → Update panel (in-panel self-update),
 // not to a raw GitHub URL. Dismiss is remembered per-version so it doesn't nag.
+function showCfBar(show){
+  var bar=document.getElementById('cf-connect-bar'); if(!bar) return;
+  if(!show){ bar.style.display='none'; return; }
+  var dm=''; try{ dm=localStorage.getItem('nova-cf-dismiss')||''; }catch(e){} if(dm==='1'){ bar.style.display='none'; return; }
+  var txt=document.getElementById('cf-bar-txt');
+  if(txt) txt.textContent=(lang==='fa')
+    ?'برای «به‌روزرسانی خودکار» و نمایش «مصرف ورکر»، یک‌بار توکن Cloudflare را وصل کن — کمتر از یک دقیقه.'
+    :'Connect a Cloudflare token once to unlock auto-updates and live Worker usage — takes under a minute.';
+  var go=document.getElementById('cf-bar-go');
+  if(go){ go.textContent=(lang==='fa')?'اتصال توکن':'Connect token';
+    go.onclick=function(ev){ if(ev) ev.preventDefault();
+      try{ showView('notifications'); }catch(e){}
+      setTimeout(function(){ try{ var el=document.getElementById('cf-token'); var card=el?el.closest('.card'):null; (card||el||{scrollIntoView:function(){}}).scrollIntoView({behavior:'smooth',block:'center'}); if(el){ el.focus(); el.style.transition='box-shadow .2s'; el.style.boxShadow='0 0 0 3px color-mix(in srgb,var(--ac) 45%,transparent)'; setTimeout(function(){ try{ el.style.boxShadow=''; }catch(e){} },1600); } }catch(e){} },140);
+    };
+  }
+  var x=document.getElementById('cf-bar-x'); if(x) x.onclick=function(){ bar.style.display='none'; try{ localStorage.setItem('nova-cf-dismiss','1'); }catch(e){} };
+  bar.style.display='flex';
+}
 async function checkUpdate(){ try{
  if(!LIVE) return;
  // Primary: the worker's update-check endpoint (knows the exact running version). Fallback: if the
@@ -2999,6 +3019,8 @@ async function checkUpdate(){ try{
    const r=await fetch('admin/update-check.json',{cache:'no-store'});
    if((r.headers.get('content-type')||'').indexOf('application/json')>=0) j=await r.json();
  }catch(e){}
+ // Cloudflare-connect banner: when the worker reports no saved token, prompt the one-time connect.
+ try{ if(j && typeof j.hasCfToken!=='undefined') showCfBar(!j.hasCfToken); }catch(e){}
  if(!j || !j.latest){
    let cur='';
    try{ const sr=await API.get('system.json'); cur=_vnorm(sr&&sr.version); }catch(e){}
