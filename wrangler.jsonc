@@ -1,0 +1,32 @@
+{
+  // ───────────────────────────────────────────────────────────────────────────
+  //  Nova Proxy — Cloudflare Worker config (Deploy-to-Cloudflare ready)
+  //  Cloudflare reads this, auto-creates the D1 database, binds it, and deploys
+  //  the Worker — no terminal. The Worker creates its own D1 tables on first run.
+  //  After deploy, open the Worker URL → the /install wizard sets the admin password.
+  // ───────────────────────────────────────────────────────────────────────────
+  "name": "nova-proxy",
+  "main": "worker.js",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  // Panel UI (login/admin/user/install + logos, JS) is bundled and served from THIS Worker's own
+  // domain via the ASSETS binding, so there is no separate GitHub Pages / raw origin to reach,
+  // fingerprint, or take down. run_worker_first keeps the Worker in front of every request so the
+  // auth/cookie checks and the secret-path disguise still run (Cloudflare must not auto-serve
+  // /admin or /login as static files). The Worker reads these files through env.ASSETS.fetch().
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nova-proxy-db",
+      "database_id": "placeholder-cloudflare-will-replace-this"
+    }
+  ],
+  "vars": {
+    "ENABLE_CRON": "false"
+  }
+}

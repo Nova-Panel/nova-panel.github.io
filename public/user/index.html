@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nova Proxy configs</title>
+<meta name="nova-userhub-version" content="3.8.2" />
+<link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script>
+  (function(){ try{
+    var l = localStorage.getItem('nova-user-lang') || 'fa';
+    document.documentElement.lang = l; document.documentElement.dir = l==='fa'?'rtl':'ltr';
+    var th = localStorage.getItem('nova-theme'); document.documentElement.dataset.theme = th==='light'?'light':'dark';
+  }catch(e){} })();
+</script>
+<style>
+  :root{
+    --bg:#070809; --panel:#0c0e12; --card:#101319; --card2:#0b0d11;
+    --bd:#1c2027; --bd2:#262b34; --tx:#e9edf4; --tx2:#aeb6c4; --mu:#6f7888;
+    --ac:#22d3ee; --ac2:#a855f7; --ok:#34d399; --wn:#f5b042; --dg:#f87171;
+    --grad:linear-gradient(120deg,#22d3ee,#7c5cff);
+    --radius:12px; --r-sm:9px; --r-lg:16px;
+    --ac-soft:color-mix(in srgb,var(--ac) 14%,transparent);
+    --ac-line:color-mix(in srgb,var(--ac) 38%,transparent);
+  }
+  html[data-theme=light]{
+    --bg:#f4f6fb; --panel:#ffffff; --card:#ffffff; --card2:#f7f9fc;
+    --bd:#e6eaf1; --bd2:#dde2eb; --tx:#101622; --tx2:#3a465c; --mu:#5f6a7d;
+    --ac:#0ea5c4; --ac2:#7c3aed; --grad:linear-gradient(120deg,#0891b2,#7c3aed); --ok:#047857; --wn:#b45309; --dg:#dc2626;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;font-family:'Inter','Vazirmatn',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
+  html[dir=rtl] body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:24px 18px 64px}
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .mark{width:42px;height:42px;flex:0 0 42px;display:flex;align-items:center;justify-content:center;background:var(--card2);border:1px solid var(--bd);border-radius:11px;overflow:hidden}
+  .brand .mark img{width:31px;height:31px;object-fit:contain;display:block}
+  .brand .name{font-size:17px;font-weight:800;color:var(--tx);letter-spacing:.2px}
+  .brand .env{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--mu);font-weight:600;margin-top:2px}
+  .brand .env .d{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent)}
+  .controls{margin-inline-start:auto;display:flex;gap:8px}
+  .segmented{display:flex;border:1px solid var(--bd);background:var(--card);border-radius:var(--r-sm);padding:3px;height:36px}
+  .segmented button{border:none;background:transparent;color:var(--mu);font:inherit;font-size:12px;font-weight:700;padding:0 11px;border-radius:6px;transition:.12s;cursor:pointer;line-height:1}
+  .segmented button.on{background:var(--ac);color:#04121a}
+  html[data-theme=light] .segmented button.on{color:#fff}
+  .subtitle{color:var(--tx2);font-size:13.5px;line-height:1.75;margin:4px 0 18px}
+  .subtitle b{color:var(--ac);font-weight:700}
+  .freebar{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ac-soft);border:1px solid var(--ac-line);color:var(--ac);font-weight:700;font-size:13px;line-height:1.5;border-radius:var(--radius);padding:11px 14px;margin:0 0 18px;text-align:center}
+  .usage{background:var(--card);border:1px solid var(--bd);border-radius:var(--radius);padding:15px 16px;margin-bottom:16px}
+  .usage[hidden]{display:none}
+  .usage-top{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end;margin-bottom:11px}
+  .ustat{display:flex;flex-direction:column;gap:3px}
+  .ustat .lbl{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--mu)}
+  .ustat .val{font-size:16px;font-weight:700;color:var(--tx);line-height:1}
+  .ustat .val.warn{color:var(--wn)} .ustat .val.dg{color:var(--dg)}
+  .bar{height:8px;border-radius:999px;background:var(--card2);border:1px solid var(--bd);overflow:hidden}
+  .bar-fill{height:100%;border-radius:999px;background:var(--grad);width:0;transition:width .45s ease}
+  .bar-fill.warn{background:var(--wn)} .bar-fill.dg{background:var(--dg)}
+  .usplit{margin-top:9px;font-size:12px;color:var(--tx2);display:flex;gap:16px;flex-wrap:wrap}
+  .usplit .ar{color:var(--ac);font-weight:700}
+  .sublink{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--bd);border-radius:var(--radius);padding:11px 14px;margin-bottom:22px}
+  .sublink code{flex:1;min-width:0;font-family:ui-monospace,'SF Mono',monospace;font-size:11.5px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:left}
+  .appgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+  .appcard{border:1px solid var(--bd);border-radius:12px;padding:14px;background:var(--card2);display:flex;flex-direction:column;gap:13px}
+  .appcard.rec{border-color:var(--ac-line)}
+  .appcard-h{display:flex;align-items:center;gap:10px}
+  .appcard-h .ic{width:32px;height:32px;flex:0 0 32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff}
+  .appcard-h .nm{font-size:14px;font-weight:700;color:var(--tx)}
+  .appcard-h .rec-badge{margin-inline-start:auto;display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--ac);background:var(--ac-soft);border:1px solid var(--ac-line);border-radius:999px;padding:2px 8px}
+  .appcard-qr{display:flex;justify-content:center}
+  .appcard-qr .qbox{background:#fff;border-radius:10px;padding:9px;width:140px;height:140px;display:flex;align-items:center;justify-content:center}
+  .appcard-qr canvas,.appcard-qr img{display:block;width:122px;height:122px}
+  .qmiss{font-size:11px;color:#555;text-align:center}
+  .scanhint{font-size:11px;color:var(--mu);text-align:center;margin-top:-4px}
+  .appcard-acts{display:flex;flex-direction:column;gap:7px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 14px;border-radius:var(--r-sm);font:inherit;font-size:13px;font-weight:600;border:1px solid transparent;transition:.13s;cursor:pointer;text-decoration:none}
+  .btn.primary{background:var(--ac);color:#04121a;border-color:var(--ac);width:100%}
+  html[data-theme=light] .btn.primary{color:#fff}
+  .btn.primary:hover{filter:brightness(1.07)}
+  .btn.ghost{background:var(--card);color:var(--tx);border-color:var(--bd2)}
+  .btn.ghost:hover{border-color:var(--ac);color:var(--ac)}
+  .btn.sm{height:32px;padding:0 12px;font-size:12px}
+  .foot{margin-top:30px;text-align:center;color:var(--mu);font-size:12px}
+  .foot .fsocial{display:flex;justify-content:center;gap:12px;margin-top:10px}
+  .foot .fsocial a{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--bd);border-radius:9px;color:var(--mu);transition:.12s}
+  .foot .fsocial a:hover{border-color:var(--bd2);transform:translateY(-1px)}
+  .foot .fsocial svg{width:18px;height:18px}
+  .foot .fsocial a .tg{color:#229ED9}.foot .fsocial a .ig{color:#E1306C}
+  .toast{position:fixed;inset-inline:0;bottom:22px;margin:auto;width:max-content;max-width:90%;background:var(--ac);color:#04121a;font-weight:700;padding:9px 18px;border-radius:999px;font-size:13px;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none;z-index:20}
+  html[data-theme=light] .toast{color:#fff}
+  .toast.show{opacity:1;transform:none}
+  @media(max-width:520px){.topbar{flex-wrap:wrap}.controls{margin-inline-start:0;width:100%}}
+  .radar{background:var(--card);border:1px solid var(--ac-line);border-radius:var(--radius);padding:14px 16px;margin-bottom:22px}
+  .radar-h{display:flex;align-items:center;gap:11px}
+  .radar-ic{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;background:var(--ac-soft);border:1px solid var(--ac-line);border-radius:9px;font-size:16px}
+  .radar-tt{min-width:0}
+  .radar-title{font-size:14px;font-weight:800;color:var(--tx)}
+  .radar-sub{font-size:11.5px;color:var(--mu);margin-top:2px;line-height:1.5}
+  .radar-run{width:100%;margin-top:12px}
+  .radar-ports{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .rpchip{background:var(--card2);border:1px solid var(--bd);border-radius:999px;color:var(--tx2);padding:6px 13px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.12s}
+  .rpchip.on{background:var(--ac);border-color:var(--ac);color:#04121a;font-weight:800}
+  html[data-theme=light] .rpchip.on{color:#fff}
+  .radar-bar{margin-top:12px}
+  .radar-msg{font-size:12px;color:var(--tx2);margin-top:8px;min-height:16px;text-align:center}
+  .radar-results{margin-top:6px}
+  .radar-results table{width:100%;border-collapse:collapse;font-size:12px}
+  .radar-results th,.radar-results td{padding:6px 6px;text-align:center;border-bottom:1px solid var(--bd)}
+  .radar-results th{color:var(--mu);font-weight:600;font-size:10.5px}
+  .radar-results td code{font-family:ui-monospace,'SF Mono',monospace;direction:ltr;color:var(--ac)}
+  .radar-results tr.best td{background:var(--ac-soft)}
+  .radar-out{margin-top:12px}
+  .radar-cfg{background:var(--card2);border:1px solid var(--bd);border-radius:9px;padding:10px;font-family:ui-monospace,monospace;font-size:10px;direction:ltr;text-align:left;word-break:break-all;color:var(--tx2);max-height:88px;overflow:auto;margin-bottom:8px}
+  .radar-qr{display:flex;justify-content:center;margin-top:12px}
+  .radar-qr .qbox{background:#fff;border-radius:10px;padding:9px;line-height:0}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="/logo-mark.svg" alt="Nova Proxy" /></div>
+        <div>
+          <div class="name" role="heading" aria-level="1">Nova Proxy</div>
+          <div class="env"><span class="d"></span><span id="brandsub">configs</span></div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="segmented" id="lang"><button data-l="en">EN</button><button data-l="fa">فا</button></div>
+        <div class="segmented" id="theme"><button data-t="light">☀</button><button data-t="dark">☾</button></div>
+      </div>
+    </header>
+
+    <p class="subtitle" id="subtitle"></p>
+
+    <div class="freebar" id="freebar"></div>
+
+    <section class="usage" id="usage" hidden>
+      <div class="usage-top">
+        <div class="ustat"><span class="lbl" id="ul-used">Used</span><span class="val" id="u-used">-</span></div>
+        <div class="ustat"><span class="lbl" id="ul-total">Total</span><span class="val" id="u-total">-</span></div>
+        <div class="ustat"><span class="lbl" id="ul-exp">Expires</span><span class="val" id="u-exp">-</span></div>
+      </div>
+      <div class="bar" id="u-bar-wrap"><div class="bar-fill" id="u-bar"></div></div>
+      <div class="usplit" id="u-split"></div>
+    </section>
+
+    <div class="sublink">
+      <button class="btn ghost sm" id="copyraw"></button>
+      <code id="rawsub">…</code>
+    </div>
+
+    <section class="radar" id="radar">
+      <div class="radar-h">
+        <span class="radar-ic">📡</span>
+        <div class="radar-tt"><div class="radar-title" id="radar-title"></div><div class="radar-sub" id="radar-sub"></div></div>
+      </div>
+      <div class="radar-ports" id="radar-ports" role="group"><button type="button" class="rpchip on" data-port="443" aria-pressed="true">443</button><button type="button" class="rpchip" data-port="8443" aria-pressed="false">8443</button><button type="button" class="rpchip" data-port="2053" aria-pressed="false">2053</button><button type="button" class="rpchip" data-port="2083" aria-pressed="false">2083</button><button type="button" class="rpchip" data-port="2087" aria-pressed="false">2087</button><button type="button" class="rpchip" data-port="2096" aria-pressed="false">2096</button></div>
+      <button class="btn primary radar-run" id="radar-run"></button>
+      <div class="bar radar-bar" id="radar-bar" style="display:none"><div class="bar-fill" id="radar-fill"></div></div>
+      <div class="radar-msg" id="radar-msg" role="status" aria-live="polite"></div>
+      <div id="radar-results" class="radar-results"></div>
+      <div id="radar-apply-row" style="display:none;margin-top:12px">
+        <button class="btn primary" id="radar-apply" style="width:100%"></button>
+        <div class="radar-msg" id="radar-apply-msg" role="status" aria-live="polite" style="margin-top:6px"></div>
+      </div>
+      <div id="radar-out" class="radar-out" style="display:none">
+        <div class="radar-cfg" id="radar-cfg"></div>
+        <button class="btn primary sm" id="radar-copy" style="width:100%"></button>
+        <div class="radar-qr" id="radar-qr"></div>
+      </div>
+    </section>
+
+    <div class="appgrid" id="grid"></div>
+
+    <footer class="foot" id="foot"></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/qrcode.min.js"></script>
+  <script>
+  (function(){
+    var I18N = {
+      en: { brandsub:'configs', free_h:'🎁 Nova is a free service, never pay anyone for it', subtitle:'Pick your app, scan the QR or tap Add. Same servers in every app.', sub_user:'Configs for ', copy:'Copy', copied:'Copied', copyraw:'Copy subscription link', add:'Add to app', scanhint:'or scan this in your app', qmiss:'QR unavailable', foot:'Powered by Nova Proxy', used:'Used', total:'Limit', expires:'Expires', unlimited:'Unlimited', noexpiry:'No expiry', expired:'Expired', days:'d left', today:'today', up:'Up', down:'Down', remaining:'left', radar_ports:'Ports to scan', radar_title:'📡 Nova Radar', radar_sub:'Slow or not connecting? Find the fastest clean IP for your network.', radar_run:'Run scan', radar_prep:'Preparing…', radar_testing:'Testing… ', radar_alive:' alive', radar_done:'Fastest IPs found', radar_none:'No responsive IP found. Try again.', radar_lat:'Latency', radar_copycfg:'📋 Copy best-IP config', radar_notmpl:'Best IPs found. Replace the IP in your current config with one of these.', radar_apply:'📥 Apply these to my config', radar_applying:'Applying…', radar_applied:'✅ Applied. Re-add or refresh your config in your app to use them.', radar_applyerr:'Could not apply, please try again' },
+      fa: { brandsub:'کانفیگ‌ها', free_h:'🎁 نوا یک سرویس رایگان است، برای آن به کسی پول ندهید', subtitle:'اپ خود را انتخاب کن، QR را اسکن کن یا روی «افزودن» بزن. سرورها در همه‌ی اپ‌ها یکی است.', sub_user:'کانفیگ‌های ', copy:'کپی', copied:'کپی شد', copyraw:'کپی لینک اشتراک', add:'افزودن به اپ', scanhint:'یا این را در اپ خود اسکن کن', qmiss:'QR در دسترس نیست', foot:'قدرت‌گرفته از Nova Proxy', used:'مصرف‌شده', total:'حجم کل', expires:'انقضا', unlimited:'نامحدود', noexpiry:'بدون انقضا', expired:'منقضی شده', days:'روز مانده', today:'امروز', up:'آپلود', down:'دانلود', remaining:'باقی‌مانده', radar_ports:'پورت‌ها برای اسکن', radar_title:'📡 رادار نوا', radar_sub:'کند است یا وصل نمی‌شود؟ سریع‌ترین آی‌پی تمیز شبکه‌تان را پیدا کنید.', radar_run:'اسکن', radar_prep:'در حال آماده‌سازی…', radar_testing:'در حال تست… ', radar_alive:' سالم', radar_done:'سریع‌ترین آی‌پی‌ها پیدا شد', radar_none:'آی‌پی سالمی پیدا نشد. دوباره تلاش کنید.', radar_lat:'تأخیر', radar_copycfg:'📋 کپی کانفیگ بهترین آی‌پی', radar_notmpl:'بهترین آی‌پی‌ها پیدا شد. آی‌پی کانفیگ فعلی‌تان را با یکی از این‌ها جایگزین کنید.', radar_apply:'📥 اعمال به کانفیگ من', radar_applying:'در حال اعمال…', radar_applied:'✅ اعمال شد. برای استفاده، کانفیگ را در اپ خود دوباره اضافه یا بروزرسانی کنید.', radar_applyerr:'اعمال نشد، دوباره تلاش کنید' }
+    };
+    var lang = (function(){ try{ return localStorage.getItem('nova-user-lang')||'fa'; }catch(e){ return 'fa'; } })();
+    var theme = document.documentElement.dataset.theme==='light' ? 'light' : 'dark';
+    var USAGE = null;
+
+    function subFor(fmt){
+      var u = new URL(location.href);
+      ['b64','base64','clash','sb','singbox','surge','quanx','loon','target','page','hub','raw'].forEach(function(p){ u.searchParams.delete(p); });
+      var s = u.toString();
+      if (!fmt) return s;
+      return s + (s.indexOf('?')>-1 ? '&' : '?') + (fmt==='b64' ? 'b64' : fmt);
+    }
+    function uname(){ try{ var u=new URL(location.href); return u.searchParams.get('u')||u.searchParams.get('sub')||''; }catch(e){ return ''; } }
+
+    var CLIENTS = [
+      { name:'Hiddify',   color:'#7c5cff', rec:true,  fmt:'b64',     deep:function(u){ return 'hiddify://import/'+u; } },
+      { name:'v2rayNG',   color:'#2563eb', rec:false, fmt:'b64',     deep:function(u){ return 'v2rayng://install-config?url='+encodeURIComponent(u); } },
+      { name:'Streisand', color:'#0ea5e9', rec:false, fmt:'b64',     deep:function(u){ return 'streisand://import/'+u; } },
+      { name:'FlClash',   color:'#06b6d4', rec:true,  fmt:'clash',   deep:function(u){ return 'clash://install-config?url='+encodeURIComponent(u); } },
+      { name:'Clash Meta',color:'#10b981', rec:false, fmt:'clash',   deep:function(u){ return 'clash://install-config?url='+encodeURIComponent(u); } },
+      { name:'Karing',    color:'#16a34a', rec:false, fmt:'clash',   deep:function(u){ return 'karing://install-config?url='+encodeURIComponent(u)+'&name=Nova'; } },
+      { name:'sing-box',  color:'#64748b', rec:false, fmt:'singbox', deep:function(u){ return 'sing-box://import-remote-profile?url='+encodeURIComponent(u); } },
+      { name:'NekoBox',   color:'#f59e0b', rec:false, fmt:'singbox', deep:function(u){ return 'sing-box://import-remote-profile?url='+encodeURIComponent(u); } }
+    ];
+
+    function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('show'); },1400); }
+    function copy(text){ try{ navigator.clipboard.writeText(text); }catch(e){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta); } toast(I18N[lang].copied); }
+    function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+    function fmtBytes(n){ n=Number(n)||0; if(n<=0) return '0 GB'; var u=['B','KB','MB','GB','TB','PB']; var i=Math.floor(Math.log(n)/Math.log(1024)); i=Math.max(0,Math.min(i,u.length-1)); var v=n/Math.pow(1024,i); return (v>=100?v.toFixed(0):v>=10?v.toFixed(1):v.toFixed(2))+' '+u[i]; }
+
+    async function loadUsage(){
+      try{
+        var r = await fetch(subFor('b64'), { cache:'no-store' });
+        var h = r.headers.get('Subscription-Userinfo'); if(!h) return;
+        var d={}; h.split(';').forEach(function(p){ var kv=p.trim().split('='); if(kv.length===2) d[kv[0].trim()]=Number(kv[1]); });
+        var up=d.upload||0, down=d.download||0, total=d.total||0, expire=d.expire||0;
+        USAGE = { up:up, down:down, total:total, expire:expire, used:up+down,
+                  unlim: !total || total>=1099511627776000,
+                  noexp: !expire || expire>=4102300000 };
+        renderUsage();
+      }catch(e){}
+    }
+
+    function renderUsage(){
+      if(!USAGE) return;
+      var t=I18N[lang], el=document.getElementById('usage');
+      document.getElementById('ul-used').textContent=t.used;
+      document.getElementById('ul-total').textContent=t.total;
+      document.getElementById('ul-exp').textContent=t.expires;
+      document.getElementById('u-used').textContent=fmtBytes(USAGE.used);
+      var totalEl=document.getElementById('u-total'), bar=document.getElementById('u-bar'), barWrap=document.getElementById('u-bar-wrap');
+      if(USAGE.unlim){ totalEl.textContent=t.unlimited; barWrap.style.display='none'; }
+      else{
+        totalEl.textContent=fmtBytes(USAGE.total);
+        barWrap.style.display='';
+        var pct=Math.max(0,Math.min(100, USAGE.used/USAGE.total*100));
+        bar.style.width=pct.toFixed(1)+'%';
+        bar.className='bar-fill'+(pct>=90?' dg':pct>=75?' warn':'');
+        document.getElementById('u-used').className='val'+(pct>=90?' dg':pct>=75?' warn':'');
+      }
+      var expEl=document.getElementById('u-exp');
+      if(USAGE.noexp){ expEl.textContent=t.noexpiry; expEl.className='val'; }
+      else{
+        var ms=USAGE.expire*1000, days=Math.ceil((ms-Date.now())/86400000);
+        if(days<0){ expEl.textContent=t.expired; expEl.className='val dg'; }
+        else if(days===0){ expEl.textContent=t.today; expEl.className='val warn'; }
+        else{ expEl.textContent=days+' '+t.days; expEl.className='val'+(days<=3?' warn':''); }
+      }
+      var split=document.getElementById('u-split');
+      split.innerHTML='<span><span class="ar">↑</span> '+t.up+': '+fmtBytes(USAGE.up)+'</span><span><span class="ar">↓</span> '+t.down+': '+fmtBytes(USAGE.down)+'</span>'+
+        (USAGE.unlim?'':'<span>'+t.remaining+': '+fmtBytes(Math.max(0,USAGE.total-USAGE.used))+'</span>');
+      el.hidden=false;
+    }
+
+    function render(){
+      var t = I18N[lang];
+      document.documentElement.lang = lang; document.documentElement.dir = lang==='fa'?'rtl':'ltr';
+      // Accessibility: the icon-only theme/language buttons need a spoken name for screen readers.
+      var _lb=document.querySelector('#theme [data-t="light"]'); if(_lb) _lb.setAttribute('aria-label', lang==='fa'?'پوستهٔ روشن':'Light theme');
+      var _db=document.querySelector('#theme [data-t="dark"]'); if(_db) _db.setAttribute('aria-label', lang==='fa'?'پوستهٔ تیره':'Dark theme');
+      var _en=document.querySelector('#lang [data-l="en"]'); if(_en) _en.setAttribute('aria-label','English');
+      var _fa=document.querySelector('#lang [data-l="fa"]'); if(_fa) _fa.setAttribute('aria-label','فارسی');
+      document.getElementById('brandsub').textContent = t.brandsub;
+      var who = uname();
+      document.getElementById('subtitle').innerHTML = (who ? (t.sub_user+'<b>'+esc(who)+'</b>, ') : '') + t.subtitle;
+      document.getElementById('freebar').textContent = t.free_h;
+      document.getElementById('foot').innerHTML = '<div>'+esc(t.foot)+'</div><div class="fsocial"><a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a><a href="https://instagram.com/irnova_proxy" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg class="ig" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></a></div>';
+      var rawUrl = subFor('b64');
+      document.getElementById('rawsub').textContent = rawUrl;
+      var cr = document.getElementById('copyraw'); cr.textContent = t.copyraw; cr.onclick=function(){ copy(rawUrl); };
+      var rtt=document.getElementById('radar-title');
+      if(rtt){ rtt.textContent=t.radar_title; document.getElementById('radar-sub').textContent=t.radar_sub; document.getElementById('radar-run').textContent=t.radar_run; }
+      var rpg=document.getElementById('radar-ports'); if(rpg) rpg.setAttribute('aria-label', t.radar_ports);
+
+      var grid = document.getElementById('grid'); grid.innerHTML='';
+      CLIENTS.forEach(function(c){
+        var sub = subFor(c.fmt);
+        var card = document.createElement('div'); card.className='appcard'+(c.rec?' rec':'');
+        card.innerHTML =
+          '<div class="appcard-h"><span class="ic" style="background:'+c.color+'">'+c.name[0].toUpperCase()+'</span><span class="nm">'+c.name+'</span>'+(c.rec?'<span class="rec-badge">★</span>':'')+'</div>'+
+          '<div class="appcard-qr"><div class="qbox"></div></div>'+
+          '<div class="scanhint">'+t.scanhint+'</div>'+
+          '<div class="appcard-acts"><a class="btn primary" href="'+c.deep(sub)+'">+ '+t.add+'</a><button class="btn ghost sm" data-copy="'+esc(sub)+'">'+t.copy+'</button></div>';
+        grid.appendChild(card);
+        var qbox = card.querySelector('.qbox');
+        try {
+          if (window.QRCode) { new QRCode(qbox, { text: sub, width:122, height:122, correctLevel: QRCode.CorrectLevel.M }); }
+          else { qbox.innerHTML = '<span class="qmiss">'+t.qmiss+'</span>'; }
+        } catch(e){ qbox.innerHTML = '<span class="qmiss">'+t.qmiss+'</span>'; }
+      });
+      grid.querySelectorAll('[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.getAttribute('data-copy')); }; });
+      document.querySelectorAll('#lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.l===lang); });
+      document.querySelectorAll('#theme button').forEach(function(b){ b.classList.toggle('on', b.dataset.t===theme); });
+      renderUsage();
+    }
+
+    // ---- Nova Radar: in-browser clean-IP scanner (runs on the user's own device) ----
+    var CF_RANGES=[['104.16.',0,255],['104.17.',0,255],['104.18.',0,255],['104.19.',0,255],['104.20.',0,255],['104.21.',0,255],['104.22.',0,255],['104.24.',0,255],['104.25.',0,255],['104.26.',0,255],['104.27.',0,255],['162.159.',0,255],['172.64.',0,255],['172.66.',0,255],['172.67.',0,255],['188.114.',96,111],['141.101.',64,127]];
+    function randCfIp(){ var r=CF_RANGES[Math.floor(Math.random()*CF_RANGES.length)]; var c=r[1]+Math.floor(Math.random()*(r[2]-r[1]+1)); return r[0]+c+'.'+Math.floor(Math.random()*256); }
+    function pingIp(ip,port,timeout){ return new Promise(function(res){ var t0=performance.now(),done=false,img=new Image(); function fin(ok){ if(done)return; done=true; img.onerror=img.onload=null; res(ok?Math.round(performance.now()-t0):null); } var timer=setTimeout(function(){fin(false);},timeout); img.onerror=function(){clearTimeout(timer);fin(true);}; img.onload=function(){clearTimeout(timer);fin(true);}; img.src='https://'+(port==443?ip:ip+':'+port)+'/cdn-cgi/trace?'+Math.random(); }); }
+    var RTMPL=null, RBEST=[];
+    async function radarTemplate(){ try{ var r=await fetch(subFor('b64')+'&_t='+Date.now()); var txt=await r.text(); var data=txt; try{ var dec=atob(txt.replace(/\s+/g,'')); if(dec.indexOf('://')>0) data=dec; }catch(e){} var lines=data.split(/[\r\n]+/),v=null; for(var i=0;i<lines.length;i++){ if(lines[i].trim().indexOf('vless://')===0){ v=lines[i].trim(); break; } } if(!v)return; var m=v.match(/^vless:\/\/([^@]+)@([^:]+):(\d+)\?([^#]*)/); if(!m)return; RTMPL={uuid:m[1],port:m[3],query:m[4]}; var pc=document.getElementById('radar-ports'); if(pc){ var tp=String(m[3]); if(!pc.querySelector('[data-port="'+tp+'"]')){ var nb=document.createElement('button'); nb.type='button'; nb.className='rpchip'; nb.setAttribute('data-port',tp); nb.textContent=tp; pc.insertBefore(nb,pc.firstChild); } var tc=pc.querySelector('[data-port="'+tp+'"]'); if(tc) tc.classList.add('on'); radarSyncChips(); } }catch(e){} }
+    function radarCfg(ip,port){ if(!RTMPL)return null; port=port||443; return 'vless://'+RTMPL.uuid+'@'+ip+':'+port+'?'+RTMPL.query+'#'+encodeURIComponent('Nova ⚡ '+ip+':'+port); }
+    async function radarRun(){
+      var t=I18N[lang]; var btn=document.getElementById('radar-run'),msg=document.getElementById('radar-msg'),bar=document.getElementById('radar-bar'),fill=document.getElementById('radar-fill');
+      btn.disabled=true; bar.style.display='block'; fill.style.width='0%'; document.getElementById('radar-out').style.display='none'; document.getElementById('radar-results').innerHTML='';
+      (function(){ var _ar=document.getElementById('radar-apply-row'); if(_ar) _ar.style.display='none'; var _am=document.getElementById('radar-apply-msg'); if(_am) _am.textContent=''; })();
+      msg.textContent=t.radar_prep; if(!RTMPL) await radarTemplate();
+      var ports=Array.prototype.map.call(document.querySelectorAll('#radar-ports .rpchip.on'),function(b){return Number(b.getAttribute('data-port'));}).filter(Boolean);
+      if(!ports.length){ ports=[443]; var p443=document.querySelector('#radar-ports [data-port="443"]'); if(p443) p443.classList.add('on'); radarSyncChips(); }
+      var keep=6,timeout=2000,probes=3,conc=12;
+      var maxIps=Math.min(120,Math.max(20,Math.floor(500/ports.length)));
+      var ips=[],seen={}; while(ips.length<maxIps){ var ip=randCfIp(); if(!seen[ip]){ seen[ip]=1; ips.push(ip); } }
+      var pairs=[]; for(var a=0;a<ips.length;a++){ for(var pi=0;pi<ports.length;pi++){ pairs.push({ip:ips[a],port:ports[pi]}); } }
+      var totalN=pairs.length,tested=0,alive=[];
+      async function w(){ while(pairs.length){ var pr=pairs.pop(); var s=[]; for(var i=0;i<probes;i++){ var ms=await pingIp(pr.ip,pr.port,timeout); if(ms!=null)s.push(ms); } tested++;
+        if(s.length){ var avg=Math.round(s.reduce(function(a,b){return a+b;},0)/s.length); var jit=Math.round(Math.max.apply(null,s)-Math.min.apply(null,s)); var loss=Math.round((1-s.length/probes)*100); alive.push({ip:pr.ip,port:pr.port,ms:avg,score:avg+jit*0.5+loss*20}); }
+        fill.style.width=Math.max(3,Math.round(tested/totalN*100))+'%'; msg.textContent=t.radar_testing+tested+'/'+totalN+' ('+alive.length+t.radar_alive+')'; } }
+      var pool=[]; for(var k=0;k<conc;k++) pool.push(w()); await Promise.all(pool);
+      alive.sort(function(a,b){return a.score-b.score;}); RBEST=alive.slice(0,keep);
+      fill.style.width='100%'; setTimeout(function(){bar.style.display='none';},500); btn.disabled=false;
+      if(!RBEST.length){ msg.textContent=t.radar_none; return; }
+      msg.textContent=t.radar_done;
+      if(RBEST.length && hasUserKey()){ var _ab=document.getElementById('radar-apply'); if(_ab){ _ab.textContent=t.radar_apply; _ab.disabled=false; document.getElementById('radar-apply-row').style.display='block'; } }
+      var rows=''; for(var i=0;i<RBEST.length;i++){ var b=RBEST[i]; rows+='<tr class="'+(i===0?'best':'')+'"><td>'+(i+1)+'</td><td><code>'+b.ip+':'+b.port+'</code></td><td>'+b.ms+' ms</td></tr>'; }
+      document.getElementById('radar-results').innerHTML='<table><thead><tr><th>#</th><th>IP</th><th>'+t.radar_lat+'</th></tr></thead><tbody>'+rows+'</tbody></table>';
+      if(RTMPL){ var cfg=radarCfg(RBEST[0].ip,RBEST[0].port); document.getElementById('radar-cfg').textContent=cfg; document.getElementById('radar-copy').textContent=t.radar_copycfg; document.getElementById('radar-out').style.display='block';
+        var qw=document.getElementById('radar-qr'); qw.innerHTML=''; try{ if(window.QRCode){ var qb=document.createElement('div'); qb.className='qbox'; qw.appendChild(qb); new QRCode(qb,{text:cfg,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); } }catch(e){} }
+      else{ document.getElementById('radar-out').style.display='none'; msg.textContent=t.radar_notmpl; }
+    }
+    document.getElementById('radar-run').addEventListener('click',radarRun);
+    document.getElementById('radar-ports').addEventListener('click',function(e){ var b=e.target.closest('.rpchip'); if(!b) return; b.classList.toggle('on'); b.setAttribute('aria-pressed', b.classList.contains('on')?'true':'false'); });
+    // Keep every port chip's spoken selected/unselected state (aria-pressed) in sync with its .on class.
+    function radarSyncChips(){ Array.prototype.forEach.call(document.querySelectorAll('#radar-ports .rpchip'),function(b){ b.setAttribute('aria-pressed', b.classList.contains('on')?'true':'false'); }); }
+    document.getElementById('radar-copy').addEventListener('click',function(){ if(RTMPL&&RBEST.length) copy(radarCfg(RBEST[0].ip,RBEST[0].port)); });
+    // One-click apply: save the scanned best IPs to THIS user's own config (server-side, auth by their key).
+    function hasUserKey(){ try{ return !!new URL(location.href).searchParams.get('key'); }catch(e){ return false; } }
+    function applyUrl(){ var u=new URL(location.href); ['b64','base64','clash','sb','singbox','surge','quanx','loon','target','page','hub','raw'].forEach(function(p){ u.searchParams.delete(p); }); u.pathname=u.pathname.replace(/\/[^/]*$/,'/sub-setip'); if(!u.searchParams.get('sub')){ var uu=u.searchParams.get('u'); if(uu) u.searchParams.set('sub',uu); } return u.toString(); }
+    document.getElementById('radar-apply').addEventListener('click',function(){
+      var t=I18N[lang]; var ab=this, am=document.getElementById('radar-apply-msg');
+      if(!RBEST.length) return;
+      var body=RBEST.map(function(b){ return b.ip+(String(b.port)==='443'?'':(':'+b.port)); }).join('\n');
+      ab.disabled=true; am.textContent=t.radar_applying;
+      fetch(applyUrl(),{ method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:body })
+        .then(function(r){ return r.ok?r.json():Promise.reject(); })
+        .then(function(d){ am.textContent=(d&&d.success)?t.radar_applied:t.radar_applyerr; })
+        .catch(function(){ am.textContent=t.radar_applyerr; })
+        .then(function(){ ab.disabled=false; });
+    });
+
+    document.getElementById('lang').onclick=function(e){ var b=e.target.closest('button'); if(!b) return; lang=b.dataset.l; try{ localStorage.setItem('nova-user-lang',lang); }catch(_){} render(); };
+    document.getElementById('theme').onclick=function(e){ var b=e.target.closest('button'); if(!b) return; theme=b.dataset.t; document.documentElement.dataset.theme=theme; try{ localStorage.setItem('nova-theme',theme); }catch(_){} render(); };
+
+    if (!window.QRCode) { var tries=0; var iv=setInterval(function(){ if(window.QRCode || ++tries>25){ clearInterval(iv); render(); } }, 140); }
+    render();
+    loadUsage();
+  })();
+  </script>
+</body>
+</html>
