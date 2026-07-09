@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Nova Proxy configs</title>
-<meta name="nova-userhub-version" content="3.8.2" />
+<meta name="nova-userhub-version" content="4.0.0" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -95,6 +95,18 @@
   html[data-theme=light] .toast{color:#fff}
   .toast.show{opacity:1;transform:none}
   @media(max-width:520px){.topbar{flex-wrap:wrap}.controls{margin-inline-start:0;width:100%}}
+  /* Phone polish (additive, mobile-only): comfortable tap targets, tighter gutters, no sideways scroll */
+  @media(max-width:480px){
+    .wrap{padding:16px 14px 48px}
+    .appgrid{grid-template-columns:1fr;gap:10px}
+    .appcard-qr .qbox{width:132px;height:132px;padding:8px}
+    .appcard-qr canvas,.appcard-qr img{width:116px;height:116px}
+    .segmented{height:40px}.segmented button{padding:0 13px;font-size:12.5px}
+    .btn{height:44px}.btn.sm{height:38px}
+    .rpchip{padding:8px 14px}
+    .usage-top{gap:16px}
+    .radar-cfg{font-size:10.5px}
+  }
   .radar{background:var(--card);border:1px solid var(--ac-line);border-radius:var(--radius);padding:14px 16px;margin-bottom:22px}
   .radar-h{display:flex;align-items:center;gap:11px}
   .radar-ic{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;background:var(--ac-soft);border:1px solid var(--ac-line);border-radius:9px;font-size:16px}
@@ -331,7 +343,7 @@
       fill.style.width='100%'; setTimeout(function(){bar.style.display='none';},500); btn.disabled=false;
       if(!RBEST.length){ msg.textContent=t.radar_none; return; }
       msg.textContent=t.radar_done;
-      if(RBEST.length && hasUserKey()){ var _ab=document.getElementById('radar-apply'); if(_ab){ _ab.textContent=t.radar_apply; _ab.disabled=false; document.getElementById('radar-apply-row').style.display='block'; } }
+      if(RBEST.length){ var _ab=document.getElementById('radar-apply'); if(_ab){ _ab.textContent=t.radar_apply; _ab.disabled=false; document.getElementById('radar-apply-row').style.display='block'; } }
       var rows=''; for(var i=0;i<RBEST.length;i++){ var b=RBEST[i]; rows+='<tr class="'+(i===0?'best':'')+'"><td>'+(i+1)+'</td><td><code>'+b.ip+':'+b.port+'</code></td><td>'+b.ms+' ms</td></tr>'; }
       document.getElementById('radar-results').innerHTML='<table><thead><tr><th>#</th><th>IP</th><th>'+t.radar_lat+'</th></tr></thead><tbody>'+rows+'</tbody></table>';
       if(RTMPL){ var cfg=radarCfg(RBEST[0].ip,RBEST[0].port); document.getElementById('radar-cfg').textContent=cfg; document.getElementById('radar-copy').textContent=t.radar_copycfg; document.getElementById('radar-out').style.display='block';

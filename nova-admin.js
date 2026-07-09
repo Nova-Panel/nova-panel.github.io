@@ -2,7 +2,7 @@
 // PANEL_VERSION = the version of these dashboard files (public/). Bump it whenever you change
 // the panel, so after uploading you can confirm in the sidebar (under "Nova Proxy") that the
 // new files are live. The Worker has its own version (shown next to it as "w…").
-const PANEL_VERSION = '1.0.0';
+const PANEL_VERSION = '4.0.0';
 const $ = (s) => document.getElementById(s);
 let cfg = null;
 try { const _t = document.querySelector('.brand .tag'); if (_t) { _t.textContent = 'Panel v' + PANEL_VERSION; _t.title = 'Nova dashboard v' + PANEL_VERSION; } console.log('%cNova panel v' + PANEL_VERSION, 'color:#22d3ee;font-weight:700'); } catch (e) {}
