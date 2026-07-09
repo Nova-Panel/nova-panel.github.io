@@ -56,8 +56,8 @@ a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 ::selection{background:var(--ac-soft)}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:6px}
-.skip-link{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;top:8px;z-index:1000;background:var(--ac);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none}
-.skip-link:focus{width:auto;height:auto;overflow:visible;clip:auto;clip-path:none;left:8px}
+.skip-link{position:absolute;left:-9999px;top:8px;z-index:1000;background:var(--ac);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none}
+.skip-link:focus{left:8px}
 html[dir=rtl] .skip-link:focus{left:auto;right:8px}
 
 /* ============================================================================
@@ -273,12 +273,6 @@ html[dir=rtl] .kpi-sub{text-align:start}
 .sw .k{width:17px;height:17px;border-radius:50%;background:#fff;position:absolute;top:3px;inset-inline-start:3px;transition:.16s;box-shadow:0 1px 3px rgba(0,0,0,.35)}
 .sw.on{background:var(--ac);box-shadow:none}
 .sw.on .k{inset-inline-start:20px}
-/* "Coming soon" gating: controls the worker does not read yet are shown, but inert. */
-.soon-badge{display:inline-block;margin-inline-start:6px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.02em;background:var(--bd2);color:var(--mu);vertical-align:middle;white-space:nowrap}
-.soon-gate{opacity:.5;pointer-events:none}
-.soon-gate .inp,.soon-gate input,.soon-gate textarea{cursor:not-allowed}
-.soon-note{font-size:11.5px;color:var(--mu);margin:9px 2px 3px;display:flex;align-items:center;gap:6px}
-.soon-note::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mu);opacity:.6;flex:none}
 
 /* ---- Distribution: sub link + client rows ---- */
 .sublink{display:flex;gap:10px;align-items:center}
@@ -663,7 +657,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
 
       <div class="top-actions">
         <span class="uchip env-chip"><span class="d"></span><span data-i18n="status_operational">Operational</span></span>
-        <span class="uchip loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span id="loc-label">DE, FRA</span></span>
+        <span class="uchip loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span id="loc-label">DE · FRA</span></span>
         <button class="iconbtn" id="bell" aria-label="Notifications" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge-dot"></span></button>
         <button class="iconbtn" id="help-btn" aria-label="Help" title="Help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
         <button class="iconbtn" id="theme-btn" aria-label="Theme"><svg id="theme-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -733,9 +727,9 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
               <button class="btn primary sm" data-callhelp="warp" data-i18n="calls_warp_btn">Set up WARP</button>
             </div>
             <div class="calls-opt">
-              <div class="calls-opt-t"><b data-i18n="calls_be_t">Backend mode</b><span class="calls-badge" data-i18n="calls_vps">Needs a VPS</span></div>
+              <div class="calls-opt-t"><b data-i18n="calls_be_t">Backend mode</b><span class="calls-badge" style="background:var(--wn);color:#fff" data-i18n="calls_coming_soon">Coming soon</span></div>
               <div class="calls-opt-d" data-i18n="calls_be_d">Route through your own Xray/sing-box server for full UDP, best call quality, also unlocks VMess. About $5/mo.</div>
-              <button class="btn ghost sm" data-callhelp="backend" data-i18n="calls_be_btn">Set up Backend</button>
+              <button class="btn ghost sm" disabled data-callhelp="backend" data-i18n="calls_be_btn">Set up Backend</button>
             </div>
           </div>
         </div>
@@ -779,7 +773,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
             <div id="policy-rows"><!-- rendered from MOCK.policy --></div>
             <div class="policy-foot">
               <span id="policy-summary"></span>
-              <div style="display:flex;align-items:center;gap:14px"><span><span data-i18n="policy_last">Last applied</span>, 2m ago</span><button class="btn primary sm" id="policy-apply" data-i18n="policy_apply">Apply policy</button></div>
+              <div style="display:flex;align-items:center;gap:14px"><span><span data-i18n="policy_last">Last applied</span> · 2m ago</span><button class="btn primary sm" id="policy-apply" data-i18n="policy_apply">Apply policy</button></div>
             </div>
           </div>
 
@@ -833,7 +827,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
             <div class="right"><span class="lockpill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span data-i18n="notice_locked">Always on</span></span></div>
           </div>
           <p style="font-size:12.5px;color:var(--mu);margin:0 0 11px" data-i18n="notice_s">A labelled node is baked into every config so users always know this is the free Nova service. It is fixed in the worker, so it cannot be turned off, renamed, or stripped by a reseller.</p>
-          <div class="notice-box"><span class="notice-tag" data-i18n="notice_node">Node label</span><code data-i18n="notice_free">Nova is free. Never pay anyone for it.</code></div>
+          <div class="notice-box"><span class="notice-tag" data-i18n="notice_node">Node label</span><code>🎁 Nova Proxy is a FREE service | نوا پروکسی یک سرویس رایگان است</code></div>
         </div>
 
         <div class="section-label" data-i18n="dist_clients">Client applications</div>
@@ -862,7 +856,6 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
           <div class="card">
             <div class="card-h"><h3 data-i18n="net_routing">Smart routing</h3></div>
             <div id="routing-rows"></div>
-            <div class="card-pad" style="padding-top:0"><div class="soon-note" data-i18n="soon_note">The Nova team is working on this.</div></div>
           </div>
           <div class="card">
             <div class="card-h"><h3 data-i18n="net_isp">Per-ISP pools</h3></div>
@@ -899,17 +892,16 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
 
         <!-- Custom routing rules -->
         <div class="card" style="margin-top:14px">
-          <div class="card-h"><h3 data-i18n="rules_h">Custom routing rules</h3><span class="soon-badge" data-i18n="soon_badge">Coming soon</span></div>
+          <div class="card-h"><h3 data-i18n="rules_h">Custom routing rules</h3></div>
           <div class="card-pad">
             <p style="font-size:12px;color:var(--mu);margin-bottom:11px" data-i18n="rules_help">One rule per line: TYPE,value,OUTBOUND (DIRECT / REJECT / PROXY). Needs routing enabled.</p>
-            <div class="soon-gate" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
               <select class="inp" id="cr2-type" style="flex:1;min-width:130px"><option>DOMAIN-SUFFIX</option><option>DOMAIN</option><option>DOMAIN-KEYWORD</option><option>IP-CIDR</option><option>IP-CIDR6</option><option>GEOIP</option></select>
               <input class="inp" id="cr2-val" style="flex:2;min-width:150px" placeholder="example.com / 1.2.3.0/24 / ir">
               <select class="inp" id="cr2-out" style="flex:1;min-width:110px"><option>DIRECT</option><option>REJECT</option><option>PROXY</option></select>
               <button class="btn ghost sm" id="cr2-add" data-i18n="rules_add">+ Add</button>
             </div>
-            <div class="fg soon-gate" style="margin-bottom:0"><textarea class="inp" id="n2-customrules" spellcheck="false" disabled style="min-height:110px;font-family:ui-monospace,monospace;font-size:12px" placeholder="DOMAIN-SUFFIX,digikala.com,DIRECT&#10;DOMAIN-KEYWORD,doubleclick,REJECT"></textarea></div>
-            <div class="soon-note" data-i18n="soon_note">The Nova team is working on this.</div>
+            <div class="fg" style="margin-bottom:0"><textarea class="inp" id="n2-customrules" spellcheck="false" style="min-height:110px;font-family:ui-monospace,monospace;font-size:12px" placeholder="DOMAIN-SUFFIX,digikala.com,DIRECT&#10;DOMAIN-KEYWORD,doubleclick,REJECT"></textarea></div>
           </div>
         </div>
 
@@ -976,8 +968,8 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
                 <div class="notice-box" style="margin-top:12px"><span class="notice-tag" style="background:var(--wn);color:#1a1206" data-i18n="dg_warn_tag">Important</span><span data-i18n="dg_warn">Write down your secret admin path before you save, after saving, the panel is ONLY reachable at /your-admin-path. (Locked out? Add a Worker variable PANEL_RECOVERY=1 to switch this off and reach /admin again.) Allowed characters: a-z, 0-9, hyphen, underscore. Leave a field blank to keep its default name.</span></div>
               </div>
             </div>
-            <div class="card" id="backend-card" style="margin-top:16px;border-color:var(--ac-line)">
-              <div class="card-h"><h3 data-i18n="be_h">🛰 Backend mode (advanced)</h3></div>
+             <div class="card" id="backend-card" style="margin-top:16px;border-color:var(--ac-line);opacity:0.6;pointer-events:none">
+               <div class="card-h"><h3 data-i18n="be_h">🛰 Backend mode (advanced)</h3><span class="calls-badge" style="background:var(--wn);color:#fff;margin-inline-start:auto" data-i18n="be_coming_soon">Coming soon</span></div>
               <div class="card-pad">
                 <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="be_s">Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP), but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).</p>
                 <div class="field-row"><div class="l" data-i18n="be_en">Enable backend mode<small data-i18n="be_en_h">when on, Nova bridges to the backend below</small></div><div class="sw" id="t2-backend"><span class="k"></span></div></div>
@@ -1081,7 +1073,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
         <div class="card">
           <div class="card-h">
             <h3 data-i18n="activity_audit">Audit log</h3>
-            <div class="right"><button class="btn ghost sm" id="activity-refresh" data-i18n="refresh">Refresh</button></div>
+            <div class="right"><button class="btn ghost sm" data-i18n="refresh">Refresh</button></div>
           </div>
           <div class="tbl-wrap"><table class="tbl">
             <thead><tr><th data-i18n="col_time">Time</th><th data-i18n="col_event">Event</th><th data-i18n="col_actor">Actor</th><th>IP</th><th data-i18n="col_status">Status</th></tr></thead>
@@ -1147,7 +1139,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
           <div class="card-pad">
             <div class="set-grid"><div class="fg"><label data-i18n="sub_name">Subscription name</label><input class="inp" id="f2-subname"></div><div class="fg"><label data-i18n="sub_int">Update interval (hours)</label><input class="inp" id="f2-subint" type="number" min="1" max="168"></div></div>
             <div class="fg"><label data-i18n="sub_api">Subscription converter API</label><input class="inp" id="f2-subapi" placeholder="https://SUBAPI.cmliussss.net"></div>
-            <div class="fg"><label data-i18n="subcfg_preset">Rule set preset</label><select class="inp" id="f2-subcfg-preset" onchange="var i=document.getElementById('f2-subcfg'); if(i&&this.value) i.value=this.value;"><option value="" data-i18n="subcfg_custom">Custom (use field below)</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Mini_MultiMode_CF.ini">ACL4SSR, Mini MultiMode</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Mini.ini">ACL4SSR, Mini</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online.ini">ACL4SSR, Online</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Full.ini">ACL4SSR, Full</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_NoReject.ini">ACL4SSR, No-Reject</option></select></div>
+            <div class="fg"><label data-i18n="subcfg_preset">Rule set preset</label><select class="inp" id="f2-subcfg-preset" onchange="var i=document.getElementById('f2-subcfg'); if(i&&this.value) i.value=this.value;"><option value="" data-i18n="subcfg_custom">Custom (use field below)</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Mini_MultiMode_CF.ini">ACL4SSR · Mini MultiMode</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Mini.ini">ACL4SSR · Mini</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online.ini">ACL4SSR · Online</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_Full.ini">ACL4SSR · Full</option><option value="https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/ACL4SSR_Online_NoReject.ini">ACL4SSR · No-Reject</option></select></div>
             <div class="fg"><label data-i18n="subcfg">Routing rule set (.ini URL)</label><input class="inp" id="f2-subcfg" placeholder="ACL4SSR .ini URL"></div>
             <div class="field-row" style="margin-bottom:0"><div class="l" data-i18n="subemoji">Emoji flags<small data-i18n="subemoji_h">add country emoji flags to node names</small></div><div class="sw" id="t2-subemoji"><span class="k"></span></div></div>
             <div style="display:flex;justify-content:flex-end;margin-top:16px"><button class="btn primary" id="save-settings2" data-i18n="btn_save">Save</button></div>
@@ -1356,12 +1348,12 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
             </div>
             <div class="fg px-sec" id="px-sec-proxyip" style="margin-top:11px"><label data-i18n="px_proxyip">PROXYIP address</label><input class="inp" id="px-proxyip" placeholder="proxyip.example.com:443 or 1.2.3.4"></div>
             <div class="px-sec" id="px-sec-addr" style="margin-top:11px">
-              <div class="fg"><label data-i18n="px_addr">Proxy address(es)</label><textarea class="inp" id="px-addr" rows="3" spellcheck="false" style="font-family:ui-monospace,monospace;font-size:12px" placeholder="user:password@host:port"></textarea><div style="font-size:11.5px;color:var(--mu);margin-top:5px">One proxy per line. <b>One</b> = fixed/static exit IP (good for Instagram); <b>two-three</b> = the app rotates and fails over between them., یک پروکسی در هر خط؛ یکی = آی‌پی ثابت، دو تا سه = چرخش و جایگزینی خودکار.</div></div>
+              <div class="fg"><label data-i18n="px_addr">Proxy address(es)</label><textarea class="inp" id="px-addr" rows="3" spellcheck="false" style="font-family:ui-monospace,monospace;font-size:12px" placeholder="user:password@host:port"></textarea><div style="font-size:11.5px;color:var(--mu);margin-top:5px">One proxy per line. <b>One</b> = fixed/static exit IP (good for Instagram); <b>two-three</b> = the app rotates and fails over between them. · یک پروکسی در هر خط؛ یکی = آی‌پی ثابت، دو تا سه = چرخش و جایگزینی خودکار.</div></div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px">
                 <div class="fg" style="flex:1;min-width:150px;margin:0"><label>Auto-rotate</label><select class="inp" id="px-rotate"><option value="">Off, use all</option><option value="daily">Daily</option><option value="weekly">Weekly</option></select></div>
                 <div class="fg" style="width:120px;margin:0"><label>Active count</label><input class="inp" id="px-rotcount" type="number" min="1" step="1" placeholder="3"></div>
               </div>
-              <div style="font-size:11.5px;color:var(--mu);margin-top:5px">With several proxies above, Auto-rotate serves a different subset each day/week, the exit set changes automatically and clients pick it up on their next subscription refresh., با چند پروکسی، هر روز/هفته زیرمجموعه‌ای متفاوت ارائه می‌شود.</div>
+              <div style="font-size:11.5px;color:var(--mu);margin-top:5px">With several proxies above, Auto-rotate serves a different subset each day/week, the exit set changes automatically and clients pick it up on their next subscription refresh. · با چند پروکسی، هر روز/هفته زیرمجموعه‌ای متفاوت ارائه می‌شود.</div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
               <button class="btn" id="px-verify" data-i18n="px_verify">Verify</button>
@@ -1469,7 +1461,7 @@ const I18N = {
     nav_guide:'Guide', sub_guide:'How to use Nova Proxy, step by step.', logout:'Logout',
     /* KPIs */
     kpi_network:'Network', kpi_storage:'Storage', kpi_worker:'Worker usage', kpi_traffic:'Traffic today', kpi_connect:'Connect token to see usage',
-    kpi_network_sub:'AS13335, Cloudflare', kpi_storage_sub:'D1 database', kpi_worker_sub:'requests today', kpi_traffic_sub:'across 312 sessions',
+    kpi_network_sub:'AS13335 · Cloudflare', kpi_storage_sub:'KV namespace', kpi_worker_sub:'requests today', kpi_traffic_sub:'across 312 sessions',
     chart_title:'Daily traffic', chart_sub:'Upload vs download, last 14 days', chart_up:'Upload', chart_down:'Download', chart_d:'Day', chart_m:'Month', chart_y:'Year', chart_empty:'No traffic recorded yet. Once clients connect, daily usage shows here.', chart_total_up:'Total up', chart_total_down:'Total down', chart_total_all:'Total',
     healthy:'Healthy', online:'Online', live:'Live',
     /* policy */
@@ -1501,8 +1493,7 @@ const I18N = {
     col_time:'Time', col_event:'Event', col_actor:'Actor', col_status:'Status',
     ev_fetch:'Subscription fetched', ev_save:'Settings saved', ev_policy:'Resilience policy applied',
     ev_login:'Admin login', ev_warp:'WARP account registered', ev_user:'User created',
-     st_ok:'OK', st_applied:'Applied', st_auth:'Authenticated', st_created:'Created', st_failed:'Failed',
-    soon_badge:'Coming soon', soon_note:'The Nova team is working on this.', notice_free:'Nova is free. Never pay anyone for it.',
+     st_ok:'OK', st_applied:'Applied', st_auth:'Authenticated', st_created:'Created',
     /* settings */
     set_proto:'Protocol & transport', set_security:'Security', set_access:'Access & identity',
     set_password:'Password', set_2fa:'Two-factor authentication',
@@ -1519,7 +1510,7 @@ const I18N = {
     users_title:'Users & quotas', users_add:'+ Add user',
     ul_title:'User List', ul_add:'Add New User', col_account:'Account', col_data:'Data Usage', col_dur:'Duration', col_actions:'Actions',
     st_active:'Active', st_off:'Off', st_expired:'Expired', st_quota:'Quota full', u_extend:'Extend', u_edit:'Edit',
-    calls_h:'Voice & video calls (FaceTime, WhatsApp, Telegram)', calls_s:"Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable one of these so your users can call:", calls_free:'Free', calls_vps:'Needs a VPS', calls_warp_t:'WARP', calls_warp_d:'Adds the Nova-WARP node (Cloudflare WireGuard). Users pick it for calls and keep VLESS for browsing. Reliability from Iran varies.', calls_warp_btn:'Set up WARP', calls_be_t:'Backend mode', calls_be_d:'Route through your own Xray/sing-box server for full UDP, best call quality, also unlocks VMess. About $5/mo.', calls_be_btn:'Set up Backend',
+    calls_h:'Voice & video calls (FaceTime, WhatsApp, Telegram)', calls_s:"Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable one of these so your users can call:", calls_free:'Free', calls_vps:'Needs a VPS', calls_coming_soon:'Coming soon', calls_warp_t:'WARP', calls_warp_d:'Adds the Nova-WARP node (Cloudflare WireGuard). Users pick it for calls and keep VLESS for browsing. Reliability from Iran varies.', calls_warp_btn:'Set up WARP', calls_be_t:'Backend mode', calls_be_d:'Route through your own Xray/sing-box server for full UDP, best call quality, also unlocks VMess. About $5/mo.', calls_be_btn:'Set up Backend', be_coming_soon:'Coming soon',
     radar_bn_h:'Nova Radar', radar_bn_new:'New', radar_bn_s:'Find the fastest clean IP for any network, right in the browser. Your users get it on their own config page, and you can run it per user. Great when a network gets slow or an IP is blocked.', radar_bn_open:'Open Nova Radar', radar_bn_apply:'Scan & apply to this worker',
     wn_h:'What\'s new', wn_speed:'⚡ Faster relay: leaner upload and download (keep FAST_RELAY on).', wn_radar:'📡 Nova Radar: a built-in tool that finds Cloudflare IPs which are fast and open on a given network, right in the browser.', wn_peruser:'👤 Per-user routing: give each user their own clean IPs, proxy IPs, ports and fingerprint (Edit a user).', wn_free:'🎁 Free branding on every config: anti-resale, cannot be stripped by a reseller.', wn_ech:'🔒 ECH DoH presets and a fuller TLS fingerprint list (in Settings).', wn_calls:'📞 Calls that work: route UDP through free WARP so FaceTime, WhatsApp and Telegram calls connect (WARP section).', wn_mixed:'🧬 Mixed protocol: give people one link that uses both VLESS and Trojan, so if a filter blocks one, their app keeps working on the other (Protocol → Mixed).', wn_disguise:'🥷 Secret paths: move your panel and login to a private web address only you know, so no one can reach them by guessing /admin or /login (Network & IPs → Disguise).', wn_apply:'📥 Users fix slow connections themselves: one tap finds faster clean IPs for their network and applies them, so they do not have to message you (Nova Radar).', wn_mirror:'🔗 Backup link on GitHub: a permanent link and QR your users can save, so they still get configs if your domain is blocked. It refreshes on its own after any change (GitHub mirror).',
     col_name:'Name', col_quota:'Quota', col_used:'Used', col_expiry:'Expiry',
@@ -1565,7 +1556,7 @@ const I18N = {
     kill_h:'دکمهٔ توقف اضطراری', kill_s:'توقف اضطراری. وقتی روشن باشد، هر اتصال پراکسی و دریافت اشتراک رد می‌شود (۵۰۳). پنل مدیریت باز می‌ماند تا بتوانید دوباره خاموشش کنید. اگر سرویس‌تان مورد سوءاستفاده است از آن استفاده کنید.', kill_banner:'سرویس متوقف است. همهٔ ترافیک پراکسی و دریافت اشتراک‌ها متوقف شده. برای ازسرگیری، Kill switch را در تنظیمات خاموش کنید.',
     nav_guide:'راهنما', sub_guide:'راهنمای گام‌به‌گام استفاده از نوا پروکسی.', logout:'خروج',
     kpi_network:'شبکه', kpi_storage:'حافظه', kpi_worker:'مصرف ورکر', kpi_traffic:'مصرف امروز', kpi_connect:'برای دیدن مصرف، توکن را وصل کنید',
-    kpi_network_sub:'AS13335, کلودفلر', kpi_storage_sub:'پایگاه داده D1', kpi_worker_sub:'درخواست امروز', kpi_traffic_sub:'در ۳۱۲ نشست',
+    kpi_network_sub:'AS13335 · کلودفلر', kpi_storage_sub:'فضای KV', kpi_worker_sub:'درخواست امروز', kpi_traffic_sub:'در ۳۱۲ نشست',
     chart_title:'مصرف روزانه', chart_sub:'آپلود در برابر دانلود, ۱۴ روز اخیر', chart_up:'آپلود', chart_down:'دانلود', chart_d:'روز', chart_m:'ماه', chart_y:'سال', chart_empty:'هنوز ترافیکی ثبت نشده. وقتی کلاینت‌ها وصل شوند، مصرف روزانه اینجا نشان داده می‌شود.', chart_total_up:'کل آپلود', chart_total_down:'کل دانلود', chart_total_all:'مجموع',
     healthy:'سالم', online:'آنلاین', live:'زنده',
     policy_title:'سیاست مقاومت', policy_profile:'پروفایل: ایران / سانسور بالا', policy_active:'فعال',
@@ -1593,8 +1584,7 @@ const I18N = {
     col_time:'زمان', col_event:'رویداد', col_actor:'کاربر', col_status:'وضعیت',
     ev_fetch:'دریافت اشتراک', ev_save:'ذخیرهٔ تنظیمات', ev_policy:'اعمال سیاست مقاومت',
     ev_login:'ورود ادمین', ev_warp:'ثبت حساب WARP', ev_user:'ساخت کاربر',
-    st_ok:'موفق', st_applied:'اعمال شد', st_auth:'احراز شد', st_created:'ساخته شد', st_failed:'ناموفق',
-    soon_badge:'به‌زودی', soon_note:'تیم نوا در حال کار روی این بخش است.', notice_free:'🎁 نوا رایگان است، برای آن به کسی پول ندهید.',
+    st_ok:'موفق', st_applied:'اعمال شد', st_auth:'احراز شد', st_created:'ساخته شد',
     set_proto:'پروتکل و حمل‌ونقل', set_security:'امنیت', set_access:'دسترسی و هویت',
     set_password:'رمز عبور', set_2fa:'احراز هویت دومرحله‌ای',
     lbl_protocol:'پروتکل', lbl_transport:'حمل‌ونقل', lbl_fp:'اثر انگشت TLS', proto_mixed:'ترکیبی (تقسیم مساوی)',
@@ -1608,7 +1598,7 @@ const I18N = {
     users_title:'کاربران و سهمیه‌ها', users_add:'+ افزودن کاربر',
     ul_title:'فهرست کاربران', ul_add:'افزودن کاربر جدید', col_account:'حساب', col_data:'مصرف داده', col_dur:'مدت', col_actions:'عملیات',
     st_active:'فعال', st_off:'خاموش', st_expired:'منقضی', st_quota:'اتمام سهمیه', u_extend:'تمدید', u_edit:'ویرایش',
-    calls_h:'تماس صوتی و تصویری (فیس‌تایم، واتساپ، تلگرام)', calls_s:'تماس‌ها به UDP نیاز دارند که ورکر رایگان نمی‌تواند آن را عبور دهد (محدودیت Cloudflare است، نه باگ). برای اینکه کاربرانتان بتوانند تماس بگیرند، یکی از این‌ها را فعال کنید:', calls_free:'رایگان', calls_vps:'نیازمند VPS', calls_warp_t:'WARP', calls_warp_d:'نود Nova-WARP را اضافه می‌کند (وایرگارد Cloudflare). کاربران برای تماس از آن استفاده می‌کنند و برای گشت‌وگذار VLESS می‌ماند. پایداری از داخل ایران متغیر است.', calls_warp_btn:'راه‌اندازی WARP', calls_be_t:'حالت Backend', calls_be_d:'ترافیک را از سرور Xray/sing-box خودتان عبور دهید تا UDP کامل داشته باشید، بهترین کیفیت تماس، و VMess هم فعال می‌شود. حدود ۵ دلار در ماه.', calls_be_btn:'راه‌اندازی Backend',
+    calls_h:'تماس صوتی و تصویری (فیس‌تایم، واتساپ، تلگرام)', calls_s:'تماس‌ها به UDP نیاز دارند که ورکر رایگان نمی‌تواند آن را عبور دهد (محدودیت Cloudflare است، نه باگ). برای اینکه کاربرانتان بتوانند تماس بگیرند، یکی از این‌ها را فعال کنید:', calls_free:'رایگان', calls_vps:'نیازمند VPS', calls_coming_soon:'به‌زودی', calls_warp_t:'WARP', calls_warp_d:'نود Nova-WARP را اضافه می‌کند (وایرگارد Cloudflare). کاربران برای تماس از آن استفاده می‌کنند و برای گشت‌وگذار VLESS می‌ماند. پایداری از داخل ایران متغیر است.', calls_warp_btn:'راه‌اندازی WARP', calls_be_t:'حالت Backend', calls_be_d:'ترافیک را از سرور Xray/sing-box خودتان عبور دهید تا UDP کامل داشته باشید، بهترین کیفیت تماس، و VMess هم فعال می‌شود. حدود ۵ دلار در ماه.', calls_be_btn:'راه‌اندازی Backend', be_coming_soon:'به‌زودی',
     radar_bn_h:'رادار نوا', radar_bn_new:'جدید', radar_bn_s:'سریع‌ترین آی‌پی تمیز هر شبکه را همان‌جا در مرورگر پیدا کنید. کاربران آن را در صفحهٔ کانفیگ خودشان دارند و شما می‌توانید برای هر کاربر اجرا کنید. عالی برای وقتی که شبکه کند می‌شود یا آی‌پی مسدود است.', radar_bn_open:'باز کردن رادار نوا', radar_bn_apply:'اسکن و اعمال روی این ورکر',
     wn_h:'تازه‌ها', wn_speed:'⚡ رله سریع‌تر: آپلود و دانلود سبک‌تر (FAST_RELAY را روشن نگه دارید).', wn_radar:'📡 رادار نوا: ابزاری داخلی که همان‌جا در مرورگر، آی‌پی‌های کلودفلرِ سریع و بازِ یک شبکه را پیدا می‌کند.', wn_peruser:'👤 مسیریابی هر کاربر: آی‌پی تمیز، پروکسی‌آی‌پی، پورت و انگشت‌نگاری اختصاصی برای هر کاربر (ویرایش کاربر).', wn_free:'🎁 نشان رایگان روی هر کانفیگ: ضد فروش مجدد، قابل حذف توسط فروشنده نیست.', wn_ech:'🔒 پیش‌تنظیم‌های ECH DoH و فهرست کامل‌تر انگشت‌نگاری TLS (در تنظیمات).', wn_calls:'📞 تماس‌هایی که کار می‌کنند: عبور UDP از طریق WARP رایگان تا تماس‌های فیس‌تایم، واتساپ و تلگرام وصل شوند (بخش WARP).', wn_mixed:'🧬 پروتکل ترکیبی: یک لینک بده که هم VLESS و هم Trojan را استفاده می‌کند، تا اگر فیلترینگ یکی را بست، اپ کاربر با دیگری کار کند (پروتکل ← ترکیبی).', wn_disguise:'🥷 مسیرهای مخفی: پنل و ورود را به یک آدرس خصوصی که فقط خودت می‌دانی ببر، تا کسی با حدس زدن /admin یا /login به آن‌ها نرسد (شبکه و آی‌پی ← استتار).', wn_apply:'📥 کاربران کندی را خودشان درست می‌کنند: با یک لمس آی‌پی‌های تمیزِ سریع‌تر برای شبکه‌شان پیدا و اعمال می‌شود، بدون اینکه به تو پیام بدهند (رادار نوا).', wn_mirror:'🔗 لینک پشتیبان روی گیت‌هاب: یک لینک دائمی و QR که کاربر ذخیره می‌کند، تا اگر دامنه‌ات مسدود شد باز هم کانفیگ بگیرد. بعد از هر تغییر خودش به‌روز می‌شود (آینه گیت‌هاب).',
     col_name:'نام', col_quota:'سهمیه', col_used:'مصرف', col_expiry:'انقضا',
@@ -1653,11 +1643,11 @@ const MOCK = {
     { key:'p_domestic', on:true },{ key:'p_adblock', on:true },{ key:'p_routing', on:false },
   ],
   clients: [
-    { name:'Hiddify',  pill:'iOS, Android', color:'#7c5cff', rec:true },
-    { name:'Karing',   pill:'iOS, Android', color:'#16a34a', rec:true },
+    { name:'Hiddify',  pill:'iOS · Android', color:'#7c5cff', rec:true },
+    { name:'Karing',   pill:'iOS · Android', color:'#16a34a', rec:true },
     { name:'v2rayNG',  pill:'Android',       color:'#2563eb', rec:false },
     { name:'FlClash',  pill:'Android',       color:'#0ea5c4', rec:false },
-    { name:'sing-box', pill:'iOS, Android', color:'#475569', rec:false },
+    { name:'sing-box', pill:'iOS · Android', color:'#475569', rec:false },
   ],
   formats: [
     { name:'Auto', target:'auto' },{ name:'Base64', target:'b64' },{ name:'Clash', target:'clash' },
@@ -1732,10 +1722,8 @@ function policyToggleRow(p){
   const warn = POLICY_WARN.includes(p.key);
   const st = (warn && p.on) ? `<span class="st" style="color:var(--dg)">${t('status_on')}</span>` : `<span class="st">${p.on?t('status_on'):t('status_off')}</span>`;
   const wln = warn ? `<div class="ds pwarn">⚠ ${t('policy_iran_warn')}</div>` : '';
-  const soon = SOON_KEYS.has(p.key);
-  const badge = soon ? `<span class="soon-badge">${t('soon_badge')}</span>` : '';
-  return `<div class="policy-row ${p.on?'on':''} ${warn?'warn':''}${soon?' soon-gate':''}" data-policy="${p.key}"${soon?' data-soon="1"':''}>
-    <div class="meta"><div class="nm">${t(p.key)}${badge}</div><div class="ds">${t(p.key+'_d')}</div>${wln}</div>
+  return `<div class="policy-row ${p.on?'on':''} ${warn?'warn':''}" data-policy="${p.key}">
+    <div class="meta"><div class="nm">${t(p.key)}</div><div class="ds">${t(p.key+'_d')}</div>${wln}</div>
     ${st}
     <div class="sw ${p.on?'on':''}"><span class="k"></span></div></div>`;
 }
@@ -1753,7 +1741,7 @@ function renderActivity(target, limit){
     <div class="activity">
       <div class="ai">${svg(a.icon)}</div>
       <div class="ab"><div class="ttl">${evLabel(a)}</div>
-        <div class="mt"><span>${a.actor}</span><span>,</span><span>${a.ip}</span></div></div>
+        <div class="mt"><span>${a.actor}</span><span>·</span><span>${a.ip}</span></div></div>
       <div class="tm">${a.time}</div></div>`).join('');
   $(target).innerHTML = items;
 }
@@ -1802,39 +1790,11 @@ function showQR(url,name){
   document.getElementById('qrmodal').classList.add('on');
 }
 // Open the Nova Radar (/scan) page inside an in-panel modal so the operator never leaves the admin.
-let RADAR_KEY='';
-function showRadar(token, key){
-  RADAR_KEY = key || '';
+function showRadar(token){
   const f=document.getElementById('radarm-frame');
-  // Pass the user key through so the scan page's "apply to my config" can target this exact user.
-  const qs=[]; if(token) qs.push('token='+encodeURIComponent(token)); if(key) qs.push('key='+encodeURIComponent(key));
-  if(f) f.src=location.origin+'/scan'+(qs.length?('?'+qs.join('&')):'');
+  if(f) f.src=location.origin+'/scan'+(token?('?token='+encodeURIComponent(token)):'');
   document.getElementById('radarmodal').classList.add('on');
 }
-// Write a user's best clean IPs to the worker via the working /sub-setip endpoint.
-// `ips` may be an array of "ip:port" strings or a newline/comma-separated string.
-async function applyIpsToUser(key, ips){
-  if(!key){ toast(lang==='fa'?'کلید کاربر پیدا نشد':'No user key found'); return false; }
-  const body = Array.isArray(ips) ? ips.join('\n') : String(ips||'');
-  if(!body.trim()){ toast(lang==='fa'?'آی‌پی‌ای برای اعمال نیست':'No IPs to apply'); return false; }
-  try{
-    const r=await fetch('/sub-setip?key='+encodeURIComponent(key), {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body});
-    const j=await r.json().catch(()=>null);
-    const ok = r.ok && j && j.success;
-    toast(ok ? (lang==='fa'?'آی‌پی‌های این کاربر اعمال شد ✓':'Applied to this user ✓') : (lang==='fa'?'اعمال ناموفق بود':'Apply failed'));
-    return !!ok;
-  }catch(e){ toast('⚠️ '+e.message); return false; }
-}
-// The Nova Radar (/scan) page runs the scan inside the modal iframe. When it posts its selected best
-// IPs back to the panel, apply them to the user whose per-user Radar opened it, via /sub-setip.
-// TODO: the /scan page lives in a separate repo. It must either POST to /sub-setip?key= itself using the
-// key we pass in its URL, or postMessage({type:'nova-radar-apply', ips:[...]}) so this bridge can apply.
-window.addEventListener('message', function(ev){
-  try{
-    const d=ev.data; if(!d || d.type!=='nova-radar-apply') return;
-    applyIpsToUser(d.key || RADAR_KEY, d.ips || d.best || d.results);
-  }catch(_e){}
-});
 /* ---- Contextual help / onboarding (the top-bar "?" opens help for the current page) ---- */
 const HELP = {
   en: {
@@ -1945,17 +1905,10 @@ function renderFormats(){
       </div>
     </div>`).join('');
 }
-// Controls the panel shows but the worker does not read yet: rendered visibly but inert
-// ("Coming soon"). They are excluded from every save payload so they can never write a value.
-const SOON_KEYS = new Set(['r_routing','r_geoip','r_geosite','r_adblock','p_ipv6']);
 function simpleToggleRows(arr){
-  return arr.map(r=>{
-    const soon = SOON_KEYS.has(r.key);
-    const badge = soon ? `<span class="soon-badge">${t('soon_badge')}</span>` : '';
-    return `<div class="field-row${soon?' soon-gate':''}" data-toggle="${r.key}"${soon?' data-soon="1"':''}>
-    <div class="l">${t(r.key)}${badge}${I18N[lang][r.key+'_d']?`<small>${t(r.key+'_d')}</small>`:''}</div>
-    <div class="sw ${r.on?'on':''}"><span class="k"></span></div></div>`;
-  }).join('');
+  return arr.map(r=>`<div class="field-row" data-toggle="${r.key}">
+    <div class="l">${t(r.key)}${I18N[lang][r.key+'_d']?`<small>${t(r.key+'_d')}</small>`:''}</div>
+    <div class="sw ${r.on?'on':''}"><span class="k"></span></div></div>`).join('');
 }
 function renderNetwork(){
   $('#routing-rows').innerHTML = `<div class="card-pad" style="padding-top:4px;padding-bottom:4px">${simpleToggleRows(MOCK.routing)}</div>`;
@@ -2036,7 +1989,7 @@ function renderUsers(){
     // Extra usage details, surfaced inside the expanded edit panel to keep the row clean.
     const extra=[];
     if(day||dq) extra.push((lang==='fa'?'امروز ':'today ')+fmtBytes(day)+(dq?(' / '+fmtBytes(dq)):''));
-    if(rl||drl) extra.push((lang==='fa'?'درخواست ':'reqs ')+ru.toLocaleString()+(rl?(' / '+rl.toLocaleString()):'')+(drl?((lang==='fa'?', امروز ':', today ')+rud.toLocaleString()+' / '+drl.toLocaleString()):''));
+    if(rl||drl) extra.push((lang==='fa'?'درخواست ':'reqs ')+ru.toLocaleString()+(rl?(' / '+rl.toLocaleString()):'')+(drl?((lang==='fa'?' · امروز ':' · today ')+rud.toLocaleString()+' / '+drl.toLocaleString()):''));
     if(uio.up||uio.down) extra.push('↑ '+fmtBytes(uio.up)+' ↓ '+fmtBytes(uio.down));
     if(u.expiry) extra.push((lang==='fa'?'انقضا ':'expires ')+String(u.expiry).slice(0,10));
     return `<div class="utr${enabled?'':' off'}">
@@ -2077,10 +2030,9 @@ function renderUsers(){
           <div class="uf"><label>${lang==='fa'?'نام‌کاربری (لینک)':'Username (link)'}</label><input class="inp" data-uu="${i}" value="${esc(u.username)}"></div>
           <div class="uf"><label>${t('col_quota')} (GB)</label><input class="inp" type="number" min="0" data-uq="${i}" value="${q?Math.round(q/1073741824):0}"></div>
           <div class="uf"><label>${t('col_daily')} (GB)</label><input class="inp" type="number" min="0" data-udq="${i}" value="${dq?Math.round(dq/1073741824):0}"></div>
-          <div class="uf soon-gate"><label title="${lang==='fa'?'سقف تعداد درخواست (۰ = نامحدود). پشتیبانِ سهمیه وقتی شمارش بایت قابل‌اتکا نیست (حالت backend).':'Max request count (0 = unlimited). A quota backstop for when byte counting is unreliable (backend mode).'}">${lang==='fa'?'سقف درخواست':'Req limit'}<span class="soon-badge">${t('soon_badge')}</span></label><input class="inp" type="number" min="0" disabled data-ur="${i}" value="${rl||0}"></div>
-          <div class="uf soon-gate"><label title="${lang==='fa'?'سقف درخواست روزانه (۰ = نامحدود).':'Daily request limit (0 = unlimited).'}">${lang==='fa'?'درخواست روزانه':'Daily reqs'}<span class="soon-badge">${t('soon_badge')}</span></label><input class="inp" type="number" min="0" disabled data-udr="${i}" value="${drl||0}"></div>
-          <div class="uf soon-gate"><label title="${lang==='fa'?'محدودیت سرعتِ دانلودِ این کاربر (KB/s، ۰ = استفاده از مقدار سراسری/نامحدود).':'Download speed limit for this user (KB/s, 0 = use global/unlimited).'}">${lang==='fa'?'سرعت دانلود':'Download KB/s'}<span class="soon-badge">${t('soon_badge')}</span></label><input class="inp" type="number" min="0" step="64" disabled data-usp="${i}" value="${u.speedLimitKBps||0}"></div>
-          <div class="uf" style="grid-column:1/-1;margin-top:-4px"><div class="soon-note">${t('soon_note')}</div></div>
+          <div class="uf"><label title="${lang==='fa'?'سقف تعداد درخواست (۰ = نامحدود). پشتیبانِ سهمیه وقتی شمارش بایت قابل‌اتکا نیست (حالت backend).':'Max request count (0 = unlimited). A quota backstop for when byte counting is unreliable (backend mode).'}">${lang==='fa'?'سقف درخواست':'Req limit'}</label><input class="inp" type="number" min="0" data-ur="${i}" value="${rl||0}"></div>
+          <div class="uf"><label title="${lang==='fa'?'سقف درخواست روزانه (۰ = نامحدود).':'Daily request limit (0 = unlimited).'}">${lang==='fa'?'درخواست روزانه':'Daily reqs'}</label><input class="inp" type="number" min="0" data-udr="${i}" value="${drl||0}"></div>
+          <div class="uf"><label title="${lang==='fa'?'محدودیت سرعتِ دانلودِ این کاربر (KB/s، ۰ = استفاده از مقدار سراسری/نامحدود).':'Download speed limit for this user (KB/s, 0 = use global/unlimited).'}">${lang==='fa'?'سرعت دانلود':'Download KB/s'}</label><input class="inp" type="number" min="0" step="64" data-usp="${i}" value="${u.speedLimitKBps||0}"></div>
           <div class="uf"><label>${t('col_expiry')}</label><input class="inp" type="date" data-ux="${i}" value="${u.expiry?String(u.expiry).slice(0,10):''}"></div>
           <div class="uf" style="grid-column:1/-1"><label style="color:var(--ac);font-weight:700">${lang==='fa'?'مسیریابی اختصاصی این کاربر (اختیاری، خالی = مقدار سراسری)':'Per-user routing (optional, blank = global)'}</label></div>
           <div class="uf" style="grid-column:1/-1"><label title="${lang==='fa'?'آی‌پی‌های تمیزِ مخصوص این کاربر، جدا با ویرگول یا خط جدید. هر مورد می‌تواند برچسب داشته باشد: ip#برچسب (مثلاً برای اپراتور).':'Clean IPs for this user only, comma or newline separated. Each may carry a label: ip#label (e.g. per operator).'}">${lang==='fa'?'آی‌پی‌های تمیز':'Clean IPs'}</label><input class="inp" data-uci="${i}" value="${esc(u.cleanIp||'')}" placeholder="104.16.5.10#MCI, 104.17.20.30#Irancell"></div>
@@ -2099,8 +2051,9 @@ function collectUsers(){ const box=document.getElementById('users-body2'); if(!b
   box.querySelectorAll('[data-uu]').forEach(el=>{ const u=arr[+el.dataset.uu]; if(u){ const v=slugify(el.value); if(v) u.username=v; } });
   box.querySelectorAll('[data-uq]').forEach(el=>{ const u=arr[+el.dataset.uq]; if(u){ const g=Number(el.value)||0; u.quotaBytes=g>0?Math.round(g*1073741824):0; } });
   box.querySelectorAll('[data-udq]').forEach(el=>{ const u=arr[+el.dataset.udq]; if(u){ const g=Number(el.value)||0; u.dailyQuotaBytes=g>0?Math.round(g*1073741824):0; } });
-  // Req limit, Daily reqs and per-user Download KB/s are "Coming soon" (the worker does not read them yet),
-  // so we never read their inputs back into the user object; any loaded value is left untouched.
+  box.querySelectorAll('[data-ur]').forEach(el=>{ const u=arr[+el.dataset.ur]; if(u){ const n=Math.max(0,Math.floor(Number(el.value)||0)); u.reqLimit=n>0?n:0; } });
+  box.querySelectorAll('[data-udr]').forEach(el=>{ const u=arr[+el.dataset.udr]; if(u){ const n=Math.max(0,Math.floor(Number(el.value)||0)); u.dailyReqLimit=n>0?n:0; } });
+  box.querySelectorAll('[data-usp]').forEach(el=>{ const u=arr[+el.dataset.usp]; if(u){ const n=Math.max(0,Math.floor(Number(el.value)||0)); u.speedLimitKBps=n>0?n:0; } });
   box.querySelectorAll('[data-uci]').forEach(el=>{ const u=arr[+el.dataset.uci]; if(u) u.cleanIp=el.value.trim(); });
   box.querySelectorAll('[data-upi]').forEach(el=>{ const u=arr[+el.dataset.upi]; if(u) u.proxyIp=el.value.trim(); });
   box.querySelectorAll('[data-upr]').forEach(el=>{ const u=arr[+el.dataset.upr]; if(u) u.ports=el.value.trim(); });
@@ -2229,21 +2182,6 @@ async function cfDisconnect(){
     const a=document.getElementById('cf-accid'), tk=document.getElementById('cf-token'); if(a) a.value=''; if(tk) tk.value='';
     renderWorker(); renderKPIs(); try{ setUpdConnected(false); }catch(e){} if(msg) msg.textContent=lang==='fa'?'قطع شد':'Disconnected';
   }catch(e){ if(msg) msg.textContent='⚠️ '+e.message; }
-}
-// On dashboard load the Worker-requests card falls back to "-" until a token is re-submitted, because
-// nothing pulls the live numbers when a CF token is already saved. Ask the worker for them and, if it
-// returns real numbers, populate the card. On any error we keep the existing estimated state.
-async function rehydrateCfUsage(){
-  if(!LIVE) return;
-  try{
-    const j=await API.get('getCloudflareUsage');
-    const u=(j && (j.usage||j)) || {};
-    if(u && (u.success===true || u.total!=null)){
-      STATE.config=STATE.config||{}; STATE.config.CF=STATE.config.CF||{};
-      STATE.config.CF.Usage=Object.assign({success:true}, u);
-      renderWorker(); renderKPIs();
-    }
-  }catch(e){ /* leave the estimated state in place */ }
 }
 /* ---- DoH endpoint (this worker's private resolver) ---- */
 function renderDoh(){ const el=document.getElementById('doh-url'); if(el) el.textContent=location.origin+'/dns-query'; }
@@ -2508,8 +2446,6 @@ function a11yEnhance(){
     const name = a11yTextOf(lbl) || sw.getAttribute('aria-label') || sw.id || 'toggle';
     sw.setAttribute('aria-label', name);
     sw.setAttribute('aria-checked', sw.classList.contains('on') ? 'true' : 'false');
-    // "Coming soon" controls are inert: mark them disabled and drop them from the tab order.
-    if(sw.closest('[data-soon]')){ sw.setAttribute('aria-disabled','true'); sw.setAttribute('tabindex','-1'); }
   });
   // Inputs / selects / textareas -> accessible name from the nearest visible label.
   document.querySelectorAll('input,select,textarea').forEach(inp=>{
@@ -2702,7 +2638,7 @@ async function pxVerify(){
   try{
     var r=await fetch('/admin/check?'+encodeURIComponent(m)+'='+encodeURIComponent(val)+'&_t='+Date.now());
     var j=await r.json().catch(function(){return null;});
-    if(r.ok && j && (j.success||j.ok||j.alive)){ msg.className='msg ok'; msg.textContent='✅ '+(lang==='fa'?'پروکسی پاسخ داد':'Proxy reachable')+(j.latency?(', '+j.latency+'ms'):''); }
+    if(r.ok && j && (j.success||j.ok||j.alive)){ msg.className='msg ok'; msg.textContent='✅ '+(lang==='fa'?'پروکسی پاسخ داد':'Proxy reachable')+(j.latency?(' · '+j.latency+'ms'):''); }
     else { msg.className='msg bad'; msg.textContent='⚠️ '+(lang==='fa'?'پاسخ نداد':'No response')+((j&&j.error)?(', '+j.error):''); }
   }catch(e){ msg.className='msg bad'; msg.textContent='⚠️ '+e.message; }
 }
@@ -2748,13 +2684,13 @@ async function pxLoadList(){
     var cs=Object.keys(pxMap).sort(function(a,b){ return pxMap[b].length-pxMap[a].length; });
     document.getElementById('px-country').innerHTML='<option value="">-</option>'+cs.map(function(c){ return '<option value="'+c+'">'+(pxMap[c][0].emoji||'')+' '+c+' ('+pxMap[c].length+')</option>'; }).join('');
     document.getElementById('px-pick').innerHTML='<option value="">-</option>';
-    msg.className='msg ok'; msg.textContent='✅ '+items.length+' '+(lang==='fa'?('پروکسی, '+cs.length+' کشور'):('proxies, '+cs.length+' countries'));
+    msg.className='msg ok'; msg.textContent='✅ '+items.length+' '+(lang==='fa'?('پروکسی · '+cs.length+' کشور'):('proxies · '+cs.length+' countries'));
   }catch(e){ msg.className='msg bad'; msg.textContent='⚠️ '+e.message; }
 }
 function pxCountryChange(){
   var c=document.getElementById('px-country').value, pick=document.getElementById('px-pick');
   if(!c||!pxMap||!pxMap[c]){ pick.innerHTML='<option value="">-</option>'; return; }
-  pick.innerHTML='<option value="">-</option>'+pxMap[c].slice(0,300).map(function(it){ var v=String(it.proxy); return '<option value="'+v.replace(/"/g,'&quot;')+'">'+v+(it.city?(', '+it.city):'')+(it.org?(', '+it.org.slice(0,18)):'')+'</option>'; }).join('');
+  pick.innerHTML='<option value="">-</option>'+pxMap[c].slice(0,300).map(function(it){ var v=String(it.proxy); return '<option value="'+v.replace(/"/g,'&quot;')+'">'+v+(it.city?(' · '+it.city):'')+(it.org?(' · '+it.org.slice(0,18)):'')+'</option>'; }).join('');
 }
 function pxUse(){
   var v=(document.getElementById('px-pick')||{}).value; if(!v) return;
@@ -2858,15 +2794,6 @@ const NET_MAP = { r_routing:'enableRouting', r_domestic:'enableDomesticBypass', 
 const LOGLABEL = { Get_SUB:['ev_fetch','down'], Get_Best_SUB:['ev_fetch','down'], Save_Config:['ev_save','save'],
   Save_Network_Settings:['ev_save','save'], Init_Config:['ev_save','save'], Save_Custom_IPs:['ev_save','save'],
   Admin_Login:['ev_login','key'], Register_WARP:['ev_warp','wifi'], WARP_License:['ev_warp','wifi'], Save_Users:['ev_user','user'] };
-// Status label + chip kind per action. A row is "OK" only when it carries no failure marker; a login
-// authenticates, a WARP action applies, a user save creates. Anything with a failure signal is Failed.
-const LOGSTATUS = { Admin_Login:['st_auth','ok'], Register_WARP:['st_applied','info'], WARP_License:['st_applied','info'], Save_Users:['st_created','info'] };
-function logStatus(e){
-  const raw=String((e&&(e.RESULT||e.STATUS||e.MSG||e.ERROR))||'');
-  const failed = (e&&(e.OK===false||e.SUCCESS===false)) || (e&&typeof e.CODE==='number'&&e.CODE>=400) || /\b(fail|failed|error|denied|deny|reject|invalid|unauthorized|401|403|500)\b/i.test(raw);
-  if(failed) return { st:'st_failed', kind:'err' };
-  const s=LOGSTATUS[e&&e.TYPE]||['st_ok','ok']; return { st:s[0], kind:s[1] };
-}
 
 function readPolicy(key){ const m=POLICY_MAP[key], c=STATE.config||{}, n=STATE.net||{};
   if(m.s==='config') return m.frag ? !!c.tlsFragment : !!c[m.f];
@@ -2887,19 +2814,19 @@ function mapKPIs(sys){
   const loc=(sys.city? sys.city+', ' : '')+(sys.country||'-');
   const pct = (u.success && u.max) ? Math.min(100, Math.round(u.total/u.max*100)) : 0;
   MOCK.kpis = [
-    { id:'network', icon:'globe', label:'kpi_network', value:(flagOf(sys.country)? flagOf(sys.country)+' ':'')+loc, sub:(sys.asOrganization||'Cloudflare')+(sys.colo? ', '+sys.colo : ''), chip:sys.kvConnected?'healthy':'offline', chipKind:sys.kvConnected?'ok':'err' },
-    { id:'storage', icon:'db', label:'kpi_storage', value:(sys.d1SizeBytes!=null? fmtBytes(sys.d1SizeBytes) : (sys.kvConnected?'Connected':'Offline')), sub:(sys.d1SizeBytes!=null? 'D1 database' : (sys.kvConnected?'D1 database':'No store')), chip:sys.kvConnected?'online':'down', chipKind:sys.kvConnected?'ok':'err' },
+    { id:'network', icon:'globe', label:'kpi_network', value:(flagOf(sys.country)? flagOf(sys.country)+' ':'')+loc, sub:(sys.asOrganization||'Cloudflare')+(sys.colo? ' · '+sys.colo : ''), chip:sys.kvConnected?'healthy':'offline', chipKind:sys.kvConnected?'ok':'err' },
+    { id:'storage', icon:'db', label:'kpi_storage', value:(sys.d1SizeBytes!=null? fmtBytes(sys.d1SizeBytes) : (sys.kvConnected?'Connected':'Offline')), sub:(sys.d1SizeBytes!=null? 'D1 database' : (sys.kvConnected?'KV namespace':'No store')), chip:sys.kvConnected?'online':'down', chipKind:sys.kvConnected?'ok':'err' },
     { id:'worker', icon:'cpu', label:'kpi_worker', value:(u.success && u.total!=null)? (nf(u.total)+' / '+nf(u.max||100000)) : '-', sub:'kpi_worker_sub', meter:pct, chip:(u.success&&u.max)? pct+'%' : '-', chipKind:'info', cta:(u.success && u.total!=null)? null : { label:'kpi_connect', action:'connect-token' } },
     { id:'traffic', icon:'pulse', label:'kpi_traffic', traffic:{ down:fmtBytes(tu.down), up:fmtBytes(tu.up) }, sub:'kpi_traffic_sub', chip:'live', chipKind:'info' },
   ];
-  const ll=$('#loc-label'); if(ll) ll.textContent=(sys.country||'')+(sys.colo? ', '+sys.colo : '') || '-';
+  const ll=$('#loc-label'); if(ll) ll.textContent=(sys.country||'')+(sys.colo? ' · '+sys.colo : '') || '-';
 }
 function mapPolicyFromState(){ MOCK.policy = MOCK.policy.map(p=>({ key:p.key, on:readPolicy(p.key) })); }
 function mapActivity(logs){
   if(!Array.isArray(logs) || !logs.length) return;
   MOCK.activity = logs.slice().sort((a,b)=>(b.TIME||0)-(a.TIME||0)).slice(0,500).map(e=>{
-    const m=LOGLABEL[e.TYPE]||[null,'pulse']; const d=new Date(e.TIME||0); const s=logStatus(e);
-    return { ev:m[0]||null, title:m[0]?null:(e.TYPE||'event'), icon:m[1], actor:(e.CC||'').replace('N/A','')||'-', ip:e.IP||'-', time:isNaN(d)?'':relTime(d), st:s.st, kind:s.kind };
+    const m=LOGLABEL[e.TYPE]||[null,'pulse']; const d=new Date(e.TIME||0);
+    return { ev:m[0]||null, title:m[0]?null:(e.TYPE||'event'), icon:m[1], actor:(e.CC||'').replace('N/A','')||'-', ip:e.IP||'-', time:isNaN(d)?'':relTime(d), st:'st_ok', kind:'ok' };
   });
 }
 function mapUsers(d){
@@ -2946,7 +2873,7 @@ function syncFormValues(){
   set('ci-rcount', pool.randomCount||16); set('ci-rport', pool.specifiedPorts!=null?pool.specifiedPorts:-1);
   setCiMode(c.POOL_API ? 'smart' : (pool.randomIP===false ? 'custom' : 'random'));
   fetch('/admin/ADD.txt?_t='+Date.now()).then(r=>r.text()).then(txt=>{ const a=document.getElementById('ci-add'); if(a) a.value=(txt==='null'?'':txt); }).catch(()=>{});
-  fetch('/admin/whoami').then(r=>r.json()).then(w=>{ const el=document.getElementById('ci-isp'); if(el) el.innerHTML=(lang==='fa'?'شبکهٔ شما: ':'Your network: ')+'<b>AS'+(w.asn||'?')+'</b> '+(w.isp||'')+(w.country?(', '+w.country):''); }).catch(()=>{});
+  fetch('/admin/whoami').then(r=>r.json()).then(w=>{ const el=document.getElementById('ci-isp'); if(el) el.innerHTML=(lang==='fa'?'شبکهٔ شما: ':'Your network: ')+'<b>AS'+(w.asn||'?')+'</b> '+(w.isp||'')+(w.country?(' · '+w.country):''); }).catch(()=>{});
   // Advanced Settings (config)
   set('f2-path', c.PATH||'/'); set('f2-grpcmode', c.gRPCmode||'gun'); set('f2-frag', c.tlsFragment||'');
   const fp=c.fragmentParams||{}; set('f2-frag-len', fp.length||''); set('f2-frag-int', fp.interval||''); set('f2-frag-pkt', fp.packets||'');
@@ -2982,7 +2909,7 @@ const savedMsg = (ok)=> ok ? (lang==='fa'?'ذخیره شد ✓':'Saved ✓') : (
 
 async function applyPolicy(){
   if(!LIVE) return previewToast();
-  MOCK.policy.forEach(p=>{ if(SOON_KEYS.has(p.key)) return; writePolicy(p.key, p.on); }); // skip "Coming soon" controls the worker ignores
+  MOCK.policy.forEach(p=>writePolicy(p.key, p.on));
   const ok = (await API.post('config.json', STATE.config)) && (await API.post('network-settings.json', STATE.net));
   toast(ok ? (lang==='fa'?'سیاست اعمال شد ✓':'Policy applied ✓') : savedMsg(false));
 }
@@ -3130,7 +3057,7 @@ function renderBackendClient(){
 function isOn2(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('on')); }
 async function saveNetwork(){
   if(!LIVE) return previewToast(); const n=STATE.net;
-  document.querySelectorAll('#routing-rows [data-toggle]').forEach(row=>{ if(SOON_KEYS.has(row.dataset.toggle)) return; n[NET_MAP[row.dataset.toggle]] = row.querySelector('.sw').classList.contains('on'); }); // "Coming soon" routing toggles are never written
+  document.querySelectorAll('#routing-rows [data-toggle]').forEach(row=>{ n[NET_MAP[row.dataset.toggle]] = row.querySelector('.sw').classList.contains('on'); });
   const g=(id)=>{ const e=document.getElementById(id); return e? e.value : ''; };
   const isOn=(id)=>{ const e=document.getElementById(id); return e? e.classList.contains('on') : false; };
   n.enableWarp=isOn('t2-warp'); n.warpMode=g('w2-mode'); n.warpEndpoint=(g('w2-ep')||'').trim(); n.warpAmnezia=isOn('t2-warp-amnezia'); n.warpCalls=isOn('t2-warp-calls');
@@ -3142,8 +3069,7 @@ async function saveNetwork(){
   n.enableFakeDNS=isOn('t2-fakedns'); n.fakeDNSIP=(g('d2-fakeip')||'').trim()||'198.51.100.1'; n.logLevel=g('d2-loglevel');
   n.backendMode=isOn('t2-backend'); n.backendUrl=(g('be-url')||'').trim();
   // custom + preset rules
-  // customRules is "Coming soon" (the worker does not read it yet); do not write it, so the loaded value stays untouched.
-  n.monthlyCapGB=Math.max(0,Math.floor(Number(g('n2-monthlycap'))||0)); n.speedLimitKBps=Math.max(0,Math.floor(Number(g('n2-speedlimit'))||0));
+  n.customRules=g('n2-customrules')||''; n.monthlyCapGB=Math.max(0,Math.floor(Number(g('n2-monthlycap'))||0)); n.speedLimitKBps=Math.max(0,Math.floor(Number(g('n2-speedlimit'))||0));
   n.bypassCountries=[['cn','t2-bp-cn'],['ru','t2-bp-ru']].filter(([,id])=>isOn(id)).map(([c])=>c);
   const cats=[]; if(Array.isArray(n.blockCategories) && n.blockCategories.includes('quic')) cats.push('quic'); // keep QUIC (set by the policy card)
   [['malware','t2-bk-malware'],['phishing','t2-bk-phishing'],['cryptominers','t2-bk-crypto']].forEach(([c,id])=>{ if(isOn(id)) cats.push(c); });
@@ -3333,13 +3259,13 @@ async function renderDatacenter(){
       var cn=CCA2_EN[cca2]||cca2; var rn=(lang==="fa")?regionFa:(COLO_REGION_EN[regionFa]||regionFa);
       if(flag) flag.textContent=ccaFlag(cca2);
       place.textContent=(lang==="fa")?cityFa:cn;
-      if(sub) sub.textContent=(lang==="fa")?(rn+", "+colo+", "+cn):(cityFa+", "+rn+", "+colo);
+      if(sub) sub.textContent=(lang==="fa")?(rn+" · "+colo+" · "+cn):(cityFa+" · "+rn+" · "+colo);
       if(mw) mw.innerHTML=coloMapSvg(lat,lon,colo);
     } else {
       var lc=(o.loc||"").toUpperCase();
       if(flag) flag.textContent=lc?ccaFlag(lc):"🌐";
       place.textContent=colo?(CCA2_EN[lc]||lc||t("dc_unknown")):t("dc_unknown");
-      if(sub) sub.textContent=colo?(", "+colo):"";
+      if(sub) sub.textContent=colo?("· "+colo):"";
       if(mw) mw.innerHTML="";
     }
   }catch(e){}
@@ -3424,7 +3350,6 @@ document.addEventListener('click', (e)=>{
   if(e.target.closest('#be-vless-copy')){ copy((document.getElementById('be-vless')||{}).textContent||''); return; }
   if(e.target.closest('#be-vless-qr') || e.target.closest('#be-qr')){ var l=(document.getElementById('be-vless')||{}).textContent||''; if(l) showQR(l,'Nova Backend'); return; }
   if(e.target.closest('#save-network2')){ saveNetwork(); return; }
-  if(e.target.closest('#activity-refresh')){ (async()=>{ const b=e.target.closest('#activity-refresh'); if(b) b.classList.add('spin'); try{ if(LIVE){ const logs=await API.get('log.json'); mapActivity(logs); renderActivity('#activity-mini',5); renderAudit(); } }catch(_e){} if(b) b.classList.remove('spin'); toast(t('refresh')+' ✓'); })(); return; }
   { const cm=e.target.closest('#ci-seg button'); if(cm){ setCiMode(cm.dataset.m); return; } }
   if(e.target.closest('#ci-ports .ci-pchip')){ var _pc=e.target.closest('.ci-pchip'); _pc.classList.toggle('on'); _pc.setAttribute('aria-pressed', _pc.classList.contains('on')?'true':'false'); return; }
   if(e.target.closest('#ci-speedtest')){ runSpeedTest(); return; }
@@ -3485,14 +3410,14 @@ document.addEventListener('click', (e)=>{
   const qu = e.target.closest('[data-qr-user]'); if(qu){ const url=qu.dataset.islink? qu.dataset.qrUser : (location.origin+'/'+novaSubSeg()+'?token='+qu.dataset.qrUser+'&b64'); showQR(url, qu.dataset.qrUname||'User'); return; }
   const qfm = e.target.closest('[data-qr-fmt]'); if(qfm){ const tok=(STATE.config.optimizedSubGeneration||{}).TOKEN||''; const q=qfm.dataset.qrFmt; showQR(location.origin+'/'+novaSubSeg()+'?token='+tok+(q && q!=='auto' ? '&'+q : ''), 'Nova '+(qfm.dataset.qrFmtname||q)); return; }
   const cu = e.target.closest('[data-copy-user]'); if(cu){ copy(cu.dataset.islink? cu.dataset.copyUser : (location.origin+'/'+novaSubSeg()+'?token='+cu.dataset.copyUser+'&b64')); return; }
-  const ru = e.target.closest('[data-radar-user]'); if(ru){ var rkey='',rtok=''; try{ var _ru=new URL(ru.dataset.radarUser); rkey=_ru.searchParams.get('key')||''; rtok=_ru.searchParams.get('token')||''; }catch(_){ } showRadar(rtok, rkey); return; }
+  const ru = e.target.closest('[data-radar-user]'); if(ru){ var rtok=''; try{ rtok=new URL(ru.dataset.radarUser).searchParams.get('token')||''; }catch(_){ } showRadar(rtok); return; }
   const cfm = e.target.closest('[data-copy-fmt]'); if(cfm){ const tok=(STATE.config.optimizedSubGeneration||{}).TOKEN||''; const q=cfm.dataset.copyFmt; copy(location.origin+'/'+novaSubSeg()+'?token='+tok+(q && q!=='auto' ? '&'+q : '')); return; }
   // policy toggle (flips local state; persisted by "Apply policy")
   const prow = e.target.closest('[data-policy]');
-  if(prow){ if(prow.dataset.soon) return; const key=prow.dataset.policy; const p=MOCK.policy.find(x=>x.key===key); p.on=!p.on; renderPolicy(); return; }
+  if(prow){ const key=prow.dataset.policy; const p=MOCK.policy.find(x=>x.key===key); p.on=!p.on; renderPolicy(); return; }
   // section toggles (security / routing), visual; persisted by that section's Save
   const trow = e.target.closest('[data-toggle]');
-  if(trow){ if(trow.dataset.soon) return; trow.querySelector('.sw').classList.toggle('on'); return; }
+  if(trow){ trow.querySelector('.sw').classList.toggle('on'); return; }
   // standalone switches (telegram alerts, etc.)
   const sw = e.target.closest('.sw'); if(sw){ sw.classList.toggle('on'); if(sw.id==='t2-multiuser') updateMultiUserUI(); if(sw.id==='t2-backend'){ try{ renderBackendClient(); }catch(_e){} try{ if(LIVE) saveNetwork(); }catch(_e){} } return; }
 });
@@ -3713,7 +3638,7 @@ async function loadVersions(){
   applyTheme(localStorage.getItem('nova-theme') || 'light');
   await loadLive();   // pull real /admin data when served by the Worker; falls back to MOCK otherwise
   try{ loadVersions(); }catch(e){}
-  if(LIVE){ loadSecurity(); loadWarpStatus(); rehydrateCfUsage(); }
+  if(LIVE){ loadSecurity(); loadWarpStatus(); }
   else { STATE.users=DEMO_USERS.map(u=>({...u})); STATE.usage=DEMO_USAGE; STATE.multiUser=true; }
   applyLang(lang);    // renders everything (incl. syncFormValues) in the chosen language
   try{ if(currentView==='dashboard') TChart.ensure(); }catch(e){}
