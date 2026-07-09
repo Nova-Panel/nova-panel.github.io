@@ -2550,7 +2550,7 @@ function showView(v){
 }
 // Jump from the Dashboard "calls" callout to the WARP or Backend card (both live in Network view).
 function goCallHelp(target){ showView('network'); setTimeout(function(){ try{ var el=document.getElementById(target==='backend'?'backend-card':'warp-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
-function goRadarCard(){ showView('network'); setTimeout(function(){ try{ var el=document.getElementById('nova-radar-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
+function goRadarCard(){ showView('cleanips'); setTimeout(function(){ try{ var el=document.getElementById('nova-radar-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
 function goConnectToken(){ try{ showView('notifications'); }catch(e){} setTimeout(function(){ try{ var el=document.getElementById('cf-token'); var card=el?el.closest('.card'):null; (card||el||{scrollIntoView:function(){}}).scrollIntoView({behavior:'smooth',block:'center'}); if(el){ el.focus(); el.style.transition='box-shadow .2s'; el.style.boxShadow='0 0 0 3px color-mix(in srgb,var(--ac) 45%,transparent)'; setTimeout(function(){ try{ el.style.boxShadow=''; }catch(e){} },1600); } }catch(e){} },140); }
 
 /* ============================================================================
@@ -3378,7 +3378,7 @@ document.addEventListener('click', (e)=>{
   // stage-2 actions: users CRUD, password, 2FA, backup
   const chlp=e.target.closest('[data-callhelp]'); if(chlp){ goCallHelp(chlp.dataset.callhelp); return; }
   if(e.target.closest('[data-open-radar]')){ showRadar(''); return; }
-  if(e.target.closest('[data-radar-jump]')){ goRadarCard(); return; }
+  if(e.target.closest('[data-radar-jump]')){ goRadarCard(); setTimeout(function(){ try{ var _sb=document.getElementById('ci-speedtest'); if(_sb) _sb.click(); }catch(_e){} }, 650); return; }
   if(e.target.closest('[data-kpi-cta]')){ if(e.target.closest('[data-kpi-cta]').dataset.kpiCta==='connect-token') goConnectToken(); return; }
   if(e.target.closest('#users-add2')){ addUser(); return; }
   if(e.target.closest('#users-save2')){ saveUsers(); return; }
