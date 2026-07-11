@@ -246,7 +246,7 @@ html[dir=rtl] .kpi-sub{text-align:start}
 .kpi .meter{height:6px;border-radius:999px;background:var(--card2);border:1px solid var(--bd);overflow:hidden}
 .kpi .meter>i{display:block;height:100%;background:var(--ac);border-radius:999px}
 .kpi-traffic{display:flex;gap:14px}
-.kpi-traffic .u{font-size:13px;font-weight:700}
+.kpi-traffic .u{font-size:18px;font-weight:700;letter-spacing:-.3px;line-height:1.15}
 .kpi-traffic .dn{color:var(--ok)} .kpi-traffic .up{color:var(--dg)}
 
 /* ---- Two-column dashboard layout ---- */
@@ -754,7 +754,7 @@ html[data-theme=dark] .qr-ph{border-color:#fff}
           <div class="card-pad">
             <div id="chart-empty" style="display:none;color:var(--mu);font-size:13px;text-align:center;padding:28px 0" data-i18n="chart_empty">No traffic recorded yet. Once clients connect, daily usage shows here.</div>
             <canvas id="traffic-canvas" height="200" style="width:100%;height:200px;display:block"></canvas>
-            <div id="chart-totals" style="display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:12px;color:var(--mu)"></div>
+            <div id="chart-totals" style="display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:13px;font-weight:600;color:var(--mu)"></div>
           </div>
         </div>
 
@@ -2276,7 +2276,7 @@ async function updateCheck(){
   if(!LIVE) return previewToast();
   if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'در حال بررسی…':'Checking…'); }
   try{
-    var r=await fetch('admin/update-check.json',{cache:'no-store'});
+    var r=await fetch('/admin/update-check.json',{cache:'no-store'});
     var ct=(r.headers.get('content-type')||'');
     if(ct.indexOf('application/json')<0){
       // Old worker that doesn't have the update-check endpoint yet → returns an HTML page, not JSON.
@@ -2304,7 +2304,7 @@ async function updateNow(extra){
   if(extra && extra.accountId) body.accountId=extra.accountId;
   if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'در حال به‌روزرسانی…':'Updating…'); }
   try{
-    var r=await fetch('admin/self-update.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var r=await fetch('/admin/self-update.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     var j=await r.json();
     if(j && (j.error==='unsupportedPostPath' || j.error==='not_found')){ updMsgOldWorker(); return; }
     if(j.success){
@@ -2516,7 +2516,7 @@ async function renderNovaVerCard(){
   var el=document.getElementById('nova-ver-card'); if(!el) return;
   if(!LIVE){ el.style.display='none'; return; }
   try{
-    var r=await fetch('admin/update-check.json',{cache:'no-store'});
+    var r=await fetch('/admin/update-check.json',{cache:'no-store'});
     if((r.headers.get('content-type')||'').indexOf('application/json')<0){ el.style.display='none'; return; }
     var j=await r.json();
     var cur=j.current||'?', latest=j.latest||'';
@@ -2727,8 +2727,8 @@ function cnRender(){
   box.querySelectorAll('.cn-qr').forEach(function(b){ b.onclick=function(){ var q=document.getElementById(b.dataset.id); if(!q) return; if(q.style.display==='block'){ q.style.display='none'; return; } q.style.display='block'; q.innerHTML=''; try{ new QRCode(q,{text:decodeURIComponent(b.dataset.l),width:180,height:180,correctLevel:QRCode.CorrectLevel.M}); }catch(e){ q.textContent='QR error'; } }; });
 }
 function cnInit(){ var b=document.getElementById('cn-refresh'); if(b&&!b._w){ b._w=1; b.onclick=function(){ if(LIVE){ loadLive().then(cnRender); } else cnRender(); }; } cnRender(); }
-function openDrawer(){ $('#sidebar').classList.add('open'); $('#scrim').classList.add('show'); }
-function closeDrawer(){ $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show'); }
+function openDrawer(){ document.body.style.overflow='hidden'; $('#sidebar').classList.add('open'); $('#scrim').classList.add('show'); }
+function closeDrawer(){ document.body.style.overflow=''; $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show'); }
 
 /* ============================================================================
    Theme
@@ -2758,7 +2758,7 @@ function flashSaved(id, ok){
   b.classList.add(ok!==false?'flash-ok':'flash-bad');
   setTimeout(()=>{ b.textContent=txt; b.className=cls; b._fs=0; }, 1900);
 }
-function copy(text){ navigator.clipboard && navigator.clipboard.writeText(text); toast(t('copied')); }
+function copy(text){ try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).catch(function(){}); } else { var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); try{ document.execCommand('copy'); }catch(_){ } document.body.removeChild(ta); } }catch(e){ var ta=document.createElement('textarea'); if(ta){ ta.value=text; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(_){ } try{ document.body.removeChild(ta); }catch(_){ } } } toast(t('copied')); }
 
 /* ============================================================================
    LIVE BACKEND WIRING
@@ -3495,10 +3495,10 @@ async function checkUpdate(){ try{
  // worker is older / can't reach GitHub, compare the running version to the latest published
  // version fetched straight from IRNova/Nova-Proxy (raw.githubusercontent.com allows CORS here).
  let j=null;
- try{
-   const r=await fetch('admin/update-check.json',{cache:'no-store'});
-   if((r.headers.get('content-type')||'').indexOf('application/json')>=0) j=await r.json();
- }catch(e){}
+  try{
+    const r=await fetch('/admin/update-check.json',{cache:'no-store'});
+    if((r.headers.get('content-type')||'').indexOf('application/json')>=0) j=await r.json();
+  }catch(e){}
  // Cloudflare-connect banner: when the worker reports no saved token, prompt the one-time connect.
  try{ if(j && typeof j.hasCfToken!=='undefined'){ showCfBar(!j.hasCfToken); setUpdConnected(!!j.hasCfToken); } }catch(e){}
  if(!j || !j.latest){
@@ -3580,7 +3580,7 @@ const TChart = {
     // nice ceil
     const niceMax=(function(m){ const p=Math.pow(10,Math.floor(Math.log10(m))); const n=m/p; const s=n<=1?1:n<=2?2:n<=5?5:10; return s*p; })(max);
     // gridlines + y labels (bytes)
-    ctx.font='10px system-ui,sans-serif'; ctx.textBaseline='middle'; ctx.strokeStyle=bd; ctx.fillStyle=mu; ctx.lineWidth=1;
+    ctx.font='11px system-ui,sans-serif'; ctx.textBaseline='middle'; ctx.strokeStyle=bd; ctx.fillStyle=mu; ctx.lineWidth=1;
     for(let i=0;i<=4;i++){ const y=padT+gh-(gh*i/4); ctx.globalAlpha=.5; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+gw,y); ctx.stroke(); ctx.globalAlpha=1;
       const val=niceMax*i/4; const lbl=fmtBytes(val); ctx.textAlign=rtl?'left':'right'; ctx.fillText(lbl, rtl?padL+gw+8:padL-8, y); }
     // bars (stacked down + up)
