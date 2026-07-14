@@ -79,7 +79,7 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
 <div class="wrap">
 <div class="bar">
 <div class="brand"><span class="lg"><svg viewBox="0 0 1254 1254" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-label="Nova"><defs><linearGradient id="ng" x1="128.06" y1="1122.76" x2="1206.85" y2="43.97" gradientUnits="userSpaceOnUse"><stop offset=".04" stop-color="#9d4efb"/><stop offset="1" stop-color="#02cdf3"/></linearGradient></defs><path d="M1185.57,149.23c0-43.84-27.55-82.6-66.19-100.7-40.83-19.13-87.98-16.85-126.82,6.19-33.3,19.76-56.22,55.99-56.25,95.68l-.38,653.25.09,39.98c.03,13.51-.33,26.37-3.82,39.13-8.12,29.65-30.52,53.04-56.69,62.39-32.53,11.62-65.87,5.5-91.07-15.75-20.65-17.42-33.28-42.64-33.32-70.11l-.35-245.85.07-231.05c.04-148.83-97.26-281.46-240.38-321.81-67.49-19.02-138.62-19.66-204.99,2.42l-13.66,4.55C159.84,114.72,68.42,239.99,68.41,381.43l-.06,712.76c0,68.93,56.48,123.39,124.03,124.15,65.31.73,125.56-52.18,125.64-120.57l.88-712.63c.07-54.62,49.94-96.23,103.56-88.53,43.56,6.25,78.96,43.23,79.08,88.34l1.24,493.92c.16,62.52,24.72,123.29,59.49,174.21,43.7,63.99,108.48,111.28,182.25,133.98,91.72,28.23,190.9,16.68,273.4-31.79,36.89-21.68,68.83-50.13,94.95-83.49l16.54-23.16c31.76-44.47,56.26-119.27,56.25-174.93l-.09-724.43Z" fill="url(#ng)"/></svg></span><h1>Nova Proxy</h1></div>
-<div class="tools"><div class="lang" id="lg"><button data-l="fa" class="on">فا</button><button data-l="en">EN</button></div><button class="tbtn" id="theme">☾</button></div>
+<div class="tools"><div class="lang" id="lg"><button data-l="fa" class="on">فا</button><button data-l="en">EN</button><button data-l="ru">РУ</button></div><button class="tbtn" id="theme">☾</button></div>
 </div>
 <p class="intro" id="intro"></p>
 
@@ -111,6 +111,15 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
 </div>
 
 <div class="card">
+<div class="ch"><div class="t"><span class="num">4</span><span id="cr-t">Cron Trigger</span></div><div class="st" id="cr-st" role="status" aria-live="polite"><span class="dot"></span><span id="cr-l">…</span></div></div>
+<p class="desc" id="cr-desc"></p>
+<ol id="cr-steps"></ol>
+<p class="desc" id="cr-note" style="margin-top:6px;margin-bottom:8px;font-size:12.5px"></p>
+<button class="btn" id="cr-test"></button>
+<div class="msg" id="cr-hint" style="margin-top:8px" role="status" aria-live="polite"></div>
+</div>
+
+<div class="card">
 <div class="t" style="font-size:15px;font-weight:700;margin-bottom:12px" id="vars-t">Worker variables</div>
 <table><thead><tr><th id="v-name">Variable</th><th id="v-need">Required</th><th id="v-desc">What it does</th></tr></thead><tbody id="vars-body"></tbody></table>
 </div>
@@ -126,6 +135,25 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
 </div>
 </div>
 
+<div class="card">
+<div class="t" style="font-size:15px;font-weight:700;margin-bottom:4px">🛡️ Keep your Worker alive · ورکر را زنده نگه دارید</div>
+<p style="font-size:13px;color:var(--mu,#8a94a6);margin:0 0 12px">A few habits keep Cloudflare from blocking your Worker (error 1101). · چند نکته که نمی‌گذارد کلادفلر ورکر شما را ببندد (خطای ۱۱۰۱).</p>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
+<div style="font-size:13px;font-weight:600;margin-bottom:3px">🔤 Name it plainly · نام ساده بگذارید</div>
+<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Keep the random name Cloudflare gives the Worker (like ancient-forest-038e). Avoid words like proxy, vpn, tunnel, or any protocol name, Cloudflare blocks known names on sight. · همان نام تصادفی کلادفلر را نگه دارید. از کلماتی مثل proxy، vpn، tunnel یا نام پروتکل در نام ورکر پرهیز کنید.</div>
+</div>
+<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
+<div style="font-size:13px;font-weight:600;margin-bottom:3px">🔁 If it gets error 1101 · اگر خطای ۱۱۰۱ گرفت</div>
+<div style="font-size:12.5px;color:var(--mu,#8a94a6)">A blocked Worker cannot be revived. Delete it, create a new Worker with a fresh random name, redeploy, then put the new domain in the HOSTS field. · ورکر مسدودشده قابل بازیابی نیست. حذفش کنید، ورکر تازه با نام جدید بسازید، دوباره دیپلوی کنید و دامنه جدید را در فیلد HOSTS بگذارید.</div>
+</div>
+<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
+<div style="font-size:13px;font-weight:600;margin-bottom:3px">🆓 Keep it free and personal · رایگان و شخصی نگه دارید</div>
+<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Use a Worker (not Pages) and keep it a free personal service. Reselling or heavy sharing is what trips Cloudflare's review. · از Worker استفاده کنید (نه Pages) و آن را سرویس شخصی رایگان نگه دارید. فروش یا اشتراک سنگین باعث بررسی کلادفلر می‌شود.</div>
+</div>
+</div>
+</div>
+
 <div class="finish"><button class="btn p" id="finish" disabled></button></div>
 <div class="foot">Nova Proxy</div>
 </div>
@@ -136,33 +164,67 @@ var L={
   s1desc:'در نصب یک‌کلیکی این مورد خودکار وصل می‌شود. اگر «متصل نیست» بود، طبق راهنمای زیر یک KV بسازید و با نام متغیر «KV» به ورکر وصل کنید.',
   s1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b> بروید.','روی <b>Create Namespace</b> بزنید و نامی مثل <span class="mono">NOVA_KV</span> بگذارید.','به Worker خود بروید: <b>Settings → Bindings → KV Namespace</b>.','یک Binding با نام متغیر <span class="mono">KV</span> به آن Namespace اضافه و ذخیره کنید.'],
   s2desc:'یک رمز برای ورود به پنل مدیریت انتخاب کنید. همین‌جا ذخیره می‌شود (نیازی به داشبورد Cloudflare نیست).',
-  sd1t:'دیتابیس D1 (نسخه ۳.۱, الزامی)',
-  sd1desc:'نسخه ۳.۱ روی D1 اجرا می‌شود: مصرف هر کاربر و پروفایل (جدول usage)، لاگ‌های پروکسی (جدول logs) و همه‌ی تنظیمات/پیکربندی/احراز هویت (جدول kvstore) در D1 ذخیره می‌شوند, حدود ۱۰۰ برابرِ ظرفیتِ نوشتنِ روزانه‌ی KV، پس ورکر روی پلن رایگان خیلی بیشتر دوام می‌آورد. در نصب یک‌کلیکی خودکار ساخته و وصل می‌شود. برای افزودن دستی:',
+  sd1t:'دیتابیس D1 (الزامی)',
+  sd1desc:'نوا روی D1 اجرا می‌شود: مصرف هر کاربر و پروفایل (جدول usage)، لاگ‌های پروکسی (جدول logs) و همه‌ی تنظیمات/پیکربندی/احراز هویت (جدول kvstore) در D1 ذخیره می‌شوند, حدود ۱۰۰ برابرِ ظرفیتِ نوشتنِ روزانه‌ی KV، پس ورکر روی پلن رایگان خیلی بیشتر دوام می‌آورد. در نصب یک‌کلیکی خودکار ساخته و وصل می‌شود. برای افزودن دستی:',
   sd1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> بروید و <b>Create</b> را بزنید (هر نامی).','به Worker خود بروید: <b>Settings → Bindings → Add → D1 database</b>.','نام متغیر را <span class="mono">DB</span> بگذارید و همان دیتابیس را انتخاب کنید، سپس <b>Save and Deploy</b>.'],
-  sd1note:'برای نسخه ۳.۱ الزامی است. اگر هنوز Namespace از KV وصل باشد، فقط برای انتقال یک‌باره به D1، آینه‌ی نوشتن، و پرکردنِ کلیدهای جامانده استفاده می‌شود, نه به‌عنوان ذخیره‌ساز اصلی.',
+  sd1note:'الزامی است. اگر هنوز Namespace از KV وصل باشد، فقط برای انتقال یک‌باره به D1، آینه‌ی نوشتن، و پرکردنِ کلیدهای جامانده استفاده می‌شود, نه به‌عنوان ذخیره‌ساز اصلی.',
   d1off:'الزامی',d1unreachable:'به Worker وصل نشد, این صفحه را روی آدرس Worker خود باز کنید (…/install)، نه GitHub Pages.',d1nobind:'بایندینگ «DB» روی Worker دیده نشد, یک دیتابیس D1 با نام متغیر DB وصل کنید و Save and Deploy بزنید.',d1err:'DB وصل است ولی کوئری آزمایشی خطا داد: ',
   pwlbl:'رمز جدید',pw2lbl:'تکرار رمز',pwbtn:'ساخت رمز و فعال‌سازی',
   pwshort:'رمز باید حداقل ۶ کاراکتر باشد.',pwmismatch:'دو رمز یکسان نیستند.',pwsaved:'✅ رمز ساخته شد.',pwexists:'رمز قبلاً تنظیم شده است.',pwnokv:'ابتدا باید KV وصل باشد.',pwerr:'خطا در ذخیره رمز.',pwwait:'در حال ذخیره…',
   varst:'متغیرهای Worker (اختیاری)',vname:'متغیر',vneed:'الزامی',vdesc:'کاربرد',
   req:'الزامی',opt:'اختیاری',
-  vars:[['ADMIN','opt','رمز مدیریت؛ اگر اینجا بسازید نیازی نیست'],['KEY','opt','کلید رمزنگاری؛ اگر KV باشد خودکار ساخته می‌شود'],['UUID','opt','شناسه دلخواه؛ در غیر این صورت خودکار محاسبه می‌شود'],['PROXYIP','opt','آی‌پی پروکسی معکوس'],['HOST','opt','دامنه‌ی اختصاصی'],['POOL_API','opt','آدرس آی‌پی هوشمند هر اپراتور']],
-  finish:'ورود به پنل',finishw:'ابتدا رمز را بسازید'},
+  vars:[['ADMIN','opt','رمز مدیریت؛ اگر اینجا بسازید نیازی نیست'],['KEY','opt','کلید رمزنگاری؛ اگر KV باشد خودکار ساخته می‌شود'],['UUID','opt','شناسه دلخواه؛ در غیر این صورت خودکار محاسبه می‌شود'],['PROXYIP','opt','آی‌پی پروکسی معکوس'],['HOST','opt','دامنه‌ی اختصاصی'],['POOL_API','opt','آدرس آی‌پی هوشمند هر اپراتور'],['ENABLE_CRON','opt','فعال‌سازی وظایف خودکار پس‌زمینه (نگهداری دوره‌ای)']],
+  finish:'ورود به پنل',finishw:'ابتدا رمز را بسازید',
+  crt:'زمان‌بند خودکار (Cron Trigger)',
+  crdesc:'این بخش یعنی: هر چند وقت یک‌بار، حتی وقتی هیچ‌کس وارد پنل نشده، خود ورکر یک‌سری بررسیِ پشت‌صحنه را برایتان انجام دهد؛ مثل «آیا دامنه/سرور هنوز سالم است؟»، «آیا اکانت WARP هنوز معتبر است؟» و (اگر روشن باشد) «تغییر دوره‌ای مسیر مخفی ادمین». اختیاری است؛ بدون آن هم پنل کامل کار می‌کند، فقط این بررسی‌های پس‌زمینه اجرا نمی‌شوند.',
+  cr:['در داشبورد Cloudflare به Worker خود بروید: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','یک زمان‌بندی انتخاب کنید، مثلاً هر ۳۰ دقیقه: <span class="mono">*/30 * * * *</span> و ذخیره کنید.','به <b>Settings → Variables and Secrets</b> بروید، یک متغیر به نام <span class="mono">ENABLE_CRON</span> با مقدار <span class="mono">1</span> اضافه کنید و <b>Save and Deploy</b> بزنید.'],
+  crnote:'کاملاً اختیاری است و روی عملکرد اصلی پنل (اتصال کاربران) تأثیری ندارد؛ فقط بررسی‌های خودکار پس‌زمینه را فعال می‌کند.',
+  crchk:'در حال بررسی…',crok:'فعال (اجرا شده)',crwait:'وصل شده, منتظر اولین اجرا',crno:'وصل نیست',crnoenv:'متغیر ENABLE_CRON تنظیم نشده',
+  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (چند لحظه پیش)';if(mins<60)return' (حدود '+mins+' دقیقه پیش)';var hrs=Math.round(mins/60);return' (حدود '+hrs+' ساعت پیش)';}},
  en:{dir:'ltr',theme:'Toggle theme',intro:'Welcome to Nova Proxy setup. On a one-click deploy the KV and D1 databases are created and bound automatically, just create an admin password and open the panel.',
   s1t:'KV Database',s2t:'Admin password',test:'Re-check',chk:'Checking…',ok:'Connected',bad:'Not connected',already:'Already set',
   s1desc:'On a one-click deploy this connects automatically. If it shows "Not connected", create a KV namespace and bind it as "KV" using the steps below.',
   s1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Click <b>Create Namespace</b> and name it e.g. <span class="mono">NOVA_KV</span>.','Open your Worker: <b>Settings → Bindings → KV Namespace</b>.','Add a binding with variable name <span class="mono">KV</span> pointing to that namespace, and save.'],
   s2desc:'Choose a password for the admin panel. It is stored right here, no Cloudflare dashboard needed.',
-  sd1t:'D1 Database (v3.1, required)',
-  sd1desc:'Version 3.1 runs on D1. Per-user & per-profile bandwidth (usage table), proxy logs (logs table), and all settings, config and auth (kvstore table) are stored in D1, roughly 100x the daily write capacity of KV, so your Worker lasts far longer on the free plan. On a one-click deploy it is created and bound automatically. To add it manually:',
+  sd1t:'D1 Database (required)',
+  sd1desc:'Nova runs on D1. Per-user & per-profile bandwidth (usage table), proxy logs (logs table), and all settings, config and auth (kvstore table) are stored in D1, roughly 100x the daily write capacity of KV, so your Worker lasts far longer on the free plan. On a one-click deploy it is created and bound automatically. To add it manually:',
   sd1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> and click <b>Create</b> (any name).','Open your Worker: <b>Settings → Bindings → Add → D1 database</b>.','Set the variable name to <span class="mono">DB</span>, pick that database, then <b>Save and Deploy</b>.'],
-  sd1note:'Required for v3.1. If a KV namespace is still bound it is used only for a one-time migration into D1, as a write mirror, and to lazily backfill missing keys, not as the primary store.',
+  sd1note:'Required. If a KV namespace is still bound it is used only for a one-time migration into D1, as a write mirror, and to lazily backfill missing keys, not as the primary store.',
   d1off:'Required',d1unreachable:'Couldn\'t reach the Worker, open this page on your Worker URL (…/install), not GitHub Pages.',d1nobind:'No "DB" binding detected on the Worker, bind a D1 database as variable name DB, then Save and Deploy.',d1err:'DB is bound but the test query failed: ',
   pwlbl:'New password',pw2lbl:'Repeat password',pwbtn:'Create password & activate',
   pwshort:'Password must be at least 6 characters.',pwmismatch:'Passwords do not match.',pwsaved:'✅ Password created.',pwexists:'A password is already set.',pwnokv:'KV must be connected first.',pwerr:'Could not save the password.',pwwait:'Saving…',
   varst:'Worker variables (optional)',vname:'Variable',vneed:'Required',vdesc:'What it does',
   req:'Required',opt:'Optional',
-  vars:[['ADMIN','opt','Admin password; not needed if you create one here'],['KEY','opt','Encryption key; auto-generated if KV is present'],['UUID','opt','Custom UUID; otherwise derived automatically'],['PROXYIP','opt','Reverse-proxy IP'],['HOST','opt','Custom domain'],['POOL_API','opt','Per-ISP smart IP API URL']],
-  finish:'Open the panel',finishw:'Create a password first'}};
+  vars:[['ADMIN','opt','Admin password; not needed if you create one here'],['KEY','opt','Encryption key; auto-generated if KV is present'],['UUID','opt','Custom UUID; otherwise derived automatically'],['PROXYIP','opt','Reverse-proxy IP'],['HOST','opt','Custom domain'],['POOL_API','opt','Per-ISP smart IP API URL'],['ENABLE_CRON','opt','Turns on background automatic maintenance']],
+  finish:'Open the panel',finishw:'Create a password first',
+  crt:'Cron Trigger (auto maintenance)',
+  crdesc:'This means: every so often, even when nobody is using the panel, the Worker quietly runs some background checks for you, like "is the domain/server still healthy?", "is the WARP account still valid?", and (if you enabled it) "rotate the hidden admin path". It is optional; the panel works fully without it, these background checks simply won\'t run.',
+  cr:['In the Cloudflare dashboard, open your Worker: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','Pick a schedule, e.g. every 30 minutes: <span class="mono">*/30 * * * *</span>, and save.','Go to <b>Settings → Variables and Secrets</b>, add a variable named <span class="mono">ENABLE_CRON</span> with value <span class="mono">1</span>, then <b>Save and Deploy</b>.'],
+  crnote:'Fully optional and has no effect on the panel\'s main job (connecting users); it only turns on automatic background checks.',
+  crchk:'Checking…',crok:'Active (has run)',crwait:'Connected, waiting for first run',crno:'Not connected',crnoenv:'ENABLE_CRON variable not set',
+  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (moments ago)';if(mins<60)return' (about '+mins+' min ago)';var hrs=Math.round(mins/60);return' (about '+hrs+'h ago)';}},
+ ru:{dir:'ltr',theme:'Переключить тему',intro:'Добро пожаловать в установку Nova Proxy. При установке в один клик базы KV и D1 создаются и подключаются автоматически, просто задайте пароль администратора и откройте панель.',
+  s1t:'База KV',s2t:'Пароль администратора',test:'Проверить снова',chk:'Проверка…',ok:'Подключено',bad:'Не подключено',already:'Уже задано',
+  s1desc:'При установке в один клик это подключается автоматически. Если показано «Не подключено», создайте пространство имён KV и привяжите его как «KV» по шагам ниже.',
+  s1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Нажмите <b>Create Namespace</b> и назовите, например <span class="mono">NOVA_KV</span>.','Откройте ваш Worker: <b>Settings → Bindings → KV Namespace</b>.','Добавьте привязку с именем переменной <span class="mono">KV</span>, указывающую на это пространство имён, и сохраните.'],
+  s2desc:'Выберите пароль для панели администратора. Он хранится прямо здесь, панель Cloudflare не нужна.',
+  sd1t:'База D1 (обязательно)',
+  sd1desc:'Nova работает на D1. Трафик по каждому пользователю и профилю (таблица usage), логи прокси (таблица logs) и все настройки, конфигурация и авторизация (таблица kvstore) хранятся в D1, примерно в 100 раз больше суточной ёмкости записи KV, поэтому ваш Worker дольше живёт на бесплатном плане. При установке в один клик создаётся и привязывается автоматически. Чтобы добавить вручную:',
+  sd1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> и нажмите <b>Create</b> (любое имя).','Откройте ваш Worker: <b>Settings → Bindings → Add → D1 database</b>.','Задайте имя переменной <span class="mono">DB</span>, выберите эту базу, затем <b>Save and Deploy</b>.'],
+  sd1note:'Обязательно. Если пространство KV всё ещё привязано, оно используется только для разовой миграции в D1, как зеркало записи и для ленивого дозаполнения недостающих ключей, а не как основное хранилище.',
+  d1off:'Обязательно',d1unreachable:'Не удалось связаться с Worker, откройте эту страницу по адресу вашего Worker (…/install), а не GitHub Pages.',d1nobind:'Привязка «DB» на Worker не обнаружена, привяжите базу D1 с именем переменной DB, затем Save and Deploy.',d1err:'DB привязана, но тестовый запрос вернул ошибку: ',
+  pwlbl:'Новый пароль',pw2lbl:'Повтор пароля',pwbtn:'Создать пароль и активировать',
+  pwshort:'Пароль должен быть не короче 6 символов.',pwmismatch:'Пароли не совпадают.',pwsaved:'✅ Пароль создан.',pwexists:'Пароль уже задан.',pwnokv:'Сначала должна быть подключена KV.',pwerr:'Не удалось сохранить пароль.',pwwait:'Сохранение…',
+  varst:'Переменные Worker (необязательно)',vname:'Переменная',vneed:'Обязательно',vdesc:'Назначение',
+  req:'Обязательно',opt:'Необязательно',
+  vars:[['ADMIN','opt','Пароль администратора; не нужен, если создать его здесь'],['KEY','opt','Ключ шифрования; создаётся автоматически при наличии KV'],['UUID','opt','Свой UUID; иначе вычисляется автоматически'],['PROXYIP','opt','IP обратного прокси'],['HOST','opt','Свой домен'],['POOL_API','opt','URL умного IP для каждого оператора'],['ENABLE_CRON','opt','Включает фоновое автоматическое обслуживание']],
+  finish:'Открыть панель',finishw:'Сначала создайте пароль',
+  crt:'Cron Trigger (авто-обслуживание)',
+  crdesc:'Это значит: время от времени, даже когда панелью никто не пользуется, Worker тихо выполняет фоновые проверки, например «домен/сервер всё ещё в порядке?», «аккаунт WARP ещё действителен?» и (если включено) «сменить скрытый путь администратора». Необязательно; панель работает полностью и без этого, просто эти фоновые проверки не запускаются.',
+  cr:['В панели Cloudflare откройте ваш Worker: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','Выберите расписание, например каждые 30 минут: <span class="mono">*/30 * * * *</span>, и сохраните.','Перейдите в <b>Settings → Variables and Secrets</b>, добавьте переменную <span class="mono">ENABLE_CRON</span> со значением <span class="mono">1</span>, затем <b>Save and Deploy</b>.'],
+  crnote:'Полностью необязательно и не влияет на основную работу панели (подключение пользователей); включает только автоматические фоновые проверки.',
+  crchk:'Проверка…',crok:'Активно (запускалось)',crwait:'Подключено, ожидание первого запуска',crno:'Не подключено',crnoenv:'Переменная ENABLE_CRON не задана',
+  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (только что)';if(mins<60)return' (около '+mins+' мин назад)';var hrs=Math.round(mins/60);return' (около '+hrs+' ч назад)';}}};
 var lang='fa',theme='light';
 try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)theme='dark';}catch(e){}
 function $(i){return document.getElementById(i)}
@@ -173,22 +235,28 @@ function render(){var t=L[lang];document.documentElement.dir=t.dir;document.docu
  $('s1-steps').innerHTML=t.s1.map(function(x){return '<li>'+x+'</li>'}).join('');
  $('sd1-t').textContent=t.sd1t;$('sd1-desc').innerHTML=t.sd1desc;$('sd1-steps').innerHTML=t.sd1.map(function(x){return '<li>'+x+'</li>'}).join('');$('sd1-note').innerHTML=t.sd1note;$('sd1-test').textContent=t.test;
  $('pw-lbl').textContent=t.pwlbl;$('pw2-lbl').textContent=t.pw2lbl;$('pw-btn').textContent=t.pwbtn;
+ $('cr-t').textContent=t.crt;$('cr-desc').textContent=t.crdesc;$('cr-steps').innerHTML=t.cr.map(function(x){return '<li>'+x+'</li>'}).join('');$('cr-note').innerHTML=t.crnote;$('cr-test').textContent=t.test;
  $('vars-t').textContent=t.varst;$('v-name').textContent=t.vname;$('v-need').textContent=t.vneed;$('v-desc').textContent=t.vdesc;
  $('vars-body').innerHTML=t.vars.map(function(r){return '<tr><td><span class="mono">'+r[0]+'</span></td><td><span class="'+(r[1]==='req'?'req':'opt')+'">'+(r[1]==='req'?t.req:t.opt)+'</span></td><td>'+r[2]+'</td></tr>'}).join('');
  [].forEach.call(document.querySelectorAll('#lg button'),function(b){b.classList.toggle('on',b.dataset.l===lang)});
  paint();}
-var last={kv:false,d1:false,admin:false,configured:false,_done:false};
+var last={kv:false,d1:false,admin:false,configured:false,cronEnabled:false,cronAgoMs:-1,_done:false};
 function paint(){var t=L[lang];
  setSt('s1-st',last.kv?'ok':(last._done?'bad':''),last.kv?t.ok:(last._done?t.bad:t.chk));
  setSt('sd1-st',last.d1?'ok':'',last.d1?t.ok:(last._done?t.d1off:t.chk));$('sd1-steps').className=last.d1?'hidden':'';
  { var hint=$('sd1-hint'); if(hint){ var hmsg=''; if(last._done&&!last.d1){ if(!last.reachable) hmsg=t.d1unreachable; else if(!last.d1Bound) hmsg=t.d1nobind; else if((last.d1Probe||'').indexOf('err')===0) hmsg=t.d1err+last.d1Probe.slice(4); } hint.className='msg'+(hmsg?' bad':''); hint.textContent=hmsg; } }
  setSt('s2-st',last.admin?'ok':(last._done?'bad':''),last.admin?t.already:(last._done?t.bad:t.chk));
+ { var hasTick=last.cronAgoMs>=0; var crState=hasTick?'ok':''; var crTxt=!last._done?t.crchk:(hasTick?(t.crok+t.crago(last.cronAgoMs)):t.crno);
+   if(last._done && !hasTick && last.cronEnabled) crTxt=t.crwait;
+   if(last._done && !last.cronEnabled) crTxt+=t.crnoenv;
+   setSt('cr-st',crState,crTxt);
+   $('cr-steps').className=hasTick?'hidden':''; }
  // KV steps only matter when KV is missing.
  $('s1-steps').className=last.kv?'hidden':'';
  // Hide the password form once a password already exists.
  $('s2-form').className=last.admin?'hidden':'';
  $('finish').disabled=!last.configured;$('finish').textContent=last.configured?t.finish:t.finishw;}
-async function check(){try{var r=await fetch('/install/status?_t='+Date.now());var j=await r.json();last={kv:!!j.kv,d1:!!j.d1,admin:!!j.admin,configured:!!j.configured,d1Bound:!!j.d1Bound,d1Probe:j.d1Probe||'',reachable:true,_done:true};}catch(e){last={kv:false,d1:false,admin:false,configured:false,d1Bound:false,d1Probe:'',reachable:false,_done:true};}paint();}
+async function check(){try{var r=await fetch('/install/status?_t='+Date.now());var j=await r.json();last={kv:!!j.kv,d1:!!j.d1,admin:!!j.admin,configured:!!j.configured,d1Bound:!!j.d1Bound,d1Probe:j.d1Probe||'',cronEnabled:!!j.cronEnabled,cronAgoMs:(typeof j.cronAgoMs==='number'?j.cronAgoMs:-1),reachable:true,_done:true};}catch(e){last={kv:false,d1:false,admin:false,configured:false,d1Bound:false,d1Probe:'',cronEnabled:false,cronAgoMs:-1,reachable:false,_done:true};}paint();}
 async function setPw(){var t=L[lang],m=$('pw-msg');m.className='msg';
  var p=$('pw').value||'',p2=$('pw2').value||'';
  if(p.length<6){m.className='msg bad';m.textContent=t.pwshort;return;}
@@ -203,6 +271,7 @@ async function setPw(){var t=L[lang],m=$('pw-msg');m.className='msg';
  $('pw-btn').disabled=false;}
 $('s1-test').onclick=check;
 $('sd1-test').onclick=check;
+$('cr-test').onclick=check;
 $('pw-btn').onclick=setPw;
 $('pw2').addEventListener('keydown',function(e){if(e.key==='Enter')setPw();});
 $('finish').onclick=function(){if(!$('finish').disabled)location.href='/login';};
