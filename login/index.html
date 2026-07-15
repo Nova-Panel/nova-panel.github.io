@@ -25,9 +25,8 @@ html[data-theme=dark]{
  --shadow:0 1px 0 rgba(255,255,255,.02),0 18px 44px rgba(0,0,0,.5)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip}
-body{font-family:'Inter','Vazirmatn',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:var(--tx);
+body{font-family:'Vazirmatn','Inter',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:var(--tx);
  background:radial-gradient(820px 420px at 50% -6%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 60%),radial-gradient(720px 420px at 88% 8%,color-mix(in srgb,var(--ac2) 14%,transparent),transparent 55%),var(--bg)}
-html[dir=rtl] body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif}
 .box{width:100%;max-width:392px}
 .bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:11px}
@@ -54,6 +53,19 @@ html[dir=rtl] .peek{right:auto;left:6px}
 .peek svg{width:19px;height:19px;display:block}
 .peek .off{display:none}.peek.on .on{display:none}.peek.on .off{display:block}
 button.go{width:100%;margin-top:16px;padding:13px;border:none;border-radius:11px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.12s}
+.rec-btn{width:100%;padding:10px;border:none;border-radius:10px;background:var(--ac);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.12s}
+.rec-btn:hover{filter:brightness(1.05)}
+.rec-btn:disabled{opacity:.6;cursor:default}
+.rec-btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--tx)}
+.rec-input{width:100%;background:var(--c2);border:1px solid var(--bd2);border-radius:10px;padding:10px 12px;color:var(--tx);font-size:12.5px;font-family:inherit;outline:none}
+.rec-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ring)}
+.rec-msg{font-size:11.5px;color:var(--tx2);line-height:1.5;min-height:14px}
+.rec-msg.ok{color:#16a34a}
+html[data-theme=dark] .rec-msg.ok{color:#34d399}
+.rec-msg.bad{color:var(--dg)}
+.rec-sep{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:10.5px;margin:1px 0}
+.rec-sep::before,.rec-sep::after{content:"";flex:1;height:1px;background:var(--bd)}
+.rec-box{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 button.go:hover{filter:brightness(1.05)}
 .err{color:var(--dg);font-size:13px;margin-top:13px;display:none}
 .social{display:flex;gap:9px;margin-top:18px}
@@ -85,7 +97,7 @@ html[data-theme=dark] .social a:hover{box-shadow:0 8px 20px rgba(0,0,0,.45)}
 <h1>Nova Proxy</h1>
 </div>
 <div class="tools">
-<div class="lang" id="lg"><button data-l="en" class="on">EN</button><button data-l="fa">فا</button></div>
+<div class="lang" id="lg"><button data-l="en" class="on">EN</button><button data-l="fa">فا</button><button data-l="ru">РУ</button></div>
 <button class="tbtn" id="theme" title="Theme">☾</button>
 </div>
 </div>
@@ -99,7 +111,17 @@ html[data-theme=dark] .social a:hover{box-shadow:0 8px 20px rgba(0,0,0,.45)}
 </div>
 <button class="go" id="go">Login</button>
 <div class="err" id="er" role="alert" aria-live="assertive"></div>
-<details style="margin-top:12px"><summary id="forgot-s" style="cursor:pointer;color:var(--mu);font-size:12.5px;list-style:none">Forgot password?</summary><div id="forgot-b" style="color:var(--tx2);font-size:12.5px;line-height:1.7;margin-top:8px"></div></details>
+<details style="margin-top:12px"><summary id="forgot-s" style="cursor:pointer;color:var(--mu);font-size:12.5px;list-style:none">Forgot password?</summary>
+<div class="rec-box">
+<button type="button" class="rec-btn" id="rec-tg-btn">Send login link via Telegram</button>
+<div class="rec-msg" id="rec-tg-msg"></div>
+<div class="rec-sep"><span id="rec-or">or</span></div>
+<input class="rec-input" id="rec-cf-token" type="text" autocomplete="off" placeholder="Cloudflare API Token" />
+<button type="button" class="rec-btn rec-btn-outline" id="rec-cf-btn">Recover with Cloudflare token</button>
+<div class="rec-msg" id="rec-cf-msg"></div>
+<div id="forgot-b" style="color:var(--mu);font-size:11px;line-height:1.6;margin-top:2px"></div>
+</div>
+</details>
 <div class="social">
 <a href="https://novaproxy.online" target="_blank" rel="noopener" title="Web" aria-label="Web"><svg class="wb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
 <a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a>
@@ -111,15 +133,18 @@ html[data-theme=dark] .social a:hover{box-shadow:0 8px 20px rgba(0,0,0,.45)}
 </div>
 <script>
 var L={
- en:{dir:'ltr',theme:'Toggle theme',showpw:'Show password',hidepw:'Hide password',t1:'Sign in to the admin panel',lpw:'Password',pw:'password',go:'Login',bad:'Wrong password',lcode:'Authenticator code',badcode:'Wrong code',need:'Enter the 6-digit code from your authenticator app',ft:'Nova Proxy, open-source networking tools',forgot:'Forgot password?',forgotb:'The password is the ADMIN secret on your Cloudflare Worker. Recover or reset it in the Cloudflare dashboard → Workers &amp; Pages → your Worker → Settings → Variables and Secrets → ADMIN. If you set it in the in-app setup wizard instead, reset it by clearing the stored admin password (the D1 “kvstore” table, or the KV key “admin_pass”) and re-opening /install.'},
- fa:{dir:'rtl',theme:'تغییر پوسته',showpw:'نمایش رمز',hidepw:'پنهان کردن رمز',t1:'ورود به پنل مدیریت',lpw:'رمز عبور',pw:'رمز عبور',go:'ورود',bad:'رمز اشتباه است',lcode:'کد برنامه‌ی احراز هویت',badcode:'کد اشتباه است',need:'کد ۶ رقمی برنامه‌ی احراز هویت را وارد کنید',ft:'Nova Proxy، ابزار شبکه متن‌باز',forgot:'رمز را فراموش کردید؟',forgotb:'رمز همان سکرت ADMIN روی ورکر کلودفلر شماست. آن را در داشبورد کلودفلر بازیابی/تغییر دهید → Workers &amp; Pages → ورکر شما → Settings → Variables and Secrets → ADMIN. اگر رمز را با ویزارد نصب داخل برنامه گذاشته‌اید، برای ریست، رمز ذخیره‌شده را پاک کنید (جدول «kvstore» در D1، یا کلید KV با نام «admin_pass») و دوباره /install را باز کنید.'}};
-var lang=(navigator.language||'en').toLowerCase().indexOf('fa')===0?'fa':'en';
+ en:{dir:'ltr',theme:'Toggle theme',showpw:'Show password',hidepw:'Hide password',t1:'Sign in to the admin panel',lpw:'Password',pw:'password',go:'Login',bad:'Wrong password',lcode:'Authenticator code',badcode:'Wrong code',need:'Enter the 6-digit code from your authenticator app',ft:'Nova Proxy, open-source networking tools',forgot:'Forgot password?',forgotb:'Manual fallback: the password is also the ADMIN secret on your Cloudflare Worker (Settings → Variables and Secrets), or the KV key “admin_pass” / D1 “kvstore” table if set via the setup wizard.',recTg:'Send login link via Telegram',recTgSending:'Sending…',recTgSent:'A one-click login link was sent to the admin Telegram chat. Valid for 10 minutes.',recTgNotConfigured:'Telegram bot is not configured for this panel.',recTgFailed:'Could not send. Try again later.',recOr:'or',recCfPh:'Cloudflare API Token',recCfBtn:'Recover with Cloudflare token',recCfChecking:'Verifying…',recCfNeed:'Enter a token first.',recCfNewPw:'New password: ',recCfErr:'Recovery failed',recRate:'Too many attempts. Try again later.'},
+ fa:{dir:'rtl',theme:'تغییر پوسته',showpw:'نمایش رمز',hidepw:'پنهان کردن رمز',t1:'ورود به پنل مدیریت',lpw:'رمز عبور',pw:'رمز عبور',go:'ورود',bad:'رمز اشتباه است',lcode:'کد برنامه‌ی احراز هویت',badcode:'کد اشتباه است',need:'کد ۶ رقمی برنامه‌ی احراز هویت را وارد کنید',ft:'Nova Proxy، ابزار شبکه متن‌باز',forgot:'رمز را فراموش کردید؟',forgotb:'راه دستی: رمز همان سکرت ADMIN روی ورکر کلودفلر شماست (Settings → Variables and Secrets)، یا کلید KV با نام «admin_pass» / جدول «kvstore» در D1 اگر با ویزارد نصب تنظیم شده باشد.',recTg:'ارسال لینک ورود از طریق تلگرام',recTgSending:'در حال ارسال…',recTgSent:'یک لینک ورود یک‌کلیکی به چت تلگرام ادمین ارسال شد. تا ۱۰ دقیقه معتبر است.',recTgNotConfigured:'ربات تلگرام برای این پنل تنظیم نشده است.',recTgFailed:'ارسال ناموفق بود. کمی بعد دوباره امتحان کنید.',recOr:'یا',recCfPh:'توکن Cloudflare API',recCfBtn:'بازیابی با توکن Cloudflare',recCfChecking:'در حال بررسی…',recCfNeed:'ابتدا توکن را وارد کنید.',recCfNewPw:'رمز جدید: ',recCfErr:'بازیابی ناموفق بود',recRate:'تعداد تلاش‌ها زیاد است. کمی بعد دوباره امتحان کنید.'},
+ ru:{dir:'ltr',theme:'Переключить тему',showpw:'Показать пароль',hidepw:'Скрыть пароль',t1:'Вход в панель администратора',lpw:'Пароль',pw:'пароль',go:'Войти',bad:'Неверный пароль',lcode:'Код аутентификатора',badcode:'Неверный код',need:'Введите 6-значный код из приложения-аутентификатора',ft:'Nova Proxy, сетевые инструменты с открытым кодом',forgot:'Забыли пароль?',forgotb:'Резервный способ: пароль совпадает с секретом ADMIN на вашем Cloudflare Worker (Settings → Variables and Secrets), либо это ключ KV «admin_pass» / таблица «kvstore» в D1, если он задан через мастер установки.',recTg:'Отправить ссылку для входа через Telegram',recTgSending:'Отправка…',recTgSent:'Ссылка для входа в один клик отправлена в Telegram-чат администратора. Действует 10 минут.',recTgNotConfigured:'Telegram-бот не настроен для этой панели.',recTgFailed:'Не удалось отправить. Попробуйте позже.',recOr:'или',recCfPh:'Cloudflare API Token',recCfBtn:'Восстановить с токеном Cloudflare',recCfChecking:'Проверка…',recCfNeed:'Сначала введите токен.',recCfNewPw:'Новый пароль: ',recCfErr:'Восстановление не удалось',recRate:'Слишком много попыток. Попробуйте позже.'}};
+var lang=(function(){var n=(navigator.language||'en').toLowerCase();return n.indexOf('fa')===0?'fa':n.indexOf('ru')===0?'ru':'en';})();
 var theme='light';
 try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;}catch(e){}
 function $(i){return document.getElementById(i)}
 function ap(){var t=L[lang];document.documentElement.dir=t.dir;document.documentElement.lang=lang;if($('theme'))$('theme').setAttribute('aria-label',t.theme);
  $('t1').textContent=t.t1;$('lpw').textContent=t.lpw;$('pw').placeholder=t.pw;$('go').textContent=t.go;$('ft').textContent=t.ft;$('lcode').textContent=t.lcode;
  if($('forgot-s'))$('forgot-s').textContent=t.forgot; if($('forgot-b'))$('forgot-b').innerHTML=t.forgotb;
+ if($('rec-tg-btn'))$('rec-tg-btn').textContent=t.recTg; if($('rec-or'))$('rec-or').textContent=t.recOr;
+ if($('rec-cf-token'))$('rec-cf-token').placeholder=t.recCfPh; if($('rec-cf-btn'))$('rec-cf-btn').textContent=t.recCfBtn;
  if($('peek'))$('peek').setAttribute('aria-label',$('pw').type==='password'?t.showpw:t.hidepw);
  [].forEach.call(document.querySelectorAll('#lg button'),function(b){b.classList.toggle('on',b.dataset.l===lang)})}
 function at(){document.documentElement.setAttribute('data-theme',theme);$('theme').textContent=theme==='dark'?'☀':'☾';}
@@ -128,10 +153,39 @@ $('theme').onclick=function(){theme=theme==='dark'?'light':'dark';try{localStora
 async function login(){var body='password='+encodeURIComponent($('pw').value);var cv=$('code').value.trim();if(cv)body+='&code='+encodeURIComponent(cv);
  var r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
  var j={};try{j=await r.json()}catch(e){}
- if(j&&j.success){location.href='/admin';return}
+ if(j&&j.success){location.href=(j.adminUrl||'/admin');return}
  if(j&&j.need2fa){$('tfaWrap').style.display='block';$('code').focus();$('er').textContent=(j.error==='bad_code')?L[lang].badcode:L[lang].need;$('er').style.display='block';return}
  $('er').textContent=(j&&j.error==='bad_code')?L[lang].badcode:L[lang].bad;$('er').style.display='block'}
 $('peek').onclick=function(){var i=$('pw');var show=i.type==='password';i.type=show?'text':'password';this.classList.toggle('on',show);this.setAttribute('aria-label',show?L[lang].hidepw:L[lang].showpw);i.focus()};
+async function recoverTelegram(){
+ var b=$('rec-tg-btn'),m=$('rec-tg-msg');
+ b.disabled=true;m.className='rec-msg';m.textContent=L[lang].recTgSending;
+ try{
+  var r=await fetch('/recover-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+  var j={};try{j=await r.json()}catch(e){}
+  if(r.status===429){m.className='rec-msg bad';m.textContent=L[lang].recRate;}
+  else if(j&&j.configured===false){m.className='rec-msg bad';m.textContent=L[lang].recTgNotConfigured;}
+  else if(j&&j.success){m.className='rec-msg ok';m.textContent=L[lang].recTgSent;}
+  else{m.className='rec-msg bad';m.textContent=L[lang].recTgFailed;}
+ }catch(e){m.className='rec-msg bad';m.textContent=L[lang].recTgFailed;}
+ b.disabled=false;
+}
+async function recoverCf(){
+ var b=$('rec-cf-btn'),m=$('rec-cf-msg'),tok=$('rec-cf-token').value.trim();
+ if(!tok){m.className='rec-msg bad';m.textContent=L[lang].recCfNeed;return;}
+ b.disabled=true;m.className='rec-msg';m.textContent=L[lang].recCfChecking;
+ try{
+  var r=await fetch('/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_token:tok})});
+  var j={};try{j=await r.json()}catch(e){}
+  if(r.status===429){m.className='rec-msg bad';m.textContent=L[lang].recRate;}
+  else if(j&&j.success){m.className='rec-msg ok';m.textContent=L[lang].recCfNewPw+j.password;}
+  else{m.className='rec-msg bad';m.textContent=(j&&j.error)||L[lang].recCfErr;}
+ }catch(e){m.className='rec-msg bad';m.textContent=L[lang].recCfErr;}
+ b.disabled=false;
+}
+$('rec-tg-btn').onclick=recoverTelegram;
+$('rec-cf-btn').onclick=recoverCf;
+$('rec-cf-token').addEventListener('keydown',function(e){if(e.key==='Enter')recoverCf()});
 $('go').onclick=login;$('pw').addEventListener('keydown',function(e){if(e.key==='Enter')login()});$('code').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
 at();ap();
 </script>

@@ -32,9 +32,8 @@
     --ac:#0ea5c4; --ac2:#7c3aed; --grad:linear-gradient(120deg,#0891b2,#7c3aed); --ok:#047857; --wn:#b45309; --dg:#dc2626;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;overflow-x:clip}
-  body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;font-family:'Inter','Vazirmatn',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
-  html[dir=rtl] body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;font-family:'Vazirmatn','Inter',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:980px;margin:0 auto;padding:24px 18px 64px}
   .topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
   .brand{display:flex;align-items:center;gap:11px}
@@ -130,6 +129,22 @@
   .radar-cfg{background:var(--card2);border:1px solid var(--bd);border-radius:9px;padding:10px;font-family:ui-monospace,monospace;font-size:10px;direction:ltr;text-align:left;word-break:break-all;color:var(--tx2);max-height:88px;overflow:auto;margin-bottom:8px}
   .radar-qr{display:flex;justify-content:center;margin-top:12px}
   .radar-qr .qbox{background:#fff;border-radius:10px;padding:9px;line-height:0}
+  /* Status + identity card (merged in so the subscription page still shows account state) */
+  .status{background:var(--card);border:1px solid var(--bd);border-radius:var(--radius);padding:16px 17px;margin-bottom:16px;position:relative;overflow:hidden}
+  .status[hidden]{display:none}
+  .status::before{content:'';position:absolute;top:0;inset-inline:0;height:3px;background:var(--grad)}
+  .status.disabled::before,.status.paused::before{background:var(--dg)}
+  .status.expired::before,.status.quota-exceeded::before,.status.daily-quota-exceeded::before{background:var(--wn)}
+  .status-row{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.2px}
+  .badge .d2{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+  .badge.active{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 38%,transparent)} .badge.active .d2{background:var(--ok);box-shadow:0 0 6px var(--ok)}
+  .badge.disabled,.badge.paused{background:color-mix(in srgb,var(--dg) 14%,transparent);color:var(--dg);border:1px solid color-mix(in srgb,var(--dg) 38%,transparent)} .badge.disabled .d2,.badge.paused .d2{background:var(--dg)}
+  .badge.expired,.badge.quota-exceeded,.badge.daily-quota-exceeded{background:color-mix(in srgb,var(--wn) 14%,transparent);color:var(--wn);border:1px solid color-mix(in srgb,var(--wn) 38%,transparent)} .badge.expired .d2,.badge.quota-exceeded .d2,.badge.daily-quota-exceeded .d2{background:var(--wn)}
+  .uname{font-size:20px;font-weight:800;color:var(--tx);margin-top:12px;line-height:1.2;word-break:break-word}
+  .utoken{display:inline-flex;align-items:center;gap:7px;font-family:ui-monospace,'SF Mono',monospace;font-size:11.5px;color:var(--mu);direction:ltr;margin-top:5px;word-break:break-all;cursor:pointer;transition:.12s}
+  .utoken:hover{color:var(--ac)}
+  .utoken svg{width:13px;height:13px;flex:0 0 13px;opacity:.7}
 </style>
 </head>
 <body>
@@ -143,7 +158,7 @@
         </div>
       </div>
       <div class="controls">
-        <div class="segmented" id="lang"><button data-l="en">EN</button><button data-l="fa">فا</button></div>
+        <div class="segmented" id="lang"><button data-l="en">EN</button><button data-l="fa">فا</button><button data-l="ru">РУ</button></div>
         <div class="segmented" id="theme"><button data-t="light">☀</button><button data-t="dark">☾</button></div>
       </div>
     </header>
@@ -151,6 +166,14 @@
     <p class="subtitle" id="subtitle"></p>
 
     <div class="freebar" id="freebar"></div>
+
+    <section class="status" id="statuscard" hidden>
+      <div class="status-row">
+        <span class="badge" id="statusbadge"><span class="d2"></span><span id="statustext">-</span></span>
+      </div>
+      <div class="uname" id="uname"></div>
+      <div class="utoken" id="utoken" role="button" tabindex="0" title=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="utoken-txt"></span></div>
+    </section>
 
     <section class="usage" id="usage" hidden>
       <div class="usage-top">
@@ -198,32 +221,60 @@
   <script>
   (function(){
     var I18N = {
-      en: { brandsub:'configs', free_h:'🎁 Nova is a free service, never pay anyone for it', subtitle:'Pick your app, scan the QR or tap Add. Same servers in every app.', sub_user:'Configs for ', copy:'Copy', copied:'Copied', copyraw:'Copy subscription link', add:'Add to app', scanhint:'or scan this in your app', qmiss:'QR unavailable', foot:'Powered by Nova Proxy', used:'Used', total:'Limit', expires:'Expires', unlimited:'Unlimited', noexpiry:'No expiry', expired:'Expired', days:'d left', today:'today', up:'Up', down:'Down', remaining:'left', radar_ports:'Ports to scan', radar_title:'📡 Nova Radar', radar_sub:'Slow or not connecting? Find the fastest clean IP for your network.', radar_run:'Run scan', radar_prep:'Preparing…', radar_testing:'Testing… ', radar_alive:' alive', radar_done:'Fastest IPs found', radar_none:'No responsive IP found. Try again.', radar_lat:'Latency', radar_copycfg:'📋 Copy best-IP config', radar_notmpl:'Best IPs found. Replace the IP in your current config with one of these.', radar_apply:'📥 Apply these to my config', radar_applying:'Applying…', radar_applied:'✅ Applied. Re-add or refresh your config in your app to use them.', radar_applyerr:'Could not apply, please try again' },
-      fa: { brandsub:'کانفیگ‌ها', free_h:'🎁 نوا یک سرویس رایگان است، برای آن به کسی پول ندهید', subtitle:'اپ خود را انتخاب کن، QR را اسکن کن یا روی «افزودن» بزن. سرورها در همه‌ی اپ‌ها یکی است.', sub_user:'کانفیگ‌های ', copy:'کپی', copied:'کپی شد', copyraw:'کپی لینک اشتراک', add:'افزودن به اپ', scanhint:'یا این را در اپ خود اسکن کن', qmiss:'QR در دسترس نیست', foot:'قدرت‌گرفته از Nova Proxy', used:'مصرف‌شده', total:'حجم کل', expires:'انقضا', unlimited:'نامحدود', noexpiry:'بدون انقضا', expired:'منقضی شده', days:'روز مانده', today:'امروز', up:'آپلود', down:'دانلود', remaining:'باقی‌مانده', radar_ports:'پورت‌ها برای اسکن', radar_title:'📡 رادار نوا', radar_sub:'کند است یا وصل نمی‌شود؟ سریع‌ترین آی‌پی تمیز شبکه‌تان را پیدا کنید.', radar_run:'اسکن', radar_prep:'در حال آماده‌سازی…', radar_testing:'در حال تست… ', radar_alive:' سالم', radar_done:'سریع‌ترین آی‌پی‌ها پیدا شد', radar_none:'آی‌پی سالمی پیدا نشد. دوباره تلاش کنید.', radar_lat:'تأخیر', radar_copycfg:'📋 کپی کانفیگ بهترین آی‌پی', radar_notmpl:'بهترین آی‌پی‌ها پیدا شد. آی‌پی کانفیگ فعلی‌تان را با یکی از این‌ها جایگزین کنید.', radar_apply:'📥 اعمال به کانفیگ من', radar_applying:'در حال اعمال…', radar_applied:'✅ اعمال شد. برای استفاده، کانفیگ را در اپ خود دوباره اضافه یا بروزرسانی کنید.', radar_applyerr:'اعمال نشد، دوباره تلاش کنید' }
+      en: { st_active:'Active', st_paused:'Paused', st_disabled:'Disabled', st_expired:'Expired', st_quota:'Quota reached', st_dailyquota:'Daily quota reached', copytoken:'Copy subscription token', tokencopied:'Token copied', brandsub:'configs', free_h:'🎁 Nova is a free service, never pay anyone for it', subtitle:'Pick your app, scan the QR or tap Add. Same servers in every app.', sub_user:'Configs for ', copy:'Copy', copied:'Copied', copyraw:'Copy subscription link', add:'Add to app', scanhint:'or scan this in your app', qmiss:'QR unavailable', foot:'Powered by Nova Proxy', used:'Used', total:'Limit', expires:'Expires', unlimited:'Unlimited', noexpiry:'No expiry', expired:'Expired', days:'d left', today:'today', up:'Up', down:'Down', remaining:'left', radar_ports:'Ports to scan', radar_title:'Nova Radar', radar_sub:'Slow or not connecting? Find the fastest clean IP for your network.', radar_run:'Run scan', radar_prep:'Preparing…', radar_testing:'Testing… ', radar_alive:' alive', radar_done:'Fastest IPs found', radar_none:'No responsive IP found. Try again.', radar_lat:'Latency', radar_copycfg:'📋 Copy best-IP config', radar_notmpl:'Best IPs found. Replace the IP in your current config with one of these.', radar_apply:'📥 Apply these to my config', radar_applying:'Applying…', radar_applied:'✅ Applied. Re-add or refresh your config in your app to use them.', radar_applyerr:'Could not apply, please try again' },
+      fa: { st_active:'فعال', st_paused:'متوقف', st_disabled:'غیرفعال', st_expired:'منقضی شده', st_quota:'حجم تمام شد', st_dailyquota:'حجم روزانه تمام شد', copytoken:'کپی توکن اشتراک', tokencopied:'توکن کپی شد', brandsub:'کانفیگ‌ها', free_h:'🎁 نوا یک سرویس رایگان است، برای آن به کسی پول ندهید', subtitle:'اپ خود را انتخاب کن، QR را اسکن کن یا روی «افزودن» بزن. سرورها در همه‌ی اپ‌ها یکی است.', sub_user:'کانفیگ‌های ', copy:'کپی', copied:'کپی شد', copyraw:'کپی لینک اشتراک', add:'افزودن به اپ', scanhint:'یا این را در اپ خود اسکن کن', qmiss:'QR در دسترس نیست', foot:'قدرت‌گرفته از Nova Proxy', used:'مصرف‌شده', total:'حجم کل', expires:'انقضا', unlimited:'نامحدود', noexpiry:'بدون انقضا', expired:'منقضی شده', days:'روز مانده', today:'امروز', up:'آپلود', down:'دانلود', remaining:'باقی‌مانده', radar_ports:'پورت‌ها برای اسکن', radar_title:'رادار نوا', radar_sub:'کند است یا وصل نمی‌شود؟ سریع‌ترین آی‌پی تمیز شبکه‌تان را پیدا کنید.', radar_run:'اسکن', radar_prep:'در حال آماده‌سازی…', radar_testing:'در حال تست… ', radar_alive:' سالم', radar_done:'سریع‌ترین آی‌پی‌ها پیدا شد', radar_none:'آی‌پی سالمی پیدا نشد. دوباره تلاش کنید.', radar_lat:'تأخیر', radar_copycfg:'📋 کپی کانفیگ بهترین آی‌پی', radar_notmpl:'بهترین آی‌پی‌ها پیدا شد. آی‌پی کانفیگ فعلی‌تان را با یکی از این‌ها جایگزین کنید.', radar_apply:'📥 اعمال به کانفیگ من', radar_applying:'در حال اعمال…', radar_applied:'✅ اعمال شد. برای استفاده، کانفیگ را در اپ خود دوباره اضافه یا بروزرسانی کنید.', radar_applyerr:'اعمال نشد، دوباره تلاش کنید' },
+      ru: { st_active:'Активна', st_paused:'Приостановлена', st_disabled:'Отключена', st_expired:'Истекла', st_quota:'Лимит исчерпан', st_dailyquota:'Дневной лимит исчерпан', copytoken:'Копировать токен подписки', tokencopied:'Токен скопирован', brandsub:'конфиги', free_h:'🎁 Nova — бесплатный сервис, никогда никому не платите за него', subtitle:'Выберите приложение, отсканируйте QR или нажмите «Добавить». Серверы одинаковы во всех приложениях.', sub_user:'Конфиги для ', copy:'Копировать', copied:'Скопировано', copyraw:'Копировать ссылку подписки', add:'Добавить в приложение', scanhint:'или отсканируйте это в своём приложении', qmiss:'QR недоступен', foot:'Работает на Nova Proxy', used:'Использовано', total:'Лимит', expires:'Истекает', unlimited:'Безлимит', noexpiry:'Без срока', expired:'Истекла', days:'дн. осталось', today:'сегодня', up:'Отдача', down:'Загрузка', remaining:'осталось', radar_ports:'Порты для сканирования', radar_title:'Nova Radar', radar_sub:'Медленно или не подключается? Найдите самый быстрый чистый IP для вашей сети.', radar_run:'Запустить', radar_prep:'Подготовка…', radar_testing:'Проверка… ', radar_alive:' активно', radar_done:'Найдены самые быстрые IP', radar_none:'Отзывчивый IP не найден. Попробуйте снова.', radar_lat:'Задержка', radar_copycfg:'📋 Копировать конфиг с лучшим IP', radar_notmpl:'Лучшие IP найдены. Замените IP в текущем конфиге на один из этих.', radar_apply:'📥 Применить к моему конфигу', radar_applying:'Применение…', radar_applied:'✅ Применено. Чтобы использовать, заново добавьте или обновите конфиг в приложении.', radar_applyerr:'Не удалось применить, попробуйте снова' }
     };
     var lang = (function(){ try{ return localStorage.getItem('nova-user-lang')||'fa'; }catch(e){ return 'fa'; } })();
     var theme = document.documentElement.dataset.theme==='light' ? 'light' : 'dark';
     var USAGE = null;
+    // Server-injected account data (added before </head> by the Worker): authoritative status,
+    // name, token/id, quota and expiry that the browser can't derive on its own.
+    var INJECTED = window.__NOVA_USER__ || null;
+    var INJ_USAGE = window.__NOVA_USAGE__ || null;
 
     function subFor(fmt){
       var u = new URL(location.href);
+      // Strip only the FORMAT params (the chosen one is re-added below). KEEP the auth params
+      // (sub/u/key/token): a subscription link is a bearer credential, so the client's import URL
+      // MUST carry the user's key/token or the Worker returns 404. (The hub page URL already contains
+      // the key, so keeping it in the derived links leaks nothing new.)
       ['b64','base64','clash','sb','singbox','surge','quanx','loon','target','page','hub','raw'].forEach(function(p){ u.searchParams.delete(p); });
       var s = u.toString();
       if (!fmt) return s;
       return s + (s.indexOf('?')>-1 ? '&' : '?') + (fmt==='b64' ? 'b64' : fmt);
     }
-    function uname(){ try{ var u=new URL(location.href); return u.searchParams.get('u')||u.searchParams.get('sub')||''; }catch(e){ return ''; } }
+    function uname(){ if(INJECTED && (INJECTED.name||INJECTED.username||INJECTED.tag)) return INJECTED.name||INJECTED.username||INJECTED.tag; try{ var u=new URL(location.href); return u.searchParams.get('u')||u.searchParams.get('sub')||''; }catch(e){ return ''; } }
+    function statusLabel(st){ var t=I18N[lang]; var m={active:t.st_active,paused:t.st_paused,disabled:t.st_disabled,expired:t.st_expired,'quota-exceeded':t.st_quota,'daily-quota-exceeded':t.st_dailyquota}; return m[st]||st; }
+    function renderStatus(){
+      if(!INJECTED) return;
+      var t=I18N[lang], st=INJECTED.status||'active';
+      var card=document.getElementById('statuscard'); if(!card) return;
+      card.className='status '+st; card.hidden=false;
+      document.getElementById('statusbadge').className='badge '+st;
+      document.getElementById('statustext').textContent=statusLabel(st);
+      document.getElementById('uname').textContent = INJECTED.name||INJECTED.username||INJECTED.tag||'';
+      var tok = INJECTED.id||INJECTED.token||'';
+      var tokEl=document.getElementById('utoken'), tokTxt=document.getElementById('utoken-txt');
+      if(tok){ tokTxt.textContent=tok; tokEl.setAttribute('title', t.copytoken); tokEl.style.display='';
+        tokEl.onclick=function(){ copy(tok); };
+        tokEl.onkeydown=function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); copy(tok); } };
+      } else { tokEl.style.display='none'; }
+    }
 
+    // Three universal formats instead of per-app cards. This avoids the app-specific deep-link and
+    // User-Agent format-detection problems (e.g. Hiddify): the user copies or scans one link and the
+    // app auto-detects it. Auto = plain link (server default), Base64 = v2ray list, Clash = clash YAML.
     var CLIENTS = [
-      { name:'Hiddify',   color:'#7c5cff', rec:true,  fmt:'b64',     deep:function(u){ return 'hiddify://import/'+u; } },
-      { name:'v2rayNG',   color:'#2563eb', rec:false, fmt:'b64',     deep:function(u){ return 'v2rayng://install-config?url='+encodeURIComponent(u); } },
-      { name:'Streisand', color:'#0ea5e9', rec:false, fmt:'b64',     deep:function(u){ return 'streisand://import/'+u; } },
-      { name:'FlClash',   color:'#06b6d4', rec:true,  fmt:'clash',   deep:function(u){ return 'clash://install-config?url='+encodeURIComponent(u); } },
-      { name:'Clash Meta',color:'#10b981', rec:false, fmt:'clash',   deep:function(u){ return 'clash://install-config?url='+encodeURIComponent(u); } },
-      { name:'Karing',    color:'#16a34a', rec:false, fmt:'clash',   deep:function(u){ return 'karing://install-config?url='+encodeURIComponent(u)+'&name=Nova'; } },
-      { name:'sing-box',  color:'#64748b', rec:false, fmt:'singbox', deep:function(u){ return 'sing-box://import-remote-profile?url='+encodeURIComponent(u); } },
-      { name:'NekoBox',   color:'#f59e0b', rec:false, fmt:'singbox', deep:function(u){ return 'sing-box://import-remote-profile?url='+encodeURIComponent(u); } }
+      { name:'Auto',   color:'#7c5cff', rec:true,  fmt:'',      hint:'auto' },
+      { name:'Base64', color:'#2563eb', rec:false, fmt:'b64',   hint:'b64',   deep:function(u){ return 'v2rayng://install-config?url='+encodeURIComponent(u); } },
+      { name:'Clash',  color:'#10b981', rec:false, fmt:'clash', hint:'clash', deep:function(u){ return 'clash://install-config?url='+encodeURIComponent(u); } }
     ];
+    var CLIENT_HINTS = {
+      en:{ auto:'Works in most apps', b64:'v2rayNG and classic apps', clash:'Clash Meta, FlClash, Karing' },
+      fa:{ auto:'برای بیشتر برنامه‌ها', b64:'v2rayNG و برنامه‌های کلاسیک', clash:'Clash Meta، FlClash، Karing' },
+      ru:{ auto:'Подходит для большинства приложений', b64:'v2rayNG и классические приложения', clash:'Clash Meta, FlClash, Karing' }
+    };
 
     function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('show'); },1400); }
     function copy(text){ try{ navigator.clipboard.writeText(text); }catch(e){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta); } toast(I18N[lang].copied); }
@@ -231,6 +282,15 @@
     function fmtBytes(n){ n=Number(n)||0; if(n<=0) return '0 GB'; var u=['B','KB','MB','GB','TB','PB']; var i=Math.floor(Math.log(n)/Math.log(1024)); i=Math.max(0,Math.min(i,u.length-1)); var v=n/Math.pow(1024,i); return (v>=100?v.toFixed(0):v>=10?v.toFixed(1):v.toFixed(2))+' '+u[i]; }
 
     async function loadUsage(){
+      // Prefer the Worker-injected snapshot (authoritative quota/expiry) when present.
+      if(INJ_USAGE && INJ_USAGE.total !== undefined){
+        var iup=INJ_USAGE.up||0, idown=INJ_USAGE.down||0, user=INJECTED||{};
+        var iexp=0; if(user.expiry){ var _d=new Date(user.expiry); if(!isNaN(_d.getTime())) iexp=Math.floor(_d.getTime()/1000); }
+        var quota=user.quotaBytes||0;
+        USAGE={ up:iup, down:idown, total:quota, expire:iexp, used:iup+idown,
+                unlim: !quota || quota<=0, noexp: !iexp || iexp>=4102300000 };
+        renderUsage(); return;
+      }
       try{
         var r = await fetch(subFor('b64'), { cache:'no-store' });
         var h = r.headers.get('Subscription-Userinfo'); if(!h) return;
@@ -278,15 +338,22 @@
       var t = I18N[lang];
       document.documentElement.lang = lang; document.documentElement.dir = lang==='fa'?'rtl':'ltr';
       // Accessibility: the icon-only theme/language buttons need a spoken name for screen readers.
-      var _lb=document.querySelector('#theme [data-t="light"]'); if(_lb) _lb.setAttribute('aria-label', lang==='fa'?'پوستهٔ روشن':'Light theme');
-      var _db=document.querySelector('#theme [data-t="dark"]'); if(_db) _db.setAttribute('aria-label', lang==='fa'?'پوستهٔ تیره':'Dark theme');
+      var _lb=document.querySelector('#theme [data-t="light"]'); if(_lb) _lb.setAttribute('aria-label', lang==='fa'?'پوستهٔ روشن':lang==='ru'?'Светлая тема':'Light theme');
+      var _db=document.querySelector('#theme [data-t="dark"]'); if(_db) _db.setAttribute('aria-label', lang==='fa'?'پوستهٔ تیره':lang==='ru'?'Тёмная тема':'Dark theme');
       var _en=document.querySelector('#lang [data-l="en"]'); if(_en) _en.setAttribute('aria-label','English');
       var _fa=document.querySelector('#lang [data-l="fa"]'); if(_fa) _fa.setAttribute('aria-label','فارسی');
+      var _ru=document.querySelector('#lang [data-l="ru"]'); if(_ru) _ru.setAttribute('aria-label','Русский');
       document.getElementById('brandsub').textContent = t.brandsub;
       var who = uname();
       document.getElementById('subtitle').innerHTML = (who ? (t.sub_user+'<b>'+esc(who)+'</b>, ') : '') + t.subtitle;
       document.getElementById('freebar').textContent = t.free_h;
-      document.getElementById('foot').innerHTML = '<div>'+esc(t.foot)+'</div><div class="fsocial"><a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a><a href="https://instagram.com/irnova_proxy" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg class="ig" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></a></div>';
+      document.getElementById('foot').innerHTML = '<div>'+esc(t.foot)+'</div><div class="fsocial">'+
+        '<a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a>'+
+        '<a href="https://instagram.com/irnova_proxy" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg class="ig" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></a>'+
+        '<a href="https://x.com/irNovaProxy" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>'+
+        '<a href="https://youtube.com/@novaproxyir" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.122 2.136c1.872.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12z"/></svg></a>'+
+        '<a href="https://github.com/IRNova/Nova-Proxy" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.725-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.42-1.305.762-1.605-2.665-.303-5.467-1.332-5.467-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.814 1.102.814 2.222 0 1.606-.015 2.898-.015 3.293 0 .32.216.694.825.576C20.565 22.296 24 17.796 24 12.5 24 5.87 18.627.5 12 .5z"/></svg></a>'+
+        '</div>';
       var rawUrl = subFor('b64');
       document.getElementById('rawsub').textContent = rawUrl;
       var cr = document.getElementById('copyraw'); cr.textContent = t.copyraw; cr.onclick=function(){ copy(rawUrl); };
@@ -298,11 +365,13 @@
       CLIENTS.forEach(function(c){
         var sub = subFor(c.fmt);
         var card = document.createElement('div'); card.className='appcard'+(c.rec?' rec':'');
+        var hint = (CLIENT_HINTS[lang] && CLIENT_HINTS[lang][c.hint]) || (CLIENT_HINTS.en[c.hint]||'');
         card.innerHTML =
           '<div class="appcard-h"><span class="ic" style="background:'+c.color+'">'+c.name[0].toUpperCase()+'</span><span class="nm">'+c.name+'</span>'+(c.rec?'<span class="rec-badge">★</span>':'')+'</div>'+
+          (hint?'<div style="font-size:11.5px;opacity:.6;text-align:center;margin-top:-4px">'+esc(hint)+'</div>':'')+
           '<div class="appcard-qr"><div class="qbox"></div></div>'+
           '<div class="scanhint">'+t.scanhint+'</div>'+
-          '<div class="appcard-acts"><a class="btn primary" href="'+c.deep(sub)+'">+ '+t.add+'</a><button class="btn ghost sm" data-copy="'+esc(sub)+'">'+t.copy+'</button></div>';
+          '<div class="appcard-acts">'+(c.deep?'<a class="btn primary" href="'+c.deep(sub)+'">+ '+t.add+'</a>':'')+'<button class="btn '+(c.deep?'ghost sm':'primary')+'" data-copy="'+esc(sub)+'">'+t.copy+'</button></div>';
         grid.appendChild(card);
         var qbox = card.querySelector('.qbox');
         try {
@@ -313,6 +382,7 @@
       grid.querySelectorAll('[data-copy]').forEach(function(b){ b.onclick=function(){ copy(b.getAttribute('data-copy')); }; });
       document.querySelectorAll('#lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.l===lang); });
       document.querySelectorAll('#theme button').forEach(function(b){ b.classList.toggle('on', b.dataset.t===theme); });
+      renderStatus();
       renderUsage();
     }
 
