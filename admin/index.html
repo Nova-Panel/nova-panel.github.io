@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" dir="ltr" data-theme="light">
 <head>
 <meta charset="utf-8" />
@@ -6,8 +6,10 @@
 <title>Nova Proxy, Control Panel</title>
 <meta name="nova-panel-version" content="4.1.3" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================================
    DESIGN TOKENS, preserved verbatim from the existing Nova Proxy panel.
@@ -47,11 +49,10 @@ html[data-theme=light]{
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip;-webkit-text-size-adjust:100%}
 body{
-  font-family:'Inter','Vazirmatn',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;
+  font-family:'Vazirmatn','Inter',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;
   background:var(--bg); color:var(--tx); min-height:100vh; font-size:14px;
   -webkit-font-smoothing:antialiased; line-height:1.45;
 }
-html[dir=rtl] body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 ::selection{background:var(--ac-soft)}
@@ -454,6 +455,23 @@ html[data-theme=light] .modeseg button.on{color:#fff}
 .dot.ok{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent)}
 .dot.bad{background:var(--dg);box-shadow:0 0 0 3px color-mix(in srgb,var(--dg) 22%,transparent)}
 .dot.warn{background:var(--wn);box-shadow:0 0 0 3px color-mix(in srgb,var(--wn) 22%,transparent)}
+/* Tunnel / Relay setup wizard */
+.tbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.2px;padding:4px 10px;border-radius:999px;border:1px solid var(--bd2);color:var(--mu);background:var(--card);white-space:nowrap}
+.tbadge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.tbadge.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.tbadge.off{color:var(--mu);border-color:var(--bd2);background:var(--card2)}
+.tstep-num{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--ac);color:#04121a;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+html[data-theme=light] .tstep-num{color:#fff}
+.tstep-mini{flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:var(--card2);border:1px solid var(--bd2);color:var(--tx2);font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace}
+.tverify{display:flex;gap:8px;align-items:center;line-height:1.5}
+.tverify-wait{color:var(--mu);border:1px solid var(--bd);background:var(--card2)}
+.tverify-ok{color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent);background:color-mix(in srgb,var(--ok) 10%,transparent)}
+.tverify-bad{color:var(--dg);border:1px solid color-mix(in srgb,var(--dg) 40%,transparent);background:color-mix(in srgb,var(--dg) 10%,transparent)}
+.tnote{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.6;color:var(--mu);margin-inline-start:30px;padding:9px 12px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--card2)}
+.tnote .ic{flex:0 0 auto;opacity:.75;line-height:1.5}
+.tnote.warn{color:var(--wn);border-color:color-mix(in srgb,var(--wn) 40%,transparent);background:color-mix(in srgb,var(--wn) 10%,transparent)}
+.tnote.warn .ic{opacity:.9}
+.tnote.intro{color:var(--tx2);border-color:var(--ac-line);background:var(--ac-soft);margin-inline-start:0;font-size:12px;border-radius:var(--r-lg)}
 .utc .uv{font-size:12.5px;font-weight:700;color:var(--tx2);white-space:nowrap;font-variant-numeric:tabular-nums;direction:ltr}
 .ubar{height:8px;border-radius:6px;background:var(--bd2);overflow:hidden;margin-top:7px}
 .ubar>i{display:block;height:100%;border-radius:6px;background:var(--ok);transition:width .3s}
@@ -472,7 +490,7 @@ html[data-theme=light] .modeseg button.on{color:#fff}
 .utitle-refresh svg{width:15px;height:15px}
 .utitle-refresh.spin svg{animation:uspin .7s linear infinite}
 @keyframes uspin{to{transform:rotate(360deg)}}
-/* Voice & video calls callout (Dashboard): UDP can't traverse the free Worker → WARP / Backend */
+/* Voice & video calls callout (Dashboard): UDP can't traverse the free Worker → WARP */
 .calls-card{border-color:var(--ac-line)}
 .wn-x{align-self:flex-start;background:transparent;border:none;color:var(--mu);font-size:20px;line-height:1;cursor:pointer;padding:2px 7px;border-radius:6px;flex:0 0 auto}
 .wn-x:hover{color:var(--tx);background:var(--card2)}
@@ -480,14 +498,13 @@ html[data-theme=light] .modeseg button.on{color:#fff}
 .calls-ic{font-size:22px;line-height:1.1;flex:0 0 auto}
 .calls-hd h3{font-size:15px}
 .calls-s{font-size:12.5px;color:var(--mu);margin-top:4px;line-height:1.55}
-.calls-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 16px 16px}
+.calls-opts{display:grid;grid-template-columns:1fr;gap:12px;padding:10px 16px 16px}
 .calls-opt{background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:13px 14px;display:flex;flex-direction:column;gap:8px}
 .calls-opt-t{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--tx)}
 .calls-opt-d{font-size:12px;color:var(--tx2);line-height:1.55;flex:1 1 auto}
 .calls-opt .btn{align-self:flex-start}
 .calls-badge{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--bd2);color:var(--tx2);white-space:nowrap}
 .calls-badge.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
-@media(max-width:720px){ .calls-opts{grid-template-columns:1fr} }
 @media(max-width:860px){
   .utr.uthead{display:none}
   .utr{grid-template-columns:1fr 1fr;gap:12px 16px;padding:15px 2px}
@@ -740,13 +757,13 @@ html[dir=rtl] .toast{right:auto;left:22px}
         </div>
 
         <!-- Voice & video calls: UDP can't traverse the free Worker (Cloudflare limit). Point the
-             operator to the two paths that DO carry calls, WARP (free) and Backend mode (VPS). -->
+             operator to WARP (free), the path that carries calls. -->
         <div class="card calls-card" style="margin-top:12px">
           <div class="calls-hd">
             <span class="calls-ic">📞</span>
             <div>
               <h3 data-i18n="calls_h">Voice &amp; video calls (FaceTime, WhatsApp, Telegram)</h3>
-              <p class="calls-s" data-i18n="calls_s">Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable one of these so your users can call:</p>
+              <p class="calls-s" data-i18n="calls_s">Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable WARP so your users can call:</p>
             </div>
           </div>
           <div class="calls-opts">
@@ -754,11 +771,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <div class="calls-opt-t"><b data-i18n="calls_warp_t">WARP</b><span class="calls-badge ok" data-i18n="calls_free">Free</span></div>
               <div class="calls-opt-d" data-i18n="calls_warp_d">Adds the Nova-WARP node (Cloudflare WireGuard). Users pick it for calls and keep VLESS for browsing. Reliability from Iran varies.</div>
               <button class="btn primary sm" data-callhelp="warp" data-i18n="calls_warp_btn">Set up WARP</button>
-            </div>
-            <div class="calls-opt">
-              <div class="calls-opt-t"><b data-i18n="calls_be_t">Backend mode</b><span class="calls-badge" data-i18n="calls_vps">Needs a VPS</span></div>
-              <div class="calls-opt-d" data-i18n="calls_be_d">Route through your own Xray/sing-box server for full UDP, best call quality, also unlocks VMess. About $5/mo.</div>
-              <button class="btn ghost sm" data-callhelp="backend" data-i18n="calls_be_btn">Set up Backend</button>
             </div>
           </div>
         </div>
@@ -922,7 +934,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
             <div class="field-row"><div class="l" data-i18n="warp_amnezia">AmneziaWG obfuscation<small data-i18n="warp_amnezia_h">junk packets so DPI can't fingerprint WARP</small></div><div class="sw" id="t2-warp-amnezia"><span class="k"></span></div></div>
             <div class="field-row"><div class="l" data-i18n="warp_calls">📞 Make calls work (UDP via WARP)<small data-i18n="warp_calls_h">Routes voice/video calls (FaceTime, WhatsApp, Telegram) through free WARP so they work, while browsing stays on the fast proxy. Turns WARP on automatically; register an account above and keep AmneziaWG on for Iran.</small></div><div class="sw" id="t2-warp-calls"><span class="k"></span></div></div>
             <div class="fg" style="margin-top:6px"><button class="btn primary sm" id="w2-quickcalls" style="width:auto" data-i18n="warp_quick">⚡ Set up calls in one tap</button><div style="font-size:11.5px;color:var(--mu);margin-top:6px" data-i18n="warp_quick_h">One tap: registers a free WARP account and turns on WARP, AmneziaWG and calls, then saves. If calls don't connect on a network, pick an alternate endpoint below.</div></div>
-            <div class="notice-box" style="margin-top:12px"><span class="notice-tag" style="background:var(--ac);color:#04121a" data-i18n="warp_blocked_tag">If WARP is blocked</span><span data-i18n="warp_blocked">Try the alternate endpoints above one by one, they use ports Iran often leaves open (the default 2408 is the most filtered). If none connect, the official 1.1.1.1 app with the MASQUE protocol usually gets through when WireGuard is blocked, or run a Backend server (below) that carries calls over TCP.</span></div>
+            <div class="notice-box" style="margin-top:12px"><span class="notice-tag" style="background:var(--ac);color:#04121a" data-i18n="warp_blocked_tag">If WARP is blocked</span><span data-i18n="warp_blocked">Try the alternate endpoints above one by one, they use ports Iran often leaves open (the default 2408 is the most filtered). If none connect, the official 1.1.1.1 app with the MASQUE protocol usually gets through when WireGuard is blocked.</span></div>
             <div class="set-grid" style="margin-top:13px">
               <div class="fg"><label data-i18n="warp_acc">WARP account</label><div style="display:flex;gap:8px"><button class="btn primary sm" id="w2-register" data-i18n="warp_register">Register</button><button class="btn ghost sm" id="w2-central" data-i18n="warp_central">From central pool</button></div></div>
               <div class="fg"><label data-i18n="warp_lic">WARP+ license (optional)</label><div style="display:flex;gap:8px"><input class="inp" id="w2-lic" placeholder="xxxxxxxx-..."><button class="btn ghost sm" id="w2-lic-apply" data-i18n="warp_apply">Apply</button></div></div>
@@ -1019,61 +1031,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
                   <button class="btn ghost sm" id="dg-rotate-now" data-i18n="dg_rotate_now">🔄 Rotate secret paths now</button>
                   <span id="dg-rotate-msg" style="font-size:12px;color:var(--mu)"></span>
                 </div>
-              </div>
-            </div>
-            <div class="card" id="backend-card" style="margin-top:16px;border-color:var(--ac-line);opacity:.5;pointer-events:none;position:relative">
-              <div class="card-h"><h3 data-i18n="be_h">🛰 Backend mode (advanced)</h3></div>
-              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--dg);border-radius:10px;padding:8px 18px;z-index:2;white-space:nowrap"><span style="color:var(--dg);font-weight:700;font-size:13px">در حال حاضر غیر فعال است</span></div>
-              <div class="card-pad">
-                <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="be_s">Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP), but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).</p>
-                <div class="field-row"><div class="l" data-i18n="be_en">Enable backend mode<small data-i18n="be_en_h">when on, Nova bridges to the backend below</small></div><div class="sw" id="t2-backend"><span class="k"></span></div></div>
-                <div class="fg" style="margin-top:11px"><label data-i18n="be_url">Backend URL</label><input class="inp" id="be-url" placeholder="https://your-server.com:8443/path or http://1.2.3.4:8080"></div>
-                <div id="be-port-warn" class="msg bad" style="display:none;margin-top:7px;font-size:12px"></div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" id="be-check" data-i18n="be_check">Health check</button></div>
-                <div style="margin-top:14px;padding:12px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)">
-                  <div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:8px" data-i18n="be_quick">⚡ Quick install (run on your VPS as root)</div>
-                  <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;direction:ltr">
-                    <code id="be-cmd" style="flex:1;font-size:11.5px;overflow-x:auto;white-space:nowrap;color:var(--tx2)">bash &lt;(curl -fsSL https://raw.githubusercontent.com/IRNova/Tools/main/nova-backend.sh)</code>
-                    <button class="btn ghost sm" id="be-cmd-copy" style="flex:0 0 auto" data-i18n="copy">Copy</button>
-                  </div>
-                  <p style="font-size:11px;color:var(--mu);margin-top:8px" data-i18n="be_quick_h">Paste this one line into your VPS over SSH. It installs Xray, writes the config, opens the firewall, and prints the exact Backend URL to paste above. Your VPS credentials are never sent anywhere, you run it yourself on your own server.</p>
-                </div>
-                <!-- Manage / remove backend: change port (reinstall) + uninstall, with copyable commands -->
-                <details style="margin-top:12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);padding:0">
-                  <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--tx2);padding:12px 14px;list-style:none" data-i18n="be_manage">🛠 Change port / remove backend</summary>
-                  <div style="padding:0 14px 14px 14px">
-                    <p style="font-size:11.5px;color:var(--mu);margin:0 0 6px" data-i18n="be_manage_port">Change the port, re-run the installer with a Cloudflare-allowed port (8080, 8880, 2052, 2082, 2086, 2095). Ports like 2076/3080/10000 do NOT work.</p>
-                    <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;direction:ltr">
-                      <code id="be-cmd-port" style="flex:1;font-size:11px;overflow-x:auto;white-space:nowrap;color:var(--tx2)"></code>
-                      <button class="btn ghost sm" id="be-cmd-port-copy" style="flex:0 0 auto" data-i18n="copy">Copy</button>
-                    </div>
-                    <p style="font-size:11.5px;color:var(--mu);margin:14px 0 6px" data-i18n="be_manage_remove">Remove the backend from your VPS, stops Xray and deletes it. (To stop using it in the panel, just turn the toggle off above; the client QR disappears.)</p>
-                    <div style="display:flex;align-items:flex-start;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;direction:ltr">
-                      <code id="be-cmd-remove" style="flex:1;font-size:11px;overflow-x:auto;white-space:pre;color:var(--tx2)">systemctl stop xray 2&gt;/dev/null; systemctl disable xray 2&gt;/dev/null; rm -rf /usr/local/etc/xray /usr/local/bin/xray /usr/local/share/xray /etc/systemd/system/xray.service /etc/systemd/system/xray@.service; systemctl daemon-reload; echo "Xray removed."</code>
-                      <button class="btn ghost sm" id="be-cmd-remove-copy" style="flex:0 0 auto" data-i18n="copy">Copy</button>
-                    </div>
-                  </div>
-                </details>
-                <!-- Auto-generated client config + QR (built from Backend URL + this panel's UUID & domain) -->
-                <div id="be-client-wrap" style="margin-top:14px;padding:14px;border:1px solid var(--ac-line);border-radius:12px;background:var(--bg);display:none">
-                  <div style="font-size:12.5px;font-weight:700;color:var(--tx2);margin-bottom:4px" data-i18n="be_client_h">📱 Ready-to-use client config</div>
-                  <p style="font-size:11px;color:var(--mu);margin:0 0 12px" data-i18n="be_client_s">Scan this QR with Hiddify / v2rayNG to connect through your backend. It already points at this panel's domain, just scan and connect.</p>
-                  <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
-                    <div id="be-qr" style="background:#fff;padding:10px;border-radius:10px;flex:0 0 auto;cursor:pointer" title="Tap to enlarge"></div>
-                    <div style="flex:1;min-width:200px">
-                      <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;direction:ltr;margin-bottom:8px">
-                        <code id="be-vless" style="flex:1;font-size:10.5px;overflow-x:auto;white-space:nowrap;color:var(--tx2)"></code>
-                      </div>
-                      <div style="display:flex;gap:8px;flex-wrap:wrap">
-                        <button class="btn sm" id="be-vless-copy" data-i18n="be_client_copy">Copy link</button>
-                        <button class="btn ghost sm" id="be-vless-qr" data-i18n="be_client_qr">Show big QR</button>
-                      </div>
-                      <p style="font-size:10.5px;color:var(--wn);margin:10px 0 0" data-i18n="be_client_iran">In Iran, *.workers.dev is filtered, add a Custom Domain to the Worker and the QR will use it automatically.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="msg" id="be-msg" style="margin-top:8px"></div>
-                <p style="font-size:11.5px;color:var(--wn);margin-top:10px" data-i18n="be_warn">⚠️ Needs a real Xray/sing-box backend. Generate your client configs on the backend, then point them at Nova's domain, Nova will relay to the backend. Test with a real client before relying on it.</p>
               </div>
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:16px"><button class="btn primary" id="save-network2" data-i18n="btn_save">Save</button></div>
@@ -1212,35 +1169,115 @@ html[dir=rtl] .toast{right:auto;left:22px}
           <div class="card-h"><h3 data-i18n="tunnel_h">🔗 Tunnel / Relay</h3></div>
           <div class="card-pad">
             <p style="font-size:12.5px;color:var(--mu);margin-bottom:16px" data-i18n="tunnel_s">Relay status and Google Apps Script address. Your relay runs on this Worker, and Google Apps Script connects to it to transfer data.</p>
-            <div style="display:flex;align-items:center;gap:13px;margin-bottom:20px;padding:14px 16px;border:1px solid var(--bd);border-radius:var(--r-lg);background:var(--card2)">
+
+            <!-- What this is / why -->
+            <div class="tnote intro" style="margin-bottom:20px">
+              <span class="ic">🛡️</span><span data-i18n="tunnel_intro">The relay makes your users' traffic look like normal Google traffic, so Nova keeps working even where the Worker domain itself is blocked. Your panel sets up the key for you. You only deploy a small Google Apps Script and paste its link back here.</span>
+            </div>
+
+            <!-- Status row -->
+            <div style="display:flex;align-items:center;gap:13px;margin-bottom:22px;padding:14px 16px;border:1px solid var(--bd);border-radius:var(--r-lg);background:var(--card2);flex-wrap:wrap">
               <div id="tunnel-status-dot" class="dot" style="width:11px;height:11px;background:var(--mu)"></div>
-              <div style="flex:1">
+              <div style="flex:1;min-width:150px">
                 <div style="font-size:13.5px;font-weight:700" id="tunnel-status-text" data-i18n="tunnel_loading">Loading...</div>
-                <div style="font-size:11.5px;color:var(--mu);margin-top:2px;font-family:ui-monospace,monospace;direction:ltr" id="tunnel-status-sub"></div>
+                <div style="font-size:11.5px;color:var(--mu);margin-top:2px;font-family:ui-monospace,monospace;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="tunnel-status-sub"></div>
+              </div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap">
+                <span id="tunnel-badge-enabled" class="tbadge off"></span>
+                <span id="tunnel-badge-verified" class="tbadge off" style="display:none"></span>
               </div>
             </div>
 
+            <!-- Step 1: Enable -->
             <div style="display:flex;align-items:center;gap:9px;margin:0 2px 6px">
-              <span style="flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--ac);color:#04121a;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">1</span>
-              <span class="section-label" style="margin:0" data-i18n="tunnel_address">Relay Address</span>
+              <span class="tstep-num">1</span>
+              <span class="section-label" style="margin:0" data-i18n="tunnel_step1_h">Enable relay</span>
             </div>
-            <p style="font-size:12px;color:var(--mu);margin-block:0 10px;margin-inline-start:30px" data-i18n="tunnel_address_h">Use this address in your Google Apps Script Code.gs file as WORKER_URL:</p>
-            <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:11px 12px;margin-block:0 10px;margin-inline-start:30px">
-              <code id="tunnel-worker-url" style="flex:1;font-family:ui-monospace,monospace;font-size:12px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr"></code>
-              <button class="btn ghost sm" onclick="navigator.clipboard.writeText(document.getElementById('tunnel-worker-url').textContent).then(()=>toast('Copied'))" data-i18n="copy">Copy</button>
+            <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step1_s">Generate a strong key and switch the relay on. This Worker becomes your relay endpoint.</p>
+            <div style="margin-inline-start:30px">
+              <button class="btn primary" id="tunnel-enable-btn" type="button" onclick="tunnelEnable()" data-i18n="tunnel_enable">Enable relay / Generate key</button>
             </div>
-            <div style="font-size:11.5px;color:var(--mu);margin-block:0 22px;margin-inline-start:30px;padding:9px 12px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--card2);display:flex;gap:8px">
-              <span style="opacity:.7">💡</span><span data-i18n="tunnel_domain_note">If you have configured custom domains (HOSTS) in Network Settings or Settings, the relay will automatically use the first domain from your list. Otherwise it uses the default workers.dev address.</span>
+            <div id="tunnel-env-note" style="display:none;font-size:11.5px;color:var(--wn);margin-inline-start:30px;margin-top:12px;padding:9px 12px;border:1px solid color-mix(in srgb,var(--wn) 40%,transparent);border-radius:var(--r-sm);background:color-mix(in srgb,var(--wn) 10%,transparent);gap:8px;align-items:flex-start">
+              <span style="opacity:.85;flex:0 0 auto">🔑</span><span data-i18n="tunnel_env_note">The key comes from your RELAY_AUTH_KEY environment variable.</span>
+            </div>
+            <div class="tnote" style="margin-top:12px">
+              <span class="ic">⏱️</span><span data-i18n="tunnel_propagation">Enabling, disabling, or changing the key takes effect within a few seconds.</span>
             </div>
 
-            <div style="display:flex;align-items:center;gap:9px;margin:0 2px 6px">
-              <span style="flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--ac);color:#04121a;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">2</span>
-              <span class="section-label" style="margin:0" data-i18n="tunnel_gas">Google Apps Script</span>
-            </div>
-            <p style="font-size:12px;color:var(--mu);margin-block:0 10px;margin-inline-start:30px" data-i18n="tunnel_gas_h">Paste these lines at the top of your Code.gs file:</p>
-            <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:11px 12px;margin-block:0;margin-inline-start:30px">
-              <code id="tunnel-gas-code" style="flex:1;font-family:ui-monospace,monospace;font-size:11.5px;color:var(--ac);overflow:auto;max-height:60px;direction:ltr;white-space:pre"></code>
-              <button class="btn ghost sm" onclick="navigator.clipboard.writeText(document.getElementById('tunnel-gas-code').textContent).then(()=>toast('Copied'))" data-i18n="copy">Copy</button>
+            <!-- Steps 2 & 3 (revealed once the relay is enabled) -->
+            <div id="tunnel-steps" style="display:none">
+
+              <!-- Step 2: Deploy the script -->
+              <div style="display:flex;align-items:center;gap:9px;margin:26px 2px 6px">
+                <span class="tstep-num">2</span>
+                <span class="section-label" style="margin:0" data-i18n="tunnel_step2_h">Deploy the script</span>
+              </div>
+              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step2_s">This is your ready-made relay script, already filled with your key and address. Copy it into a new Google Apps Script project.</p>
+              <div class="tnote" style="margin-block:0 12px">
+                <span class="ic">🔒</span><span data-i18n="tunnel_key_locked">The key below is already filled into the script for you. Please do not change it.</span>
+              </div>
+              <div style="margin-inline-start:30px;margin-block:0 12px">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">
+                  <span style="font-size:11px;font-weight:700;color:var(--mu);font-family:ui-monospace,monospace;direction:ltr">Code.gs</span>
+                  <button class="btn ghost sm" id="tunnel-script-copy" type="button" onclick="tunnelCopyScript()" data-i18n="copy">Copy</button>
+                </div>
+                <pre id="tunnel-script-code" style="margin:0;background:var(--card2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:12px 14px;max-height:220px;overflow:auto;font-family:ui-monospace,monospace;font-size:11px;line-height:1.55;color:var(--tx);direction:ltr;white-space:pre;-webkit-overflow-scrolling:touch"></pre>
+              </div>
+              <ol style="list-style:none;margin:0 0 12px;padding:0;margin-inline-start:30px;display:grid;gap:7px">
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">1</span><span data-i18n="tunnel_g1">Open script.google.com and start a New project.</span></li>
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">2</span><span data-i18n="tunnel_g2">Delete the sample code, then paste the script above.</span></li>
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">3</span><span data-i18n="tunnel_g3">Click Deploy, choose New deployment, then Web app.</span></li>
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">4</span><span data-i18n="tunnel_g4">Set Execute as: Me and Who has access: Anyone.</span></li>
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">5</span><span data-i18n="tunnel_g5">Click Deploy, then Authorize access and allow the permissions.</span></li>
+                <li style="display:flex;gap:9px;font-size:12px;color:var(--tx2);line-height:1.55"><span class="tstep-mini">6</span><span data-i18n="tunnel_g6">Copy the Web app URL that ends with /exec.</span></li>
+              </ol>
+              <div style="display:grid;gap:8px;margin-block:0 12px">
+                <div class="tnote warn">
+                  <span class="ic">⚠️</span><span data-i18n="tunnel_access_warn">Important: when you deploy, set Who has access to Anyone. If it is set to anything else, the relay will return errors.</span>
+                </div>
+                <div class="tnote">
+                  <span class="ic">🙂</span><span data-i18n="tunnel_unverified_help">Google may show a screen that says it has not verified this app. That is normal, because this is your own script. Click Advanced, then Go to project, then Allow. The only permission it asks for is to connect to an external service.</span>
+                </div>
+                <div class="tnote">
+                  <span class="ic">🔗</span><span data-i18n="tunnel_exec_help">The Web app URL you paste must end in /exec. If it ends in anything else, copy the URL again from the deployment screen.</span>
+                </div>
+              </div>
+              <div style="margin-inline-start:30px;margin-block:0 12px">
+                <a class="btn ghost sm" href="https://script.google.com/home/projects/create" target="_blank" rel="noopener" data-i18n="tunnel_open_gas">Open Google Apps Script</a>
+              </div>
+              <div style="font-size:11.5px;color:var(--mu);margin-inline-start:30px;margin-block:0 4px;padding:9px 12px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--card2);display:flex;gap:8px">
+                <span style="opacity:.7;flex:0 0 auto">💡</span><span data-i18n="tunnel_domain_note">If you have configured custom domains (HOSTS) in Network Settings or Settings, the relay will automatically use the first domain from your list. Otherwise it uses the default workers.dev address.</span>
+              </div>
+              <div class="tnote" style="margin-top:8px">
+                <span class="ic">🔐</span><span data-i18n="tunnel_security_note">Treat the key and the script link like a password and keep them private. Anyone who has both can use your relay.</span>
+              </div>
+
+              <!-- Step 3: Verify -->
+              <div style="display:flex;align-items:center;gap:9px;margin:28px 2px 6px">
+                <span class="tstep-num">3</span>
+                <span class="section-label" style="margin:0" data-i18n="tunnel_step3_h">Verify the connection</span>
+              </div>
+              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step3_s">Paste your Web app URL below. We test the whole chain from this panel through the Worker to your script.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-inline-start:30px;margin-block:0 10px">
+                <input class="inp" id="tunnel-gas-url" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:220px;font-family:ui-monospace,monospace;font-size:12px;direction:ltr">
+                <button class="btn primary" id="tunnel-verify-btn" type="button" onclick="tunnelVerify()" data-i18n="tunnel_verify">Verify</button>
+              </div>
+              <div id="tunnel-verify-result" class="tverify" style="display:none;font-size:12px;margin-inline-start:30px;margin-block:0 6px;padding:9px 12px;border-radius:var(--r-sm)"></div>
+              <div class="tnote" style="margin-top:10px">
+                <span class="ic">✅</span><span data-i18n="tunnel_verify_help">A green check means the whole path works, from this panel through the Worker to your script. If it stays red, check three things: Who has access is set to Anyone, the URL ends in /exec, and you pasted the latest script and re-deployed it.</span>
+              </div>
+              <div class="tnote" style="margin-top:8px">
+                <span class="ic">⏱️</span><span data-i18n="tunnel_propagation">Enabling, disabling, or changing the key takes effect within a few seconds.</span>
+              </div>
+
+              <!-- Disable -->
+              <div style="margin-inline-start:30px;margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)">
+                <button class="btn ghost sm" id="tunnel-disable-btn" type="button" onclick="tunnelDisable()" style="color:var(--dg);border-color:color-mix(in srgb,var(--dg) 35%,transparent)" data-i18n="tunnel_disable">Disable relay</button>
+                <div class="tnote" style="margin-inline-start:0;margin-top:12px">
+                  <span class="ic">⏱️</span><span data-i18n="tunnel_disable_note">The relay stops within a few seconds after you turn it off.</span>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -1631,7 +1668,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
         </div>
       </section>
 
-
       <!-- ============ PROXY / CDN ACCESS ============ -->
       <section class="view" id="view-proxy">
         <div class="card" style="border-color:var(--ac-line)">
@@ -1760,7 +1796,6 @@ const I18N = {
     nav_wireguard:'WireGuard', nav_about:'About', nav_proxy:'Proxy / CDN', nav_corenode:'Core Node', sub_wireguard:'Build a WireGuard config for WARP or a custom peer.', sub_about:'Panel version, changelog and links.', sub_proxy:'How the Worker reaches Cloudflare, PROXYIP / SOCKS5 / HTTP / HTTPS / TURN / SSTP.', sub_corenode:'Your node on every Cloudflare TLS port, on the domain itself.',
     cn_h:'🧩 Core Node', cn_s:'Your node on every Cloudflare TLS port, using the Worker domain directly, separate from the subscription. Copy or scan any port.', cn_copy:'Copy',
     dg_h:'🥷 Disguise & secret paths (advanced)', dg_s:'Hide the panel from censors who fingerprint the Worker itself. With this on, your panel, login and subscription move to secret paths you choose, probing the default /admin or /login just returns a generic page. Leave OFF to keep the normal /admin, /login, /sub.', dg_en:'Enable disguise', dg_en_h:'use secret paths below instead of /admin, /login, /sub', dg_admin:'Admin path', dg_login:'Login path', dg_sub:'Subscription path', dg_warn_tag:'Important', dg_warn:'Write down your secret admin path before you save, after saving, the panel is ONLY reachable at /your-admin-path. (Locked out? Add a Worker variable PANEL_RECOVERY=1 to switch this off and reach /admin again.) Allowed characters: a-z, 0-9, hyphen, underscore. Leave a field blank to keep its default name.',
-    be_h:'🛰 Backend mode (advanced)', be_s:'Forward traffic to your own Xray/sing-box server instead of handling it in the Worker. This is the ONLY way to get VMess and working voice/video calls (UDP), but it requires you to run a backend server (a VPS). Leave OFF to use the normal free in-Worker mode (VLESS/Trojan).', be_en:'Enable backend mode', be_en_h:'when on, Nova bridges to the backend below', be_url:'Backend URL', be_check:'Health check', be_quick:'⚡ Quick install (run on your VPS as root)', be_quick_h:'Paste this one line into your VPS over SSH. Your panel\'s UUID is already baked into the command, so the backend matches automatically, no manual step. It installs Xray, writes the config, opens the firewall, asks for your gray-cloud domain, and prints the exact Backend URL to paste above. Your VPS credentials are never sent anywhere, you run it yourself on your own server.', be_manage:'🛠 Change port / remove backend', be_manage_port:'Change the port, re-run the installer with a Cloudflare-allowed port (8080, 8880, 2052, 2082, 2086, 2095). Ports like 2076/3080/10000 do NOT work. Edit the port in the command, then run it on your VPS:', be_manage_remove:'Remove the backend from your VPS, stops Xray and deletes it. (To stop using it in the panel, just turn the toggle off above; the client QR disappears.) Run on your VPS as root:', be_warn:'✅ Setup checklist (all required): 1) Run the install command on your VPS, it sets up Xray. 2) Backend port must be Cloudflare-allowed: 8080, 8880, 2052, 2082, 2086, 2095 (NOT 10000). 3) Backend URL must use a DOMAIN, not a raw IP, in Cloudflare DNS add an A record (e.g. vps.yourdomain.com → your VPS IP) set to DNS-only (GRAY cloud). 4) The VPS Xray UUID must match this panel\'s UUID. 5) Click Health check to verify, then scan the QR below. (The "Health check" runs a real test, green ✓ means it works.)', be_client_h:'📱 Ready-to-use client config', be_client_s:'This appears only after a successful Health check, so you know the backend really works. Scan it with Hiddify / v2rayNG to connect through your backend, it already points at this panel\'s domain.', be_client_copy:'Copy link', be_client_qr:'Show big QR', be_client_iran:'In Iran, *.workers.dev is filtered, add a Custom Domain to the Worker and the QR will use it automatically.',
     px_h:'🛡️ Cloudflare CDN access', px_s:"How the Worker reaches Cloudflare's network. Choose a mode, enter the proxy, hit Verify to probe it, then Save. This is the single source of truth, configs pull from here.", px_mode:'Mode', px_proxyip:'PROXYIP address', px_addr:'Proxy address', px_verify:'Verify', px_more_h:'Find proxies', px_more_load:'Load list', px_country:'Country', px_pick:'Proxy', px_use:'Use selected', px_more_s:'Fetch public lists (PROXYIP from IRNova/Tools, SOCKS5/HTTP/HTTPS from proxifly), pick by country, then Use. The PROXYIP list is large (~10MB), give it a moment. Free public proxies vary in quality; test before relying on one.',
     wg_h:'🔐 WireGuard config', wg_s:'Build a WireGuard .conf to import into the WireGuard app. Defaults target Cloudflare WARP, edit any field as needed.', wg_loadwarp:'Load from WARP', wg_name:'Name', wg_addr:'Address', wg_dns:'DNS', wg_mtu:'MTU', wg_priv:'Private key', wg_pub:'Peer public key', wg_ep:'Endpoint', wg_port:'Port', wg_ka:'Keepalive', wg_build:'Build config', wg_copy:'Copy', wg_dl:'Download .conf', wg_qrbtn:'QR', wg_loaded:'Loaded from WARP', wg_nowarp:'No WARP config available, register WARP in Network & IPs first.',
     ab_panel:'Panel', ab_worker:'Worker', ab_desc:'Nova Proxy control panel, manage subscriptions, clean IPs, routing, WARP and DNS for your Cloudflare Worker.', ab_changelog:'Changelog', ab_links:'Links',
@@ -1840,7 +1875,7 @@ const I18N = {
     users_title:'Users & quotas', users_add:'+ Add user',
     ul_title:'User List', ul_add:'Add New User', col_account:'Account', col_data:'Data Usage', col_dur:'Duration', col_actions:'Actions',
     st_active:'Active', st_off:'Off', st_expired:'Expired', st_quota:'Quota full', u_extend:'Extend', u_edit:'Edit',
-    calls_h:'Voice & video calls (FaceTime, WhatsApp, Telegram)', calls_s:"Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable one of these so your users can call:", calls_free:'Free', calls_vps:'Needs a VPS', calls_warp_t:'WARP', calls_warp_d:'Adds the Nova-WARP node (Cloudflare WireGuard). Users pick it for calls and keep VLESS for browsing. Reliability from Iran varies.', calls_warp_btn:'Set up WARP', calls_be_t:'Backend mode', calls_be_d:'Route through your own Xray/sing-box server for full UDP, best call quality, also unlocks VMess. About $5/mo.', calls_be_btn:'Set up Backend',
+    calls_h:'Voice & video calls (FaceTime, WhatsApp, Telegram)', calls_s:"Calls use UDP, which the free Worker can't carry (a Cloudflare limit, not a bug). Enable WARP so your users can call:", calls_free:'Free', calls_warp_t:'WARP', calls_warp_d:'Adds the Nova-WARP node (Cloudflare WireGuard). Users pick it for calls and keep VLESS for browsing. Reliability from Iran varies.', calls_warp_btn:'Set up WARP',
     radar_bn_h:'Nova Radar', radar_bn_new:'New', radar_bn_s:'Find the fastest clean IP for any network, right in the browser. Your users get it on their own config page, and you can run it per user. Great when a network gets slow or an IP is blocked.', radar_bn_open:'Open Nova Radar', radar_bn_apply:'Scan & apply to this worker',
     wn_h:'What\'s new', wn_nametpl:'🏷️ Custom node names: name your nodes with a template ({FLAG} {COUNTRY} {CITY} {NAME} {DATE} {WORKER} and more) in Settings → Subscription. Your free-service brand stays on every node, so a reseller cannot strip it.', wn_traffic:'📊 Accurate Traffic today: live upload and download now record reliably, so the dashboard shows real usage.', wn_selfheal:'🩹 Self-healing links: if your Worker domain changes or a host goes down, configs fall back to a working address on their own, so users stay connected without touching anything.', wn_hub:'🛰️ Multi-Panel Hub: run several panels and push your settings to all of them at once from one place (Network Settings → Multi-Panel Hub).', wn_speed:'⚡ Faster relay: leaner upload and download (keep FAST_RELAY on).', wn_radar:'📡 Nova Radar: a built-in tool that finds Cloudflare IPs which are fast and open on a given network, right in the browser.', wn_peruser:'👤 Per-user routing: give each user their own clean IPs, proxy IPs, ports and fingerprint (Edit a user).', wn_free:'🎁 Free branding on every config: anti-resale, cannot be stripped by a reseller.', wn_ech:'🔒 ECH DoH presets and a fuller TLS fingerprint list (in Settings).', wn_calls:'📞 Calls that work: route UDP through free WARP so FaceTime, WhatsApp and Telegram calls connect (WARP section).', wn_mixed:'🧬 Mixed protocol: give people one link that uses both VLESS and Trojan, so if a filter blocks one, their app keeps working on the other (Protocol → Mixed).', wn_disguise:'🥷 Secret paths: move your panel and login to a private web address only you know, so no one can reach them by guessing /admin or /login (Network & IPs → Disguise).', wn_apply:'📥 Users fix slow connections themselves: one tap finds faster clean IPs for their network and applies them, so they do not have to message you (Nova Radar).', wn_mirror:'🔗 Backup link on GitHub: a permanent link and QR your users can save, so they still get configs if your domain is blocked. It refreshes on its own after any change (GitHub mirror).',
     col_name:'Name', col_quota:'Quota', col_used:'Used', col_expiry:'Expiry',
@@ -1848,7 +1883,7 @@ const I18N = {
     users_multi:'Multi-user', mu_warn:'Each user gets their own link, Copy / QR / Edit on their row, which enforces their quota and expiry. Your main subscription still works too.', set_maint:'Backup & maintenance',
     twofa_secret:'Authenticator key', twofa_code:'Enter the 6-digit code', twofa_confirm:'Confirm & turn on', twofa_dcode:'Authenticator code to turn it off', btn_disable2fa:'Disable 2FA',
     backup_s:'Export all settings (config + network + users) to a file, or restore from one. The file contains secrets, so keep it safe.', backup_export:'Export', backup_import:'Import',
-    warp_h:'WARP (Cloudflare WireGuard)', warp_en:'Enable WARP', warp_en_h:'add a WireGuard outbound to every config', warp_mode:'Mode', warp_ep:'Endpoint (if the default is blocked)', warp_ep_h:'If the default WARP endpoint is filtered, pick an alternative from the list (the same key works on every endpoint), then Save.', warp_amnezia:'AmneziaWG obfuscation', warp_amnezia_h:"junk packets so DPI can't fingerprint WARP", warp_calls:'📞 Make calls work (UDP via WARP)', warp_calls_h:'Routes voice/video calls (FaceTime, WhatsApp, Telegram) through free WARP so they work, while browsing stays on the fast proxy. Turns WARP on automatically; register an account above and keep AmneziaWG on for Iran.', warp_quick:'⚡ Set up calls in one tap', warp_quick_h:'One tap: registers a free WARP account and turns on WARP, AmneziaWG and calls, then saves. If calls don\'t connect on a network, pick an alternate endpoint below.', warp_acc:'WARP account', warp_register:'Register', warp_central:'From central pool', warp_lic:'WARP+ license (optional)', warp_apply:'Apply', warp_dl_lbl:'Download WARP configs (50 endpoints)', warp_blocked_tag:'If WARP is blocked', warp_blocked:'Try the alternate endpoints above one by one, they use ports Iran often leaves open (the default 2408 is the most filtered). If none connect, the official 1.1.1.1 app with the MASQUE protocol usually gets through when WireGuard is blocked, or run a Backend server (below) that carries calls over TCP.', wn_mode:'Noise mode', wn_count:'Noise count', wn_size:'Noise size', wn_delay:'Noise delay',
+    warp_h:'WARP (Cloudflare WireGuard)', warp_en:'Enable WARP', warp_en_h:'add a WireGuard outbound to every config', warp_mode:'Mode', warp_ep:'Endpoint (if the default is blocked)', warp_ep_h:'If the default WARP endpoint is filtered, pick an alternative from the list (the same key works on every endpoint), then Save.', warp_amnezia:'AmneziaWG obfuscation', warp_amnezia_h:"junk packets so DPI can't fingerprint WARP", warp_calls:'📞 Make calls work (UDP via WARP)', warp_calls_h:'Routes voice/video calls (FaceTime, WhatsApp, Telegram) through free WARP so they work, while browsing stays on the fast proxy. Turns WARP on automatically; register an account above and keep AmneziaWG on for Iran.', warp_quick:'⚡ Set up calls in one tap', warp_quick_h:'One tap: registers a free WARP account and turns on WARP, AmneziaWG and calls, then saves. If calls don\'t connect on a network, pick an alternate endpoint below.', warp_acc:'WARP account', warp_register:'Register', warp_central:'From central pool', warp_lic:'WARP+ license (optional)', warp_apply:'Apply', warp_dl_lbl:'Download WARP configs (50 endpoints)', warp_blocked_tag:'If WARP is blocked', warp_blocked:'Try the alternate endpoints above one by one, they use ports Iran often leaves open (the default 2408 is the most filtered). If none connect, the official 1.1.1.1 app with the MASQUE protocol usually gets through when WireGuard is blocked.', wn_mode:'Noise mode', wn_count:'Noise count', wn_size:'Noise size', wn_delay:'Noise delay',
     mirror_h:'GitHub mirror (blocked-domain failover)', mirror_intro:'Publishes your sub to a GitHub repo so users keep a permanent raw.githubusercontent.com link even if your domain gets filtered.', mirror_en:'Enable mirror', mirror_en_h:'auto-publishes after any change, plus hourly', mirror_repo:'Repo (owner/name)', mirror_branch:'Branch', mirror_path:'Path (optional)', mirror_token:'GitHub token', mirror_publish:'Publish now', mirror_links_h:'Permanent links (auto-updated)', mirror_links_h2:'Hand these to users. They keep working and refresh automatically after any change or new IP.',
     nav_cleanips:'Clean IPs', sub_cleanips:'Pick clean Cloudflare IPs, or speed-test for the fastest.',
     ci_speed_h:'📡 Nova Radar', ci_speed_s:'Find the fastest clean IPs for your current network and apply them automatically.', ci_src:'Source', ci_country:'Country', dc_h:'📍 Your datacenter', dc_s:"Where your connection currently exits Cloudflare's network.", dc_refresh:'Refresh', dc_unknown:'Unknown location', ct_h:'🧪 Connectivity test', ct_s:'Check which key sites are reachable through your current connection.', ct_run:'Run tests', ct_blocked:'blocked', ech_h:'🔒 About ECH', ech_q1:'What is ECH?', ech_a1:'ECH (Encrypted Client Hello) hides the website name (SNI) inside the TLS handshake, so a censor watching your traffic cannot see which site you are connecting to. It is a privacy upgrade over plain TLS.', ech_q2:'Is ECH blocked in Iran?', ech_a2:'Right now, yes. Iran filtering throttles or blocks ECH handshakes, so turning it on usually breaks the connection (no ping). Keep it OFF unless you have tested that your network passes it.', ech_q3:'How should I use ECH?', ech_a3:'Leave ECH off by default (it is off in the Resistance Policy). If filtering eases or you are on a network that allows it, you can enable it for extra privacy. Test your connection right after turning it on, and turn it back off if your ping disappears.', ci_port:'Ports', ci_keep:'Keep best', ci_total:'IPs to test', ci_speed_btn:'Speed test & apply best', ci_lat:'Latency', ci_jit:'Jitter', ci_loss:'Loss',
@@ -1861,6 +1896,12 @@ const I18N = {
     preset_h:'Preset rules', bp_cn:'Bypass China', bp_cn_h:'route China sites/IPs direct', bp_ru:'Bypass Russia', bp_ru_h:'route Russia sites/IPs direct', bk_malware:'Block malware', bk_phishing:'Block phishing', bk_crypto:'Block cryptominers', bk_geo_h:'needs client geodata',
     copied:'Copied to clipboard',
     tunnel_h:'🔗 Tunnel / Relay', tunnel_s:'Relay status and Google Apps Script address. Your relay runs on this Worker, and Google Apps Script connects to it to transfer data.', tunnel_loading:'Loading...', tunnel_address:'Relay Address', tunnel_address_h:'Use this address in your Google Apps Script Code.gs file as WORKER_URL:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Paste these lines at the top of your Code.gs file:',     tunnel_active:'Relay is active', tunnel_inactive:'Relay is inactive', tunnel_domain_note:'If you have configured custom domains (HOSTS) in Network Settings or Settings, the relay will automatically use the first domain from your list. Otherwise it uses the default workers.dev address.',
+    tunnel_on:'Active', tunnel_off:'Inactive', tunnel_verified:'Verified', tunnel_unverified:'Not verified',
+    tunnel_step1_h:'Enable relay', tunnel_step1_s:'Generate a strong key and switch the relay on. This Worker becomes your relay endpoint.', tunnel_enable:'Enable relay / Generate key', tunnel_enabling:'Enabling…', tunnel_generated:'Relay enabled, key generated', tunnel_env_note:'The key comes from your RELAY_AUTH_KEY environment variable.',
+    tunnel_step2_h:'Deploy the script', tunnel_step2_s:'This is your ready-made relay script, already filled with your key and address. Copy it into a new Google Apps Script project.', tunnel_g1:'Open script.google.com and start a New project.', tunnel_g2:'Delete the sample code, then paste the script above.', tunnel_g3:'Click Deploy, choose New deployment, then Web app.', tunnel_g4:'Set Execute as: Me and Who has access: Anyone.', tunnel_g5:'Click Deploy, then Authorize access and allow the permissions.', tunnel_g6:'Copy the Web app URL that ends with /exec.', tunnel_open_gas:'Open Google Apps Script',
+    tunnel_step3_h:'Verify the connection', tunnel_step3_s:'Paste your Web app URL below. We test the whole chain from this panel through the Worker to your script.', tunnel_verify:'Verify', tunnel_verifying:'Verifying…', tunnel_verify_ok:'Connection verified', tunnel_verify_fail:'Verification failed', tunnel_url_required:'Paste your Web app URL first.',
+    tunnel_disable:'Disable relay', tunnel_disabling:'Disabling…', tunnel_disabled_ok:'Relay disabled', tunnel_env_override:'RELAY_AUTH_KEY is set in your environment, so the relay stays on until you remove that variable.',
+    tunnel_intro:"The relay makes your users' traffic look like normal Google traffic, so Nova keeps working even where the Worker domain itself is blocked. Your panel sets up the key for you. You only deploy a small Google Apps Script and paste its link back here.", tunnel_propagation:'Enabling, disabling, or changing the key takes effect within a few seconds.', tunnel_key_locked:'The key below is already filled into the script for you. Please do not change it.', tunnel_access_warn:'Important: when you deploy, set Who has access to Anyone. If it is set to anything else, the relay will return errors.', tunnel_unverified_help:'Google may show a screen that says it has not verified this app. That is normal, because this is your own script. Click Advanced, then Go to project, then Allow. The only permission it asks for is to connect to an external service.', tunnel_exec_help:'The Web app URL you paste must end in /exec. If it ends in anything else, copy the URL again from the deployment screen.', tunnel_security_note:'Treat the key and the script link like a password and keep them private. Anyone who has both can use your relay.', tunnel_verify_help:'A green check means the whole path works, from this panel through the Worker to your script. If it stays red, check three things: Who has access is set to Anyone, the URL ends in /exec, and you pasted the latest script and re-deployed it.', tunnel_disable_note:'The relay stops within a few seconds after you turn it off.',
     s_silent:'Silent alerts', s_silent_d:'Suppress Telegram notifications for normal events (fetch, login, save)',
     apikey_title:'API Keys', apikey_desc:'Use API keys to authenticate admin requests via Authorization header.', apikey_none:'No API keys yet', apikey_name_ph:'Key name (e.g. deploy)', btn_create:'Create', btn_revoke:'Revoke',
     panic_title:'Panic Mode', panic_desc:'Emergency stop: randomizes API route and pauses all proxy/subscriptions. Use /resume in Telegram to restore.', btn_panic:'⚠ Activate Panic Mode',
@@ -1878,7 +1919,6 @@ const I18N = {
     nav_wireguard:'WireGuard', nav_about:'О панели', nav_proxy:'Прокси / CDN', nav_corenode:'Основной узел', sub_wireguard:'Создайте конфигурацию WireGuard для WARP или произвольного пира.', sub_about:'Версия панели, список изменений и ссылки.', sub_proxy:'Как Worker подключается к Cloudflare: PROXYIP / SOCKS5 / HTTP / HTTPS / TURN / SSTP.', sub_corenode:'Ваш узел на каждом TLS-порту Cloudflare, на самом домене.',
     cn_h:'🧩 Основной узел', cn_s:'Ваш узел на каждом TLS-порту Cloudflare, использующий домен Worker напрямую, отдельно от подписки. Скопируйте или отсканируйте любой порт.', cn_copy:'Копировать',
     dg_h:'🥷 Маскировка и секретные пути (для продвинутых)', dg_s:'Скрывает панель от цензоров, которые определяют сам Worker по цифровому отпечатку. Когда включено, ваша панель, вход и подписка перемещаются на выбранные вами секретные пути, а обращение к стандартным /admin или /login просто возвращает обычную страницу. Оставьте ВЫКЛ., чтобы сохранить обычные /admin, /login, /sub.', dg_en:'Включить маскировку', dg_en_h:'использовать секретные пути ниже вместо /admin, /login, /sub', dg_admin:'Путь администратора', dg_login:'Путь входа', dg_sub:'Путь подписки', dg_warn_tag:'Важно', dg_warn:'Запишите свой секретный путь администратора перед сохранением: после сохранения панель будет доступна ТОЛЬКО по адресу /your-admin-path. (Потеряли доступ? Добавьте переменную Worker PANEL_RECOVERY=1, чтобы отключить это и снова открыть /admin.) Допустимые символы: a-z, 0-9, дефис, подчёркивание. Оставьте поле пустым, чтобы сохранить имя по умолчанию.',
-    be_h:'🛰 Режим бэкенда (для продвинутых)', be_s:'Перенаправляет трафик на ваш собственный сервер Xray/sing-box вместо обработки в Worker. Это ЕДИНСТВЕННЫЙ способ получить VMess и работающие голосовые/видеозвонки (UDP), но для этого нужно поднять сервер бэкенда (VPS). Оставьте ВЫКЛ., чтобы использовать обычный бесплатный режим внутри Worker (VLESS/Trojan).', be_en:'Включить режим бэкенда', be_en_h:'когда включено, Nova соединяется с бэкендом ниже', be_url:'URL бэкенда', be_check:'Проверка работоспособности', be_quick:'⚡ Быстрая установка (запустите на вашем VPS от root)', be_quick_h:'Вставьте эту одну строку на ваш VPS по SSH. UUID вашей панели уже встроен в команду, поэтому бэкенд совпадёт автоматически, без ручных действий. Скрипт устанавливает Xray, записывает конфигурацию, открывает файрвол, спрашивает ваш домен с серым облаком и выводит точный URL бэкенда для вставки выше. Учётные данные вашего VPS никуда не отправляются, вы запускаете команду сами на своём сервере.', be_manage:'🛠 Сменить порт / удалить бэкенд', be_manage_port:'Смена порта: перезапустите установщик с портом, разрешённым Cloudflare (8080, 8880, 2052, 2082, 2086, 2095). Порты вроде 2076/3080/10000 НЕ работают. Измените порт в команде, затем выполните её на вашем VPS:', be_manage_remove:'Удаление бэкенда с вашего VPS: останавливает Xray и удаляет его. (Чтобы перестать использовать его в панели, просто выключите переключатель выше; QR клиента исчезнет.) Запустите на вашем VPS от root:', be_warn:'✅ Контрольный список настройки (всё обязательно): 1) Выполните команду установки на вашем VPS, она настроит Xray. 2) Порт бэкенда должен быть разрешён Cloudflare: 8080, 8880, 2052, 2082, 2086, 2095 (НЕ 10000). 3) URL бэкенда должен использовать ДОМЕН, а не «голый» IP; в Cloudflare DNS добавьте A-запись (например, vps.yourdomain.com → IP вашего VPS) в режиме DNS-only (СЕРОЕ облако). 4) UUID Xray на VPS должен совпадать с UUID этой панели. 5) Нажмите «Проверка работоспособности» для проверки, затем отсканируйте QR ниже. («Проверка работоспособности» выполняет реальный тест, зелёная ✓ означает, что всё работает.)', be_client_h:'📱 Готовая конфигурация клиента', be_client_s:'Появляется только после успешной проверки работоспособности, так что вы уверены: бэкенд действительно работает. Отсканируйте её в Hiddify / v2rayNG, чтобы подключиться через ваш бэкенд, она уже указывает на домен этой панели.', be_client_copy:'Копировать ссылку', be_client_qr:'Показать большой QR', be_client_iran:'В Иране *.workers.dev фильтруется; добавьте собственный домен к Worker, и QR будет использовать его автоматически.',
     px_h:'🛡️ Доступ к CDN Cloudflare', px_s:'Как Worker подключается к сети Cloudflare. Выберите режим, введите прокси, нажмите «Проверить» для теста, затем «Сохранить». Это единственный источник истины, конфигурации берут данные отсюда.', px_mode:'Режим', px_proxyip:'Адрес PROXYIP', px_addr:'Адрес прокси', px_verify:'Проверить', px_more_h:'Найти прокси', px_more_load:'Загрузить список', px_country:'Страна', px_pick:'Прокси', px_use:'Использовать выбранный', px_more_s:'Загрузите публичные списки (PROXYIP из IRNova/Tools, SOCKS5/HTTP/HTTPS из proxifly), выберите по стране, затем нажмите «Использовать». Список PROXYIP большой (около 10 МБ), подождите немного. Качество бесплатных публичных прокси разное; проверьте, прежде чем полагаться на какой-либо.',
     wg_h:'🔐 Конфигурация WireGuard', wg_s:'Создайте файл .conf WireGuard для импорта в приложение WireGuard. Значения по умолчанию рассчитаны на Cloudflare WARP, при необходимости измените любое поле.', wg_loadwarp:'Загрузить из WARP', wg_name:'Имя', wg_addr:'Адрес', wg_dns:'DNS', wg_mtu:'MTU', wg_priv:'Закрытый ключ', wg_pub:'Открытый ключ пира', wg_ep:'Конечная точка', wg_port:'Порт', wg_ka:'Keepalive', wg_build:'Создать конфигурацию', wg_copy:'Копировать', wg_dl:'Скачать .conf', wg_qrbtn:'QR', wg_loaded:'Загружено из WARP', wg_nowarp:'Конфигурация WARP недоступна, сначала зарегистрируйте WARP в разделе «Сеть и IP».',
     ab_panel:'Панель', ab_worker:'Worker', ab_desc:'Панель управления Nova Proxy: управляйте подписками, чистыми IP, маршрутизацией, WARP и DNS для вашего Cloudflare Worker.', ab_changelog:'Список изменений', ab_links:'Ссылки',
@@ -1958,7 +1998,7 @@ const I18N = {
     users_title:'Пользователи и квоты', users_add:'+ Добавить пользователя',
     ul_title:'Список пользователей', ul_add:'Добавить нового пользователя', col_account:'Учётная запись', col_data:'Использование данных', col_dur:'Срок', col_actions:'Действия',
     st_active:'Активен', st_off:'Выкл.', st_expired:'Истёк', st_quota:'Квота исчерпана', u_extend:'Продлить', u_edit:'Изменить',
-    calls_h:'Голосовые и видеозвонки (FaceTime, WhatsApp, Telegram)', calls_s:'Звонки используют UDP, который бесплатный Worker не может передавать (это ограничение Cloudflare, а не ошибка). Включите один из этих вариантов, чтобы ваши пользователи могли звонить:', calls_free:'Бесплатно', calls_vps:'Нужен VPS', calls_warp_t:'WARP', calls_warp_d:'Добавляет узел Nova-WARP (Cloudflare WireGuard). Пользователи выбирают его для звонков и оставляют VLESS для просмотра сайтов. Надёжность из Ирана бывает разной.', calls_warp_btn:'Настроить WARP', calls_be_t:'Режим бэкенда', calls_be_d:'Направлять через ваш собственный сервер Xray/sing-box для полноценного UDP, лучшего качества звонков, также открывает VMess. Около $5 в месяц.', calls_be_btn:'Настроить бэкенд',
+    calls_h:'Голосовые и видеозвонки (FaceTime, WhatsApp, Telegram)', calls_s:'Звонки используют UDP, который бесплатный Worker не может передавать (это ограничение Cloudflare, а не ошибка). Включите WARP, чтобы ваши пользователи могли звонить:', calls_free:'Бесплатно', calls_warp_t:'WARP', calls_warp_d:'Добавляет узел Nova-WARP (Cloudflare WireGuard). Пользователи выбирают его для звонков и оставляют VLESS для просмотра сайтов. Надёжность из Ирана бывает разной.', calls_warp_btn:'Настроить WARP',
     radar_bn_h:'Nova Radar', radar_bn_new:'Новое', radar_bn_s:'Найдите самый быстрый чистый IP для любой сети прямо в браузере. Ваши пользователи получают его на своей странице конфигурации, а вы можете запускать его для каждого пользователя. Отлично подходит, когда сеть замедляется или IP заблокирован.', radar_bn_open:'Открыть Nova Radar', radar_bn_apply:'Сканировать и применить к этому Worker',
     wn_h:'Что нового', wn_nametpl:'🏷️ Свои имена узлов: называйте узлы по шаблону ({FLAG} {COUNTRY} {CITY} {NAME} {DATE} {WORKER} и другим) в «Настройки → Подписка». Бренд вашего бесплатного сервиса остаётся на каждом узле, поэтому перепродавец не сможет его убрать.', wn_traffic:'📊 Точный «Трафик за сегодня»: отдача и загрузка теперь записываются в реальном времени надёжно, поэтому панель показывает реальное использование.', wn_selfheal:'🩹 Самовосстанавливающиеся ссылки: если домен вашего Worker меняется или хост выходит из строя, конфигурации сами переключаются на рабочий адрес, поэтому пользователи остаются на связи, ничего не меняя.', wn_hub:'🛰️ Центр мультипанелей: запускайте несколько панелей и передавайте свои настройки на все сразу из одного места («Настройки сети → Центр мультипанелей»).', wn_speed:'⚡ Более быстрый ретранслятор: облегчённая отдача и загрузка (держите FAST_RELAY включённым).', wn_radar:'📡 Nova Radar: встроенный инструмент, который находит IP-адреса Cloudflare, быстрые и открытые в данной сети, прямо в браузере.', wn_peruser:'👤 Индивидуальная маршрутизация: назначайте каждому пользователю свои чистые IP, прокси-IP, порты и отпечаток (изменение пользователя).', wn_free:'🎁 Бесплатный брендинг в каждой конфигурации: защита от перепродажи, перепродавец не сможет его убрать.', wn_ech:'🔒 Пресеты ECH DoH и более полный список отпечатков TLS (в «Настройках»).', wn_calls:'📞 Работающие звонки: направляйте UDP через бесплатный WARP, чтобы звонки FaceTime, WhatsApp и Telegram проходили (раздел WARP).', wn_mixed:'🧬 Смешанный протокол: дайте людям одну ссылку, использующую и VLESS, и Trojan, чтобы, если фильтр блокирует один, приложение продолжало работать на другом («Протокол → Смешанный»).', wn_disguise:'🥷 Секретные пути: перенесите панель и вход на приватный веб-адрес, известный только вам, чтобы никто не мог попасть на них, угадывая /admin или /login («Сеть и IP → Маскировка»).', wn_apply:'📥 Пользователи сами исправляют медленные соединения: одно касание находит более быстрые чистые IP для их сети и применяет их, поэтому им не нужно писать вам (Nova Radar).', wn_mirror:'🔗 Резервная ссылка на GitHub: постоянная ссылка и QR, которые пользователи могут сохранить, чтобы получать конфигурации, даже если ваш домен заблокирован. Она сама обновляется после любых изменений (зеркало на GitHub).',
     col_name:'Имя', col_quota:'Квота', col_used:'Использовано', col_expiry:'Срок действия',
@@ -1966,7 +2006,7 @@ const I18N = {
     users_multi:'Многопользовательский режим', mu_warn:'Каждый пользователь получает свою ссылку (Копировать / QR / Изменить в его строке), которая применяет его квоту и срок действия. Ваша основная подписка тоже продолжает работать.', set_maint:'Резервное копирование и обслуживание',
     twofa_secret:'Ключ аутентификатора', twofa_code:'Введите 6-значный код', twofa_confirm:'Подтвердить и включить', twofa_dcode:'Код аутентификатора для отключения', btn_disable2fa:'Отключить 2FA',
     backup_s:'Экспортируйте все настройки (конфигурация + сеть + пользователи) в файл или восстановите из него. Файл содержит секретные данные, поэтому храните его в безопасности.', backup_export:'Экспорт', backup_import:'Импорт',
-    warp_h:'WARP (Cloudflare WireGuard)', warp_en:'Включить WARP', warp_en_h:'добавить исходящее подключение WireGuard в каждую конфигурацию', warp_mode:'Режим', warp_ep:'Конечная точка (если стандартная заблокирована)', warp_ep_h:'Если стандартная конечная точка WARP фильтруется, выберите альтернативу из списка (один и тот же ключ работает на любой конечной точке), затем нажмите «Сохранить».', warp_amnezia:'Обфускация AmneziaWG', warp_amnezia_h:'мусорные пакеты, чтобы DPI не мог определить WARP по отпечатку', warp_calls:'📞 Заставить звонки работать (UDP через WARP)', warp_calls_h:'Направляет голосовые/видеозвонки (FaceTime, WhatsApp, Telegram) через бесплатный WARP, чтобы они работали, а просмотр сайтов остаётся на быстром прокси. Включает WARP автоматически; зарегистрируйте учётную запись выше и держите AmneziaWG включённым для Ирана.', warp_quick:'⚡ Настроить звонки в одно касание', warp_quick_h:'Одно касание: регистрирует бесплатную учётную запись WARP и включает WARP, AmneziaWG и звонки, затем сохраняет. Если звонки не подключаются в сети, выберите альтернативную конечную точку ниже.', warp_acc:'Учётная запись WARP', warp_register:'Зарегистрировать', warp_central:'Из центрального пула', warp_lic:'Лицензия WARP+ (необязательно)', warp_apply:'Применить', warp_dl_lbl:'Скачать конфигурации WARP (50 конечных точек)', warp_blocked_tag:'Если WARP заблокирован', warp_blocked:'Попробуйте альтернативные конечные точки выше по очереди, они используют порты, которые Иран часто оставляет открытыми (стандартный 2408 фильтруется чаще всего). Если ни одна не подключается, официальное приложение 1.1.1.1 с протоколом MASQUE обычно проходит, когда WireGuard заблокирован, либо поднимите сервер бэкенда (ниже), который передаёт звонки по TCP.', wn_mode:'Режим шума', wn_count:'Количество шума', wn_size:'Размер шума', wn_delay:'Задержка шума',
+    warp_h:'WARP (Cloudflare WireGuard)', warp_en:'Включить WARP', warp_en_h:'добавить исходящее подключение WireGuard в каждую конфигурацию', warp_mode:'Режим', warp_ep:'Конечная точка (если стандартная заблокирована)', warp_ep_h:'Если стандартная конечная точка WARP фильтруется, выберите альтернативу из списка (один и тот же ключ работает на любой конечной точке), затем нажмите «Сохранить».', warp_amnezia:'Обфускация AmneziaWG', warp_amnezia_h:'мусорные пакеты, чтобы DPI не мог определить WARP по отпечатку', warp_calls:'📞 Заставить звонки работать (UDP через WARP)', warp_calls_h:'Направляет голосовые/видеозвонки (FaceTime, WhatsApp, Telegram) через бесплатный WARP, чтобы они работали, а просмотр сайтов остаётся на быстром прокси. Включает WARP автоматически; зарегистрируйте учётную запись выше и держите AmneziaWG включённым для Ирана.', warp_quick:'⚡ Настроить звонки в одно касание', warp_quick_h:'Одно касание: регистрирует бесплатную учётную запись WARP и включает WARP, AmneziaWG и звонки, затем сохраняет. Если звонки не подключаются в сети, выберите альтернативную конечную точку ниже.', warp_acc:'Учётная запись WARP', warp_register:'Зарегистрировать', warp_central:'Из центрального пула', warp_lic:'Лицензия WARP+ (необязательно)', warp_apply:'Применить', warp_dl_lbl:'Скачать конфигурации WARP (50 конечных точек)', warp_blocked_tag:'Если WARP заблокирован', warp_blocked:'Попробуйте альтернативные конечные точки выше по очереди, они используют порты, которые Иран часто оставляет открытыми (стандартный 2408 фильтруется чаще всего). Если ни одна не подключается, официальное приложение 1.1.1.1 с протоколом MASQUE обычно проходит, когда WireGuard заблокирован.', wn_mode:'Режим шума', wn_count:'Количество шума', wn_size:'Размер шума', wn_delay:'Задержка шума',
     mirror_h:'Зеркало на GitHub (резервирование при блокировке домена)', mirror_intro:'Публикует вашу подписку в репозиторий GitHub, чтобы у пользователей оставалась постоянная ссылка raw.githubusercontent.com, даже если ваш домен попадёт под фильтрацию.', mirror_en:'Включить зеркало', mirror_en_h:'автопубликация после любых изменений, а также ежечасно', mirror_repo:'Репозиторий (владелец/имя)', mirror_branch:'Ветка', mirror_path:'Путь (необязательно)', mirror_token:'Токен GitHub', mirror_publish:'Опубликовать сейчас', mirror_links_h:'Постоянные ссылки (обновляются автоматически)', mirror_links_h2:'Раздайте их пользователям. Они продолжают работать и обновляются автоматически после любых изменений или появления нового IP.',
     nav_cleanips:'Чистые IP', sub_cleanips:'Выберите чистые IP Cloudflare или запустите тест скорости для поиска самых быстрых.',
     ci_speed_h:'📡 Nova Radar', ci_speed_s:'Найдите самые быстрые чистые IP для вашей текущей сети и примените их автоматически.', ci_src:'Источник', ci_country:'Страна', dc_h:'📍 Ваш дата-центр', dc_s:'Где ваше соединение в данный момент выходит из сети Cloudflare.', dc_refresh:'Обновить', dc_unknown:'Неизвестное местоположение', ct_h:'🧪 Тест соединения', ct_s:'Проверьте, какие ключевые сайты доступны через ваше текущее соединение.', ct_run:'Запустить тесты', ct_blocked:'заблокировано', ech_h:'🔒 Об ECH', ech_q1:'Что такое ECH?', ech_a1:'ECH (Encrypted Client Hello) скрывает имя сайта (SNI) внутри рукопожатия TLS, поэтому цензор, наблюдающий за вашим трафиком, не видит, к какому сайту вы подключаетесь. Это улучшение приватности по сравнению с обычным TLS.', ech_q2:'Заблокирован ли ECH в Иране?', ech_a2:'Сейчас да. Иранская фильтрация ограничивает или блокирует рукопожатия ECH, поэтому его включение обычно прерывает соединение (нет пинга). Держите его ВЫКЛ., пока не убедитесь, что ваша сеть его пропускает.', ech_q3:'Как мне использовать ECH?', ech_a3:'По умолчанию оставьте ECH выключенным (он выключен в «Политике устойчивости»). Если фильтрация ослабнет или вы в сети, которая его разрешает, можете включить его для дополнительной приватности. Проверьте соединение сразу после включения и выключите обратно, если пинг пропадёт.', ci_port:'Порты', ci_keep:'Оставить лучшие', ci_total:'IP для проверки', ci_speed_btn:'Тест скорости и применить лучшие', ci_lat:'Задержка', ci_jit:'Джиттер', ci_loss:'Потери',
@@ -1979,6 +2019,12 @@ const I18N = {
     preset_h:'Готовые правила', bp_cn:'Обход Китая', bp_cn_h:'направлять китайские сайты/IP напрямую', bp_ru:'Обход России', bp_ru_h:'направлять российские сайты/IP напрямую', bk_malware:'Блокировать вредоносное ПО', bk_phishing:'Блокировать фишинг', bk_crypto:'Блокировать криптомайнеры', bk_geo_h:'требует геоданные клиента',
     copied:'Скопировано в буфер обмена',
     tunnel_h:'🔗 Туннель / Ретранслятор', tunnel_s:'Состояние ретранслятора и адрес Google Apps Script. Ваш ретранслятор работает на этом Worker, а Google Apps Script подключается к нему для передачи данных.', tunnel_loading:'Загрузка...', tunnel_address:'Адрес ретранслятора', tunnel_address_h:'Используйте этот адрес в файле Code.gs вашего Google Apps Script как WORKER_URL:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Вставьте эти строки в начало вашего файла Code.gs:',     tunnel_active:'Ретранслятор активен', tunnel_inactive:'Ретранслятор неактивен', tunnel_domain_note:'Если вы настроили свои домены (HOSTS) в «Настройках сети» или «Настройках», ретранслятор автоматически будет использовать первый домен из вашего списка. Иначе он использует стандартный адрес workers.dev.',
+    tunnel_on:'Активен', tunnel_off:'Неактивен', tunnel_verified:'Проверено', tunnel_unverified:'Не проверено',
+    tunnel_step1_h:'Включить ретранслятор', tunnel_step1_s:'Сгенерируйте надёжный ключ и включите ретранслятор. Этот Worker станет вашей конечной точкой ретранслятора.', tunnel_enable:'Включить ретранслятор / Создать ключ', tunnel_enabling:'Включение…', tunnel_generated:'Ретранслятор включён, ключ создан', tunnel_env_note:'Ключ берётся из вашей переменной окружения RELAY_AUTH_KEY.',
+    tunnel_step2_h:'Разверните скрипт', tunnel_step2_s:'Это ваш готовый скрипт ретранслятора, уже с вашим ключом и адресом. Скопируйте его в новый проект Google Apps Script.', tunnel_g1:'Откройте script.google.com и создайте New project.', tunnel_g2:'Удалите пример кода и вставьте скрипт выше.', tunnel_g3:'Нажмите Deploy, выберите New deployment, затем Web app.', tunnel_g4:'Укажите Execute as: Me и Who has access: Anyone.', tunnel_g5:'Нажмите Deploy, затем Authorize access и разрешите доступ.', tunnel_g6:'Скопируйте URL веб-приложения, оканчивающийся на /exec.', tunnel_open_gas:'Открыть Google Apps Script',
+    tunnel_step3_h:'Проверьте соединение', tunnel_step3_s:'Вставьте URL веб-приложения ниже. Мы проверим всю цепочку от этой панели через Worker до вашего скрипта.', tunnel_verify:'Проверить', tunnel_verifying:'Проверка…', tunnel_verify_ok:'Соединение проверено', tunnel_verify_fail:'Проверка не пройдена', tunnel_url_required:'Сначала вставьте URL веб-приложения.',
+    tunnel_disable:'Отключить ретранслятор', tunnel_disabling:'Отключение…', tunnel_disabled_ok:'Ретранслятор отключён', tunnel_env_override:'RELAY_AUTH_KEY задан в вашем окружении, поэтому ретранслятор останется включённым, пока вы не удалите эту переменную.',
+    tunnel_intro:'Ретранслятор делает трафик ваших пользователей похожим на обычный трафик Google, поэтому Nova продолжает работать даже там, где сам домен Worker заблокирован. Панель сама настраивает ключ. Вам нужно только развернуть небольшой скрипт Google Apps Script и вставить его ссылку обратно сюда.', tunnel_propagation:'Включение, отключение или смена ключа вступают в силу за несколько секунд.', tunnel_key_locked:'Ключ ниже уже подставлен в скрипт за вас. Пожалуйста, не меняйте его.', tunnel_access_warn:'Важно: при развёртывании установите Who has access на Anyone. Если выбрано что-то другое, ретранслятор будет возвращать ошибки.', tunnel_unverified_help:'Google может показать экран о том, что приложение не проверено. Это нормально, потому что это ваш собственный скрипт. Нажмите Advanced, затем Go to project, затем Allow. Единственное разрешение, которое запрашивается, это подключение к внешнему сервису.', tunnel_exec_help:'Адрес Web app, который вы вставляете, должен оканчиваться на /exec. Если он оканчивается иначе, скопируйте адрес заново с экрана развёртывания.', tunnel_security_note:'Относитесь к ключу и ссылке на скрипт как к паролю и держите их в секрете. Любой, у кого есть и то и другое, может пользоваться вашим ретранслятором.', tunnel_verify_help:'Зелёная галочка означает, что весь путь работает, от этой панели через Worker до вашего скрипта. Если галочка остаётся красной, проверьте три вещи: для Who has access выбрано Anyone, адрес оканчивается на /exec, и вы вставили последнюю версию скрипта и развернули её заново.', tunnel_disable_note:'После отключения ретранслятор перестаёт работать в течение нескольких секунд.',
     s_silent:'Тихие оповещения', s_silent_d:'Подавлять уведомления Telegram для обычных событий (получение, вход, сохранение)',
     apikey_title:'API-ключи', apikey_desc:'Используйте API-ключи для аутентификации запросов администратора через заголовок Authorization.', apikey_none:'API-ключей пока нет', apikey_name_ph:'Имя ключа (например, deploy)', btn_create:'Создать', btn_revoke:'Отозвать',
     panic_title:'Режим паники', panic_desc:'Аварийная остановка: делает маршрут API случайным и приостанавливает весь прокси/подписки. Используйте /resume в Telegram для восстановления.', btn_panic:'⚠ Активировать режим паники',
@@ -1996,7 +2042,6 @@ const I18N = {
     nav_wireguard:'وایرگارد', nav_about:'درباره', nav_proxy:'پروکسی / CDN', nav_corenode:'نود اصلی', sub_wireguard:'ساخت کانفیگ وایرگارد برای WARP یا پیر دلخواه.', sub_about:'نسخهٔ پنل، تغییرات و پیوندها.', sub_proxy:'نحوه‌ی دسترسی ورکر به کلودفلر, PROXYIP / SOCKS5 / HTTP / HTTPS / TURN / SSTP.', sub_corenode:'نود شما روی همه‌ی پورت‌های TLS کلودفلر، روی خود دامنه.',
     cn_h:'🧩 نود اصلی', cn_s:'نود شما روی همه‌ی پورت‌های TLS کلودفلر، با استفاده‌ی مستقیم از دامنه‌ی ورکر, جدا از اشتراک. هر پورت را کپی یا اسکن کنید.', cn_copy:'کپی',
     dg_h:'🥷 استتار و مسیرهای مخفی (پیشرفته)', dg_s:'پنل را از سانسورچی‌هایی که خودِ ورکر را شناسایی می‌کنند پنهان کن. وقتی روشن باشد، پنل، ورود و اشتراک به مسیرهای مخفی دلخواه تو منتقل می‌شوند, و درخواست به /admin یا /login پیش‌فرض فقط یک صفحهٔ عمومی برمی‌گرداند. برای حفظ مسیرهای معمول /admin، /login، /sub خاموش بگذار.', dg_en:'فعال‌سازی استتار', dg_en_h:'به‌جای /admin، /login، /sub از مسیرهای مخفی زیر استفاده کن', dg_admin:'مسیر پنل', dg_login:'مسیر ورود', dg_sub:'مسیر اشتراک', dg_warn_tag:'مهم', dg_warn:'قبل از ذخیره، مسیر مخفی پنل را یادداشت کن, بعد از ذخیره، پنل فقط از /مسیر-پنل-تو در دسترس است. (قفل شدی؟ متغیر PANEL_RECOVERY=1 روی ورکر بگذار تا استتار خاموش شود و دوباره به /admin برسی.) کاراکترهای مجاز: a-z، ۰-۹، خط تیره، زیرخط. هر فیلد را خالی بگذاری، همان نام پیش‌فرض می‌ماند.',
-    be_h:'🛰 حالت backend (پیشرفته)', be_s:'ترافیک را به‌جای پردازش در ورکر، به سرور Xray/sing-box خودت بفرست. این تنها راه داشتن VMess و تماس صوتی/تصویری (UDP) است, ولی نیاز به یک سرور backend (VPS) داری. برای حالت رایگانِ معمولی (VLESS/Trojan) خاموش بگذار.', be_en:'فعال‌سازی حالت backend', be_en_h:'وقتی روشن باشد، Nova به backend زیر پل می‌زند', be_url:'آدرس backend', be_check:'بررسی سلامت', be_quick:'⚡ نصب سریع (روی VPS خودت با root اجرا کن)', be_quick_h:'این یک خط را از طریق SSH روی VPS بچسبان. UUIDِ پنل از قبل داخل دستور قرار گرفته، پس backend به‌طور خودکار با پنل هماهنگ می‌شود, بدون مرحلهٔ دستی. Xray را نصب می‌کند، کانفیگ را می‌نویسد، فایروال را باز می‌کند، نام دامنهٔ ابرخاکستری را می‌پرسد و آدرس backend دقیق را برای گذاشتن در بالا چاپ می‌کند. اطلاعات VPS تو هیچ‌جا فرستاده نمی‌شود, خودت روی سرور خودت اجرایش می‌کنی.', be_manage:'🛠 تغییر پورت / حذف backend', be_manage_port:'تغییر پورت, نصب‌کننده را با یک پورت مجاز Cloudflare دوباره اجرا کن (8080, 8880, 2052, 2082, 2086, 2095). پورت‌هایی مثل 2076/3080/10000 کار نمی‌کنند. پورت را در دستور ویرایش کن و روی VPS اجرا کن:', be_manage_remove:'حذف backend از روی VPS, Xray را متوقف و پاک می‌کند. (برای قطع استفاده در پنل، فقط کلید بالا را خاموش کن؛ QR کلاینت محو می‌شود.) روی VPS با root اجرا کن:', be_warn:'✅ چک‌لیست راه‌اندازی (همه لازم است): ۱) دستور نصب را روی VPS اجرا کن, Xray را نصب می‌کند. ۲) پورت backend باید جزو پورت‌های مجاز Cloudflare باشد: 8080, 8880, 2052, 2082, 2086, 2095 (نه 10000). ۳) آدرس backend باید با دامنه باشد، نه IP خام, در Cloudflare DNS یک رکورد A بساز (مثل vps.yourdomain.com → IP سرورت) با حالت DNS-only (ابر خاکستری). ۴) UUIDِ Xray روی VPS باید با UUIDِ این پنل یکی باشد. ۵) دکمهٔ «بررسی سلامت» را بزن تا تأیید شود، بعد QR زیر را اسکن کن. (دکمهٔ «بررسی سلامت» یک تست واقعی اجرا می‌کند, تیک سبز ✓ یعنی کار می‌کند.)', be_client_h:'📱 کانفیگ آمادهٔ کلاینت', be_client_s:'این فقط بعد از «بررسی سلامت» موفق نمایش داده می‌شود تا مطمئن شوی backend واقعاً کار می‌کند. آن را با هیدیفای / v2rayNG اسکن کن تا از طریق backend وصل شوی, همین حالا به دامنهٔ این پنل اشاره می‌کند.', be_client_copy:'کپی لینک', be_client_qr:'نمایش QR بزرگ', be_client_iran:'در ایران، *.workers.dev فیلتر است, یک دامنهٔ اختصاصی به ورکر اضافه کن تا QR خودکار از آن استفاده کند.',
     px_h:'🛡️ دسترسی CDN کلودفلر', px_s:'نحوه‌ی دسترسی ورکر به شبکه‌ی کلودفلر. یک حالت را انتخاب کنید، پروکسی را وارد کنید، با Verify بررسی کنید و سپس ذخیره کنید. این تنها منبع معتبر است, کانفیگ‌ها از همین‌جا می‌خوانند.', px_mode:'حالت', px_proxyip:'آدرس PROXYIP', px_addr:'آدرس پروکسی', px_verify:'بررسی', px_more_h:'یافتن پروکسی', px_more_load:'دریافت فهرست', px_country:'کشور', px_pick:'پروکسی', px_use:'استفاده از انتخاب', px_more_s:'فهرست‌های عمومی (PROXYIP از IRNova/Tools و SOCKS5/HTTP/HTTPS از proxifly) را دریافت کنید، بر اساس کشور انتخاب و سپس استفاده کنید. فهرست PROXYIP بزرگ است (~۱۰مگابایت). کیفیت پروکسی‌های عمومی متغیر است؛ قبل از استفاده تست کنید.',
     wg_h:'🔐 کانفیگ وایرگارد', wg_s:'یک فایل .conf وایرگارد بسازید تا در برنامهٔ WireGuard وارد کنید. مقادیر پیش‌فرض برای WARP کلودفلر تنظیم شده‌اند, در صورت نیاز ویرایش کنید.', wg_loadwarp:'دریافت از WARP', wg_name:'نام', wg_addr:'آدرس', wg_dns:'DNS', wg_mtu:'MTU', wg_priv:'کلید خصوصی', wg_pub:'کلید عمومی پیر', wg_ep:'اندپوینت', wg_port:'پورت', wg_ka:'Keepalive', wg_build:'ساخت کانفیگ', wg_copy:'کپی', wg_dl:'دانلود .conf', wg_qrbtn:'QR', wg_loaded:'از WARP بارگذاری شد', wg_nowarp:'کانفیگ WARP موجود نیست, ابتدا در شبکه و آی‌پی WARP را ثبت کنید.',
     ab_panel:'پنل', ab_worker:'ورکر', ab_desc:'پنل مدیریت Nova Proxy, مدیریت اشتراک‌ها، آی‌پی‌های تمیز، مسیریابی، WARP و DNS برای ورکر کلودفلر شما.', ab_changelog:'تغییرات', ab_links:'پیوندها',
@@ -2068,7 +2113,7 @@ const I18N = {
     users_title:'کاربران و سهمیه‌ها', users_add:'+ افزودن کاربر',
     ul_title:'فهرست کاربران', ul_add:'افزودن کاربر جدید', col_account:'حساب', col_data:'مصرف داده', col_dur:'مدت', col_actions:'عملیات',
     st_active:'فعال', st_off:'خاموش', st_expired:'منقضی', st_quota:'اتمام سهمیه', u_extend:'تمدید', u_edit:'ویرایش',
-    calls_h:'تماس صوتی و تصویری (فیس‌تایم، واتساپ، تلگرام)', calls_s:'تماس‌ها به UDP نیاز دارند که ورکر رایگان نمی‌تواند آن را عبور دهد (محدودیت Cloudflare است، نه باگ). برای اینکه کاربرانتان بتوانند تماس بگیرند، یکی از این‌ها را فعال کنید:', calls_free:'رایگان', calls_vps:'نیازمند VPS', calls_warp_t:'WARP', calls_warp_d:'نود Nova-WARP را اضافه می‌کند (وایرگارد Cloudflare). کاربران برای تماس از آن استفاده می‌کنند و برای گشت‌وگذار VLESS می‌ماند. پایداری از داخل ایران متغیر است.', calls_warp_btn:'راه‌اندازی WARP', calls_be_t:'حالت Backend', calls_be_d:'ترافیک را از سرور Xray/sing-box خودتان عبور دهید تا UDP کامل داشته باشید، بهترین کیفیت تماس، و VMess هم فعال می‌شود. حدود ۵ دلار در ماه.', calls_be_btn:'راه‌اندازی Backend',
+    calls_h:'تماس صوتی و تصویری (فیس‌تایم، واتساپ، تلگرام)', calls_s:'تماس‌ها به UDP نیاز دارند که ورکر رایگان نمی‌تواند آن را عبور دهد (محدودیت Cloudflare است، نه باگ). برای اینکه کاربرانتان بتوانند تماس بگیرند، WARP را فعال کنید:', calls_free:'رایگان', calls_warp_t:'WARP', calls_warp_d:'نود Nova-WARP را اضافه می‌کند (وایرگارد Cloudflare). کاربران برای تماس از آن استفاده می‌کنند و برای گشت‌وگذار VLESS می‌ماند. پایداری از داخل ایران متغیر است.', calls_warp_btn:'راه‌اندازی WARP',
     radar_bn_h:'رادار نوا', radar_bn_new:'جدید', radar_bn_s:'سریع‌ترین آی‌پی تمیز هر شبکه را همان‌جا در مرورگر پیدا کنید. کاربران آن را در صفحهٔ کانفیگ خودشان دارند و شما می‌توانید برای هر کاربر اجرا کنید. عالی برای وقتی که شبکه کند می‌شود یا آی‌پی مسدود است.', radar_bn_open:'باز کردن رادار نوا', radar_bn_apply:'اسکن و اعمال روی این ورکر',
     wn_h:'تازه‌ها', wn_nametpl:'🏷️ نام دلخواه نودها: نودها را با یک الگو نام‌گذاری کن ({FLAG} {COUNTRY} {CITY} {NAME} {DATE} {WORKER} و بیشتر) در تنظیمات ← اشتراک. نشان سرویس رایگان نوا همیشه روی هر نود می‌ماند و فروشنده نمی‌تواند آن را حذف کند.', wn_traffic:'📊 ترافیک امروزِ دقیق: آپلود و دانلود زنده حالا درست ثبت می‌شود و داشبورد مصرف واقعی را نشان می‌دهد.', wn_selfheal:'🩹 لینک‌های خوددرمان: اگر دامنه ورکر عوض شود یا هاستی از کار بیفتد، کانفیگ‌ها خودشان به یک آدرس سالم برمی‌گردند تا کاربران بدون هیچ کاری وصل بمانند.', wn_hub:'🛰️ مرکز چند-پنل: چند پنل را با هم اجرا کن و تنظیماتت را یکجا از یک نقطه به همه آن‌ها بفرست (تنظیمات شبکه ← مرکز چند-پنل).', wn_speed:'⚡ رله سریع‌تر: آپلود و دانلود سبک‌تر (FAST_RELAY را روشن نگه دارید).', wn_radar:'📡 رادار نوا: ابزاری داخلی که همان‌جا در مرورگر، آی‌پی‌های کلودفلرِ سریع و بازِ یک شبکه را پیدا می‌کند.', wn_peruser:'👤 مسیریابی هر کاربر: آی‌پی تمیز، پروکسی‌آی‌پی، پورت و انگشت‌نگاری اختصاصی برای هر کاربر (ویرایش کاربر).', wn_free:'🎁 نشان رایگان روی هر کانفیگ: ضد فروش مجدد، قابل حذف توسط فروشنده نیست.', wn_ech:'🔒 پیش‌تنظیم‌های ECH DoH و فهرست کامل‌تر انگشت‌نگاری TLS (در تنظیمات).', wn_calls:'📞 تماس‌هایی که کار می‌کنند: عبور UDP از طریق WARP رایگان تا تماس‌های فیس‌تایم، واتساپ و تلگرام وصل شوند (بخش WARP).', wn_mixed:'🧬 پروتکل ترکیبی: یک لینک بده که هم VLESS و هم Trojan را استفاده می‌کند، تا اگر فیلترینگ یکی را بست، اپ کاربر با دیگری کار کند (پروتکل ← ترکیبی).', wn_disguise:'🥷 مسیرهای مخفی: پنل و ورود را به یک آدرس خصوصی که فقط خودت می‌دانی ببر، تا کسی با حدس زدن /admin یا /login به آن‌ها نرسد (شبکه و آی‌پی ← استتار).', wn_apply:'📥 کاربران کندی را خودشان درست می‌کنند: با یک لمس آی‌پی‌های تمیزِ سریع‌تر برای شبکه‌شان پیدا و اعمال می‌شود، بدون اینکه به تو پیام بدهند (رادار نوا).', wn_mirror:'🔗 لینک پشتیبان روی گیت‌هاب: یک لینک دائمی و QR که کاربر ذخیره می‌کند، تا اگر دامنه‌ات مسدود شد باز هم کانفیگ بگیرد. بعد از هر تغییر خودش به‌روز می‌شود (آینه گیت‌هاب).',
     col_name:'نام', col_quota:'سهمیه', col_used:'مصرف', col_expiry:'انقضا',
@@ -2076,7 +2121,7 @@ const I18N = {
     users_multi:'چندکاربره', mu_warn:'هر کاربر لینک اختصاصی خودش را دارد (کپی / QR / ویرایش در ردیفش) که سهمیه و انقضایش را اعمال می‌کند. اشتراک اصلی شما هم کار می‌کند.', set_maint:'پشتیبان‌گیری و نگهداری',
     twofa_secret:'کلید برنامهٔ احراز', twofa_code:'کد ۶ رقمی را وارد کنید', twofa_confirm:'تأیید و روشن‌کردن', twofa_dcode:'کد برنامه برای خاموش‌کردن', btn_disable2fa:'غیرفعال‌سازی ۲FA',
     backup_s:'همهٔ تنظیمات (کانفیگ + شبکه + کاربران) را در یک فایل ذخیره یا بازیابی کنید. فایل شامل کلیدهای محرمانه است، جای امن نگه‌دارید.', backup_export:'خروجی', backup_import:'ورودی',
-    warp_h:'WARP (وایرگارد کلودفلر)', warp_en:'فعال‌سازی WARP', warp_en_h:'افزودن یک خروجی WireGuard به هر کانفیگ', warp_mode:'حالت', warp_ep:'اندپوینت (اگر پیش‌فرض مسدود بود)', warp_ep_h:'اگر اندپوینت پیش‌فرض WARP فیلتر شد، یکی از موارد فهرست را انتخاب کنید (همان کلید روی همهٔ اندپوینت‌ها کار می‌کند) و ذخیره کنید.', warp_amnezia:'مبهم‌سازی AmneziaWG', warp_amnezia_h:'بسته‌های اضافی تا DPI نتواند WARP را شناسایی کند', warp_calls:'📞 فعال‌سازی تماس‌ها (UDP از طریق WARP)', warp_calls_h:'تماس‌های صوتی/تصویری (فیس‌تایم، واتساپ، تلگرام) را از طریق WARP رایگان عبور می‌دهد تا کار کنند، در حالی که مرور از پروکسی سریع می‌ماند. WARP را خودکار روشن می‌کند؛ یک حساب بالا ثبت کنید و AmneziaWG را برای ایران روشن نگه دارید.', warp_quick:'⚡ راه‌اندازی تماس‌ها با یک لمس', warp_quick_h:'با یک لمس: یک حساب WARP رایگان ثبت می‌کند و WARP، AmneziaWG و تماس‌ها را روشن می‌کند، سپس ذخیره می‌کند. اگر روی شبکه‌ای تماس‌ها وصل نشد، یک اندپوینت جایگزین از پایین انتخاب کنید.', warp_acc:'حساب WARP', warp_register:'ثبت', warp_central:'از استخر مرکزی', warp_lic:'لایسنس WARP+ (اختیاری)', warp_apply:'اعمال', warp_dl_lbl:'دانلود کانفیگ‌های WARP (۵۰ اندپوینت)', warp_blocked_tag:'اگر WARP مسدود است', warp_blocked:'اندپوینت‌های جایگزین بالا را یکی‌یکی امتحان کنید، آن‌ها از پورت‌هایی استفاده می‌کنند که ایران معمولاً باز می‌گذارد (پورت پیش‌فرض ۲۴۰۸ بیشترین فیلترشدگی را دارد). اگر هیچ‌کدام وصل نشد، اپ رسمی 1.1.1.1 با پروتکل MASQUE معمولاً وقتی WireGuard مسدود است عبور می‌کند، یا یک سرور Backend (پایین) راه بیندازید که تماس‌ها را روی TCP منتقل می‌کند.', wn_mode:'حالت نویز', wn_count:'تعداد نویز', wn_size:'اندازه نویز', wn_delay:'تأخیر نویز',
+    warp_h:'WARP (وایرگارد کلودفلر)', warp_en:'فعال‌سازی WARP', warp_en_h:'افزودن یک خروجی WireGuard به هر کانفیگ', warp_mode:'حالت', warp_ep:'اندپوینت (اگر پیش‌فرض مسدود بود)', warp_ep_h:'اگر اندپوینت پیش‌فرض WARP فیلتر شد، یکی از موارد فهرست را انتخاب کنید (همان کلید روی همهٔ اندپوینت‌ها کار می‌کند) و ذخیره کنید.', warp_amnezia:'مبهم‌سازی AmneziaWG', warp_amnezia_h:'بسته‌های اضافی تا DPI نتواند WARP را شناسایی کند', warp_calls:'📞 فعال‌سازی تماس‌ها (UDP از طریق WARP)', warp_calls_h:'تماس‌های صوتی/تصویری (فیس‌تایم، واتساپ، تلگرام) را از طریق WARP رایگان عبور می‌دهد تا کار کنند، در حالی که مرور از پروکسی سریع می‌ماند. WARP را خودکار روشن می‌کند؛ یک حساب بالا ثبت کنید و AmneziaWG را برای ایران روشن نگه دارید.', warp_quick:'⚡ راه‌اندازی تماس‌ها با یک لمس', warp_quick_h:'با یک لمس: یک حساب WARP رایگان ثبت می‌کند و WARP، AmneziaWG و تماس‌ها را روشن می‌کند، سپس ذخیره می‌کند. اگر روی شبکه‌ای تماس‌ها وصل نشد، یک اندپوینت جایگزین از پایین انتخاب کنید.', warp_acc:'حساب WARP', warp_register:'ثبت', warp_central:'از استخر مرکزی', warp_lic:'لایسنس WARP+ (اختیاری)', warp_apply:'اعمال', warp_dl_lbl:'دانلود کانفیگ‌های WARP (۵۰ اندپوینت)', warp_blocked_tag:'اگر WARP مسدود است', warp_blocked:'اندپوینت‌های جایگزین بالا را یکی‌یکی امتحان کنید، آن‌ها از پورت‌هایی استفاده می‌کنند که ایران معمولاً باز می‌گذارد (پورت پیش‌فرض ۲۴۰۸ بیشترین فیلترشدگی را دارد). اگر هیچ‌کدام وصل نشد، اپ رسمی 1.1.1.1 با پروتکل MASQUE معمولاً وقتی WireGuard مسدود است عبور می‌کند.', wn_mode:'حالت نویز', wn_count:'تعداد نویز', wn_size:'اندازه نویز', wn_delay:'تأخیر نویز',
     mirror_h:'آینه گیت‌هاب (پشتیبان دامنه مسدودشده)', mirror_intro:'ساب شما را در یک ریپو گیت‌هاب منتشر می‌کند تا کاربران یک لینک دائمی raw.githubusercontent.com داشته باشند حتی اگر دامنه‌تان فیلتر شود.', mirror_en:'فعال‌سازی آینه', mirror_en_h:'بعد از هر تغییر و هر ساعت خودکار منتشر می‌شود', mirror_repo:'ریپو (owner/name)', mirror_branch:'شاخه', mirror_path:'مسیر (اختیاری)', mirror_token:'توکن گیت‌هاب', mirror_publish:'انتشار فوری', mirror_links_h:'لینک‌های دائمی (خودکار به‌روز)', mirror_links_h2:'این‌ها را به کاربران بده. همیشه کار می‌کنند و بعد از هر تغییر یا آی‌پی جدید خودکار به‌روز می‌شوند.',
     nav_cleanips:'آی‌پی‌های تمیز', sub_cleanips:'آی‌پی‌های تمیز کلودفلر را انتخاب کنید یا سریع‌ترین را تست کنید.',
     ci_speed_h:'📡 رادار نوا', ci_speed_s:'سریع‌ترین آی‌پی‌های تمیز را برای شبکهٔ فعلی‌تان پیدا و خودکار اعمال کنید.', ci_src:'منبع', ci_country:'کشور', dc_h:'📍 دیتاسنتر شما', dc_s:'محل خروج فعلی اتصال شما از شبکه کلودفلر.', dc_refresh:'بروزرسانی', dc_unknown:'موقعیت نامشخص', ct_h:'🧪 تست اتصال', ct_s:'بررسی کنید کدام سایت‌های مهم از طریق اتصال فعلی شما در دسترس هستند.', ct_run:'اجرای تست', ct_blocked:'مسدود', ech_h:'🔒 درباره ECH', ech_q1:'ECH چیست؟', ech_a1:'ECH یا Encrypted Client Hello نام سایت (SNI) را داخل دست‌دادن TLS پنهان می‌کند تا سانسورچی نتواند ببیند به کدام سایت وصل می‌شوید. این یک ارتقای حریم خصوصی نسبت به TLS معمولی است.', ech_q2:'آیا ECH در ایران مسدود است؟', ech_a2:'در حال حاضر بله. فیلترینگ ایران دست‌دادن ECH را کند یا مسدود می‌کند، بنابراین روشن کردن آن معمولاً اتصال را قطع می‌کند (بدون پینگ). تا وقتی مطمئن نشده‌اید شبکه شما آن را عبور می‌دهد، خاموش نگه دارید.', ech_q3:'چطور از ECH استفاده کنم؟', ech_a3:'به‌طور پیش‌فرض ECH را خاموش بگذارید (در سیاست مقاومت خاموش است). اگر فیلترینگ کمتر شد یا روی شبکه‌ای هستید که آن را اجازه می‌دهد، می‌توانید برای حریم خصوصی بیشتر روشنش کنید. درست بعد از روشن کردن، اتصال را تست کنید و اگر پینگ‌تان از بین رفت دوباره خاموشش کنید.', ci_port:'پورت‌ها', ci_keep:'نگه‌داشتن بهترین', ci_total:'تعداد تست', ci_speed_btn:'تست سرعت و اعمال بهترین', ci_lat:'تأخیر', ci_jit:'جیتر', ci_loss:'افت',
@@ -2098,6 +2143,12 @@ const I18N = {
     sysx_h:'موارد تکمیلی سیستم', sysx_nameprefix:'پیشوند نام (قفل غیرفعال)', sysx_namestrategy:'راهبرد نام (قفل غیرفعال)', sysx_strat_prefix:'پیشوند (قبل از نام)', sysx_strat_suffix:'پسوند (بعد از نام)', sysx_cascade:'کاسکید', sysx_metricnode:'نود متریک', sysx_customrouting:'مسیریابی سفارشی (هر خط یک قانون: proxy|host:port|برچسب)', sysx_subua:'فیلتر User-Agent اشتراک (خالی = برای همه)', sysx_tg_channel:'کانال تلگرام (در هر اشتراک نمایش داده می‌شود، همیشه فعال)', sysx_tg_immutable:'این خط کانال به اشتراک هر کاربر اضافه می‌شود و قابل خاموش‌کردن نیست.', sysx_fake:'ورودی‌های اشتراک نمایشی (هر خط یک مورد. از {usage} و {expiry} استفاده کنید)', sysx_saveall:'💾 ذخیره همه تنظیمات', sysx_saveall_h:'یک دکمه پروتکل، امنیت، دامنه‌ها، ECH، اشتراک و موارد تکمیلی را با هم ذخیره می‌کند.',
     px_autorotate:'چرخش خودکار', px_rotate_off:'خاموش، استفاده از همه', px_rotate_daily:'روزانه', px_rotate_weekly:'هفتگی', px_activecount:'تعداد فعال',
     tunnel_h:'🔗 تانل / رله', tunnel_s:'وضعیت رله و آدرس Google Apps Script. رله شما روی این ورکر اجرا می‌شود و Google Apps Script برای انتقال داده به آن متصل می‌شود.', tunnel_loading:'در حال بارگذاری...', tunnel_address:'آدرس رله', tunnel_address_h:'از این آدرس در فایل Code.gs گوگل اپ اسکریپت به عنوان WORKER_URL استفاده کنید:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'این خطوط را در ابتدای فایل Code.gs خود قرار دهید:',     tunnel_active:'رله فعال است', tunnel_inactive:'رله غیرفعال است', tunnel_domain_note:'اگر دامنه سفارشی (HOSTS) در تنظیمات شبکه یا تنظیمات عمومی تنظیم کرده باشید، رله خودکار از اولین دامنه لیست شما استفاده می‌کند. در غیر این صورت از آدرس پیش‌فرض workers.dev استفاده می‌شود.',
+    tunnel_on:'فعال', tunnel_off:'غیرفعال', tunnel_verified:'تأیید شد', tunnel_unverified:'تأیید نشده',
+    tunnel_step1_h:'فعال‌سازی رله', tunnel_step1_s:'یک کلید قوی بسازید و رله را روشن کنید. این ورکر به نقطهٔ پایانی رلهٔ شما تبدیل می‌شود.', tunnel_enable:'فعال‌سازی رله / ساخت کلید', tunnel_enabling:'در حال فعال‌سازی…', tunnel_generated:'رله فعال شد و کلید ساخته شد', tunnel_env_note:'کلید از متغیر محیطی RELAY_AUTH_KEY شما گرفته می‌شود.',
+    tunnel_step2_h:'استقرار اسکریپت', tunnel_step2_s:'این اسکریپت آمادهٔ رلهٔ شماست که کلید و آدرس شما در آن پر شده است. آن را در یک پروژهٔ جدید Google Apps Script کپی کنید.', tunnel_g1:'به script.google.com بروید و یک New project بسازید.', tunnel_g2:'کد نمونه را پاک کنید و اسکریپت بالا را جای‌گذاری کنید.', tunnel_g3:'روی Deploy بزنید، New deployment را انتخاب کنید، سپس Web app.', tunnel_g4:'گزینهٔ Execute as را روی Me و Who has access را روی Anyone بگذارید.', tunnel_g5:'روی Deploy بزنید، سپس Authorize access را بزنید و دسترسی‌ها را تأیید کنید.', tunnel_g6:'آدرس Web app که به /exec ختم می‌شود را کپی کنید.', tunnel_open_gas:'باز کردن Google Apps Script',
+    tunnel_step3_h:'بررسی اتصال', tunnel_step3_s:'آدرس Web app خود را در کادر زیر جای‌گذاری کنید. کل مسیر از این پنل تا ورکر و اسکریپت شما بررسی می‌شود.', tunnel_verify:'بررسی', tunnel_verifying:'در حال بررسی…', tunnel_verify_ok:'اتصال تأیید شد', tunnel_verify_fail:'بررسی ناموفق بود', tunnel_url_required:'ابتدا آدرس Web app را جای‌گذاری کنید.',
+    tunnel_disable:'غیرفعال‌سازی رله', tunnel_disabling:'در حال غیرفعال‌سازی…', tunnel_disabled_ok:'رله غیرفعال شد', tunnel_env_override:'RELAY_AUTH_KEY در محیط شما تنظیم شده است، بنابراین رله تا زمانی که آن متغیر را حذف نکنید فعال می‌ماند.',
+    tunnel_intro:'رله باعث می‌شود ترافیک کاربران شما مثل ترافیک عادی Google به نظر برسد، بنابراین Nova حتی جایی که خودِ دامنه Worker مسدود است باز هم کار می‌کند. کلید را پنل برای شما آماده می‌کند. شما فقط باید یک اسکریپت کوچک Google Apps Script را مستقر کنید و لینک آن را همین‌جا برگردانید.', tunnel_propagation:'فعال‌سازی، غیرفعال‌سازی یا تغییر کلید ظرف چند ثانیه اعمال می‌شود.', tunnel_key_locked:'کلید زیر از قبل داخل اسکریپت برای شما پر شده است. لطفاً آن را تغییر ندهید.', tunnel_access_warn:'مهم: هنگام استقرار، گزینهٔ Who has access را روی Anyone بگذارید. اگر روی چیز دیگری باشد، رله خطا برمی‌گرداند.', tunnel_unverified_help:'ممکن است Google صفحه‌ای نشان دهد که می‌گوید این برنامه را تأیید نکرده است. این عادی است، چون این اسکریپت خودِ شماست. روی Advanced، سپس Go to project و بعد Allow بزنید. تنها دسترسی‌ای که خواسته می‌شود اتصال به یک سرویس بیرونی است.', tunnel_exec_help:'آدرس Web app که جای‌گذاری می‌کنید باید به /exec ختم شود. اگر به چیز دیگری ختم می‌شود، آدرس را دوباره از صفحهٔ استقرار کپی کنید.', tunnel_security_note:'با کلید و لینک اسکریپت مثل یک رمز عبور رفتار کنید و آن‌ها را خصوصی نگه دارید. هر کسی که هر دو را داشته باشد می‌تواند از رلهٔ شما استفاده کند.', tunnel_verify_help:'تیک سبز یعنی کل مسیر کار می‌کند، از این پنل تا Worker و اسکریپت شما. اگر قرمز ماند، سه چیز را بررسی کنید: Who has access روی Anyone باشد، آدرس به /exec ختم شود، و آخرین نسخهٔ اسکریپت را جای‌گذاری کرده و دوباره مستقر کرده باشید.', tunnel_disable_note:'رله ظرف چند ثانیه پس از خاموش‌کردن متوقف می‌شود.',
   }
 };
 
@@ -3247,7 +3298,6 @@ const GUIDE = {
       '<b>Users:</b> give each person their own link with a data quota, a daily limit, and an expiry date, usage shows on their card, and you can Reset or Save each user individually.',
       'Working protocols through the Worker are <b>VLESS, Trojan and Shadowsocks</b>. VMess and voice/video calls (UDP) do <b>not</b> work in the free in-Worker mode, that is a Cloudflare limit, not a bug.',
       '<b>Calls (WhatsApp/Telegram):</b> they need UDP. Turn on <b>WARP</b> (Network & IPs) and use the <b>Nova-WARP</b> node for calls; keep VLESS for browsing.',
-      '<b>Backend mode</b> (Network & IPs, advanced): if you run your own Xray/sing-box VPS, enable it to unlock <b>VMess and working calls</b>, Nova relays to your server. Off by default.',
       '<b>Routing</b> (Network & IPs): block malware/phishing/QUIC and route China/Russia/sanctioned sites directly.',
       '<b>Smart clean IPs (per-ISP):</b> in Network → Clean IPs → Smart, point the source at a folder of per-carrier files (mci.txt, mtn.txt, rightel.txt, …). Each user is auto-served the IPs for their operator; missing files fall back to ir.txt then all.txt. Refresh the files with Nova Radar and the panel pulls them automatically.',
       '<b>Disguise (advanced):</b> in Network → Disguise you can move the panel, login and subscription to secret paths. Probing the default /admin or /login then returns a generic page. Write down your secret path first, afterwards the panel is only reachable there (recovery: set an ADMIN_PATH variable on the Worker).',
@@ -3265,7 +3315,6 @@ const GUIDE = {
       '<b>Пользователи:</b> выдайте каждому свою ссылку с квотой трафика, дневным лимитом и датой окончания, потребление отображается на его карточке, а каждого пользователя можно сбросить или сохранить по отдельности.',
       'Через Worker работают протоколы <b>VLESS, Trojan и Shadowsocks</b>. VMess и голосовые/видеозвонки (UDP) <b>не</b> работают в бесплатном режиме внутри Worker, это ограничение Cloudflare, а не ошибка.',
       '<b>Звонки (WhatsApp/Telegram):</b> им нужен UDP. Включите <b>WARP</b> (Сеть и IP) и используйте узел <b>Nova-WARP</b> для звонков; для веб-сёрфинга оставьте VLESS.',
-      '<b>Режим Backend</b> (Сеть и IP, для опытных): если у вас есть собственный VPS с Xray/sing-box, включите его, чтобы разблокировать <b>VMess и работающие звонки</b>, Nova перенаправляет трафик на ваш сервер. По умолчанию выключен.',
       '<b>Routing</b> (Сеть и IP): блокируйте вредоносное ПО/фишинг/QUIC и направляйте сайты Китая/России/подсанкционных ресурсов напрямую.',
       '<b>Умные чистые IP (по операторам):</b> в разделе Сеть → Clean IPs → Smart укажите в качестве источника папку с файлами по операторам (mci.txt, mtn.txt, rightel.txt, …). Каждому пользователю автоматически выдаются IP его оператора; при отсутствии файла используется ir.txt, затем all.txt. Обновляйте файлы с помощью Nova Radar, и панель подтянет их автоматически.',
       '<b>Маскировка (для опытных):</b> в разделе Сеть → Disguise можно перенести панель, вход и подписку на секретные пути. Тогда при обращении к стандартным /admin или /login возвращается обычная страница. Сначала запишите свой секретный путь, после этого панель доступна только по нему (восстановление: задайте переменную ADMIN_PATH на Worker).',
@@ -3283,7 +3332,6 @@ const GUIDE = {
       '<b>کاربران:</b> به هر نفر لینک اختصاصی با سهمیهٔ حجم، سقف روزانه و تاریخ انقضا بده, مصرف روی کارتش نشان داده می‌شود و می‌توانی هر کاربر را جدا «بازنشانی» یا «ذخیره» کنی.',
       'پروتکل‌هایی که از طریق ورکر کار می‌کنند: <b>VLESS، Trojan و Shadowsocks</b>. VMess و تماس صوتی/تصویری (UDP) در حالت رایگانِ داخل ورکر <b>کار نمی‌کنند</b>, این محدودیت Cloudflare است، نه باگ.',
       '<b>تماس (واتساپ/تلگرام):</b> به UDP نیاز دارد. <b>WARP</b> را (در شبکه و آی‌پی) روشن کن و برای تماس از نود <b>Nova-WARP</b> استفاده کن؛ برای گشت‌وگذار VLESS بماند.',
-      '<b>حالت Backend</b> (شبکه و آی‌پی، پیشرفته): اگر سرور Xray/sing-box خودت را داری، روشنش کن تا <b>VMess و تماس</b> فعال شود, Nova به سرورت رله می‌کند. پیش‌فرض خاموش است.',
       '<b>مسیریابی</b> (شبکه و آی‌پی): مسدودسازی بدافزار/فیشینگ/QUIC و عبور مستقیم سایت‌های چین/روسیه/تحریم.',
       '<b>آی‌پی تمیز هوشمند (هر اپراتور):</b> در شبکه ← آی‌پی‌های تمیز ← هوشمند، منبع را روی پوشه‌ای از فایل‌های هر اپراتور تنظیم کن (mci.txt، mtn.txt، rightel.txt، …). به هر کاربر به‌طور خودکار آی‌پی‌های اپراتور خودش داده می‌شود؛ اگر فایلی نبود، به ir.txt و سپس all.txt برمی‌گردد. فایل‌ها را با Nova Radar تازه کن و پنل خودکار می‌خواندشان.',
       '<b>استتار (پیشرفته):</b> در شبکه ← استتار می‌توانی پنل، ورود و اشتراک را به مسیرهای مخفی منتقل کنی. آن‌وقت درخواست به /admin یا /login پیش‌فرض یک صفحهٔ عمومی برمی‌گرداند. اول مسیر مخفی را یادداشت کن, بعد از آن پنل فقط از همان‌جا در دسترس است (بازیابی: یک متغیر ADMIN_PATH روی ورکر تنظیم کن).',
@@ -3319,6 +3367,7 @@ function applyLang(l){
   renderAll(); /* dynamic content re-rendered in the new language */
   try{ var _wm=document.getElementById('welcome-modal'); if(_wm && _wm.classList.contains('on')) renderWelcomeLinks(); }catch(e){} /* keep support-popup buttons localized on live switch */
   try{ if(currentView==='dashboard') TChart.render(); }catch(e){}
+  try{ if(currentView==='tunnel') tunnelRender(); }catch(e){}
   try{ a11yEnhance(); }catch(e){}
 }
 
@@ -3449,8 +3498,8 @@ function showView(v){
   if(['network','cleanips','wireguard','users','proxy','corenode','linkedpanels','tunnel'].indexOf(v)>=0){ var _g=document.getElementById('grp-netset'); if(_g) _g.classList.add('open'); var _gt=document.getElementById('netset-toggle'); if(_gt) _gt.setAttribute('aria-expanded','true'); }
   window.scrollTo({top:0,behavior:'instant'});
 }
-// Jump from the Dashboard "calls" callout to the WARP or Backend card (both live in Network view).
-function goCallHelp(target){ showView('network'); setTimeout(function(){ try{ var el=document.getElementById(target==='backend'?'backend-card':'warp-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
+// Jump from the Dashboard "calls" callout to the WARP card (lives in Network view).
+function goCallHelp(target){ showView('network'); setTimeout(function(){ try{ var el=document.getElementById('warp-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
 function goRadarCard(){ showView('cleanips'); setTimeout(function(){ try{ var el=document.getElementById('nova-radar-card'); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.transition='box-shadow .3s'; el.style.boxShadow='0 0 0 2px var(--ac)'; setTimeout(function(){ el.style.boxShadow=''; },1400); } }catch(e){} },160); }
 function goConnectToken(){ try{ showView('notifications'); }catch(e){} setTimeout(function(){ try{ var el=document.getElementById('cf-token'); var card=el?el.closest('.card'):null; (card||el||{scrollIntoView:function(){}}).scrollIntoView({behavior:'smooth',block:'center'}); if(el){ el.focus(); el.style.transition='box-shadow .2s'; el.style.boxShadow='0 0 0 3px color-mix(in srgb,var(--ac) 45%,transparent)'; setTimeout(function(){ try{ el.style.boxShadow=''; }catch(e){} },1600); } }catch(e){} },140); }
 
@@ -3615,37 +3664,179 @@ function lpSyncAll(){
 }
 
 /* ============================================================================
-   Tunnel / Relay — fetch status from Worker API
+   Tunnel / Relay, one-click relay setup wizard (status, enable, deploy, verify)
    ========================================================================== */
-function tunnelInit(){
-  var dot=document.getElementById('tunnel-status-dot');
-  var txt=document.getElementById('tunnel-status-text');
-  var sub=document.getElementById('tunnel-status-sub');
-  var urlEl=document.getElementById('tunnel-worker-url');
-  var gasEl=document.getElementById('tunnel-gas-code');
+var _tunnelState = null; // last relay object from the Worker
+var _tunnelKey   = '';   // current / generated AUTH_KEY
+var _tunnelUrl   = '';   // current WORKER_URL
+
+function tunnelEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* Build the full, pre-filled Google Apps Script. Only AUTH_KEY and WORKER_URL vary.
+   The critical line is  k:AUTH_KEY  inside _p(). */
+function tunnelScript(key, workerUrl){
+  return '// Google Apps Script - v1.0.1\n'
+    + 'const AUTH_KEY = "'+key+'";\n'
+    + 'const WORKER_URL = "'+workerUrl+'";\n'
+    + 'const SKIP_HEADERS = { host:1, connection:1, "content-length":1, "transfer-encoding":1, "proxy-connection":1, "proxy-authorization":1 };\n'
+    + 'function doPost(e){ try{ var req=JSON.parse(e.postData.contents); if(req.k!==AUTH_KEY) return _json({e:"unauthorized"}); if(Array.isArray(req.q)) return _doBatch(req.q); return _doSingle(req); }catch(err){ return _json({e:String(err)}); } }\n'
+    + 'function _doSingle(req){ if(!req.u||typeof req.u!=="string"||!req.u.match(/^https?:\\/\\//i)) return _json({e:"bad url"}); var resp=UrlFetchApp.fetch(WORKER_URL,{method:"post",contentType:"application/json",payload:JSON.stringify(_p(req)),muteHttpExceptions:true,followRedirects:true}); try{ return _json(JSON.parse(resp.getContentText())); }catch(e){ return _json({e:"invalid worker response",raw:resp.getContentText()}); } }\n'
+    + 'function _doBatch(items){ var args=[],em={}; for(var i=0;i<items.length;i++){ var it=items[i]; if(!it.u||typeof it.u!=="string"||!it.u.match(/^https?:\\/\\//i)){ em[i]="bad url"; continue; } args.push({url:WORKER_URL,method:"post",contentType:"application/json",payload:JSON.stringify(_p(it)),muteHttpExceptions:true,followRedirects:true}); } var res=args.length?UrlFetchApp.fetchAll(args):[]; var out=[],ri=0; for(var i=0;i<items.length;i++){ if(em.hasOwnProperty(i)){ out.push({e:em[i]}); } else { try{ out.push(JSON.parse(res[ri++].getContentText())); }catch(e){ out.push({e:"invalid worker response"}); } } } return _json({q:out}); }\n'
+    + 'function _p(req){ var h={}; if(req.h&&typeof req.h==="object"){ for(var k in req.h){ if(req.h.hasOwnProperty(k)&&!SKIP_HEADERS[k.toLowerCase()]) h[k]=req.h[k]; } } return { k:AUTH_KEY, u:req.u, m:(req.m||"GET").toUpperCase(), h:h, b:req.b||null, ct:req.ct||null, r:req.r!==false }; }\n'
+    + 'function doGet(e){ return HtmlService.createHtmlOutput("<h1>Relay Active</h1><p>Cloudflare Worker routing enabled.</p>"); }\n'
+    + 'function _json(o){ return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }';
+}
+
+/* Paint the whole section from _tunnelState. Safe to call on language switch too. */
+function tunnelRender(){
+  var st  = _tunnelState || {};
+  var txt = document.getElementById('tunnel-status-text');
   if(!txt) return;
-  txt.textContent=t('tunnel_loading');
-  fetch('/admin/relay-status?_t='+Date.now(), {cache:'no-store', credentials:'same-origin'}).then(function(r){ return r.json(); }).then(function(j){
-    if(!j||!j.success){ if(dot) dot.className='dot bad'; txt.textContent=(j&&j.error)?('Error: '+j.error):'Error'; txt.style.color='var(--dg)'; return; }
-    var r=j.relay||{};
-    if(dot){ dot.className='dot '+(r.enabled?'ok':'bad'); }
-    txt.textContent=r.enabled?t('tunnel_active'):t('tunnel_inactive');
-    txt.style.color=r.enabled?'var(--ok)':'var(--dg)';
-    if(sub){
-      var note='Relay endpoint: / (main)';
-      if(r.bestHost && r.bestHost !== r.requestHost) note+=' | Domain: '+r.bestHost;
-      else note+=' | Host: '+r.requestHost;
-      sub.textContent=note;
-    }
-    if(urlEl) urlEl.textContent=r.workerUrl||'';
-    if(gasEl){
-      var lines='const WORKER_URL = "'+(r.workerUrl||'')+'";\nconst AUTH_KEY = "'+(r.authKey||'Novaproxy')+'";';
-      gasEl.textContent=lines;
-    }
-  }).catch(function(e){
-    if(dot) dot.className='dot bad'; if(txt){ txt.textContent='Connection error'; txt.style.color='var(--dg)'; }
-    if(sub) sub.textContent=String(e);
-  });
+  var on  = !!st.enabled, ver = !!st.verified;
+  var dot = document.getElementById('tunnel-status-dot');
+  if(dot) dot.className = 'dot ' + (on ? 'ok' : 'bad');
+  txt.textContent = on ? t('tunnel_active') : t('tunnel_inactive');
+  txt.style.color = on ? 'var(--ok)' : 'var(--dg)';
+
+  var sub = document.getElementById('tunnel-status-sub');
+  if(sub) sub.textContent = _tunnelUrl || st.workerUrl || '';
+
+  var bE = document.getElementById('tunnel-badge-enabled');
+  if(bE){ bE.textContent = on ? t('tunnel_on') : t('tunnel_off'); bE.className = 'tbadge ' + (on ? 'ok' : 'off'); }
+  var bV = document.getElementById('tunnel-badge-verified');
+  if(bV){ bV.textContent = ver ? t('tunnel_verified') : t('tunnel_unverified'); bV.className = 'tbadge ' + (ver ? 'ok' : 'off'); bV.style.display = on ? '' : 'none'; }
+
+  var enable = document.getElementById('tunnel-enable-btn');
+  if(enable){
+    if(on){ enable.textContent = '✓ ' + t('tunnel_on'); enable.classList.add('is-disabled'); enable.disabled = true; }
+    else  { enable.textContent = t('tunnel_enable'); enable.classList.remove('is-disabled'); enable.disabled = false; }
+  }
+
+  var env = document.getElementById('tunnel-env-note');
+  if(env) env.style.display = (on && st.source === 'env') ? 'flex' : 'none';
+
+  var steps = document.getElementById('tunnel-steps');
+  if(steps) steps.style.display = on ? '' : 'none';
+
+  if(on){
+    var code = document.getElementById('tunnel-script-code');
+    if(code) code.textContent = tunnelScript(_tunnelKey || st.authKey || '', _tunnelUrl || st.workerUrl || '');
+    var urlIn = document.getElementById('tunnel-gas-url');
+    if(urlIn && !urlIn.value && st.gasUrl) urlIn.value = st.gasUrl;
+  }
+}
+
+function tunnelInit(){
+  var txt = document.getElementById('tunnel-status-text');
+  if(!txt) return;
+  txt.textContent = t('tunnel_loading');
+  fetch('/admin/relay-status?_t='+Date.now(), {cache:'no-store', credentials:'same-origin'})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(!j||!j.success){
+        var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
+        txt.textContent=(j&&j.error)?('Error: '+j.error):'Error'; txt.style.color='var(--dg)'; return;
+      }
+      _tunnelState = j.relay || {};
+      _tunnelKey = _tunnelState.authKey || _tunnelKey;
+      _tunnelUrl = _tunnelState.workerUrl || _tunnelUrl;
+      tunnelRender();
+    })
+    .catch(function(e){
+      var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
+      txt.textContent='Connection error'; txt.style.color='var(--dg)';
+      var sub=document.getElementById('tunnel-status-sub'); if(sub) sub.textContent=String(e);
+    });
+}
+
+/* Step 1: generate a key and enable the relay. */
+function tunnelEnable(){
+  var btn=document.getElementById('tunnel-enable-btn');
+  if(btn){ btn.disabled=true; btn.classList.add('is-disabled'); btn.textContent=t('tunnel_enabling'); }
+  fetch('/admin/relay-generate', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({})})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(!j||!j.success){
+        toast('✕ ' + ((j&&(j.message||j.error))||'Error'), 1);
+        if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_enable'); }
+        return;
+      }
+      _tunnelKey = j.key || '';
+      _tunnelUrl = j.workerUrl || _tunnelUrl;
+      _tunnelState = _tunnelState || {};
+      _tunnelState.enabled = true;
+      _tunnelState.authKey = _tunnelKey;
+      _tunnelState.workerUrl = _tunnelUrl;
+      _tunnelState.source = j.source || 'kv';
+      tunnelRender();
+      toast('✓ ' + t('tunnel_generated'));
+    })
+    .catch(function(e){
+      toast('✕ ' + e.message, 1);
+      if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_enable'); }
+    });
+}
+
+/* Step 2: copy the generated script. */
+function tunnelCopyScript(){
+  var code=document.getElementById('tunnel-script-code'); if(!code) return;
+  navigator.clipboard.writeText(code.textContent).then(function(){ toast('✓ ' + t('copied')); }).catch(function(){});
+}
+
+/* Step 3: verify the whole chain. */
+function tunnelResult(cls, icon, text){
+  var res=document.getElementById('tunnel-verify-result'); if(!res) return;
+  res.style.display='flex';
+  res.className='tverify ' + cls;
+  res.innerHTML='<span style="flex:0 0 auto">'+icon+'</span><span>'+tunnelEsc(text)+'</span>';
+}
+function tunnelVerify(){
+  var inp=document.getElementById('tunnel-gas-url');
+  var btn=document.getElementById('tunnel-verify-btn');
+  var url=inp ? (inp.value||'').trim() : '';
+  if(!url){ tunnelResult('tverify-bad', '✕', t('tunnel_url_required')); return; }
+  if(btn){ btn.disabled=true; btn.classList.add('is-disabled'); btn.textContent=t('tunnel_verifying'); }
+  tunnelResult('tverify-wait', '⏳', t('tunnel_verifying'));
+  fetch('/admin/relay-verify', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({gasUrl:url})})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var ok = !!(j && j.verified);
+      var detail = (j && j.detail) || (ok ? t('tunnel_verify_ok') : t('tunnel_verify_fail'));
+      tunnelResult(ok ? 'tverify-ok' : 'tverify-bad', ok ? '✓' : '✕', detail);
+      _tunnelState = _tunnelState || {};
+      _tunnelState.verified = ok;
+      _tunnelState.gasUrl = url;
+      var bV=document.getElementById('tunnel-badge-verified');
+      if(bV){ bV.textContent = ok ? t('tunnel_verified') : t('tunnel_unverified'); bV.className='tbadge ' + (ok ? 'ok' : 'off'); }
+      if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_verify'); }
+      toast((ok ? '✓ ' : '✕ ') + detail, ok ? 0 : 1);
+    })
+    .catch(function(e){
+      tunnelResult('tverify-bad', '✕', e.message);
+      if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_verify'); }
+    });
+}
+
+/* Disable the relay and reset the UI back to the pre-enabled state. */
+function tunnelDisable(){
+  var btn=document.getElementById('tunnel-disable-btn');
+  if(btn){ btn.disabled=true; btn.classList.add('is-disabled'); btn.textContent=t('tunnel_disabling'); }
+  fetch('/admin/relay-disable', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({})})
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_disable'); }
+      if(!j||!j.success){ toast('✕ ' + ((j&&(j.message||j.error))||'Error'), 1); return; }
+      _tunnelKey='';
+      var urlIn=document.getElementById('tunnel-gas-url'); if(urlIn) urlIn.value='';
+      var res=document.getElementById('tunnel-verify-result'); if(res) res.style.display='none';
+      tunnelInit(); // refetch real state (handles RELAY_AUTH_KEY env override)
+      if(j.envOverride) toast('⚠ ' + t('tunnel_env_override'), 1);
+      else toast('✓ ' + t('tunnel_disabled_ok'));
+    })
+    .catch(function(e){
+      if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_disable'); }
+      toast('✕ ' + e.message, 1);
+    });
 }
 
 /* ============================================================================
@@ -3968,7 +4159,6 @@ function syncFormValues(){
   on('t2-antisanc', n.enableAntiSanctionDNS); set('d2-antiprov', n.antiSanctionDNSProvider||'shekan'); set('d2-anticustom', n.antiSanctionCustomDNS||'');
   on('t2-localdns', n.enableLocalDNS); set('d2-localip', n.localDNSIP||'8.8.8.8'); set('d2-localport', n.localDNSPort||'53');
   on('t2-fakedns', n.enableFakeDNS); set('d2-fakeip', n.fakeDNSIP||'198.51.100.1'); set('d2-loglevel', n.logLevel||'error');
-  on('t2-backend', n.backendMode); set('be-url', n.backendUrl||''); try{ renderBackendClient(); }catch(e){} try{ checkBackendPort(); }catch(e){} try{ fillBackendInstallCmd(); }catch(e){}
   // Clean IPs (config), mode + pool API + random params; custom list loaded from ADD.txt
   const osg=c.optimizedSubGeneration||{}, pool=osg.localIPPool||{};
   set('ci-poolapi', c.POOL_API||'https://raw.githubusercontent.com/IRNova/Tools/main/clean-ip');
@@ -4099,119 +4289,6 @@ async function saveAllSettings(){
   toast(ok ? savedMsg(true) : ('⚠️ '+(lang==='fa'?'ذخیره ناموفق':(lang==='ru'?'Не удалось сохранить':'Save failed'))));
   flashSaved('save-all-settings', ok);
 }
-async function backendHealthCheck(){ var el=document.getElementById('be-msg'); var u=(document.getElementById('be-url')||{}).value||''; u=u.trim();
-  if(!/^https?:\/\//i.test(u)){ if(el){ el.className='msg bad'; el.textContent=(lang==='fa'?'یک آدرس معتبر backend وارد کنید (http://... یا https://...)':'Enter a valid backend URL (http://... or https://...)'); } return; }
-  // The /backend-test reads the SAVED config, so save the current toggle+URL FIRST. This is what
-  // makes "enable → type URL → Health check" just work, without the user having to find Save.
-  if(el){ el.className='msg'; el.textContent=(lang==='fa'?'در حال ذخیره و تست…':'Saving, then testing…'); }
-  try{ if(LIVE) await saveNetwork(); }catch(e){}
-  if(el){ el.className='msg'; el.textContent=(lang==='fa'?'در حال تست واقعیِ ارتباط با backend…':'Running a real backend connectivity test…'); }
-  // Use Nova's own /backend-test diagnostic, it actually opens the WebSocket to your backend from
-  // inside the Worker and reports whether the relay works. This is the REAL test (not /health).
-  try{
-    var resp=await fetch('/backend-test',{cache:'no-store'}).catch(function(){return null;});
-    if(!resp){ if(el){ el.className='msg'; el.textContent=(lang==='fa'?'تست در دسترس نیست (ورکر را به آخرین نسخه آپدیت کن). با یک کلاینت واقعی تست کن.':'Diagnostic unavailable (update the Worker to the latest version). Test with a real client.'); } return; }
-    var j=await resp.json().catch(function(){return null;});
-    if(!j){ if(el){ el.className='msg'; el.textContent=(lang==='fa'?'پاسخ نامعتبر. با یک کلاینت واقعی تست کن.':'Unexpected response. Test with a real client.'); } return; }
-    if(j.ok){ if(el){ el.className='msg ok'; el.textContent='✅ '+(lang==='fa'?('backend کار می‌کند! Nova با موفقیت به آن وصل شد (۱۰۱). در '+(j.elapsedMs||'?')+'ms. حالا با کلاینت وصل شو.'):('Backend works! Nova reached it (101) in '+(j.elapsedMs||'?')+'ms. Connect with a client now.')); }
-        // Backend proven reachable → unlock the client QR/link for THIS exact URL.
-        window.__backendVerified=u; try{ renderBackendClient(); }catch(e){}
-        return; }
-    // any non-ok result → make sure the QR is hidden (backend not proven)
-    window.__backendVerified=null; try{ renderBackendClient(); }catch(e){}
-    // not ok, show the specific reason from the diagnostic
-    var step=(j.steps&&j.steps[0])?j.steps[0]:'';
-    var hint='';
-    if(j.upstreamStatus===403){ hint=(lang==='fa'?'۴۰۳, احتمالاً از IP خام استفاده می‌کنی. در Cloudflare یک رکورد A با ابر خاکستری (DNS-only) بساز و از دامنه استفاده کن.':'403, likely a raw IP. Add a gray-cloud (DNS-only) A record in Cloudflare and use the domain.'); }
-    else if(j.upstreamStatus===522){ hint=(lang==='fa'?'۵۲۲, حلقهٔ هم‌حساب. پرچم global_fetch_strictly_public را روی ورکر فعال کن.':'522, same-account loop. Enable the global_fetch_strictly_public flag on the Worker.'); }
-    else if(j.error){ hint=(lang==='fa'?('خطا: '+j.error):('Error: '+j.error)); }
-    if(el){ el.className='msg bad'; el.textContent='✗ '+(lang==='fa'?'backend وصل نشد. ':'Backend not reachable. ')+(hint||step); }
-  }catch(e){ if(el){ el.className='msg bad'; el.textContent='⚠️ '+e.message; } }
-}
-// Build the ready-to-use VLESS link from the Backend URL + this panel's UUID & domain,
-// render a scannable QR, and show/hide the block based on the toggle + URL.
-function backendClientLink(){
-  var c=STATE.config||{};
-  var uuid=c.UUID||'';
-  // domain the client should connect to = this panel's host (Custom Domain if set, else workers.dev)
-  var domain=(Array.isArray(c.HOSTS)&&c.HOSTS[0]) ? c.HOSTS[0] : (c.HOST || location.host);
-  domain=String(domain).replace(/^https?:\/\//,'').split('/')[0].split(':')[0];
-  var u=((document.getElementById('be-url')||{}).value||'').trim();
-  // extract path from the Backend URL (default /novavpn)
-  var path='/novavpn';
-  try{ var bu=new URL(u); if(bu.pathname && bu.pathname!=='/') path=bu.pathname; }catch(e){}
-  if(!uuid || !domain) return '';
-  var ep=encodeURIComponent(path);
-  return 'vl'+'ess://'+uuid+'@'+domain+':443?security=tls&type=ws&host='+domain+'&sni='+domain+'&path='+ep+'&encryption=none#Nova-Backend';
-}
-// Cloudflare Workers can only fetch() a fixed set of ports. If the Backend URL uses anything else
-// (e.g. 10000, 3080), the Worker silently can't reach the VPS, the #1 cause of "backend not
-// reachable". Warn the moment a bad port is typed so it's caught before saving.
-var CF_HTTP_PORTS=[80,8080,8880,2052,2082,2086,2095];
-var CF_HTTPS_PORTS=[443,2053,2083,2087,2096,8443];
-function checkBackendPort(){
-  var box=document.getElementById('be-port-warn'); if(!box) return true;
-  var u=((document.getElementById('be-url')||{}).value||'').trim();
-  if(!/^https?:\/\//i.test(u)){ box.style.display='none'; return true; }
-  var parsed; try{ parsed=new URL(u); }catch(e){ box.style.display='none'; return true; }
-  var isHttps=parsed.protocol==='https:';
-  // default port (no :port) is fine: 443 for https, and http with no port means 80 (allowed)
-  var portStr=parsed.port;
-  if(!portStr){ box.style.display='none'; return true; }
-  var port=parseInt(portStr,10);
-  var allowed=isHttps?CF_HTTPS_PORTS:CF_HTTP_PORTS;
-  if(allowed.indexOf(port)>=0){ box.style.display='none'; return true; }
-  // bad port → warn (do not block; user may still save, but they're told why it'll fail)
-  var list=allowed.join(', ');
-  box.style.display='block';
-  box.textContent=(lang==='fa'
-    ? ('⚠ پورت '+port+' جزو پورت‌های مجاز Cloudflare نیست. ورکر نمی‌تواند به آن وصل شود. برای '+(isHttps?'HTTPS':'HTTP')+' یکی از این پورت‌ها را استفاده کن: '+list)
-    : ('⚠ Port '+port+' is NOT a Cloudflare-allowed port, the Worker can’t reach it. For '+(isHttps?'HTTPS':'HTTP')+' use one of: '+list));
-  return false;
-}
-// Bake THIS panel's UUID into the one-line VPS install command, so the backend installs with the
-// matching UUID automatically (no manual sed step, no "random UUID won't match" warning). Falls back
-// to the plain command if the UUID isn't loaded yet.
-function backendInstallCmd(){
-  var uuid=((STATE.config||{}).UUID||'').trim();
-  var base='bash <(curl -fsSL https://raw.githubusercontent.com/IRNova/Tools/main/nova-backend.sh)';
-  return uuid ? ('NOVA_UUID='+uuid+' '+base) : base;
-}
-// The change-port command: same installer, with NOVA_PORT set. We suggest 2082 as the example
-// (a valid Cloudflare port); the user can edit it to any allowed port before running.
-function backendPortCmd(){
-  var uuid=((STATE.config||{}).UUID||'').trim();
-  var base='bash <(curl -fsSL https://raw.githubusercontent.com/IRNova/Tools/main/nova-backend.sh)';
-  var pre='NOVA_PORT=2082 '+(uuid?('NOVA_UUID='+uuid+' '):'');
-  return pre+base;
-}
-function fillBackendInstallCmd(){
-  var el=document.getElementById('be-cmd'); if(el) el.textContent=backendInstallCmd();
-  var pe=document.getElementById('be-cmd-port'); if(pe) pe.textContent=backendPortCmd();
-}
-// The client QR/link is only shown once the backend is PROVEN reachable by a Health check (sets
-// window.__backendVerified to the exact URL that passed). Just enabling the toggle or typing a URL
-// is NOT enough, showing a QR for an unverified/broken backend gave users a config that silently
-// failed. If the URL changes after a successful check, the flag no longer matches and the QR hides
-// again until they re-run Health check.
-function renderBackendClient(){
-  var wrap=document.getElementById('be-client-wrap'); if(!wrap) return;
-  var enabled=isOn2('t2-backend');
-  var u=((document.getElementById('be-url')||{}).value||'').trim();
-  var verified=(window.__backendVerified && window.__backendVerified===u);
-  var link=(enabled && verified && /^https?:\/\//i.test(u)) ? backendClientLink() : '';
-  if(!link){
-    // No backend / empty URL → hide AND wipe any previously-rendered QR + link so nothing stale remains.
-    wrap.style.display='none';
-    var oc=document.getElementById('be-vless'); if(oc) oc.textContent='';
-    var ob=document.getElementById('be-qr'); if(ob) ob.innerHTML='';
-    return;
-  }
-  wrap.style.display='block';
-  var code=document.getElementById('be-vless'); if(code) code.textContent=link;
-  var box=document.getElementById('be-qr'); if(box){ box.innerHTML=''; if(window.QRCode){ try{ new QRCode(box,{text:link,width:132,height:132,correctLevel:QRCode.CorrectLevel.M}); }catch(e){} } else { box.textContent='QR'; } }
-}
-function isOn2(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('on')); }
 async function saveNetwork(silent){
   if(!LIVE){ if(!silent) previewToast(); return false; } const n=STATE.net;
   document.querySelectorAll('#routing-rows [data-toggle]').forEach(row=>{ n[NET_MAP[row.dataset.toggle]] = row.querySelector('.sw').classList.contains('on'); });
@@ -4224,7 +4301,6 @@ async function saveNetwork(silent){
   n.enableAntiSanctionDNS=isOn('t2-antisanc'); n.antiSanctionDNSProvider=g('d2-antiprov'); n.antiSanctionCustomDNS=(g('d2-anticustom')||'').trim();
   n.enableLocalDNS=isOn('t2-localdns'); n.localDNSIP=(g('d2-localip')||'').trim()||'8.8.8.8'; n.localDNSPort=(g('d2-localport')||'').trim()||'53';
   n.enableFakeDNS=isOn('t2-fakedns'); n.fakeDNSIP=(g('d2-fakeip')||'').trim()||'198.51.100.1'; n.logLevel=g('d2-loglevel');
-  n.backendMode=isOn('t2-backend'); { var _bu=(g('be-url')||'').trim(); if(_bu && !/^https?:\/\//i.test(_bu)) _bu='https://'+_bu; n.backendUrl=_bu; }
   // custom + preset rules
   n.customRules=g('n2-customrules')||''; n.monthlyCapGB=Math.max(0,Math.floor(Number(g('n2-monthlycap'))||0)); n.speedLimitKBps=Math.max(0,Math.floor(Number(g('n2-speedlimit'))||0));
   n.bypassCountries=[['cn','t2-bp-cn'],['ru','t2-bp-ru']].filter(([,id])=>isOn(id)).map(([c])=>c);
@@ -4245,9 +4321,6 @@ async function saveNetwork(silent){
   n.fakeConfigs=[{ name:'📢 {telegram}', enabled:true, locked:true }].concat(_fcRaw.map(line=>({ name:line, enabled:true })));
   let _netOk=false;
   { const _nok=await API.post('network-settings.json', n); _netOk=_nok; if(!silent){ toast(savedMsg(_nok)); flashSaved('save-network2', _nok); } };
-  // Refresh the backend client preview after saving so the QR/link reflects what was just saved.
-  // (Clearing the Backend URL or turning backend mode off must remove the QR, not leave a stale one.)
-  try{ renderBackendClient(); }catch(e){}
   return _netOk;
 }
 /* ---- WARP account: register / WARP+ license / central pool ---- */
@@ -4524,12 +4597,6 @@ document.addEventListener('click', (e)=>{
   // primary actions -> real backend
   if(e.target.closest('#policy-apply')){ applyPolicy(); return; }
   if(e.target.closest('#save-all-settings')){ saveAllSettings(); return; }
-  if(e.target.closest('#be-check')){ backendHealthCheck(); return; }
-  if(e.target.closest('#be-cmd-copy')){ var cmd; try{ cmd=backendInstallCmd(); }catch(_e){ cmd=(document.getElementById('be-cmd')||{}).textContent||''; } copy(cmd); return; }
-  if(e.target.closest('#be-cmd-port-copy')){ var pcmd; try{ pcmd=backendPortCmd(); }catch(_e){ pcmd=(document.getElementById('be-cmd-port')||{}).textContent||''; } copy(pcmd); return; }
-  if(e.target.closest('#be-cmd-remove-copy')){ copy((document.getElementById('be-cmd-remove')||{}).textContent||''); return; }
-  if(e.target.closest('#be-vless-copy')){ copy((document.getElementById('be-vless')||{}).textContent||''); return; }
-  if(e.target.closest('#be-vless-qr') || e.target.closest('#be-qr')){ var l=(document.getElementById('be-vless')||{}).textContent||''; if(l) showQR(l,'Nova Backend'); return; }
   if(e.target.closest('#save-network2')){ saveNetwork(); return; }
   { const cm=e.target.closest('#ci-seg button'); if(cm){ setCiMode(cm.dataset.m); return; } }
   if(e.target.closest('#ci-ports .ci-pchip')){ var _pc=e.target.closest('.ci-pchip'); _pc.classList.toggle('on'); _pc.setAttribute('aria-pressed', _pc.classList.contains('on')?'true':'false'); return; }
@@ -4604,16 +4671,10 @@ document.addEventListener('click', (e)=>{
   const trow = e.target.closest('[data-toggle]');
   if(trow){ trow.querySelector('.sw').classList.toggle('on'); return; }
   // standalone switches (telegram alerts, etc.)
-  const sw = e.target.closest('.sw'); if(sw){ sw.classList.toggle('on'); if(sw.id==='t2-multiuser') updateMultiUserUI(); if(sw.id==='t2-backend'){ try{ renderBackendClient(); }catch(_e){} try{ if(LIVE) saveNetwork(); }catch(_e){} } return; }
+  const sw = e.target.closest('.sw'); if(sw){ sw.classList.toggle('on'); if(sw.id==='t2-multiuser') updateMultiUserUI(); return; }
 });
 { const bf=document.getElementById('backup-file2'); if(bf) bf.onchange=(e)=>{ const f=e.target.files&&e.target.files[0]; if(f) backupImport(f); e.target.value=''; }; }
 { const ff=document.getElementById('f2-frag'); if(ff) ff.addEventListener('change',function(){ const b=document.getElementById('f2-frag-custom'); if(b) b.style.display=this.value==='custom'?'block':'none'; }); }
-{ const bu=document.getElementById('be-url'); if(bu){
-    bu.addEventListener('input',function(){ window.__backendVerified=null; try{ renderBackendClient(); }catch(_e){} try{ checkBackendPort(); }catch(_e){} });
-    // Persist the URL when the user finishes editing (blur/change) so it's saved without hunting for
-    // the Save button, only auto-save when the port is valid, to avoid saving a known-dead URL.
-    bu.addEventListener('change',function(){ var _v=bu.value.trim(); if(_v && !/^https?:\/\//i.test(_v)){ _v='https://'+_v; bu.value=_v; } try{ if(LIVE && checkBackendPort()) saveNetwork(); }catch(_e){} });
-  } }
 $('#menu-btn').addEventListener('click', openDrawer)
 { const si=document.getElementById('users-search'); if(si) si.addEventListener('input', function(){ clearTimeout(si.__debounce); si.__debounce=setTimeout(()=>renderUsers(),250); }); }
 /* Warn when grpc/xhttp is selected: custom domain required */
@@ -4819,7 +4880,7 @@ let _tcrz; window.addEventListener('resize',()=>{ clearTimeout(_tcrz); _tcrz=set
 //    published worker version (IRNova/Nova-Proxy version.json) shown after it when newer.
 //  • Panel  badge  = the panel HTML's own embedded version (this file's <meta> tag), with the latest
 //    published panel version (Nova-Panel/nova-panel.github.io version.json) shown after it when newer.
-var WORKER_VERSION_JSON='https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/public/version.json';
+var WORKER_VERSION_JSON='https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/version.json';
 var PANEL_VERSION_JSON='https://raw.githubusercontent.com/Nova-Panel/nova-panel.github.io/main/version.json';
 function _vnorm(s){ return String(s||'').replace(/^[vV]/,'').trim(); }
 function _vgt(a,b){ var pa=_vnorm(a).split('.').map(function(n){return parseInt(n,10)||0;}); var pb=_vnorm(b).split('.').map(function(n){return parseInt(n,10)||0;}); for(var i=0;i<Math.max(pa.length,pb.length);i++){ var x=pa[i]||0,y=pb[i]||0; if(x>y)return true; if(x<y)return false; } return false; }

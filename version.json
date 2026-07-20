@@ -1,6 +1,6 @@
 {
   "version": "4.1.3",
   "released": "2026-07-20",
-  "notes": "Version 4.1.3 panel. Fixes: setting a specific clean-IP pool port (for example 443) now applies and sticks, and the 0-RTT toggle now applies and reflects its real state. Includes the Relay (Tunnel) page for one-click relay setup. Matches worker V4.1.3.",
+  "notes": "Version 4.1.3 panel. Restores the one-click Tunnel/Relay setup wizard (generate key, ready-to-paste Google Apps Script, verify) and drops Backend mode from the UI (self-hosting is now Nova Server). Fixes: a specific clean-IP pool port (for example 443) now applies and sticks, and the 0-RTT toggle now applies and reflects its real state. Matches worker V4.1.3.",
   "worker_url": "https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/worker.js"
 }

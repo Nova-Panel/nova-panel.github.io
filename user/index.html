@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="fa" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8" />
@@ -6,9 +6,7 @@
 <title>Nova Proxy configs</title>
 <meta name="nova-userhub-version" content="4.0.0" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
 <script>
   (function(){ try{
     var l = localStorage.getItem('nova-user-lang') || 'fa';
@@ -16,8 +14,12 @@
     var th = localStorage.getItem('nova-theme'); document.documentElement.dataset.theme = th==='light'?'light':'dark';
   }catch(e){} })();
 </script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
-  :root{
+:root{
     --bg:#070809; --panel:#0c0e12; --card:#101319; --card2:#0b0d11;
     --bd:#1c2027; --bd2:#262b34; --tx:#e9edf4; --tx2:#aeb6c4; --mu:#6f7888;
     --ac:#22d3ee; --ac2:#a855f7; --ok:#34d399; --wn:#f5b042; --dg:#f87171;
@@ -33,8 +35,7 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
-  body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;font-family:'Inter','Vazirmatn',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
-  html[dir=rtl] body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif}
+  body{background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;font-family:'Vazirmatn','Inter',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:980px;margin:0 auto;padding:24px 18px 64px}
   .topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
   .brand{display:flex;align-items:center;gap:11px}
