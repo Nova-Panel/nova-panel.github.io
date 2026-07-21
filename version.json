@@ -1,6 +1,6 @@
 {
   "version": "4.1.4",
   "released": "2026-07-20",
-  "notes": "Version 4.1.3 panel. Restores the one-click Tunnel/Relay setup wizard (generate key, ready-to-paste Google Apps Script, verify) and drops Backend mode from the UI (self-hosting is now Nova Server). Fixes: a specific clean-IP pool port (for example 443) now applies and sticks, and the 0-RTT toggle now applies and reflects its real state. Matches worker V4.1.3.",
+  "notes": "Version 4.1.4 panel (version-aligned with worker V4.1.4). Panel unchanged since 4.1.3: one-click Tunnel/Relay setup wizard, Backend mode removed (self-hosting is now Nova Server), clean-IP pool port fix, and 0-RTT toggle fix. The V4.1.4 change (locked free-service mark in every node name) is worker-side.",
   "worker_url": "https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/worker.js"
 }
