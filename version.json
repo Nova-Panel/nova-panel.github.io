@@ -1,6 +1,6 @@
 {
-  "version": "4.1.4",
-  "released": "2026-07-20",
-  "notes": "Version 4.1.4 panel (version-aligned with worker V4.1.4). Panel unchanged since 4.1.3: one-click Tunnel/Relay setup wizard, Backend mode removed (self-hosting is now Nova Server), clean-IP pool port fix, and 0-RTT toggle fix. The V4.1.4 change (locked free-service mark in every node name) is worker-side.",
+  "version": "4.1.5",
+  "released": "2026-07-25",
+  "notes": "Version 4.1.5 panel (version-aligned with worker V4.1.5). No dashboard/UI changes; this is a worker-side security release: the install-only recovery routes /install/recover-password and /install/recover-disguise are now closed once a panel is configured, and auto-update is pinned to the official IRNova/Nova-Proxy repo. Panel dashboard files are unchanged (PANEL_VERSION 4.0.0).",
   "worker_url": "https://raw.githubusercontent.com/IRNova/Nova-Proxy/main/worker.js"
 }
