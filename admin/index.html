@@ -586,6 +586,21 @@ html[dir=rtl] .toast{right:auto;left:22px}
   /* User rows: stack fields full-width so the status toggle never overlaps */
   .urow2>.uf{flex:1 1 100%!important;width:auto!important;min-width:0!important;margin-inline-start:0!important}
 }
+/* GitHub-sourced guide render */
+#guide-remote{direction:rtl;text-align:right}
+#guide-remote h2{font-size:19px;font-weight:800;margin:22px 0 8px;color:var(--tx);border-inline-start:3px solid var(--ac);padding-inline-start:10px}
+#guide-remote h3{font-size:15px;font-weight:700;margin:16px 0 6px;color:var(--tx)}
+#guide-remote p{line-height:1.9;margin:8px 0;color:var(--tx2)}
+#guide-remote ul,#guide-remote ol{margin:8px 22px;line-height:1.9;color:var(--tx2)}
+#guide-remote li{margin:3px 0}
+#guide-remote a{color:var(--ac);word-break:break-all;unicode-bidi:isolate}
+#guide-remote code{background:var(--ac-line,rgba(157,78,251,.12));padding:1px 6px;border-radius:5px;font-size:.9em;direction:ltr;unicode-bidi:isolate;display:inline-block}
+#guide-remote details{background:var(--card,rgba(255,255,255,.02));border:1px solid var(--ln,rgba(255,255,255,.08));border-radius:12px;padding:0 14px;margin:10px 0}
+#guide-remote details[open]{padding-bottom:8px}
+#guide-remote summary{cursor:pointer;font-weight:700;font-size:14px;padding:13px 2px;list-style:none}
+#guide-remote summary::-webkit-details-marker{display:none}
+#guide-remote summary::before{content:"▸";color:var(--ac);margin-inline-end:8px;display:inline-block;transition:transform .15s}
+#guide-remote details[open] summary::before{transform:rotate(-90deg)}
 </style>
 </head>
 <body>
@@ -747,13 +762,14 @@ html[dir=rtl] .toast{right:auto;left:22px}
         </div>
 
         <!-- Nova Radar feature banner: announce the in-browser clean-IP scanner (new). -->
-        <div class="card calls-card" style="margin-top:12px;border-color:var(--ac-line)">
+        <div class="card calls-card" id="radar-banner-card" style="margin-top:12px;border-color:var(--ac-line)">
           <div class="calls-hd">
             <span class="calls-ic">📡</span>
-            <div>
+            <div style="flex:1">
               <h3 style="display:flex;align-items:center;gap:8px"><span data-i18n="radar_bn_h">Nova Radar</span><span class="calls-badge ok" data-i18n="radar_bn_new">New</span></h3>
               <p class="calls-s" data-i18n="radar_bn_s">Find the fastest clean IP for any network, right in the browser. Your users get it on their own config page, and you can run it per user. Perfect when a network gets slow or an IP is blocked.</p>
             </div>
+            <button class="wn-x" id="radar-banner-x" title="Dismiss" aria-label="Dismiss">×</button>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;padding:2px 16px 16px 52px">
             <button class="btn primary sm" data-open-radar data-i18n="radar_bn_open">Open Nova Radar</button>
@@ -763,13 +779,14 @@ html[dir=rtl] .toast{right:auto;left:22px}
 
         <!-- Google Relay callout: an extra path via Google Apps Script for when the direct
              route is blocked. One-click setup lives on the Tunnel page. -->
-        <div class="card calls-card" style="margin-top:12px">
+        <div class="card calls-card" id="grelay-banner-card" style="margin-top:12px">
           <div class="calls-hd">
             <span class="calls-ic">🔗</span>
-            <div>
+            <div style="flex:1">
               <h3 data-i18n="grelay_h">Google Relay</h3>
               <p class="calls-s" data-i18n="grelay_s">A relay that moves data through Google Apps Script, an extra path that keeps users connected when the direct route is blocked or throttled. Set it up in one click: generate a key, paste the ready-made script, and verify.</p>
             </div>
+            <button class="wn-x" id="grelay-banner-x" title="Dismiss" aria-label="Dismiss">×</button>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:2px 16px 16px 52px">
             <span id="grelay-dash-pill" class="uchip" style="display:none"><span class="d"></span><span id="grelay-dash-pill-txt"></span></span>
@@ -1623,6 +1640,11 @@ html[dir=rtl] .toast{right:auto;left:22px}
       <section class="view" id="view-guide">
 
 <!-- NOVA GUIDE (auto) -->
+<div id="guide-remote-bar" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+  <button id="guide-refresh-btn" class="btn ghost" onclick="loadRemoteGuide(true)">🔄 <span data-i18n="guide_refresh">بروزرسانی از گیت‌هاب</span></button>
+  <span id="guide-remote-status" class="muted" style="font-size:12px"></span>
+</div>
+<div id="guide-remote" style="display:none"></div>
 <div id="nova-full-guide">
 <div class="card"><div class="card-h"><h3>📘 راهنمای کامل پنل نوا پروکسی (⁦Nova Proxy⁩)</h3></div><div class="card-pad" dir="rtl" style="text-align:right"><p style="line-height:1.9;margin:6px 0">پنل نوا پروکسی یک پروکسی شخصی و رایگان است که روی ⁦Worker⁩ خودتان در ⁦Cloudflare⁩ اجرا می‌شود. هیچ سرور مشترکی وجود ندارد؛ هر کس پنل اختصاصی خودش را دارد و هیچ لاگی از ترافیک ذخیره نمی‌شود.</p>
 <p style="line-height:1.9;margin:6px 0">این راهنما شما را قدم‌به‌قدم از نصب تا مدیریت روزانه می‌برد. در انتها یک بخش «سوالات متداول» از ربات پشتیبانی تلگرام هم آمده است.</p></div></div>
@@ -1914,6 +1936,7 @@ const I18N = {
     st_active:'Active', st_off:'Off', st_expired:'Expired', st_quota:'Quota full', u_extend:'Extend', u_edit:'Edit',
     grelay_h:'Google Relay', grelay_s:'A relay that moves data through Google Apps Script, an extra path that keeps users connected when the direct route is blocked or throttled. Set it up in one click: generate a key, paste the ready-made script, and verify.', grelay_btn:'Set up Google Relay',
     radar_bn_h:'Nova Radar', radar_bn_new:'New', radar_bn_s:'Find the fastest clean IP for any network, right in the browser. Your users get it on their own config page, and you can run it per user. Great when a network gets slow or an IP is blocked.', radar_bn_open:'Open Nova Radar', radar_bn_apply:'Scan & apply to this worker',
+    guide_refresh:'Refresh from GitHub', guide_loading:'Loading…', guide_src:'Source: GitHub', guide_fallback:'Showing the built-in copy (GitHub was unreachable).',
     wn_h:'What\'s new', wn_usage:'📊 Traffic usage fixed: per-user data volume counts correctly again.', wn_clash:'🔗 Clash/mihomo/FlClash import fixed: manual subscription import no longer errors.', wn_radarapply:'📡 Nova Radar Apply fixed: scanned clean IPs now actually save into the panel.', wn_wgep:'🔐 WireGuard endpoints: a fresh list of clean endpoints that work in Iran, with a working default (no more blocked engage) — pick one in WireGuard → Endpoint.', wn_guide:'📘 New in-panel Guide + FAQ: step-by-step help right in the Guide tab.', wn_secfix:'🔒 Security & reliability: hardening, Secure DNS test fix, Silent Alerts now stick, and custom-domain updates work.', wn_relay:'🔗 Google Relay: one-click relay setup, generate a key, paste the ready-made Google Apps Script, and verify. A backup path for when the direct route is blocked.', wn_isp:'📶 Per-ISP optimization: every config auto-tunes its fingerprint and fragmentation for the user\'s carrier (Irancell, MCI, Rightel, and more).', wn_server:'🖥️ Nova Server: run the full Nova panel on your own VPS with a one-line installer, VLESS, Trojan, Shadowsocks, and Hysteria2 for low-latency gaming.', wn_portfix:'🔌 Cleaner ports and 0-RTT: a specific clean-IP pool port (or -1 for a mix) now applies and sticks, and the 0-RTT toggle works.', wn_speed:'⚡ Faster relay: leaner upload and download (keep FAST_RELAY on).', wn_radar:'📡 Nova Radar: a built-in tool that finds Cloudflare IPs which are fast and open on a given network, right in the browser.', wn_peruser:'👤 Per-user routing: give each user their own clean IPs, proxy IPs, ports and fingerprint (Edit a user).', wn_free:'🎁 Free branding on every config: anti-resale, cannot be stripped by a reseller.', wn_ech:'🔒 ECH DoH presets and a fuller TLS fingerprint list (in Settings).', wn_calls:'📞 Calls that work: route UDP through free WARP so FaceTime, WhatsApp and Telegram calls connect (WARP section).', wn_disguise:'🥷 Secret paths: move your panel and login to a private web address only you know, so no one can reach them by guessing /admin or /login (Network & IPs → Disguise).', wn_apply:'📥 Users fix slow connections themselves: one tap finds faster clean IPs for their network and applies them, so they do not have to message you (Nova Radar).', wn_mirror:'🔗 Backup link on GitHub: a permanent link and QR your users can save, so they still get configs if your domain is blocked. It refreshes on its own after any change (GitHub mirror).',
     col_name:'Name', col_quota:'Quota', col_used:'Used', col_expiry:'Expiry',
     u_reset:'Reset', col_daily:'Daily limit', u_radar:'Find best IP',
@@ -2037,6 +2060,7 @@ const I18N = {
     st_active:'Активен', st_off:'Выкл.', st_expired:'Истёк', st_quota:'Квота исчерпана', u_extend:'Продлить', u_edit:'Изменить',
     grelay_h:'Google Relay', grelay_s:'Ретрансляция, которая передаёт данные через Google Apps Script, дополнительный маршрут, чтобы пользователи оставались на связи, когда прямой путь заблокирован или замедлен. Настройка в один клик: создайте ключ, вставьте готовый скрипт и проверьте.', grelay_btn:'Настроить Google Relay',
     radar_bn_h:'Nova Radar', radar_bn_new:'Новое', radar_bn_s:'Найдите самый быстрый чистый IP для любой сети прямо в браузере. Ваши пользователи получают его на своей странице конфигурации, а вы можете запускать его для каждого пользователя. Отлично подходит, когда сеть замедляется или IP заблокирован.', radar_bn_open:'Открыть Nova Radar', radar_bn_apply:'Сканировать и применить к этому Worker',
+    guide_refresh:'Обновить из GitHub', guide_loading:'Загрузка…', guide_src:'Источник: GitHub', guide_fallback:'Показана встроенная версия (GitHub недоступен).',
     wn_h:'Что нового', wn_usage:'📊 Учёт трафика исправлен: объём по каждому пользователю снова считается верно.', wn_clash:'🔗 Импорт Clash/mihomo/FlClash исправлен: ручной импорт подписки больше не даёт ошибку.', wn_radarapply:'📡 Применение в Nova Radar исправлено: найденные чистые IP теперь сохраняются в панель.', wn_wgep:'🔐 Эндпоинты WireGuard: свежий список чистых эндпоинтов для Ирана и рабочий адрес по умолчанию (engage больше не используется) — выберите в WireGuard → Endpoint.', wn_guide:'📘 Руководство и FAQ прямо в панели: пошаговая помощь во вкладке «Руководство».', wn_secfix:'🔒 Безопасность и надёжность: усиление защиты, исправление теста Secure DNS, сохранение Silent Alerts и работа обновлений на своём домене.', wn_relay:'🔗 Google Relay: настройка ретрансляции в один клик, создайте ключ, вставьте готовый скрипт Google Apps Script и проверьте. Запасной путь на случай блокировки прямого.', wn_isp:'📶 Оптимизация под оператора: каждый конфиг автоматически подстраивает fingerprint и фрагментацию под оператора (Irancell, MCI, Rightel и другие).', wn_server:'🖥️ Nova Server: полный набор Nova на вашем VPS одной командой, VLESS, Trojan, Shadowsocks и Hysteria2 для игр с низкой задержкой.', wn_portfix:'🔌 Чище порты и 0-RTT: конкретный порт пула чистых IP (или -1 для смешанного) теперь применяется и сохраняется, а переключатель 0-RTT работает.', wn_speed:'⚡ Более быстрый ретранслятор: облегчённая отдача и загрузка (держите FAST_RELAY включённым).', wn_radar:'📡 Nova Radar: встроенный инструмент, который находит IP-адреса Cloudflare, быстрые и открытые в данной сети, прямо в браузере.', wn_peruser:'👤 Индивидуальная маршрутизация: назначайте каждому пользователю свои чистые IP, прокси-IP, порты и отпечаток (изменение пользователя).', wn_free:'🎁 Бесплатный брендинг в каждой конфигурации: защита от перепродажи, перепродавец не сможет его убрать.', wn_ech:'🔒 Пресеты ECH DoH и более полный список отпечатков TLS (в «Настройках»).', wn_calls:'📞 Работающие звонки: направляйте UDP через бесплатный WARP, чтобы звонки FaceTime, WhatsApp и Telegram проходили (раздел WARP).', wn_disguise:'🥷 Секретные пути: перенесите панель и вход на приватный веб-адрес, известный только вам, чтобы никто не мог попасть на них, угадывая /admin или /login («Сеть и IP → Маскировка»).', wn_apply:'📥 Пользователи сами исправляют медленные соединения: одно касание находит более быстрые чистые IP для их сети и применяет их, поэтому им не нужно писать вам (Nova Radar).', wn_mirror:'🔗 Резервная ссылка на GitHub: постоянная ссылка и QR, которые пользователи могут сохранить, чтобы получать конфигурации, даже если ваш домен заблокирован. Она сама обновляется после любых изменений (зеркало на GitHub).',
     col_name:'Имя', col_quota:'Квота', col_used:'Использовано', col_expiry:'Срок действия',
     u_reset:'Сбросить', col_daily:'Дневной лимит', u_radar:'Найти лучший IP',
@@ -2152,6 +2176,7 @@ const I18N = {
     st_active:'فعال', st_off:'خاموش', st_expired:'منقضی', st_quota:'اتمام سهمیه', u_extend:'تمدید', u_edit:'ویرایش',
     grelay_h:'رله گوگل', grelay_s:'یک رله که داده را از طریق Google Apps Script جابه‌جا می‌کند؛ یک مسیر اضافه که وقتی مسیر مستقیم مسدود یا کند می‌شود، کاربران را وصل نگه می‌دارد. با یک کلیک راه‌اندازی کن: کلید بساز، اسکریپت آماده را جای‌گذاری و تأیید کن.', grelay_btn:'راه‌اندازی رله گوگل',
     radar_bn_h:'رادار نوا', radar_bn_new:'جدید', radar_bn_s:'سریع‌ترین آی‌پی تمیز هر شبکه را همان‌جا در مرورگر پیدا کنید. کاربران آن را در صفحهٔ کانفیگ خودشان دارند و شما می‌توانید برای هر کاربر اجرا کنید. عالی برای وقتی که شبکه کند می‌شود یا آی‌پی مسدود است.', radar_bn_open:'باز کردن رادار نوا', radar_bn_apply:'اسکن و اعمال روی این ورکر',
+    guide_refresh:'بروزرسانی از ⁦GitHub⁩', guide_loading:'در حال بارگذاری…', guide_src:'منبع: ⁦GitHub⁩', guide_fallback:'نمایش نسخهٔ داخلی (⁦GitHub⁩ در دسترس نبود).',
     wn_h:'تازه‌ها', wn_usage:'📊 اصلاح شمارش مصرف: حجم مصرف هر کاربر دوباره درست شمرده می‌شود.', wn_clash:'🔗 اصلاح ورود ⁦Clash/mihomo/FlClash⁩: افزودن دستی اشتراک دیگر خطا نمی‌دهد.', wn_radarapply:'📡 اصلاح ⁦Apply⁩ رادار: آی‌پی‌های تمیزِ اسکن‌شده حالا واقعاً در پنل ذخیره می‌شوند.', wn_wgep:'🔐 اندپوینت‌های ⁦WireGuard⁩: فهرست تازه‌ای از اندپوینت‌های تمیز که در ایران کار می‌کنند، با پیش‌فرض کارآمد (دیگر ⁦engage⁩ مسدود نیست) — از ⁦WireGuard⁩ ← ⁦Endpoint⁩ انتخاب کن.', wn_guide:'📘 راهنما و سوالات متداول داخل پنل: کمک گام‌به‌گام در تب راهنما.', wn_secfix:'🔒 امنیت و پایداری: سخت‌سازی امنیتی، اصلاح تست ⁦DNS⁩ امن، ماندگاری ⁦Silent Alerts⁩ و کارکرد به‌روزرسانی روی دامنهٔ اختصاصی.', wn_relay:'🔗 رله گوگل: راه‌اندازی رله با یک کلیک؛ کلید بساز، اسکریپت آمادهٔ Google Apps Script را جای‌گذاری و تأیید کن. مسیری پشتیبان برای وقتی مسیر مستقیم مسدود می‌شود.', wn_isp:'📶 بهینه‌سازی به‌تفکیک اپراتور: هر کانفیگ، fingerprint و fragmentation را خودکار برای اپراتور کاربر (ایرانسل، همراه اول، رایتل و بیشتر) تنظیم می‌کند.', wn_server:'🖥️ نوا سرور: پنل کامل نوا را با یک دستور روی VPS خودت اجرا کن؛ VLESS، Trojan، Shadowsocks و Hysteria2 برای گیمینگ کم‌تأخیر.', wn_portfix:'🔌 پورت‌های تمیزتر و 0-RTT: یک پورت مشخص برای استخر آی‌پی تمیز (یا ۱- برای ترکیبی) حالا اعمال می‌شود و می‌ماند، و کلید 0-RTT درست کار می‌کند.', wn_speed:'⚡ رله سریع‌تر: آپلود و دانلود سبک‌تر (FAST_RELAY را روشن نگه دارید).', wn_radar:'📡 رادار نوا: ابزاری داخلی که همان‌جا در مرورگر، آی‌پی‌های کلودفلرِ سریع و بازِ یک شبکه را پیدا می‌کند.', wn_peruser:'👤 مسیریابی هر کاربر: آی‌پی تمیز، پروکسی‌آی‌پی، پورت و انگشت‌نگاری اختصاصی برای هر کاربر (ویرایش کاربر).', wn_free:'🎁 نشان رایگان روی هر کانفیگ: ضد فروش مجدد، قابل حذف توسط فروشنده نیست.', wn_ech:'🔒 پیش‌تنظیم‌های ECH DoH و فهرست کامل‌تر انگشت‌نگاری TLS (در تنظیمات).', wn_calls:'📞 تماس‌هایی که کار می‌کنند: عبور UDP از طریق WARP رایگان تا تماس‌های فیس‌تایم، واتساپ و تلگرام وصل شوند (بخش WARP).', wn_disguise:'🥷 مسیرهای مخفی: پنل و ورود را به یک آدرس خصوصی که فقط خودت می‌دانی ببر، تا کسی با حدس زدن /admin یا /login به آن‌ها نرسد (شبکه و آی‌پی ← استتار).', wn_apply:'📥 کاربران کندی را خودشان درست می‌کنند: با یک لمس آی‌پی‌های تمیزِ سریع‌تر برای شبکه‌شان پیدا و اعمال می‌شود، بدون اینکه به تو پیام بدهند (رادار نوا).', wn_mirror:'🔗 لینک پشتیبان روی گیت‌هاب: یک لینک دائمی و QR که کاربر ذخیره می‌کند، تا اگر دامنه‌ات مسدود شد باز هم کانفیگ بگیرد. بعد از هر تغییر خودش به‌روز می‌شود (آینه گیت‌هاب).',
     col_name:'نام', col_quota:'سهمیه', col_used:'مصرف', col_expiry:'انقضا',
     u_reset:'بازنشانی', col_daily:'سقف روزانه', u_radar:'یافتن بهترین آی‌پی',
@@ -3381,6 +3406,64 @@ function renderGuide(){ const g=GUIDE[lang]||GUIDE.en;
   const qh=document.getElementById('guide-qs-h'); if(qh) qh.textContent=g.qs;
   const th=document.getElementById('guide-tips-h'); if(th) th.textContent=g.tips;
 }
+/* Live guide: render the GitHub-sourced GUIDE.md markdown safely (escape everything,
+   then restore only a small whitelist of tags: b, code, details, summary). */
+function mdToHtml(md){
+  const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const inline = s => {
+    s = esc(s);
+    s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+    s = s.replace(/(^|[\s(])((https?:\/\/)[^\s<)]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+    s = s.replace(/&lt;(\/?)(b|code)&gt;/g,'<$1$2>'); // restore inline whitelist
+    return s;
+  };
+  const lines = String(md||'').replace(/\r/g,'').split('\n');
+  let out='', inUL=false, inOL=false;
+  const closeLists=()=>{ if(inUL){out+='</ul>';inUL=false;} if(inOL){out+='</ol>';inOL=false;} };
+  for(let raw of lines){
+    const t = raw.replace(/\s+$/,'');
+    const tt = t.trim();
+    if(!tt){ closeLists(); continue; }
+    if(/^-{3,}$/.test(tt)){ closeLists(); continue; }              // section separator
+    let m;
+    if((m = tt.match(/^(#{1,6})\s+(.*)$/))){ closeLists(); const lv = m[1].length<=1?2:3; out+='<h'+lv+'>'+inline(m[2])+'</h'+lv+'>'; continue; }
+    if(tt === '<details>' || tt === '</details>'){ closeLists(); out += tt; continue; }
+    if((m = tt.match(/^<summary>([\s\S]*)<\/summary>$/))){ closeLists(); out += '<summary>'+inline(m[1].replace(/^<b>|<\/b>$/g,''))+'</summary>'; continue; }
+    if((m = tt.match(/^[-*]\s+(.*)$/))){ if(inOL){out+='</ol>';inOL=false;} if(!inUL){out+='<ul>';inUL=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    if((m = tt.match(/^\d+\.\s+(.*)$/))){ if(inUL){out+='</ul>';inUL=false;} if(!inOL){out+='<ol>';inOL=true;} out+='<li>'+inline(m[1])+'</li>'; continue; }
+    closeLists(); out += '<p>'+inline(tt)+'</p>';
+  }
+  closeLists();
+  return out;
+}
+let _guideLoaded=false;
+async function loadRemoteGuide(force){
+  const box=document.getElementById('guide-remote');
+  const st=document.getElementById('guide-remote-status');
+  const stat=document.getElementById('nova-full-guide');
+  if(!box) return;
+  if(_guideLoaded && !force) return;
+  if(st) st.textContent = t('guide_loading');
+  try{
+    const r = await fetch('/admin/guide-md'+(force?'?refresh=1&_t='+Date.now():'?_t='+Date.now()), {cache:'no-store'});
+    const j = await r.json();
+    if(j && j.ok && j.md){
+      box.innerHTML = mdToHtml(j.md);
+      box.style.display='';
+      if(stat) stat.style.display='none';
+      _guideLoaded=true;
+      const dt = j.fetchedAt ? new Date(j.fetchedAt) : null;
+      if(st) st.textContent = t('guide_src') + (dt ? ' • '+dt.toLocaleString(lang==='fa'?'fa-IR':(lang||'en')) : '');
+      return;
+    }
+    throw new Error('empty');
+  }catch(e){
+    box.style.display='none';
+    if(stat) stat.style.display='';           // fall back to the bundled guide
+    if(st) st.textContent = t('guide_fallback');
+  }
+}
 function renderAll(){
   renderKPIs(); renderPolicy(); renderActivity('#activity-mini',5); renderAudit();
   renderClients(); renderFormats(); renderNetwork(); renderSettings(); renderUsers(); renderGuide();
@@ -3532,6 +3615,7 @@ function showView(v){
   if(v==='tunnel') tunnelInit();
   if(v==='dashboard'){ try{ TChart.ensure(); }catch(e){} }
   if(v==='notifications'){ try{ renderNovaVerCard(); }catch(e){} }
+  if(v==='guide'){ try{ loadRemoteGuide(false); }catch(e){} }
   if(['network','cleanips','wireguard','users','proxy','corenode','linkedpanels','tunnel'].indexOf(v)>=0){ var _g=document.getElementById('grp-netset'); if(_g) _g.classList.add('open'); var _gt=document.getElementById('netset-toggle'); if(_gt) _gt.setAttribute('aria-expanded','true'); }
   window.scrollTo({top:0,behavior:'instant'});
 }
@@ -4630,6 +4714,8 @@ function addCustomRule(){ const ty=document.getElementById('cr2-type').value, va
 document.addEventListener('click', (e)=>{
   const nav = e.target.closest('[data-view]'); if(nav){ e.preventDefault(); showView(nav.dataset.view); return; }
   if(e.target.closest('#wn-dismiss')){ try{ localStorage.setItem('nova-wn', WN_VER); }catch(_){} const c=document.getElementById('whatsnew-card'); if(c) c.style.display='none'; return; }
+  if(e.target.closest('#radar-banner-x')){ try{ localStorage.setItem('nova-radar-banner','1'); }catch(_){} const c=document.getElementById('radar-banner-card'); if(c) c.style.display='none'; return; }
+  if(e.target.closest('#grelay-banner-x')){ try{ localStorage.setItem('nova-grelay-banner','1'); }catch(_){} const c=document.getElementById('grelay-banner-card'); if(c) c.style.display='none'; return; }
   // primary actions -> real backend
   if(e.target.closest('#policy-apply')){ applyPolicy(); return; }
   if(e.target.closest('#save-all-settings')){ saveAllSettings(); return; }
@@ -4739,6 +4825,7 @@ $('#menu-btn').addEventListener('click', openDrawer)
 })();
 /* Collapsible "Network Settings" submenu (closed by default, state remembered) */
 ;(function(){ try{ if(localStorage.getItem('nova-wn')===WN_VER){ var c=document.getElementById('whatsnew-card'); if(c) c.style.display='none'; } }catch(e){} })();
+;(function(){ try{ if(localStorage.getItem('nova-radar-banner')==='1'){ var c=document.getElementById('radar-banner-card'); if(c) c.style.display='none'; } if(localStorage.getItem('nova-grelay-banner')==='1'){ var g=document.getElementById('grelay-banner-card'); if(g) g.style.display='none'; } }catch(e){} })();
 ;(function(){
   var g=document.getElementById('grp-netset'), btn=document.getElementById('netset-toggle'); if(!g||!btn) return;
   try{ if(localStorage.getItem('nova-netset-open')==='1') g.classList.add('open'); }catch(e){}
