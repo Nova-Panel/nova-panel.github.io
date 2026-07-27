@@ -3281,8 +3281,10 @@ async function findMyWorker(acctId){
       if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'حساب را انتخاب کن.':'Choose your account.'); }
       return;
     }
-    if(j && j.ok && Array.isArray(j.workers)){
-      var ws=j.workers;
+    if(j && j.ok){
+      // Best case: the worker identified itself by matching this panel's hostname to its custom domain.
+      if(j.detected){ var snd=document.getElementById('upd-scriptname'); if(snd) snd.value=j.detected; if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('ورکر این پنل شناسایی شد: '+j.detected+'. حالا «به‌روزرسانی اکنون» را بزن.'):('Detected this panel’s Worker: '+j.detected+'. Now press Update now.')); } return; }
+      var ws=Array.isArray(j.workers)?j.workers:[];
       if(!ws.length){ if(msg){ msg.className='msg warn'; msg.textContent=(lang==='fa'?'ورکری روی این حساب پیدا نشد.':'No Workers found on this account.'); } return; }
       if(ws.length===1){ var sn=document.getElementById('upd-scriptname'); if(sn) sn.value=ws[0]; if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('ورکر پیدا شد: '+ws[0]+'. حالا «به‌روزرسانی اکنون» را بزن.'):('Found your Worker: '+ws[0]+'. Now press Update now.')); } return; }
       if(pick){ pick.style.display='block'; pick.innerHTML='<div style="font-size:12px;color:var(--mu);margin-bottom:6px">'+(lang==='fa'?'ورکر خود را انتخاب کن:':'Pick your Worker:')+'</div>'+ws.map(function(w){ return '<button class="btn ghost sm upd-wpick" type="button" data-w="'+String(w).replace(/"/g,'&quot;')+'" style="margin:0 6px 6px 0">'+String(w).replace(/</g,'&lt;')+'</button>'; }).join(''); }
