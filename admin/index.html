@@ -607,14 +607,15 @@ html[dir=rtl] .toast{right:auto;left:22px}
 #menu-search{width:100%;box-sizing:border-box;background:var(--card,rgba(255,255,255,.03));border:1px solid var(--ln,rgba(255,255,255,.1));border-radius:10px;color:var(--tx);font:inherit;font-size:13px;padding:9px 12px;padding-inline-start:34px;outline:none}
 #menu-search:focus{border-color:var(--ac)}
 #menu-search::placeholder{color:var(--mu)}
-.msr{display:none;position:absolute;inset-inline:12px;top:100%;z-index:40;background:var(--bg2,#12121a);border:1px solid var(--ln,rgba(255,255,255,.12));border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-height:340px;overflow-y:auto;padding:6px}
+.msr{display:none;position:absolute;inset-inline:12px;top:100%;z-index:40;background:var(--panel);border:1px solid var(--bd);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-height:340px;overflow-y:auto;padding:6px}
 .msr.on{display:block}
-.msr-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--tx);font-size:13px}
+.msr-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--tx);font-size:13px;font-weight:500}
+.msr-item>span:first-of-type{flex:1;min-width:0}
 .msr-item:hover,.msr-item.sel{background:color-mix(in srgb,var(--ac) 16%,transparent)}
 .msr-item .msr-tag{margin-inline-start:auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;flex:0 0 auto}
 .msr-tag.set{background:color-mix(in srgb,var(--ac) 22%,transparent);color:var(--ac)}
 .msr-tag.guide{background:rgba(2,205,243,.16);color:#02cdf3}
-.msr-item .msr-ic{width:16px;height:16px;flex:0 0 auto;color:var(--mu)}
+.msr-item .msr-ic{width:16px;height:16px;flex:0 0 auto;color:var(--tx2)}
 .msr-empty{padding:12px 10px;color:var(--mu);font-size:12px;text-align:center}
 </style>
 </head>
@@ -3590,7 +3591,7 @@ function menuSearchRun(q){
   const seen=new Set(), dedup=res.filter(r=>{ const k=r.kind+'|'+r.title; if(seen.has(k))return false; seen.add(k); return true; }).slice(0,12);
   box.className='msr on';
   if(!dedup.length){ box.innerHTML='<div class="msr-empty">'+t('search_none')+'</div>'; return; }
-  const setIc='<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/>';
+  const setIc='<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>';
   const gdIc='<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>';
   box.innerHTML=dedup.map(r=>'<div class="msr-item" role="option" data-view="'+r.view+'" data-el="'+(r.el||'')+'"><svg class="msr-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+(r.kind==='guide'?gdIc:setIc)+'</svg><span>'+r.title+'</span><span class="msr-tag '+r.kind+'">'+(r.kind==='guide'?t('search_tag_guide'):t('search_tag_set'))+'</span></div>').join('');
 }
