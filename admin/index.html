@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Nova Proxy, Control Panel</title>
-<meta name="nova-panel-version" content="4.1.7-preview.4" />
+<meta name="nova-panel-version" content="4.1.7" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
 <style>
 @font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
@@ -680,10 +680,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span data-i18n="nav_users">Users</span><span class="count" id="nav-users-count">3</span>
         </a>
-        <a class="nav-item" data-view="linkedpanels">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          <span data-i18n="nav_linkedpanels">Multi-Panel Hub</span>
-        </a>
         <a class="nav-item" data-view="tunnel">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span data-i18n="nav_tunnel">Tunnel</span>
@@ -1133,86 +1129,16 @@ html[dir=rtl] .toast{right:auto;left:22px}
         </div>
       </section>
 
-      <!-- ============ MULTI-PANEL HUB ============ -->
-      <section class="view" id="view-linkedpanels">
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-h"><h3 data-i18n="lpg_title">📘 How it works</h3></div>
-          <div class="card-pad">
-            <p style="font-size:12.5px;color:var(--mu);margin:0 0 14px" data-i18n="lpg_intro">Control all your Nova panels from this one. Add your other panels below, and this panel copies its settings, routing and clean IPs to them every time you save.</p>
-            <div style="display:flex;flex-direction:column;gap:11px">
-              <div style="display:flex;gap:11px;align-items:flex-start">
-                <span style="flex:none;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center">1</span>
-                <div><b data-i18n="lpg_s1_t">Add each panel</b><br><span style="font-size:12.5px;color:var(--mu)" data-i18n="lpg_s1_d">Press “+ Add a panel” and enter its name, its web address, and its admin password (the same one you log in with on that panel).</span></div>
-              </div>
-              <div style="display:flex;gap:11px;align-items:flex-start">
-                <span style="flex:none;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center">2</span>
-                <div><b data-i18n="lpg_s2_t">Save and sync</b><br><span style="font-size:12.5px;color:var(--mu)" data-i18n="lpg_s2_d">Press “Save & sync all”. Your settings are copied to every panel. It also syncs on its own each time you save here.</span></div>
-              </div>
-            </div>
-            <div style="margin-top:14px;padding:11px 13px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2)">
-              <div style="font-size:12.5px;font-weight:700;margin-bottom:6px" data-i18n="lpg_note_t">💡 Good to know</div>
-              <ul style="margin:0;padding-inline-start:18px;font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:5px">
-                <li data-i18n="lpg_note5" style="font-weight:600;color:var(--dg)">⚠️ Syncing replaces the other panel’s settings with this one’s, including its ID, hosts and users. Only add panels you want to become copies of this hub.</li>
-                <li data-i18n="lpg_note1">Nothing to set up on the other panels. Just add them here with their password.</li>
-                <li data-i18n="lpg_note2">Each panel must be on its own Cloudflare account. A panel cannot control another one on the same account.</li>
-                <li data-i18n="lpg_note3">Keep every panel on the same Nova version (open /install/status on each to check).</li>
-                <li data-i18n="lpg_note4">If a panel’s admin password changes, update it here too.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- MAIN: the panels you control -->
-        <div class="card" style="margin-bottom:14px">
-          <div class="card-h">
-            <h3 data-i18n="lp_list_title">🔗 Your panels</h3>
-            <div class="right"><button class="btn primary sm" onclick="lpAdd()" data-i18n="lp_add">+ Add a panel</button></div>
-          </div>
-          <div class="card-pad">
-            <p style="font-size:12.5px;color:var(--mu);margin:0 0 14px" data-i18n="lp_list_h">Add each panel you want to control. Enter its name, its web address, and its admin password (the same one you use to log in on that panel).</p>
-            <div id="lp-list" style="display:flex;flex-direction:column;gap:14px"></div>
-          </div>
-        </div>
-
-        <div class="card card-pad" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
-          <div id="lp-status" style="font-size:12.5px;color:var(--mu);flex:1;min-width:150px"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn ghost" onclick="lpSyncAll()" data-i18n="lp_syncall">Sync now</button>
-            <button class="btn primary" onclick="lpSave()" data-i18n="lp_save">Save & sync all</button>
-          </div>
-        </div>
-
-        <!-- ADVANCED: hub identity (optional) -->
-        <details class="card" style="margin-bottom:14px">
-          <summary style="cursor:pointer;padding:14px 16px;font-size:13.5px;font-weight:700;list-style:none" data-i18n="lp_adv">⚙️ Advanced (optional)</summary>
-          <div class="card-pad" style="padding-top:0">
-            <p style="font-size:12px;color:var(--mu);margin:0 0 14px" data-i18n="lp_adv_h">Most people can leave these empty. They only matter if you want another hub panel to push changes to this one.</p>
-            <div class="set-grid">
-              <div class="fg"><label data-i18n="lp_panelname">This panel's name</label><input class="inp" id="lp-panelname" placeholder="Main Panel"></div>
-              <div class="fg"><label data-i18n="lp_huburl">This panel's URL</label><input class="inp" id="lp-huburl" placeholder="https://my-panel.workers.dev" style="font-family:ui-monospace,monospace;font-size:12.5px;direction:ltr"></div>
-            </div>
-            <div class="fg" style="margin-bottom:0">
-              <label data-i18n="lp_synckey">Shared sync key</label>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <input class="inp" id="lp-synckey" placeholder="Random secret key" style="flex:1;min-width:200px;font-family:ui-monospace,monospace;font-size:12.5px;direction:ltr">
-                <button class="btn ghost sm" onclick="document.getElementById('lp-synckey').value=crypto.randomUUID().replace(/-/g,'').slice(0,32)" data-i18n="lp_gengen">Generate</button>
-              </div>
-              <p style="font-size:11.5px;color:var(--mu);margin:8px 2px 0" data-i18n="lp_synckey_h">Optional. Lets another hub panel control this one using this key instead of the admin password.</p>
-            </div>
-          </div>
-        </details>
-      </section>
-
       <!-- ============ TUNNEL / RELAY ============ -->
       <section class="view" id="view-tunnel">
         <div class="card" style="border-color:var(--ac-line)">
           <div class="card-h"><h3 data-i18n="tunnel_h">🔗 Tunnel / Relay</h3></div>
           <div class="card-pad">
-            <p style="font-size:12.5px;color:var(--mu);margin-bottom:16px" data-i18n="tunnel_s">Relay status and Google Apps Script address. Your relay runs on this Worker, and Google Apps Script connects to it to transfer data.</p>
+	            <p style="font-size:12.5px;color:var(--mu);margin-bottom:16px" data-i18n="tunnel_s">Create a private Google Apps Script relay without routing user traffic through your Cloudflare Worker.</p>
 
             <!-- What this is / why -->
             <div class="tnote intro" style="margin-bottom:20px">
-              <span class="ic">🛡️</span><span data-i18n="tunnel_intro">The relay makes your users' traffic look like normal Google traffic, so Nova keeps working even where the Worker domain itself is blocked. Your panel sets up the key for you. You only deploy a small Google Apps Script and paste its link back here.</span>
+	              <span class="ic">🛡️</span><span data-i18n="tunnel_intro">Google Apps Script fetches destinations directly. Nova only stores a strong private key and verifies your script; the Worker is not an open relay.</span>
             </div>
 
             <!-- Status row -->
@@ -1233,10 +1159,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <span class="tstep-num">1</span>
               <span class="section-label" style="margin:0" data-i18n="tunnel_step1_h">Enable relay</span>
             </div>
-            <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step1_s">Generate a strong key and switch the relay on. This Worker becomes your relay endpoint.</p>
-            <div id="tunnel-allowlist-note" class="tnote warn" style="display:none;margin-block:0 12px;margin-inline-start:30px">
-              <span class="ic">🛡️</span><span data-i18n="tunnel_allowlist_help">Before enabling relay, add RELAY_ALLOWED_HOSTS to the Worker variables with explicit destination hostnames separated by commas. Wildcard “*” is not accepted.</span>
-            </div>
+	            <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step1_s">Generate a strong private key. No Cloudflare variable or destination list is required.</p>
             <div style="margin-inline-start:30px">
               <button class="btn primary" id="tunnel-enable-btn" type="button" onclick="tunnelEnable()" data-i18n="tunnel_enable">Enable relay / Generate key</button>
             </div>
@@ -1255,7 +1178,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
                 <span class="tstep-num">2</span>
                 <span class="section-label" style="margin:0" data-i18n="tunnel_step2_h">Deploy the script</span>
               </div>
-              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step2_s">This is your ready-made relay script, already filled with your key and address. Copy it into a new Google Apps Script project.</p>
+	              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step2_s">This ready-made script already contains your private key. Copy it into a new Google Apps Script project.</p>
               <div class="tnote" style="margin-block:0 12px">
                 <span class="ic">🔒</span><span data-i18n="tunnel_key_locked">The key below is already filled into the script for you. Please do not change it.</span>
               </div>
@@ -1288,10 +1211,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <div style="margin-inline-start:30px;margin-block:0 12px">
                 <a class="btn ghost sm" href="https://script.google.com/home/projects/create" target="_blank" rel="noopener" data-i18n="tunnel_open_gas">Open Google Apps Script</a>
               </div>
-              <div style="font-size:11.5px;color:var(--mu);margin-inline-start:30px;margin-block:0 4px;padding:9px 12px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--card2);display:flex;gap:8px">
-                <span style="opacity:.7;flex:0 0 auto">💡</span><span data-i18n="tunnel_domain_note">If you have configured custom domains (HOSTS) in Network Settings or Settings, the relay will automatically use the first domain from your list. Otherwise it uses the default workers.dev address.</span>
-              </div>
-              <div class="tnote" style="margin-top:8px">
+	              <div class="tnote" style="margin-top:8px">
                 <span class="ic">🔐</span><span data-i18n="tunnel_security_note">Treat the key and the script link like a password and keep them private. Anyone who has both can use your relay.</span>
               </div>
 
@@ -1300,14 +1220,14 @@ html[dir=rtl] .toast{right:auto;left:22px}
                 <span class="tstep-num">3</span>
                 <span class="section-label" style="margin:0" data-i18n="tunnel_step3_h">Verify the connection</span>
               </div>
-              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step3_s">Paste your Web app URL below. We test the whole chain from this panel through the Worker to your script.</p>
+	              <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step3_s">Paste your Web app URL below. Nova asks the script to fetch a harmless Google test URL directly.</p>
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-inline-start:30px;margin-block:0 10px">
                 <input class="inp" id="tunnel-gas-url" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:220px;font-family:ui-monospace,monospace;font-size:12px;direction:ltr">
                 <button class="btn primary" id="tunnel-verify-btn" type="button" onclick="tunnelVerify()" data-i18n="tunnel_verify">Verify</button>
               </div>
               <div id="tunnel-verify-result" class="tverify" style="display:none;font-size:12px;margin-inline-start:30px;margin-block:0 6px;padding:9px 12px;border-radius:var(--r-sm)"></div>
               <div class="tnote" style="margin-top:10px">
-                <span class="ic">✅</span><span data-i18n="tunnel_verify_help">A green check means the whole path works, from this panel through the Worker to your script. If it stays red, check three things: Who has access is set to Anyone, the URL ends in /exec, and you pasted the latest script and re-deployed it.</span>
+	                <span class="ic">✅</span><span data-i18n="tunnel_verify_help">A green check means your Google script can fetch directly. If it stays red, check that access is set to Anyone, the URL ends in /exec, and the latest script was re-deployed.</span>
               </div>
               <div class="tnote" style="margin-top:8px">
                 <span class="ic">⏱️</span><span data-i18n="tunnel_propagation">Enabling, disabling, or changing the key takes effect within a few seconds.</span>
@@ -1600,7 +1520,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
             <div class="uf"><label data-i18n="um_maxconfigs">Max Configs (0=unlimited)</label><input class="inp" id="um-maxconfigs" type="number" min="0" value="0"></div>
             <div class="uf"><label data-i18n="um_iplimit">IP Limit (0=unlimited)</label><input class="inp" id="um-iplimit" type="number" min="0" value="0"></div>
             <div class="uf"><label data-i18n="um_reqlimit">Daily Request Limit (0=unlimited)</label><input class="inp" id="um-reqlimit" type="number" min="0" value="0"></div>
-            <div class="uf" style="grid-column:1/-1"><label data-i18n="um_panelurl">Create on a connected panel (optional)</label><input class="inp" id="um-panelurl" type="url" placeholder="https://other-panel.workers.dev (blank = this panel)"></div>
             <div class="uf" style="grid-column:1/-1;display:flex;gap:16px;flex-wrap:wrap;padding-top:4px">
               <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="checkbox" id="um-blockporn"> <span data-i18n="um_blockporn">Block Adult Content</span></label>
               <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px"><input type="checkbox" id="um-blockads"> <span data-i18n="um_blockads">Block Ads</span></label>
@@ -1852,19 +1771,12 @@ const I18N = {
     ab_panel:'Panel', ab_worker:'Worker', ab_desc:'Nova Proxy control panel, manage subscriptions, clean IPs, routing, WARP and DNS for your Cloudflare Worker.', ab_changelog:'Changelog', ab_links:'Links',
     skip_main:'Skip to main content', nav_sec_main:'Main', nav_sec_netset:'Network settings', nav_sec_system:'System',
     nav_dashboard:'Dashboard', nav_distribution:'Subscriptions', nav_network:'Network & IPs',
-    nav_activity:'Activity', nav_settings:'Settings', nav_notifications:'Notifications', nav_users:'Users', nav_linkedpanels:'Multi-Panel Hub', nav_tunnel:'Tunnel',
+    nav_activity:'Activity', nav_settings:'Settings', nav_notifications:'Notifications', nav_users:'Users', nav_tunnel:'Tunnel',
     sub_dashboard:'Live status of your proxy fleet.', sub_distribution:'Subscription links and client onboarding.',
     sub_network:'Clean IP pools, routing, and DNS.', sub_activity:'Operational audit trail.',
     sub_settings:'Protocol, security, and access.', sub_notifications:'Usage limits and alert channels.',
     sub_users:'Per-user links, quotas, and expiry.',
     sub_tunnel:'Relay status and Google Apps Script address.',
-    lp_title:'🛰️ Multi-Panel Hub', lp_role:'Hub', lp_desc:'Link multiple Nova panels together. This panel acts as the hub, pushing configuration changes to all linked child panels automatically.',
-    lp_panelname:"This panel's name", lp_huburl:"This panel's URL", lp_synckey:'Shared sync key', lp_synckey_h:'Optional. Lets another hub panel control this one using this key instead of the admin password.',
-    lp_gengen:'Generate', lp_list_title:'🔗 Your panels', lp_list_h:'Add each panel you want to control. Enter its name, its web address, and its admin password (the same one you use to log in on that panel).', lp_adv:'⚙️ Advanced (optional)', lp_adv_h:'Most people can leave these empty. They only matter if you want another hub panel to push changes to this one.', lp_add:'+ Add a panel', lp_save:'Save & sync all', lp_syncall:'Sync now',
-    lpg_title:'📘 How it works', lpg_intro:'Control all your Nova panels from this one. Add your other panels below, and this panel copies its settings, routing and clean IPs to them every time you save.',
-    lpg_s1_t:'Add each panel', lpg_s1_d:'Press “+ Add a panel” and enter its name, its web address, and its admin password (the same one you log in with on that panel).',
-    lpg_s2_t:'Save and sync', lpg_s2_d:'Press “Save & sync all”. Your settings are copied to every panel. It also syncs on its own each time you save here.',
-    lpg_note_t:'💡 Good to know', lpg_note5:'⚠️ Syncing replaces the other panel’s settings with this one’s, including its ID, hosts and users. Only add panels you want to become copies of this hub.', lpg_note1:'Nothing to set up on the other panels. Just add them here with their password.', lpg_note2:'Each panel must be on its own Cloudflare account. A panel cannot control another one on the same account.', lpg_note3:'Keep every panel on the same Nova version (open /install/status on each to check).', lpg_note4:'If a panel’s admin password changes, update it here too.',
     status_operational:'Operational', status_on:'On', status_off:'Off', status_nominal:'Nominal',
     ver_panel:'Panel', ver_nova:'Version', ver_worker:'Worker', view_all:'View all', refresh:'Refresh', copy:'Copy', open:'Open', qr:'QR', btn_save:'Save',
     cf_estimate:'Estimated', cf_h:'Live status (Cloudflare API)', cf_sub:'Paste a Cloudflare API token to show real request counts, your Account ID is auto-detected. Click "Create token", press Continue to summary → Create Token, copy it, and paste below. Give it Account Analytics: Read + Workers Scripts: Edit, then this one token powers both live usage and one-click updates.', cf_accid:'Account ID', cf_accid_opt:'(optional, auto-detected)', cf_accid_ph:'leave blank to auto-detect', cf_token:'API token', cf_connect:'Connect', cf_disconnect:'Disconnect', upd_saved_note:'Already connected Cloudflare in the Worker-usage card? Leave this blank and just press Update now.',
@@ -1948,19 +1860,19 @@ const I18N = {
     rules_h:'Custom routing rules', rules_help:'One rule per line: TYPE,value,OUTBOUND (DIRECT / REJECT / PROXY). Needs routing enabled.', rules_add:'+ Add',
     preset_h:'Preset rules', bp_cn:'Bypass China', bp_cn_h:'route China sites/IPs direct', bp_ru:'Bypass Russia', bp_ru_h:'route Russia sites/IPs direct', bk_malware:'Block malware', bk_phishing:'Block phishing', bk_crypto:'Block cryptominers', bk_geo_h:'needs client geodata',
     copied:'Copied to clipboard',
-    tunnel_h:'🔗 Tunnel / Relay', tunnel_s:'Relay status and Google Apps Script address. Your relay runs on this Worker, and Google Apps Script connects to it to transfer data.', tunnel_loading:'Loading...', tunnel_address:'Relay Address', tunnel_address_h:'Use this address in your Google Apps Script Code.gs file as WORKER_URL:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Paste these lines at the top of your Code.gs file:',     tunnel_active:'Relay is active', tunnel_inactive:'Relay is inactive', tunnel_domain_note:'If you have configured custom domains (HOSTS) in Network Settings or Settings, the relay will automatically use the first domain from your list. Otherwise it uses the default workers.dev address.',
+    tunnel_h:'🔗 Tunnel / Relay', tunnel_s:'Create a private Google Apps Script relay without routing user traffic through your Cloudflare Worker.', tunnel_loading:'Loading...', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Paste this code into your Code.gs file:', tunnel_active:'Relay is active', tunnel_inactive:'Relay is inactive',
     tunnel_on:'Active', tunnel_off:'Inactive', tunnel_verified:'Verified', tunnel_unverified:'Not verified',
-    tunnel_step1_h:'Enable relay', tunnel_step1_s:'Generate a strong key and switch the relay on. This Worker becomes your relay endpoint.', tunnel_enable:'Enable relay / Generate key', tunnel_enabling:'Enabling…', tunnel_generated:'Relay enabled, key generated', tunnel_env_note:'The key comes from your RELAY_AUTH_KEY environment variable.',
+    tunnel_step1_h:'Enable relay', tunnel_step1_s:'Generate a strong private key. No Cloudflare variable or destination list is required.', tunnel_enable:'Enable relay / Generate key', tunnel_enabling:'Enabling…', tunnel_generated:'Relay enabled, key generated', tunnel_env_note:'The key comes from your RELAY_AUTH_KEY environment variable.',
     tunnel_step2_h:'Deploy the script', tunnel_step2_s:'This is your ready-made relay script, already filled with your key and address. Copy it into a new Google Apps Script project.', tunnel_g1:'Open script.google.com and start a New project.', tunnel_g2:'Delete the sample code, then paste the script above.', tunnel_g3:'Click Deploy, choose New deployment, then Web app.', tunnel_g4:'Set Execute as: Me and Who has access: Anyone.', tunnel_g5:'Click Deploy, then Authorize access and allow the permissions.', tunnel_g6:'Copy the Web app URL that ends with /exec.', tunnel_open_gas:'Open Google Apps Script',
     tunnel_step3_h:'Verify the connection', tunnel_step3_s:'Paste your Web app URL below. We test the whole chain from this panel through the Worker to your script.', tunnel_verify:'Verify', tunnel_verifying:'Verifying…', tunnel_verify_ok:'Connection verified', tunnel_verify_fail:'Verification failed', tunnel_url_required:'Paste your Web app URL first.',
     tunnel_disable:'Disable relay', tunnel_disabling:'Disabling…', tunnel_disabled_ok:'Relay disabled', tunnel_env_override:'RELAY_AUTH_KEY is set in your environment, so the relay stays on until you remove that variable.',
-    tunnel_intro:"The relay makes your users' traffic look like normal Google traffic, so Nova keeps working even where the Worker domain itself is blocked. Your panel sets up the key for you. You only deploy a small Google Apps Script and paste its link back here.", tunnel_propagation:'Enabling, disabling, or changing the key takes effect within a few seconds.', tunnel_key_locked:'The key below is already filled into the script for you. Please do not change it.', tunnel_access_warn:'Important: when you deploy, set Who has access to Anyone. If it is set to anything else, the relay will return errors.', tunnel_unverified_help:'Google may show a screen that says it has not verified this app. That is normal, because this is your own script. Click Advanced, then Go to project, then Allow. The only permission it asks for is to connect to an external service.', tunnel_exec_help:'The Web app URL you paste must end in /exec. If it ends in anything else, copy the URL again from the deployment screen.', tunnel_security_note:'Treat the key and the script link like a password and keep them private. Anyone who has both can use your relay.', tunnel_verify_help:'A green check means the whole path works, from this panel through the Worker to your script. If it stays red, check three things: Who has access is set to Anyone, the URL ends in /exec, and you pasted the latest script and re-deployed it.', tunnel_disable_note:'The relay stops within a few seconds after you turn it off.',
+    tunnel_intro:'Google Apps Script fetches destinations directly. Nova only stores a strong private key and verifies your script; the Worker is not an open relay.', tunnel_propagation:'Enabling, disabling, or changing the key takes effect within about one minute.', tunnel_key_locked:'The key below is already filled into the script for you. Please do not change it.', tunnel_access_warn:'Important: when you deploy, set Who has access to Anyone. If it is set to anything else, the relay will return errors.', tunnel_unverified_help:'Google may show a screen that says it has not verified this app. That is normal, because this is your own script. Click Advanced, then Go to project, then Allow. The only permission it asks for is to connect to an external service.', tunnel_exec_help:'The Web app URL you paste must end in /exec. If it ends in anything else, copy the URL again from the deployment screen.', tunnel_security_note:'Treat the key and the script link like a password and keep them private. Anyone who has both can use your relay.', tunnel_verify_help:'A green check means your Google script can fetch directly. If it stays red, check that access is set to Anyone, the URL ends in /exec, and the latest script was re-deployed.', tunnel_disable_note:'The relay stops within about one minute after you turn it off.',
     s_silent:'Silent alerts', s_silent_d:'Suppress Telegram notifications for normal events (fetch, login, save)',
     apikey_title:'API Keys', apikey_desc:'Use API keys to authenticate admin requests via Authorization header.', apikey_none:'No API keys yet', apikey_name_ph:'Key name (e.g. deploy)', btn_create:'Create', btn_revoke:'Revoke',
     panic_title:'Panic Mode', panic_desc:'Emergency stop: randomizes API route and pauses all proxy/subscriptions. Use /resume in Telegram to restore.', btn_panic:'⚠ Activate Panic Mode',
     au_h:'Auto-Update (Cron Trigger)', au_desc:'Automatically check for new Nova versions and deploy them via Cron Trigger. Your database, settings, and password are preserved. Requires a Cloudflare API token with Workers Scripts → Edit permission.', au_en:'Enable Auto-Update', au_interval:'Check interval', au_fmt:'Deploy format', au_fmt_normal:'Normal (plain source)', au_fmt_obfuscated:'Obfuscated (if available)', au_accid:'Cloudflare Account ID', au_token:'Cloudflare API Token', au_script:'Worker Script Name', au_save:'Save Auto-Update Settings', au_last:'Last auto-update:', au_never:'Never',
     au_30m:'Every 30 minutes', au_1h:'Every 1 hour', au_2h:'Every 2 hours', au_6h:'Every 6 hours', au_12h:'Every 12 hours', au_24h:'Every 24 hours',
-    um_title:'New User', um_name:'Name', um_username:'Username (for link)', um_username_ph:'auto-generated if blank', um_quota:'Quota (GB)', um_dailyquota:'Daily Quota (GB)', um_expiry:'Expiry', um_fp:'Fingerprint', um_fp_default:'Default', um_cleanip:'Clean IPs (comma-separated, optional)', um_proxyip:'Proxy IPs (comma-separated, optional)', um_ports:'Ports', um_speed:'Speed Limit (KB/s, 0=unlimited)', um_notes:'Notes', um_notes_ph:'Optional notes about this user', um_maxconfigs:'Max Configs (0=unlimited)', um_iplimit:'IP Limit (0=unlimited)', um_reqlimit:'Daily Request Limit (0=unlimited)', um_panelurl:'Create on a connected panel (optional)', um_blockporn:'Block Adult Content', um_blockads:'Block Ads', um_socks5:'Per-User SOCKS5 Proxy (optional)', um_userproxyip:'Per-User ProxyIP (optional)', um_proxyiata:'Proxy IATA (e.g. fra, cdg)', um_fraglen:'Fragment Length', um_fragint:'Fragment Interval', um_resetvol:'Auto-Reset Vol (days, 0=off)', um_resetreq:'Auto-Reset Req (days, 0=off)', um_autorotate:'Auto-Rotate IPs', um_rotatetime:'Rotate Interval (minutes)', um_ipoperator:'IP Operator', um_ipoperator_all:'All', um_ipcount:'IP Count', um_connlimit:'Connection Limit (0=unlimited)', um_advanced:'Advanced options (optional)',     um_cancel:'Cancel', um_save:'Save User',     um_empty:'No users yet. Click <b>Add New User</b> to create one.', um_loading:'Loading users...',
+    um_title:'New User', um_name:'Name', um_username:'Username (for link)', um_username_ph:'auto-generated if blank', um_quota:'Quota (GB)', um_dailyquota:'Daily Quota (GB)', um_expiry:'Expiry', um_fp:'Fingerprint', um_fp_default:'Default', um_cleanip:'Clean IPs (comma-separated, optional)', um_proxyip:'Proxy IPs (comma-separated, optional)', um_ports:'Ports', um_speed:'Speed Limit (KB/s, 0=unlimited)', um_notes:'Notes', um_notes_ph:'Optional notes about this user', um_maxconfigs:'Max Configs (0=unlimited)', um_iplimit:'IP Limit (0=unlimited)', um_reqlimit:'Daily Request Limit (0=unlimited)', um_blockporn:'Block Adult Content', um_blockads:'Block Ads', um_socks5:'Per-User SOCKS5 Proxy (optional)', um_userproxyip:'Per-User ProxyIP (optional)', um_proxyiata:'Proxy IATA (e.g. fra, cdg)', um_fraglen:'Fragment Length', um_fragint:'Fragment Interval', um_resetvol:'Auto-Reset Vol (days, 0=off)', um_resetreq:'Auto-Reset Req (days, 0=off)', um_autorotate:'Auto-Rotate IPs', um_rotatetime:'Rotate Interval (minutes)', um_ipoperator:'IP Operator', um_ipoperator_all:'All', um_ipcount:'IP Count', um_connlimit:'Connection Limit (0=unlimited)', um_advanced:'Advanced options (optional)',     um_cancel:'Cancel', um_save:'Save User',     um_empty:'No users yet. Click <b>Add New User</b> to create one.', um_loading:'Loading users...',
     um_resolveip:'Resolve IP (DoH upstream)', um_directconfigs:'Enable direct configs', um_opt1:'Option 1 (enableOpt1)', um_opt2:'Option 2 (enableOpt2)',
     sysx_h:'System extras', sysx_nameprefix:'Name prefix (locked off)', sysx_namestrategy:'Name strategy (locked off)', sysx_strat_prefix:'Prefix (before name)', sysx_strat_suffix:'Suffix (after name)', sysx_cascade:'Cascade', sysx_metricnode:'Metric node', sysx_customrouting:'Custom routing (one rule per line: proxy|host:port|label)', sysx_subua:'Subscription User-Agent filter (leave empty for all)', sysx_tg_channel:'Telegram channel (shown in every subscription, always on)', sysx_tg_immutable:"This channel line is added to every user's subscription and can't be turned off.", sysx_fake:'Fake subscription entries (shown in subscription, one per line. Use {usage} and {expiry})', sysx_saveall:'💾 Save all settings', sysx_saveall_h:'One button saves protocol, security, domains, ECH, subscription and system extras together.',
     px_autorotate:'Auto-rotate', px_rotate_off:'Off, use all', px_rotate_daily:'Daily', px_rotate_weekly:'Weekly', px_activecount:'Active count',
@@ -1977,19 +1889,12 @@ const I18N = {
     ab_panel:'Панель', ab_worker:'Worker', ab_desc:'Панель управления Nova Proxy: управляйте подписками, чистыми IP, маршрутизацией, WARP и DNS для вашего Cloudflare Worker.', ab_changelog:'Список изменений', ab_links:'Ссылки',
     skip_main:'Перейти к основному содержимому', nav_sec_main:'Главное', nav_sec_netset:'Настройки сети', nav_sec_system:'Система',
     nav_dashboard:'Панель мониторинга', nav_distribution:'Подписки', nav_network:'Сеть и IP',
-    nav_activity:'Активность', nav_settings:'Настройки', nav_notifications:'Уведомления', nav_users:'Пользователи', nav_linkedpanels:'Центр мультипанелей', nav_tunnel:'Туннель',
+    nav_activity:'Активность', nav_settings:'Настройки', nav_notifications:'Уведомления', nav_users:'Пользователи', nav_tunnel:'Туннель',
     sub_dashboard:'Актуальное состояние вашего парка прокси.', sub_distribution:'Ссылки на подписки и подключение клиентов.',
     sub_network:'Пулы чистых IP, маршрутизация и DNS.', sub_activity:'Журнал операций аудита.',
     sub_settings:'Протокол, безопасность и доступ.', sub_notifications:'Лимиты использования и каналы оповещений.',
     sub_users:'Индивидуальные ссылки, квоты и сроки действия.',
     sub_tunnel:'Состояние ретранслятора и адрес Google Apps Script.',
-    lp_title:'🛰️ Центр мультипанелей', lp_role:'Центр', lp_desc:'Свяжите несколько панелей Nova вместе. Эта панель выступает центром и автоматически передаёт изменения конфигурации всем связанным дочерним панелям.',
-    lp_panelname:'Имя этой панели', lp_huburl:'URL этой панели', lp_synckey:'Общий ключ синхронизации', lp_synckey_h:'Необязательно. Позволяет другой центральной панели управлять этой с помощью ключа вместо пароля администратора.',
-    lp_gengen:'Сгенерировать', lp_list_title:'🔗 Ваши панели', lp_list_h:'Добавьте каждую панель, которой хотите управлять. Введите её имя, веб-адрес и пароль администратора (тот же, которым вы входите на этой панели).', lp_adv:'⚙️ Дополнительно (необязательно)', lp_adv_h:'Большинству это можно оставить пустым. Это нужно, только если вы хотите, чтобы другая центральная панель отправляла изменения на эту.', lp_add:'+ Добавить панель', lp_save:'Сохранить и синхронизировать все', lp_syncall:'Синхронизировать сейчас',
-    lpg_title:'📘 Как это работает', lpg_intro:'Управляйте всеми своими панелями Nova отсюда. Добавьте другие панели ниже, и эта панель будет копировать свои настройки, маршрутизацию и чистые IP на них при каждом сохранении.',
-    lpg_s1_t:'Добавьте каждую панель', lpg_s1_d:'Нажмите «+ Добавить панель» и введите её имя, веб-адрес и пароль администратора (тот же, которым вы входите на этой панели).',
-    lpg_s2_t:'Сохраните и синхронизируйте', lpg_s2_d:'Нажмите «Сохранить и синхронизировать все». Ваши настройки копируются на каждую панель. Также синхронизация происходит автоматически при каждом сохранении здесь.',
-    lpg_note_t:'💡 Полезно знать', lpg_note5:'⚠️ Синхронизация заменяет настройки другой панели настройками этой, включая её ID, хосты и пользователей. Добавляйте только те панели, которые должны стать копиями этого центра.', lpg_note1:'На других панелях ничего настраивать не нужно. Просто добавьте их здесь с их паролем.', lpg_note2:'Каждая панель должна быть на своём аккаунте Cloudflare. Панель не может управлять другой панелью на том же аккаунте.', lpg_note3:'Держите все панели на одной версии Nova (откройте /install/status на каждой для проверки).', lpg_note4:'Если пароль администратора панели изменился, обновите его и здесь.',
     status_operational:'Работает', status_on:'Вкл.', status_off:'Выкл.', status_nominal:'В норме',
     ver_panel:'Панель', ver_nova:'Версия', ver_worker:'Worker', view_all:'Показать все', refresh:'Обновить', copy:'Копировать', open:'Открыть', qr:'QR', btn_save:'Сохранить',
     cf_estimate:'Оценка', cf_h:'Актуальное состояние (Cloudflare API)', cf_sub:'Вставьте токен Cloudflare API, чтобы показать реальное число запросов, ваш Account ID определяется автоматически. Нажмите «Create token», затем Continue to summary → Create Token, скопируйте токен и вставьте ниже. Выдайте ему права Account Analytics: Read + Workers Scripts: Edit, и тогда один этот токен обеспечит и актуальную статистику, и обновления в один клик.', cf_accid:'Account ID', cf_accid_opt:'(необязательно, определяется автоматически)', cf_accid_ph:'оставьте пустым для автоопределения', cf_token:'API-токен', cf_connect:'Подключить', cf_disconnect:'Отключить', upd_saved_note:'Уже подключили Cloudflare в карточке использования Worker? Оставьте это поле пустым и просто нажмите «Обновить сейчас».',
@@ -2073,19 +1978,19 @@ const I18N = {
     rules_h:'Свои правила маршрутизации', rules_help:'Одно правило в строке: TYPE,value,OUTBOUND (DIRECT / REJECT / PROXY). Требуется включённая маршрутизация.', rules_add:'+ Добавить',
     preset_h:'Готовые правила', bp_cn:'Обход Китая', bp_cn_h:'направлять китайские сайты/IP напрямую', bp_ru:'Обход России', bp_ru_h:'направлять российские сайты/IP напрямую', bk_malware:'Блокировать вредоносное ПО', bk_phishing:'Блокировать фишинг', bk_crypto:'Блокировать криптомайнеры', bk_geo_h:'требует геоданные клиента',
     copied:'Скопировано в буфер обмена',
-    tunnel_h:'🔗 Туннель / Ретранслятор', tunnel_s:'Состояние ретранслятора и адрес Google Apps Script. Ваш ретранслятор работает на этом Worker, а Google Apps Script подключается к нему для передачи данных.', tunnel_loading:'Загрузка...', tunnel_address:'Адрес ретранслятора', tunnel_address_h:'Используйте этот адрес в файле Code.gs вашего Google Apps Script как WORKER_URL:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Вставьте эти строки в начало вашего файла Code.gs:',     tunnel_active:'Ретранслятор активен', tunnel_inactive:'Ретранслятор неактивен', tunnel_domain_note:'Если вы настроили свои домены (HOSTS) в «Настройках сети» или «Настройках», ретранслятор автоматически будет использовать первый домен из вашего списка. Иначе он использует стандартный адрес workers.dev.',
+    tunnel_h:'🔗 Туннель / Ретранслятор', tunnel_s:'Создайте приватный Google Apps Script relay без передачи пользовательского трафика через Cloudflare Worker.', tunnel_loading:'Загрузка...', tunnel_gas:'Google Apps Script', tunnel_gas_h:'Вставьте этот код в файл Code.gs:', tunnel_active:'Ретранслятор активен', tunnel_inactive:'Ретранслятор неактивен',
     tunnel_on:'Активен', tunnel_off:'Неактивен', tunnel_verified:'Проверено', tunnel_unverified:'Не проверено',
-    tunnel_step1_h:'Включить ретранслятор', tunnel_step1_s:'Сгенерируйте надёжный ключ и включите ретранслятор. Этот Worker станет вашей конечной точкой ретранслятора.', tunnel_enable:'Включить ретранслятор / Создать ключ', tunnel_enabling:'Включение…', tunnel_generated:'Ретранслятор включён, ключ создан', tunnel_env_note:'Ключ берётся из вашей переменной окружения RELAY_AUTH_KEY.',
+    tunnel_step1_h:'Включить ретранслятор', tunnel_step1_s:'Создайте сильный приватный ключ. Переменная Cloudflare и список адресов не нужны.', tunnel_enable:'Включить ретранслятор / Создать ключ', tunnel_enabling:'Включение…', tunnel_generated:'Ретранслятор включён, ключ создан', tunnel_env_note:'Ключ берётся из вашей переменной окружения RELAY_AUTH_KEY.',
     tunnel_step2_h:'Разверните скрипт', tunnel_step2_s:'Это ваш готовый скрипт ретранслятора, уже с вашим ключом и адресом. Скопируйте его в новый проект Google Apps Script.', tunnel_g1:'Откройте script.google.com и создайте New project.', tunnel_g2:'Удалите пример кода и вставьте скрипт выше.', tunnel_g3:'Нажмите Deploy, выберите New deployment, затем Web app.', tunnel_g4:'Укажите Execute as: Me и Who has access: Anyone.', tunnel_g5:'Нажмите Deploy, затем Authorize access и разрешите доступ.', tunnel_g6:'Скопируйте URL веб-приложения, оканчивающийся на /exec.', tunnel_open_gas:'Открыть Google Apps Script',
     tunnel_step3_h:'Проверьте соединение', tunnel_step3_s:'Вставьте URL веб-приложения ниже. Мы проверим всю цепочку от этой панели через Worker до вашего скрипта.', tunnel_verify:'Проверить', tunnel_verifying:'Проверка…', tunnel_verify_ok:'Соединение проверено', tunnel_verify_fail:'Проверка не пройдена', tunnel_url_required:'Сначала вставьте URL веб-приложения.',
     tunnel_disable:'Отключить ретранслятор', tunnel_disabling:'Отключение…', tunnel_disabled_ok:'Ретранслятор отключён', tunnel_env_override:'RELAY_AUTH_KEY задан в вашем окружении, поэтому ретранслятор останется включённым, пока вы не удалите эту переменную.',
-    tunnel_intro:'Ретранслятор делает трафик ваших пользователей похожим на обычный трафик Google, поэтому Nova продолжает работать даже там, где сам домен Worker заблокирован. Панель сама настраивает ключ. Вам нужно только развернуть небольшой скрипт Google Apps Script и вставить его ссылку обратно сюда.', tunnel_propagation:'Включение, отключение или смена ключа вступают в силу за несколько секунд.', tunnel_key_locked:'Ключ ниже уже подставлен в скрипт за вас. Пожалуйста, не меняйте его.', tunnel_access_warn:'Важно: при развёртывании установите Who has access на Anyone. Если выбрано что-то другое, ретранслятор будет возвращать ошибки.', tunnel_unverified_help:'Google может показать экран о том, что приложение не проверено. Это нормально, потому что это ваш собственный скрипт. Нажмите Advanced, затем Go to project, затем Allow. Единственное разрешение, которое запрашивается, это подключение к внешнему сервису.', tunnel_exec_help:'Адрес Web app, который вы вставляете, должен оканчиваться на /exec. Если он оканчивается иначе, скопируйте адрес заново с экрана развёртывания.', tunnel_security_note:'Относитесь к ключу и ссылке на скрипт как к паролю и держите их в секрете. Любой, у кого есть и то и другое, может пользоваться вашим ретранслятором.', tunnel_verify_help:'Зелёная галочка означает, что весь путь работает, от этой панели через Worker до вашего скрипта. Если галочка остаётся красной, проверьте три вещи: для Who has access выбрано Anyone, адрес оканчивается на /exec, и вы вставили последнюю версию скрипта и развернули её заново.', tunnel_disable_note:'После отключения ретранслятор перестаёт работать в течение нескольких секунд.',
+    tunnel_intro:'Ретранслятор делает трафик ваших пользователей похожим на обычный трафик Google, поэтому Nova продолжает работать даже там, где сам домен Worker заблокирован. Панель сама настраивает ключ. Вам нужно только развернуть небольшой скрипт Google Apps Script и вставить его ссылку обратно сюда.', tunnel_propagation:'Включение, отключение или смена ключа вступают в силу примерно за одну минуту.', tunnel_key_locked:'Ключ ниже уже подставлен в скрипт за вас. Пожалуйста, не меняйте его.', tunnel_access_warn:'Важно: при развёртывании установите Who has access на Anyone. Если выбрано что-то другое, ретранслятор будет возвращать ошибки.', tunnel_unverified_help:'Google может показать экран о том, что приложение не проверено. Это нормально, потому что это ваш собственный скрипт. Нажмите Advanced, затем Go to project, затем Allow. Единственное разрешение, которое запрашивается, это подключение к внешнему сервису.', tunnel_exec_help:'Адрес Web app, который вы вставляете, должен оканчиваться на /exec. Если он оканчивается иначе, скопируйте адрес заново с экрана развёртывания.', tunnel_security_note:'Относитесь к ключу и ссылке на скрипт как к паролю и держите их в секрете. Любой, у кого есть и то и другое, может пользоваться вашим ретранслятором.', tunnel_verify_help:'Зелёная галочка означает, что весь путь работает, от этой панели через Worker до вашего скрипта. Если галочка остаётся красной, проверьте три вещи: для Who has access выбрано Anyone, адрес оканчивается на /exec, и вы вставили последнюю версию скрипта и развернули её заново.', tunnel_disable_note:'После отключения ретранслятор перестаёт работать примерно через одну минуту.',
     s_silent:'Тихие оповещения', s_silent_d:'Подавлять уведомления Telegram для обычных событий (получение, вход, сохранение)',
     apikey_title:'API-ключи', apikey_desc:'Используйте API-ключи для аутентификации запросов администратора через заголовок Authorization.', apikey_none:'API-ключей пока нет', apikey_name_ph:'Имя ключа (например, deploy)', btn_create:'Создать', btn_revoke:'Отозвать',
     panic_title:'Режим паники', panic_desc:'Аварийная остановка: делает маршрут API случайным и приостанавливает весь прокси/подписки. Используйте /resume в Telegram для восстановления.', btn_panic:'⚠ Активировать режим паники',
     au_h:'Автообновление (Cron Trigger)', au_desc:'Автоматически проверять новые версии Nova и развёртывать их через Cron Trigger. Ваша база данных, настройки и пароль сохраняются. Требуется токен Cloudflare API с правом Workers Scripts → Edit.', au_en:'Включить автообновление', au_interval:'Интервал проверки', au_fmt:'Формат развёртывания', au_fmt_normal:'Обычный (исходный код)', au_fmt_obfuscated:'Обфусцированный (если доступен)', au_accid:'Cloudflare Account ID', au_token:'Токен Cloudflare API', au_script:'Имя скрипта Worker', au_save:'Сохранить настройки автообновления', au_last:'Последнее автообновление:', au_never:'Никогда',
     au_30m:'Каждые 30 минут', au_1h:'Каждый час', au_2h:'Каждые 2 часа', au_6h:'Каждые 6 часов', au_12h:'Каждые 12 часов', au_24h:'Каждые 24 часа',
-    um_title:'Новый пользователь', um_name:'Имя', um_username:'Имя пользователя (для ссылки)', um_username_ph:'генерируется автоматически, если пусто', um_quota:'Квота (ГБ)', um_dailyquota:'Дневная квота (ГБ)', um_expiry:'Срок действия', um_fp:'Отпечаток', um_fp_default:'По умолчанию', um_cleanip:'Чистые IP (через запятую, необязательно)', um_proxyip:'Прокси-IP (через запятую, необязательно)', um_ports:'Порты', um_speed:'Ограничение скорости (КБ/с, 0=без ограничений)', um_notes:'Заметки', um_notes_ph:'Необязательные заметки об этом пользователе', um_maxconfigs:'Макс. конфигураций (0=без ограничений)', um_iplimit:'Лимит IP (0=без ограничений)', um_reqlimit:'Дневной лимит запросов (0=без ограничений)', um_panelurl:'Создать на подключённой панели (необязательно)', um_blockporn:'Блокировать контент для взрослых', um_blockads:'Блокировать рекламу', um_socks5:'Индивидуальный прокси SOCKS5 (необязательно)', um_userproxyip:'Индивидуальный ProxyIP (необязательно)', um_proxyiata:'IATA прокси (например, fra, cdg)', um_fraglen:'Длина фрагмента', um_fragint:'Интервал фрагмента', um_resetvol:'Автосброс объёма (дней, 0=выкл.)', um_resetreq:'Автосброс запросов (дней, 0=выкл.)', um_autorotate:'Автоматическая ротация IP', um_rotatetime:'Интервал ротации (минуты)', um_ipoperator:'Оператор IP', um_ipoperator_all:'Все', um_ipcount:'Количество IP', um_connlimit:'Лимит соединений (0=без ограничений)', um_advanced:'Дополнительные параметры (необязательно)',     um_cancel:'Отмена', um_save:'Сохранить пользователя',     um_empty:'Пользователей пока нет. Нажмите <b>Добавить нового пользователя</b>, чтобы создать.', um_loading:'Загрузка пользователей...',
+    um_title:'Новый пользователь', um_name:'Имя', um_username:'Имя пользователя (для ссылки)', um_username_ph:'генерируется автоматически, если пусто', um_quota:'Квота (ГБ)', um_dailyquota:'Дневная квота (ГБ)', um_expiry:'Срок действия', um_fp:'Отпечаток', um_fp_default:'По умолчанию', um_cleanip:'Чистые IP (через запятую, необязательно)', um_proxyip:'Прокси-IP (через запятую, необязательно)', um_ports:'Порты', um_speed:'Ограничение скорости (КБ/с, 0=без ограничений)', um_notes:'Заметки', um_notes_ph:'Необязательные заметки об этом пользователе', um_maxconfigs:'Макс. конфигураций (0=без ограничений)', um_iplimit:'Лимит IP (0=без ограничений)', um_reqlimit:'Дневной лимит запросов (0=без ограничений)', um_blockporn:'Блокировать контент для взрослых', um_blockads:'Блокировать рекламу', um_socks5:'Индивидуальный прокси SOCKS5 (необязательно)', um_userproxyip:'Индивидуальный ProxyIP (необязательно)', um_proxyiata:'IATA прокси (например, fra, cdg)', um_fraglen:'Длина фрагмента', um_fragint:'Интервал фрагмента', um_resetvol:'Автосброс объёма (дней, 0=выкл.)', um_resetreq:'Автосброс запросов (дней, 0=выкл.)', um_autorotate:'Автоматическая ротация IP', um_rotatetime:'Интервал ротации (минуты)', um_ipoperator:'Оператор IP', um_ipoperator_all:'Все', um_ipcount:'Количество IP', um_connlimit:'Лимит соединений (0=без ограничений)', um_advanced:'Дополнительные параметры (необязательно)',     um_cancel:'Отмена', um_save:'Сохранить пользователя',     um_empty:'Пользователей пока нет. Нажмите <b>Добавить нового пользователя</b>, чтобы создать.', um_loading:'Загрузка пользователей...',
     um_resolveip:'Разрешать IP (через DoH)', um_directconfigs:'Включить прямые конфигурации', um_opt1:'Опция 1 (enableOpt1)', um_opt2:'Опция 2 (enableOpt2)',
     sysx_h:'Системные дополнения', sysx_nameprefix:'Префикс имени (отключён)', sysx_namestrategy:'Стратегия имени (отключена)', sysx_strat_prefix:'Префикс (перед именем)', sysx_strat_suffix:'Суффикс (после имени)', sysx_cascade:'Каскад', sysx_metricnode:'Метрический узел', sysx_customrouting:'Своя маршрутизация (одно правило в строке: proxy|host:port|метка)', sysx_subua:'Фильтр User-Agent подписки (пусто = для всех)', sysx_tg_channel:'Telegram-канал (показывается в каждой подписке, всегда включён)', sysx_tg_immutable:'Эта строка с каналом добавляется в подписку каждого пользователя и не может быть отключена.', sysx_fake:'Ложные записи подписки (по одной в строке. Используйте {usage} и {expiry})', sysx_saveall:'💾 Сохранить все настройки', sysx_saveall_h:'Одна кнопка сохраняет протокол, безопасность, домены, ECH, подписку и системные дополнения вместе.',
     px_autorotate:'Автоматическая ротация', px_rotate_off:'Выкл., использовать все', px_rotate_daily:'Ежедневно', px_rotate_weekly:'Еженедельно', px_activecount:'Число активных',
@@ -2102,19 +2007,12 @@ const I18N = {
     ab_panel:'پنل', ab_worker:'ورکر', ab_desc:'پنل مدیریت Nova Proxy, مدیریت اشتراک‌ها، آی‌پی‌های تمیز، مسیریابی، WARP و DNS برای ورکر کلودفلر شما.', ab_changelog:'تغییرات', ab_links:'پیوندها',
     skip_main:'پرش به محتوای اصلی', nav_sec_main:'اصلی', nav_sec_netset:'تنظیمات شبکه', nav_sec_system:'سیستم',
     nav_dashboard:'داشبورد', nav_distribution:'اشتراک‌ها', nav_network:'شبکه و آی‌پی‌ها',
-    nav_activity:'فعالیت', nav_settings:'تنظیمات', nav_notifications:'اعلان‌ها', nav_users:'کاربران', nav_linkedpanels:'مرکز چند-پنل', nav_tunnel:'تانل',
+    nav_activity:'فعالیت', nav_settings:'تنظیمات', nav_notifications:'اعلان‌ها', nav_users:'کاربران', nav_tunnel:'تانل',
     sub_dashboard:'وضعیت زندهٔ ناوگان پروکسی شما.', sub_distribution:'لینک‌های اشتراک و راه‌اندازی کلاینت.',
     sub_network:'استخر آی‌پی‌های تمیز، مسیریابی و DNS.', sub_activity:'ردگیری ممیزی عملیاتی.',
     sub_settings:'پروتکل، امنیت و دسترسی.', sub_notifications:'سقف مصرف و کانال‌های اعلان.',
     sub_users:'لینک‌های هر کاربر، سهمیه و انقضا.',
     sub_tunnel:'وضعیت رله و آدرس Google Apps Script.',
-    lp_title:'🛰️ مرکز چند-پنل', lp_role:'مرکز', lp_desc:'چندین پنل Nova را به هم متصل کنید. این پنل به عنوان مرکز عمل کرده و تغییرات پیکربندی را به صورت خودکار به تمام پنل‌های فرزند ارسال می‌کند.',
-    lp_panelname:'نام این پنل', lp_huburl:'آدرس این پنل', lp_synckey:'کلید مشترک همگام‌سازی', lp_synckey_h:'اختیاری. به یک پنل مرکز دیگر اجازه می‌دهد این پنل را با این کلید (به جای رمز مدیریت) کنترل کند.',
-    lp_gengen:'تولید', lp_list_title:'🔗 پنل‌های تو', lp_list_h:'هر پنلی را که می‌خواهی کنترل کنی اضافه کن. نام، آدرس وب و رمز مدیریت آن (همان رمزی که با آن وارد آن پنل می‌شوی) را وارد کن.', lp_adv:'⚙️ پیشرفته (اختیاری)', lp_adv_h:'اکثر افراد می‌توانند این‌ها را خالی بگذارند. فقط وقتی مهم است که بخواهی یک پنل مرکز دیگر تغییرات را به این پنل بفرستد.', lp_add:'+ افزودن پنل', lp_save:'ذخیره و همگام‌سازی', lp_syncall:'همگام‌سازی اکنون',
-    lpg_title:'📘 چطور کار می‌کند', lpg_intro:'همه پنل‌های Nova خود را از همین‌جا مدیریت کن. پنل‌های دیگرت را پایین اضافه کن؛ این پنل تنظیمات، مسیریابی و آی‌پی‌های تمیزش را با هر بار ذخیره به آن‌ها کپی می‌کند.',
-    lpg_s1_t:'هر پنل را اضافه کن', lpg_s1_d:'روی «+ افزودن پنل» بزن و نام، آدرس وب و رمز مدیریت آن پنل (همان رمزی که با آن وارد آن پنل می‌شوی) را وارد کن.',
-    lpg_s2_t:'ذخیره و همگام‌سازی', lpg_s2_d:'روی «ذخیره و همگام‌سازی» بزن. تنظیماتت به همه پنل‌ها کپی می‌شود. با هر بار ذخیره در اینجا هم خودکار همگام می‌شود.',
-    lpg_note_t:'💡 خوب است بدانی', lpg_note5:'⚠️ همگام‌سازی تنظیمات پنل دیگر را با تنظیمات این پنل جایگزین می‌کند، از جمله شناسه، هاست‌ها و کاربران. فقط پنل‌هایی را اضافه کن که می‌خواهی کپی این مرکز شوند.', lpg_note1:'روی پنل‌های دیگر چیزی لازم نیست تنظیم کنی. فقط آن‌ها را با رمزشان اینجا اضافه کن.', lpg_note2:'هر پنل باید روی اکانت Cloudflare خودش باشد. یک پنل نمی‌تواند پنل دیگری را روی همان اکانت مدیریت کند.', lpg_note3:'همه پنل‌ها را روی یک نسخه Nova نگه دار (برای بررسی، /install/status هر کدام را باز کن).', lpg_note4:'اگر رمز مدیریت یک پنل عوض شد، اینجا هم به‌روزش کن.',
     status_operational:'عملیاتی', status_on:'روشن', status_off:'خاموش', status_nominal:'عادی',
     ver_panel:'پنل', ver_nova:'نسخه', ver_worker:'ورکر', view_all:'مشاهدهٔ همه', refresh:'بازخوانی', copy:'کپی', open:'باز کردن', qr:'کد QR', btn_save:'ذخیره',
     cf_estimate:'تخمینی', cf_h:'وضعیت زنده (API کلودفلر)', cf_sub:'یک توکن API کلودفلر را بچسبان تا تعداد واقعی درخواست‌ها نمایش داده شود, شناسهٔ حساب خودکار پیدا می‌شود. روی «ساخت توکن» بزن، سپس Continue to summary ← Create Token را بزن، کپی کن و پایین جای‌گذاری کن. به آن دسترسی Account Analytics: Read و Workers Scripts: Edit بده, همین یک توکن، هم مصرف زنده و هم به‌روزرسانی یک‌کلیکی را فعال می‌کند.', cf_accid:'شناسهٔ حساب', cf_accid_opt:'(اختیاری, خودکار پیدا می‌شود)', cf_accid_ph:'خالی بگذار تا خودکار پیدا شود', cf_token:'توکن API', cf_connect:'اتصال', cf_disconnect:'قطع اتصال', upd_saved_note:'قبلاً کلودفلر را در کارت «مصرف ورکر» وصل کرده‌اید؟ این را خالی بگذارید و فقط «به‌روزرسانی اکنون» را بزنید.',
@@ -2195,21 +2093,21 @@ const I18N = {
     panic_title:'حالت پنیک', panic_desc:'توقف اضطراری: مسیر API را تصادفی و همه پروکسی/اشتراک‌ها را متوقف می‌کند. برای بازیابی از /resume در تلگرام استفاده کنید.', btn_panic:'⚠ فعال‌سازی حالت پنیک',
     au_h:'به‌روزرسانی خودکار (Cron Trigger)', au_desc:'بررسی خودکار نسخه‌های جدید Nova و استقرار آن‌ها از طریق Cron Trigger. دیتابیس، تنظیمات و رمز عبور حفظ می‌شوند. نیازمند توکن API کلودفلر با دسترسی Workers Scripts → Edit است.', au_en:'فعال‌سازی به‌روزرسانی خودکار', au_interval:'فاصله بررسی', au_fmt:'فرمت استقرار', au_fmt_normal:'عادی (سورس ساده)', au_fmt_obfuscated:'نامفهوم (اگر موجود باشد)', au_accid:'شناسه حساب کلودفلر', au_token:'توکن API کلودفلر', au_script:'نام اسکریپت ورکر', au_save:'ذخیره تنظیمات به‌روزرسانی خودکار', au_last:'آخرین به‌روزرسانی خودکار:', au_never:'هرگز',
     au_30m:'هر ۳۰ دقیقه', au_1h:'هر ۱ ساعت', au_2h:'هر ۲ ساعت', au_6h:'هر ۶ ساعت', au_12h:'هر ۱۲ ساعت', au_24h:'هر ۲۴ ساعت',
-    um_title:'کاربر جدید', um_name:'نام', um_username:'نام کاربری (برای لینک)', um_username_ph:'خودکار ایجاد می‌شود', um_quota:'سهمیه (گیگابایت)', um_dailyquota:'سهمیه روزانه (گیگابایت)', um_expiry:'انقضا', um_fp:'اثر انگشت', um_fp_default:'پیش‌فرض', um_cleanip:'آی‌پی‌های تمیز (با کاما جدا شده، اختیاری)', um_proxyip:'آی‌پی‌های پراکسی (با کاما جدا شده، اختیاری)', um_ports:'پورت‌ها', um_speed:'محدودیت سرعت (کیلوبایت بر ثانیه، ۰=نامحدود)', um_notes:'یادداشت‌ها', um_notes_ph:'یادداشت‌های اختیاری درباره این کاربر', um_maxconfigs:'حداکثر کانفیگ (۰=نامحدود)', um_iplimit:'محدودیت IP (۰=نامحدود)', um_reqlimit:'محدودیت درخواست روزانه (۰=نامحدود)', um_panelurl:'ساخت روی یک پنل متصل (اختیاری)', um_blockporn:'مسدودسازی محتوای بزرگسال', um_blockads:'مسدودسازی تبلیغات', um_socks5:'پراکسی SOCKS5 اختصاصی کاربر (اختیاری)', um_userproxyip:'پراکسی IP اختصاصی کاربر (اختیاری)', um_proxyiata:'کد IATA پراکسی (مثلاً fra, cdg)', um_fraglong:'طول فرگمنت', um_fragint:'فاصله فرگمنت', um_resetvol:'بازنشانی خودکار حجم (روز، ۰=خاموش)', um_resetreq:'بازنشانی خودکار درخواست (روز، ۰=خاموش)', um_autorotate:'چرخش خودکار IP', um_rotatetime:'فاصله چرخش (دقیقه)', um_ipoperator:'اپراتور IP', um_ipoperator_all:'همه', um_ipcount:'تعداد IP', um_connlimit:'محدودیت اتصال (۰=نامحدود)', um_advanced:'گزینه‌های پیشرفته (اختیاری)',     um_cancel:'لغو', um_save:'ذخیره کاربر',     um_empty:'هنوز کاربری وجود ندارد. روی <b>افزودن کاربر جدید</b> بزنید تا یکی بسازید.', um_loading:'بارگذاری کاربران...',
+    um_title:'کاربر جدید', um_name:'نام', um_username:'نام کاربری (برای لینک)', um_username_ph:'خودکار ایجاد می‌شود', um_quota:'سهمیه (گیگابایت)', um_dailyquota:'سهمیه روزانه (گیگابایت)', um_expiry:'انقضا', um_fp:'اثر انگشت', um_fp_default:'پیش‌فرض', um_cleanip:'آی‌پی‌های تمیز (با کاما جدا شده، اختیاری)', um_proxyip:'آی‌پی‌های پراکسی (با کاما جدا شده، اختیاری)', um_ports:'پورت‌ها', um_speed:'محدودیت سرعت (کیلوبایت بر ثانیه، ۰=نامحدود)', um_notes:'یادداشت‌ها', um_notes_ph:'یادداشت‌های اختیاری درباره این کاربر', um_maxconfigs:'حداکثر کانفیگ (۰=نامحدود)', um_iplimit:'محدودیت IP (۰=نامحدود)', um_reqlimit:'محدودیت درخواست روزانه (۰=نامحدود)', um_blockporn:'مسدودسازی محتوای بزرگسال', um_blockads:'مسدودسازی تبلیغات', um_socks5:'پراکسی SOCKS5 اختصاصی کاربر (اختیاری)', um_userproxyip:'پراکسی IP اختصاصی کاربر (اختیاری)', um_proxyiata:'کد IATA پراکسی (مثلاً fra, cdg)', um_fraglong:'طول فرگمنت', um_fragint:'فاصله فرگمنت', um_resetvol:'بازنشانی خودکار حجم (روز، ۰=خاموش)', um_resetreq:'بازنشانی خودکار درخواست (روز، ۰=خاموش)', um_autorotate:'چرخش خودکار IP', um_rotatetime:'فاصله چرخش (دقیقه)', um_ipoperator:'اپراتور IP', um_ipoperator_all:'همه', um_ipcount:'تعداد IP', um_connlimit:'محدودیت اتصال (۰=نامحدود)', um_advanced:'گزینه‌های پیشرفته (اختیاری)',     um_cancel:'لغو', um_save:'ذخیره کاربر',     um_empty:'هنوز کاربری وجود ندارد. روی <b>افزودن کاربر جدید</b> بزنید تا یکی بسازید.', um_loading:'بارگذاری کاربران...',
     um_resolveip:'resolve IP (DoH upstream)', um_directconfigs:'فعال‌سازی کانفیگ‌های مستقیم', um_opt1:'گزینه ۱ (enableOpt1)', um_opt2:'گزینه ۲ (enableOpt2)',
     sysx_h:'موارد تکمیلی سیستم', sysx_nameprefix:'پیشوند نام (قفل غیرفعال)', sysx_namestrategy:'راهبرد نام (قفل غیرفعال)', sysx_strat_prefix:'پیشوند (قبل از نام)', sysx_strat_suffix:'پسوند (بعد از نام)', sysx_cascade:'کاسکید', sysx_metricnode:'نود متریک', sysx_customrouting:'مسیریابی سفارشی (هر خط یک قانون: proxy|host:port|برچسب)', sysx_subua:'فیلتر User-Agent اشتراک (خالی = برای همه)', sysx_tg_channel:'کانال تلگرام (در هر اشتراک نمایش داده می‌شود، همیشه فعال)', sysx_tg_immutable:'این خط کانال به اشتراک هر کاربر اضافه می‌شود و قابل خاموش‌کردن نیست.', sysx_fake:'ورودی‌های اشتراک نمایشی (هر خط یک مورد. از {usage} و {expiry} استفاده کنید)', sysx_saveall:'💾 ذخیره همه تنظیمات', sysx_saveall_h:'یک دکمه پروتکل، امنیت، دامنه‌ها، ECH، اشتراک و موارد تکمیلی را با هم ذخیره می‌کند.',
     px_autorotate:'چرخش خودکار', px_rotate_off:'خاموش، استفاده از همه', px_rotate_daily:'روزانه', px_rotate_weekly:'هفتگی', px_activecount:'تعداد فعال',
-    tunnel_h:'🔗 تانل / رله', tunnel_s:'وضعیت رله و آدرس Google Apps Script. رله شما روی این ورکر اجرا می‌شود و Google Apps Script برای انتقال داده به آن متصل می‌شود.', tunnel_loading:'در حال بارگذاری...', tunnel_address:'آدرس رله', tunnel_address_h:'از این آدرس در فایل Code.gs گوگل اپ اسکریپت به عنوان WORKER_URL استفاده کنید:', tunnel_gas:'Google Apps Script', tunnel_gas_h:'این خطوط را در ابتدای فایل Code.gs خود قرار دهید:',     tunnel_active:'رله فعال است', tunnel_inactive:'رله غیرفعال است', tunnel_domain_note:'اگر دامنه سفارشی (HOSTS) در تنظیمات شبکه یا تنظیمات عمومی تنظیم کرده باشید، رله خودکار از اولین دامنه لیست شما استفاده می‌کند. در غیر این صورت از آدرس پیش‌فرض workers.dev استفاده می‌شود.',
+    tunnel_h:'🔗 تانل / رله', tunnel_s:'یک رلهٔ خصوصی Google Apps Script بسازید، بدون اینکه ترافیک کاربران از Worker کلودفلر عبور کند.', tunnel_loading:'در حال بارگذاری...', tunnel_gas:'Google Apps Script', tunnel_gas_h:'این کد را در فایل Code.gs قرار دهید:', tunnel_active:'رله فعال است', tunnel_inactive:'رله غیرفعال است',
     tunnel_on:'فعال', tunnel_off:'غیرفعال', tunnel_verified:'تأیید شد', tunnel_unverified:'تأیید نشده',
     tunnel_step1_h:'فعال‌سازی رله', tunnel_step1_s:'یک کلید قوی بسازید و رله را روشن کنید. این ورکر به نقطهٔ پایانی رلهٔ شما تبدیل می‌شود.', tunnel_enable:'فعال‌سازی رله / ساخت کلید', tunnel_enabling:'در حال فعال‌سازی…', tunnel_generated:'رله فعال شد و کلید ساخته شد', tunnel_env_note:'کلید از متغیر محیطی RELAY_AUTH_KEY شما گرفته می‌شود.',
     tunnel_step2_h:'استقرار اسکریپت', tunnel_step2_s:'این اسکریپت آمادهٔ رلهٔ شماست که کلید و آدرس شما در آن پر شده است. آن را در یک پروژهٔ جدید Google Apps Script کپی کنید.', tunnel_g1:'به script.google.com بروید و یک New project بسازید.', tunnel_g2:'کد نمونه را پاک کنید و اسکریپت بالا را جای‌گذاری کنید.', tunnel_g3:'روی Deploy بزنید، New deployment را انتخاب کنید، سپس Web app.', tunnel_g4:'گزینهٔ Execute as را روی Me و Who has access را روی Anyone بگذارید.', tunnel_g5:'روی Deploy بزنید، سپس Authorize access را بزنید و دسترسی‌ها را تأیید کنید.', tunnel_g6:'آدرس Web app که به /exec ختم می‌شود را کپی کنید.', tunnel_open_gas:'باز کردن Google Apps Script',
     tunnel_step3_h:'بررسی اتصال', tunnel_step3_s:'آدرس Web app خود را در کادر زیر جای‌گذاری کنید. کل مسیر از این پنل تا ورکر و اسکریپت شما بررسی می‌شود.', tunnel_verify:'بررسی', tunnel_verifying:'در حال بررسی…', tunnel_verify_ok:'اتصال تأیید شد', tunnel_verify_fail:'بررسی ناموفق بود', tunnel_url_required:'ابتدا آدرس Web app را جای‌گذاری کنید.',
     tunnel_disable:'غیرفعال‌سازی رله', tunnel_disabling:'در حال غیرفعال‌سازی…', tunnel_disabled_ok:'رله غیرفعال شد', tunnel_env_override:'RELAY_AUTH_KEY در محیط شما تنظیم شده است، بنابراین رله تا زمانی که آن متغیر را حذف نکنید فعال می‌ماند.',
-    tunnel_intro:'رله باعث می‌شود ترافیک کاربران شما مثل ترافیک عادی Google به نظر برسد، بنابراین Nova حتی جایی که خودِ دامنه Worker مسدود است باز هم کار می‌کند. کلید را پنل برای شما آماده می‌کند. شما فقط باید یک اسکریپت کوچک Google Apps Script را مستقر کنید و لینک آن را همین‌جا برگردانید.', tunnel_propagation:'فعال‌سازی، غیرفعال‌سازی یا تغییر کلید ظرف چند ثانیه اعمال می‌شود.', tunnel_key_locked:'کلید زیر از قبل داخل اسکریپت برای شما پر شده است. لطفاً آن را تغییر ندهید.', tunnel_access_warn:'مهم: هنگام استقرار، گزینهٔ Who has access را روی Anyone بگذارید. اگر روی چیز دیگری باشد، رله خطا برمی‌گرداند.', tunnel_unverified_help:'ممکن است Google صفحه‌ای نشان دهد که می‌گوید این برنامه را تأیید نکرده است. این عادی است، چون این اسکریپت خودِ شماست. روی Advanced، سپس Go to project و بعد Allow بزنید. تنها دسترسی‌ای که خواسته می‌شود اتصال به یک سرویس بیرونی است.', tunnel_exec_help:'آدرس Web app که جای‌گذاری می‌کنید باید به /exec ختم شود. اگر به چیز دیگری ختم می‌شود، آدرس را دوباره از صفحهٔ استقرار کپی کنید.', tunnel_security_note:'با کلید و لینک اسکریپت مثل یک رمز عبور رفتار کنید و آن‌ها را خصوصی نگه دارید. هر کسی که هر دو را داشته باشد می‌تواند از رلهٔ شما استفاده کند.', tunnel_verify_help:'تیک سبز یعنی کل مسیر کار می‌کند، از این پنل تا Worker و اسکریپت شما. اگر قرمز ماند، سه چیز را بررسی کنید: Who has access روی Anyone باشد، آدرس به /exec ختم شود، و آخرین نسخهٔ اسکریپت را جای‌گذاری کرده و دوباره مستقر کرده باشید.', tunnel_disable_note:'رله ظرف چند ثانیه پس از خاموش‌کردن متوقف می‌شود.',
+    tunnel_intro:'رله باعث می‌شود ترافیک کاربران شما مثل ترافیک عادی Google به نظر برسد، بنابراین Nova حتی جایی که خودِ دامنه Worker مسدود است باز هم کار می‌کند. کلید را پنل برای شما آماده می‌کند. شما فقط باید یک اسکریپت کوچک Google Apps Script را مستقر کنید و لینک آن را همین‌جا برگردانید.', tunnel_propagation:'فعال‌سازی، غیرفعال‌سازی یا تغییر کلید حداکثر تا حدود یک دقیقه اعمال می‌شود.', tunnel_key_locked:'کلید زیر از قبل داخل اسکریپت برای شما پر شده است. لطفاً آن را تغییر ندهید.', tunnel_access_warn:'مهم: هنگام استقرار، گزینهٔ Who has access را روی Anyone بگذارید. اگر روی چیز دیگری باشد، رله خطا برمی‌گرداند.', tunnel_unverified_help:'ممکن است Google صفحه‌ای نشان دهد که می‌گوید این برنامه را تأیید نکرده است. این عادی است، چون این اسکریپت خودِ شماست. روی Advanced، سپس Go to project و بعد Allow بزنید. تنها دسترسی‌ای که خواسته می‌شود اتصال به یک سرویس بیرونی است.', tunnel_exec_help:'آدرس Web app که جای‌گذاری می‌کنید باید به /exec ختم شود. اگر به چیز دیگری ختم می‌شود، آدرس را دوباره از صفحهٔ استقرار کپی کنید.', tunnel_security_note:'با کلید و لینک اسکریپت مثل یک رمز عبور رفتار کنید و آن‌ها را خصوصی نگه دارید. هر کسی که هر دو را داشته باشد می‌تواند از رلهٔ شما استفاده کند.', tunnel_verify_help:'تیک سبز یعنی کل مسیر کار می‌کند، از این پنل تا Worker و اسکریپت شما. اگر قرمز ماند، سه چیز را بررسی کنید: Who has access روی Anyone باشد، آدرس به /exec ختم شود، و آخرین نسخهٔ اسکریپت را جای‌گذاری کرده و دوباره مستقر کرده باشید.', tunnel_disable_note:'رله حداکثر تا حدود یک دقیقه پس از خاموش‌کردن متوقف می‌شود.',
   }
 };
 
-// V4.1.7 hardening copy: deployments are repository-based and relay requires an allowlist.
+// V4.1.7 hardening copy: repository updates and Google-direct relay.
 Object.assign(I18N.en, {
   upd_h:'Worker updates',
   upd_s:'Check your installed version here, then follow Nova’s secure guide or use the Telegram bot. Only Worker code is replaced; bindings, settings, users, and D1/KV data stay in place.',
@@ -2224,11 +2122,14 @@ Object.assign(I18N.en, {
   upd_source:'Advanced: GitHub updates',
   usage_token_link:'Create read-only token',
   cf_sub:'Connect a Cloudflare API token with Account Analytics: Read permission to show live request usage. The token is stored in this panel until you disconnect it; it is never used to deploy code.',
-  wn_secfix:'🔒 Hardening preview: reviewed repository updates, safer relay controls, bounded requests, and clearer diagnostics.',
-  wn_relay:'🔗 Google Relay now requires an explicit destination-host allowlist before it can be enabled.',
-  tunnel_intro:'Google Apps Script can provide an alternate relay path. The Worker accepts only authenticated requests to explicitly allowlisted destination hosts.',
-  tunnel_allowlist_required:'Relay allowlist required',
-  tunnel_allowlist_help:'Before enabling relay, add RELAY_ALLOWED_HOSTS to the Worker variables with explicit destination hostnames separated by commas. Wildcard “*” is not accepted.',
+  wn_secfix:'🔒 Hardening preview: reviewed repository updates, a smaller Worker attack surface, bounded requests, and clearer diagnostics.',
+  wn_relay:'🔗 Google Relay is simple again: no Worker hostname list. The generated Google script connects to destinations directly.',
+  tunnel_s:'Create a private Google Apps Script relay without routing user traffic through your Cloudflare Worker.',
+  tunnel_intro:'Google Apps Script fetches destinations directly. Nova only stores a strong private key and verifies your script; the Worker is not an open relay.',
+  tunnel_step1_s:'Generate a strong private key. No Cloudflare variable or destination list is required.',
+  tunnel_step2_s:'This ready-made script already contains your private key. Copy it into a new Google Apps Script project.',
+  tunnel_step3_s:'Paste your Web app URL below. Nova asks the script to fetch a harmless Google test URL directly.',
+  tunnel_verify_help:'A green check means your Google script can fetch directly. If it stays red, check that access is set to Anyone, the URL ends in /exec, and the latest script was re-deployed.',
   tunnel_unverified_help:'Review the permissions shown by Google before authorizing your own script. If the requested access is broader than connecting to external services, stop and inspect the script and deployment settings.'
 });
 Object.assign(I18N.fa, {
@@ -2245,11 +2146,14 @@ Object.assign(I18N.fa, {
   upd_source:'پیشرفته: به‌روزرسانی GitHub',
   usage_token_link:'ساخت توکن فقط‌خواندنی',
   cf_sub:'برای نمایش زندهٔ مصرف درخواست‌ها، یک توکن Cloudflare با دسترسی Account Analytics: Read وصل کنید. توکن تا زمان قطع اتصال در همین پنل ذخیره می‌شود و هرگز برای استقرار کد استفاده نمی‌شود.',
-  wn_secfix:'🔒 پیش‌نمایش سخت‌سازی: به‌روزرسانی بررسی‌شده از مخزن، کنترل امن‌تر رله، محدودیت درخواست‌ها و عیب‌یابی شفاف‌تر.',
-  wn_relay:'🔗 رله Google اکنون پیش از فعال‌شدن به فهرست صریح میزبان‌های مقصد مجاز نیاز دارد.',
-  tunnel_intro:'Google Apps Script می‌تواند یک مسیر جایگزین برای رله فراهم کند. Worker فقط درخواست‌های احرازشده به میزبان‌های مقصدِ صریحاً مجاز را می‌پذیرد.',
-  tunnel_allowlist_required:'فهرست مجاز رله لازم است',
-  tunnel_allowlist_help:'پیش از فعال‌سازی رله، متغیر RELAY_ALLOWED_HOSTS را با نام‌های مقصد مجاز و جداشده با ویرگول به Worker اضافه کنید. علامت * پذیرفته نمی‌شود.',
+  wn_secfix:'🔒 پیش‌نمایش سخت‌سازی: به‌روزرسانی بررسی‌شده از مخزن، سطح حملهٔ کوچک‌تر Worker، محدودیت درخواست‌ها و عیب‌یابی شفاف‌تر.',
+  wn_relay:'🔗 رلهٔ Google دوباره ساده شد: بدون فهرست دامنه در Worker؛ اسکریپت Google مستقیماً به مقصد وصل می‌شود.',
+  tunnel_s:'یک رلهٔ خصوصی Google Apps Script بسازید، بدون اینکه ترافیک کاربران از Worker کلودفلر عبور کند.',
+  tunnel_intro:'Google Apps Script مقصدها را مستقیماً دریافت می‌کند. Nova فقط یک کلید خصوصی قوی نگه می‌دارد و اسکریپت شما را بررسی می‌کند؛ Worker رلهٔ باز نیست.',
+  tunnel_step1_s:'یک کلید خصوصی قوی بسازید. هیچ متغیر Cloudflare یا فهرست مقصدی لازم نیست.',
+  tunnel_step2_s:'این اسکریپت آماده از قبل کلید خصوصی شما را دارد. آن را در یک پروژهٔ جدید Google Apps Script کپی کنید.',
+  tunnel_step3_s:'آدرس Web app را پایین وارد کنید. Nova از اسکریپت می‌خواهد یک آدرس آزمایشی و بی‌خطر Google را مستقیماً دریافت کند.',
+  tunnel_verify_help:'تیک سبز یعنی اسکریپت Google شما می‌تواند مستقیماً دریافت کند. اگر قرمز ماند، بررسی کنید دسترسی روی Anyone باشد، آدرس به /exec ختم شود و آخرین اسکریپت دوباره مستقر شده باشد.',
   tunnel_unverified_help:'پیش از تأیید اسکریپت خودتان، دسترسی‌هایی را که Google نمایش می‌دهد بررسی کنید. اگر دسترسی درخواستی گسترده‌تر از اتصال به سرویس‌های بیرونی است، متوقف شوید و کد و تنظیمات استقرار را بررسی کنید.'
 });
 Object.assign(I18N.ru, {
@@ -2266,17 +2170,20 @@ Object.assign(I18N.ru, {
   upd_source:'Для опытных: GitHub',
   usage_token_link:'Создать токен только для чтения',
   cf_sub:'Подключите токен Cloudflare API с разрешением Account Analytics: Read для отображения статистики запросов. Токен хранится в этой панели до отключения и никогда не используется для развертывания кода.',
-  wn_secfix:'🔒 Предварительная версия усиления: проверяемые обновления из репозитория, безопасные ограничения relay и более ясная диагностика.',
-  wn_relay:'🔗 Google Relay теперь требует явный список разрешенных хостов назначения.',
-  tunnel_intro:'Google Apps Script может предоставить альтернативный маршрут relay. Worker принимает только аутентифицированные запросы к явно разрешенным хостам.',
-  tunnel_allowlist_required:'Нужен список разрешенных адресов',
-  tunnel_allowlist_help:'Перед включением relay добавьте переменную Worker RELAY_ALLOWED_HOSTS с явными именами разрешенных хостов через запятую. Символ * не принимается.',
+  wn_secfix:'🔒 Предварительная версия усиления: проверяемые обновления, меньшая поверхность атаки Worker, ограниченные запросы и ясная диагностика.',
+  wn_relay:'🔗 Google Relay снова прост: без списка доменов Worker; скрипт Google подключается к адресам напрямую.',
+  tunnel_s:'Создайте приватный Google Apps Script relay без передачи пользовательского трафика через Cloudflare Worker.',
+  tunnel_intro:'Google Apps Script получает адреса напрямую. Nova только хранит сильный приватный ключ и проверяет ваш скрипт; Worker не является открытым relay.',
+  tunnel_step1_s:'Создайте сильный приватный ключ. Переменная Cloudflare и список адресов не нужны.',
+  tunnel_step2_s:'Готовый скрипт уже содержит приватный ключ. Скопируйте его в новый проект Google Apps Script.',
+  tunnel_step3_s:'Вставьте URL Web app ниже. Nova попросит скрипт напрямую получить безопасный тестовый адрес Google.',
+  tunnel_verify_help:'Зелёная галочка означает, что скрипт Google получает адреса напрямую. Если проверка не проходит, убедитесь, что доступ установлен на Anyone, URL заканчивается на /exec и последняя версия скрипта развёрнута заново.',
   tunnel_unverified_help:'Перед авторизацией собственного скрипта проверьте разрешения, показанные Google. Если запрашивается больше, чем доступ к внешним сервисам, остановитесь и проверьте код и настройки развертывания.'
 });
 
 let lang = localStorage.getItem('nova-lang') || 'en';
 // Bump this when the "What's new" card content changes so a previously-dismissed card reappears.
-const WN_VER = 'wn-2026-07-30-hardening-preview-2';
+const WN_VER = 'wn-2026-07-30-google-direct-preview-3';
 const t = (k) => (I18N[lang] && I18N[lang][k]) || (I18N.en[k]) || k;
 
 /* ============================================================================
@@ -2841,7 +2748,6 @@ function collectUsers(){ const box=document.getElementById('users-body2'); if(!b
   box.querySelectorAll('[data-ue]').forEach(el=>{ const u=arr[+el.dataset.ue]; if(u) u.enabled=el.classList.contains('on'); });
   box.querySelectorAll('[data-unotes]').forEach(el=>{ const u=arr[+el.dataset.unotes]; if(u) u.notes=el.value.trim(); });
   box.querySelectorAll('[data-umc]').forEach(el=>{ const u=arr[+el.dataset.umc]; if(u) u.maxConfigs=Number(el.value)||0; });
-  box.querySelectorAll('[data-upurl]').forEach(el=>{ const u=arr[+el.dataset.upurl]; if(u) u.userPanelUrl=el.value.trim(); });
 }
 function readUsersCache(){ try{ return JSON.parse(localStorage.getItem('nova_users_cache')||'null'); }catch(e){ return null; } }
 function writeUsersCache(mu,users){ try{ localStorage.setItem('nova_users_cache', JSON.stringify({ t:Date.now(), mu:!!mu, users:users||[] })); }catch(e){} }
@@ -2872,7 +2778,6 @@ async function addUser(){
   document.getElementById('um-speed').value='0';
   document.getElementById('um-notes').value='';
   document.getElementById('um-maxconfigs').value='0';
-  document.getElementById('um-panelurl').value='';
   document.getElementById('um-iplimit').value='0';
   document.getElementById('um-reqlimit').value='0';
   document.getElementById('um-blockporn').checked=false;
@@ -2909,7 +2814,6 @@ function openEditUser(id){
   document.getElementById('um-speed').value=u.speedLimitKBps||0;
   document.getElementById('um-notes').value=u.notes||'';
   document.getElementById('um-maxconfigs').value=u.maxConfigs||0;
-  document.getElementById('um-panelurl').value=u.userPanelUrl||'';
   document.getElementById('um-iplimit').value=u.ipLimit||0;
   document.getElementById('um-reqlimit').value=u.limitDailyReq||0;
   document.getElementById('um-blockporn').checked=!!u.blockPorn;
@@ -2944,7 +2848,6 @@ async function saveUserModal(){
   const speed=Number(document.getElementById('um-speed').value)||0;
   const notes=document.getElementById('um-notes').value.trim();
   const maxConfigs=Number(document.getElementById('um-maxconfigs').value)||0;
-  const panelUrl=document.getElementById('um-panelurl').value.trim();
   const ipLimit=Number(document.getElementById('um-iplimit').value)||0;
   const reqLimit=Number(document.getElementById('um-reqlimit').value)||0;
   const blockPorn=document.getElementById('um-blockporn').checked;
@@ -2969,7 +2872,6 @@ async function saveUserModal(){
   if(speed>0) payload.speedLimitKBps=speed;
   if(notes) payload.notes=notes;
   if(maxConfigs>0) payload.maxConfigs=maxConfigs;
-  if(panelUrl) payload.userPanelUrl=panelUrl;
   if(ipLimit>0) payload.ipLimit=ipLimit;
   if(reqLimit>0) payload.limitDailyReq=reqLimit;
   if(blockPorn) payload.blockPorn=1;
@@ -3001,7 +2903,7 @@ async function saveUserModal(){
         // Optional fields left blank / unchecked are absent from payload. On EDIT we must actively
         // REMOVE them so the user can clear an override (e.g. empty Clean IPs -> back to system default)
         // or turn a toggle OFF (e.g. uncheck Block Adult Content). Object.assign alone would keep the old value.
-        ['username','quotaBytes','dailyQuotaBytes','expiry','fp','cleanIp','proxyIp','ports','speedLimitKBps','notes','maxConfigs','userPanelUrl','ipLimit','limitDailyReq','blockPorn','blockAds','userSocks5','userProxyIp','userProxyIata','fragLen','fragInt','autoResetVolDays','autoResetReqDays','autoRotateIp','rotateTime','connLimit']
+        ['username','quotaBytes','dailyQuotaBytes','expiry','fp','cleanIp','proxyIp','ports','speedLimitKBps','notes','maxConfigs','ipLimit','limitDailyReq','blockPorn','blockAds','userSocks5','userProxyIp','userProxyIata','fragLen','fragInt','autoResetVolDays','autoResetReqDays','autoRotateIp','rotateTime','connLimit']
           .forEach(function(k){ if(!(k in payload)) delete merged[k]; });
         users[idx]=merged;
       }
@@ -3010,19 +2912,6 @@ async function saveUserModal(){
       // New user needs an id + token, or the worker's save filter (id>=16 hex && token) silently drops it.
       payload.id=uRid();
       payload.token=uRid();
-      // Dedicated panel: if "Create on a connected panel" points at one of your LINKED panels, create
-      // this user ON THAT panel (browser -> that panel's /api/users, using its own admin password) and
-      // NOT on this one. Users are per-panel. Leave the field blank to create here.
-      if(panelUrl){
-        const _tgt=await lpMatchTarget(panelUrl);
-        if(!_tgt){ msg.textContent='⚠️ '+(lang==='fa'?'این آدرس جزو پنل‌های متصل نیست. اول در «مرکز چند-پنل» اضافه‌اش کن.':(lang==='ru'?'Этот адрес не входит в подключённые панели. Сначала добавьте её в Центре мультипанелей.':'That address is not one of your linked panels. Add it in Multi-Panel Hub first.')); msg.style.color='var(--dg)'; return; }
-        try{
-          const rr=await fetch(lpBase(_tgt.url)+'/api/users',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+_tgt.apiKey},body:JSON.stringify(payload)});
-          const jj=await rr.json().catch(function(){return {};});
-          if(rr.ok && jj.success){ document.getElementById('user-modal').classList.remove('on'); toast((lang==='fa'?'کاربر روی ':(lang==='ru'?'Пользователь создан на ':'User created on '))+(_tgt.name||'linked panel')+' ✓'); return; }
-          msg.textContent='⚠️ '+((jj&&jj.error==='Unauthorized')?(lang==='fa'?'رمز مدیریت ذخیره‌شده برای آن پنل اشتباه است':(lang==='ru'?'Неверный пароль администратора для этой панели':'Wrong admin password saved for that panel')):((jj&&jj.error)||('HTTP '+rr.status))); msg.style.color='var(--dg)'; return;
-        }catch(e){ msg.textContent='⚠️ '+(lang==='fa'?'دسترسی به آن پنل ممکن نشد (آدرس را بررسی کن)':(lang==='ru'?'Не удалось связаться с той панелью (проверьте адрес)':'Could not reach that panel (check its address)')); msg.style.color='var(--dg)'; return; }
-      }
       users.push(payload);
       r=await fetch('/admin/users.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({multiUser:true,users})});
     }
@@ -3591,7 +3480,7 @@ function syncPageHeader(){
   // map view id back to its nav key for the title
   const navKey = { dashboard:'nav_dashboard', distribution:'nav_distribution', network:'nav_network', cleanips:'nav_cleanips',
     activity:'nav_activity', settings:'nav_settings', notifications:'nav_notifications', users:'nav_users', guide:'nav_guide',
-    wireguard:'nav_wireguard', proxy:'nav_proxy', corenode:'nav_corenode', about:'nav_about', tunnel:'nav_tunnel', linkedpanels:'nav_linkedpanels' }[currentView];
+    wireguard:'nav_wireguard', proxy:'nav_proxy', corenode:'nav_corenode', about:'nav_about', tunnel:'nav_tunnel' }[currentView];
   $('#page-title').textContent = t(navKey);
   $('#page-sub').textContent = t(SUBS[currentView]);
 }
@@ -3629,12 +3518,11 @@ function showView(v){
   if(v==='wireguard') wgInit();
   if(v==='proxy') pxInit();
   if(v==='corenode') cnInit();
-  if(v==='linkedpanels') lpInit();
   if(v==='tunnel') tunnelInit();
   if(v==='dashboard'){ try{ TChart.ensure(); }catch(e){} }
   if(v==='notifications'){ try{ renderNovaVerCard(); }catch(e){} }
   if(v==='guide'){ try{ loadRemoteGuide(false); }catch(e){} }
-  if(['network','cleanips','wireguard','users','proxy','corenode','linkedpanels','tunnel'].indexOf(v)>=0){ var _g=document.getElementById('grp-netset'); if(_g) _g.classList.add('open'); var _gt=document.getElementById('netset-toggle'); if(_gt) _gt.setAttribute('aria-expanded','true'); }
+  if(['network','cleanips','wireguard','users','proxy','corenode','tunnel'].indexOf(v)>=0){ var _g=document.getElementById('grp-netset'); if(_g) _g.classList.add('open'); var _gt=document.getElementById('netset-toggle'); if(_gt) _gt.setAttribute('aria-expanded','true'); }
   window.scrollTo({top:0,behavior:'instant'});
 }
 // Jump from the Dashboard "calls" callout to the WARP card (lives in Network view).
@@ -3643,187 +3531,31 @@ function goRadarCard(){ showView('cleanips'); setTimeout(function(){ try{ var el
 function goConnectToken(){ try{ showView('notifications'); }catch(e){} setTimeout(function(){ try{ var el=document.getElementById('cf-token'); var card=el?el.closest('.card'):null; (card||el||{scrollIntoView:function(){}}).scrollIntoView({behavior:'smooth',block:'center'}); if(el){ el.focus(); el.style.transition='box-shadow .2s'; el.style.boxShadow='0 0 0 3px color-mix(in srgb,var(--ac) 45%,transparent)'; setTimeout(function(){ try{ el.style.boxShadow=''; }catch(e){} },1600); } }catch(e){} },140); }
 
 /* ============================================================================
-   Multi-Panel Hub (linked panels) — UI functions
-   ========================================================================== */
-var _lpPanels = [];
-function lpInit(){
-  API.get('linked-panels.json').then(function(j){
-    if(!j || !j.success) return;
-    document.getElementById('lp-panelname').value = j.panelName || '';
-    document.getElementById('lp-huburl').value = j.hubPanelUrl || '';
-    document.getElementById('lp-synckey').value = j.syncApiKey || '';
-    _lpPanels = Array.isArray(j.panels) ? j.panels.map(function(p){ return { url: p.url||'', apiKey: p.apiKey||'', name: p.name||'' }; }) : [];
-    lpRender();
-  }).catch(function(){});
-}
-function lpRender(){
-  var box = document.getElementById('lp-list');
-  if(!box) return;
-  var fa = (typeof lang!=='undefined' && lang==='fa');
-  if(!_lpPanels.length){
-    box.innerHTML = '<div style="text-align:center;padding:26px 12px;border:1px dashed var(--bd2);border-radius:var(--r-sm);color:var(--mu)">'
-      + '<div style="font-size:22px;margin-bottom:6px;opacity:.7">🔗</div>'
-      + '<div style="font-size:13px;font-weight:600;color:var(--tx2)">'+(fa?'هنوز پنلی متصل نشده':'No linked panels yet')+'</div>'
-      + '<div style="font-size:12px;margin-top:3px">'+(fa?'برای افزودن پنل، «افزودن پنل» را بزنید':'Press “+ Add a panel” to get started')+'</div>'
-      + '</div>';
-    return;
-  }
-  var mono = 'font-family:ui-monospace,monospace;font-size:12px;direction:ltr';
-  var lb = 'font-size:11px;font-weight:600;color:var(--mu);margin:0 2px 3px';
-  box.innerHTML = _lpPanels.map(function(p,i){
-    return '<div style="padding:13px 14px;border:1px solid var(--bd);border-radius:var(--r-sm);background:var(--card2);display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">'
-      + '<div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:9px">'
-      + '<div><div style="'+lb+'">'+(fa?'نام پنل (هر چیزی)':'Panel name (anything)')+'</div><input class="inp" value="'+esc(p.name)+'" data-i="'+i+'" data-f="name" onchange="lpFieldChanged()" placeholder="'+(fa?'مثلاً پنل دوم':'e.g. Second panel')+'" style="height:34px;padding:7px 10px"/></div>'
-      + '<div><div style="'+lb+'">'+(fa?'آدرس وب پنل':'Panel web address')+'</div><input class="inp" value="'+esc(p.url)+'" data-i="'+i+'" data-f="url" onchange="lpFieldChanged()" placeholder="https://child-panel.workers.dev" style="height:34px;padding:7px 10px;'+mono+'"/></div>'
-      + '<div><div style="'+lb+'">'+(fa?'رمز مدیریت آن پنل':'Its admin password')+'</div><input class="inp" type="password" value="'+esc(p.apiKey)+'" data-i="'+i+'" data-f="apiKey" onchange="lpFieldChanged()" placeholder="••••••••" autocomplete="off" style="height:34px;padding:7px 10px;'+mono+'"/></div>'
-      + '</div>'
-      + '<div style="display:flex;flex-direction:column;gap:6px;min-width:76px">'
-      + '<button onclick="lpTest('+i+')" class="btn ghost sm" title="'+(fa?'تست اتصال':'Test connection')+'">'+(fa?'تست':'Test')+'</button>'
-      + '<button onclick="lpSyncOne('+i+')" class="btn primary sm" title="'+(fa?'همگام‌سازی':'Sync config')+'">'+(fa?'همگام':'Sync')+'</button>'
-      + '<button onclick="lpRemove('+i+')" class="btn ghost sm" title="'+(fa?'حذف':'Remove')+'" style="color:var(--dg);border-color:var(--bd2)">✕</button>'
-      + '</div>'
-      + '</div>';
-  }).join('');
-}
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function lpAdd(){ _lpPanels.push({ url:'', apiKey:'', name:'' }); lpRender(); }
-function lpRemove(i){ _lpPanels.splice(i,1); lpRender(); lpPersist(); }
-function lpCollectInputs(){
-  document.querySelectorAll('#lp-list input[data-i]').forEach(function(el){
-    var idx = parseInt(el.dataset.i);
-    if(isNaN(idx)) return;
-    var field = el.dataset.f;
-    if(field && _lpPanels[idx]) _lpPanels[idx][field] = el.value.trim();
-  });
-}
-// Silent persist of the current panel list (no sync, no toast). So a filled-in panel survives a
-// refresh WITHOUT the user having to remember to press "Save & sync all".
-function lpPersist(){
-  lpCollectInputs();
-  var g=function(id){ var e=document.getElementById(id); return e?e.value.trim():''; };
-  var body={ linkedPanels:_lpPanels.filter(function(p){ return p.url && p.apiKey; }), panelName:g('lp-panelname'), hubPanelUrl:g('lp-huburl'), syncApiKey:g('lp-synckey') };
-  return API.post('linked-panels.json', body).catch(function(){});
-}
-// Fired when any row field loses focus after an edit: capture + auto-save, and show a subtle hint.
-function lpFieldChanged(){
-  lpPersist();
-  var s=document.getElementById('lp-status');
-  if(s){ var prev=s.textContent; s.textContent=(typeof lang!=='undefined'&&lang==='fa')?'ذخیره شد ✓':(typeof lang!=='undefined'&&lang==='ru'?'Сохранено ✓':'Saved ✓'); setTimeout(function(){ if(s.textContent.indexOf('✓')>-1) s.textContent=''; },1500); }
-}
-// Browser-driven: your browser talks to the child panel directly. The hub WORKER cannot fetch a
-// child on the same Cloudflare account (workers.dev blocks same-account worker->worker fetch, 404),
-// so all reachability + sync happens from here in the browser instead.
-function lpBase(u){ var b=String(u||'').trim(); if(!/^https?:\/\//i.test(b)) b='https://'+b; return b.replace(/\/+$/,''); }
-// Resolve a "dedicated panel" address to one of the saved linked panels. Returns {url,apiKey,name}
-// or null (unknown address, or it's this panel itself -> caller creates locally).
-async function lpMatchTarget(url){
-  var want=String(url||'').trim().replace(/^https?:\/\//i,'').replace(/\/+$/,'').toLowerCase().split('/')[0];
-  if(!want || want===location.host.toLowerCase()) return null;
-  try{
-    var j=await (await fetch('/admin/linked-panels.json?_t='+Date.now(),{cache:'no-store'})).json();
-    var panels=(j&&j.panels)||[];
-    return panels.find(function(p){ return p.apiKey && String(p.url||'').replace(/^https?:\/\//i,'').replace(/\/+$/,'').toLowerCase().split('/')[0]===want; })||null;
-  }catch(e){ return null; }
-}
-function lpTest(i){
-  lpCollectInputs();
-  var p = _lpPanels[i];
-  if(!p || !p.url){ toast('No URL entered',1); return; }
-  var base = lpBase(p.url);
-  var host = base.replace(/^[a-zA-Z]+:\/\//,'').split('/')[0];
-  toast('Testing ' + host + '...');
-  fetch(base + '/admin/api/sync', { method:'GET', cache:'no-store' })
-    .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
-    .then(function(res){
-      if(res.ok && res.j && res.j.ok) toast('✓ Reachable (build ' + (res.j.build||res.j.version||'?') + ')');
-      else toast('✕ Reached, but not a Nova panel', 1);
-    })
-    .catch(function(e){ toast('✕ Unreachable: check the URL', 1); });
-}
-function lpSyncOne(i){
-  lpCollectInputs();
-  var p = _lpPanels[i];
-  if(!p || !p.url || !p.apiKey){ toast('Enter the panel URL and its admin password',1); return; }
-  lpPersist(); // make sure this panel is saved before we sync, so it survives a refresh
-  var base = lpBase(p.url);
-  toast('Syncing...');
-  API.get('linked-panels-payload').then(function(pl){
-    if(!pl || !pl.config) throw new Error('could not read this panel’s config');
-    return fetch(base + '/admin/api/sync', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+p.apiKey },
-      body: JSON.stringify({ config: pl.config, fromMaster:true })
-    });
-  }).then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
-  .then(function(res){
-    if(res.ok && res.j && res.j.success) toast('✓ Synced');
-    else if(res.j && res.j.error==='Unauthorized') toast('✕ Wrong admin password for this panel', 1);
-    else toast('✕ Sync failed: ' + ((res.j&&res.j.error)||'unreachable'), 1);
-  }).catch(function(e){ toast('✕ Could not reach that panel (check URL)', 1); });
-}
-function lpSave(){
-  lpCollectInputs();
-  var body = {
-    linkedPanels: _lpPanels.filter(function(p){ return p.url && p.apiKey; }),
-    panelName: document.getElementById('lp-panelname').value.trim(),
-    hubPanelUrl: document.getElementById('lp-huburl').value.trim(),
-    syncApiKey: document.getElementById('lp-synckey').value.trim()
-  };
-  toast('Saving...');
-  // API.post resolves to a boolean (r.ok), not a JSON body.
-  API.post('linked-panels.json', body).then(function(ok){
-    if(ok){
-      if(body.linkedPanels.length){ toast('✓ Saved. Syncing...'); lpSyncAll(); }
-      else toast('✓ Saved');
-    }
-    else toast('✕ Save failed', 1);
-  }).catch(function(e){ toast('✕ Error: '+e.message, 1); });
-}
-function lpSyncAll(){
-  lpCollectInputs();
-  var panels = _lpPanels.filter(function(p){ return p.url && p.apiKey; });
-  if(!panels.length){ toast('Add a panel first (URL + admin password)',1); return; }
-  lpPersist(); // persist the list before syncing so it survives a refresh
-  toast('Syncing to ' + panels.length + ' panel(s)...');
-  API.get('linked-panels-payload').then(function(pl){
-    if(!pl || !pl.config) throw new Error('could not read this panel’s config');
-    var done = 0, fail = 0;
-    var promises = panels.map(function(p){
-      return fetch(lpBase(p.url) + '/admin/api/sync', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+p.apiKey },
-        body: JSON.stringify({ config: pl.config, fromMaster:true })
-      }).then(function(r){ return r.json().then(function(j){ if(r.ok && j && j.success) done++; else fail++; }); })
-        .catch(function(){ fail++; });
-    });
-    return Promise.all(promises).then(function(){
-      toast((fail? '⚠ ':'✓ ') + done + ' synced' + (fail? ', ' + fail + ' failed':''), fail?1:0);
-    });
-  }).catch(function(e){ toast('✕ Error: ' + e.message, 1); });
-}
-
-/* ============================================================================
    Tunnel / Relay, one-click relay setup wizard (status, enable, deploy, verify)
    ========================================================================== */
 var _tunnelState = null; // last relay object from the Worker
 var _tunnelKey   = '';   // current / generated AUTH_KEY
-var _tunnelUrl   = '';   // current WORKER_URL
+var _tunnelControlUrl = ''; // key-validation endpoint; never carries relay traffic
 
 function tunnelEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* Build the full, pre-filled Google Apps Script. Only AUTH_KEY and WORKER_URL vary.
-   The critical line is  k:AUTH_KEY  inside _p(). */
-function tunnelScript(key, workerUrl){
-  return '// Google Apps Script - v1.0.1\n'
-    + 'const AUTH_KEY = "'+key+'";\n'
-    + 'const WORKER_URL = "'+workerUrl+'";\n'
-    + 'const SKIP_HEADERS = { host:1, connection:1, "content-length":1, "transfer-encoding":1, "proxy-connection":1, "proxy-authorization":1 };\n'
-    + 'function doPost(e){ try{ var req=JSON.parse(e.postData.contents); if(req.k!==AUTH_KEY) return _json({e:"unauthorized"}); if(Array.isArray(req.q)) return _doBatch(req.q); return _doSingle(req); }catch(err){ return _json({e:String(err)}); } }\n'
-    + 'function _doSingle(req){ if(!req.u||typeof req.u!=="string"||!req.u.match(/^https?:\\/\\//i)) return _json({e:"bad url"}); var resp=UrlFetchApp.fetch(WORKER_URL,{method:"post",contentType:"application/json",payload:JSON.stringify(_p(req)),muteHttpExceptions:true,followRedirects:true}); try{ return _json(JSON.parse(resp.getContentText())); }catch(e){ return _json({e:"invalid worker response",raw:resp.getContentText()}); } }\n'
-    + 'function _doBatch(items){ var args=[],em={}; for(var i=0;i<items.length;i++){ var it=items[i]; if(!it.u||typeof it.u!=="string"||!it.u.match(/^https?:\\/\\//i)){ em[i]="bad url"; continue; } args.push({url:WORKER_URL,method:"post",contentType:"application/json",payload:JSON.stringify(_p(it)),muteHttpExceptions:true,followRedirects:true}); } var res=args.length?UrlFetchApp.fetchAll(args):[]; var out=[],ri=0; for(var i=0;i<items.length;i++){ if(em.hasOwnProperty(i)){ out.push({e:em[i]}); } else { try{ out.push(JSON.parse(res[ri++].getContentText())); }catch(e){ out.push({e:"invalid worker response"}); } } } return _json({q:out}); }\n'
-    + 'function _p(req){ var h={}; if(req.h&&typeof req.h==="object"){ for(var k in req.h){ if(req.h.hasOwnProperty(k)&&!SKIP_HEADERS[k.toLowerCase()]) h[k]=req.h[k]; } } return { k:AUTH_KEY, u:req.u, m:(req.m||"GET").toUpperCase(), h:h, b:req.b||null, ct:req.ct||null, r:req.r!==false }; }\n'
-    + 'function doGet(e){ return HtmlService.createHtmlOutput("<h1>Relay Active</h1><p>Cloudflare Worker routing enabled.</p>"); }\n'
-    + 'function _json(o){ return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }';
+/* Build a pre-filled Google Apps Script. It fetches destinations directly; the
+   Cloudflare Worker is used only to generate the private key and verify setup. */
+function tunnelScript(key, controlUrl){
+  return [
+    '// Nova Google Apps Script Relay - v2.0.0',
+    'const AUTH_KEY = '+JSON.stringify(String(key||''))+';',
+    'const CONTROL_URL = '+JSON.stringify(String(controlUrl||''))+';',
+    'const MAX_BATCH = 20;',
+    'const MAX_BODY_B64 = 2800000;',
+    'const SKIP_HEADERS = {host:1,connection:1,"content-length":1,"transfer-encoding":1,"proxy-connection":1,"proxy-authorization":1};',
+    'function doPost(e){try{if(!e||!e.postData||!e.postData.contents)return _json({e:"missing body"});var req=JSON.parse(e.postData.contents);if(req.k!==AUTH_KEY)return _json({e:"unauthorized"});if(!_active())return _json({e:"relay disabled"});if(Array.isArray(req.q)){if(req.q.length>MAX_BATCH)return _json({e:"batch too large"});var out=[];for(var i=0;i<req.q.length;i++)out.push(_fetch(req.q[i]||{}));return _json({q:out});}return _json(_fetch(req));}catch(err){return _json({e:String(err&&err.message||err)});}}',
+    'function _active(){try{var cache=CacheService.getScriptCache(),ck="nova_auth_"+AUTH_KEY.slice(-12),hit=cache.get(ck);if(hit==="1")return true;var r=UrlFetchApp.fetch(CONTROL_URL,{method:"post",contentType:"application/json",payload:JSON.stringify({k:AUTH_KEY}),muteHttpExceptions:true,followRedirects:true});var j=JSON.parse(r.getContentText());if(r.getResponseCode()===200&&j.ok===true){cache.put(ck,"1",60);return true;}return false;}catch(e){return false;}}',
+    'function _fetch(req){try{if(!_urlOk(req.u))return {e:"bad url"};var method=String(req.m||"GET").toUpperCase();if(["GET","POST","PUT","PATCH","DELETE","HEAD"].indexOf(method)<0)return {e:"bad method"};var h={};if(req.h&&typeof req.h==="object"){for(var k in req.h){if(Object.prototype.hasOwnProperty.call(req.h,k)&&!SKIP_HEADERS[String(k).toLowerCase()])h[k]=String(req.h[k]);}}var opt={method:method.toLowerCase(),headers:h,muteHttpExceptions:true,followRedirects:req.r!==false};if(req.b){var b=String(req.b);if(b.length>MAX_BODY_B64)return {e:"request body too large"};opt.payload=Utilities.base64Decode(b);}if(req.ct)opt.contentType=String(req.ct).slice(0,200);var resp=UrlFetchApp.fetch(String(req.u),opt);return {s:resp.getResponseCode(),h:resp.getAllHeaders(),b:Utilities.base64Encode(resp.getContent())};}catch(err){return {e:String(err&&err.message||err)};}}',
+    'function _urlOk(u){u=String(u||"");if(u.length<8||u.length>4096)return false;var m=u.match(/^https?:\\/\\/([^\\/?#]+)(?:[\\/?#]|$)/i);if(!m)return false;var a=m[1].replace(/^.*@/,""),host=a.charAt(0)==="["?a.slice(1,a.indexOf("]")):a.replace(/:\\d+$/,"");host=host.toLowerCase();if(!host||host==="localhost"||/\\.localhost$/.test(host)||host==="metadata.google.internal")return false;var v=host.match(/^(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})$/);if(v){var x=+v[1],y=+v[2],z=+v[3],w=+v[4];if([x,y,z,w].some(function(n){return n<0||n>255;}))return false;if(x===0||x===10||x===127||x>=224||(x===169&&y===254)||(x===172&&y>=16&&y<=31)||(x===192&&y===168)||(x===100&&y>=64&&y<=127))return false;}if(host.indexOf(":")>=0&&(host==="::1"||host==="::"||/^f[cd]/.test(host)||/^fe[89ab]/.test(host)||/^::ffff:/i.test(host)))return false;return true;}',
+    'function doGet(){return HtmlService.createHtmlOutput("<h1>Nova Relay Active</h1><p>Google direct relay is ready.</p>");}',
+    'function _json(o){return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);}'
+  ].join('\n');
 }
 
 /* Paint the whole section from _tunnelState. Safe to call on language switch too. */
@@ -3831,14 +3563,14 @@ function tunnelRender(){
   var st  = _tunnelState || {};
   var txt = document.getElementById('tunnel-status-text');
   if(!txt) return;
-  var on  = !!st.enabled, ver = !!st.verified, allowlisted = st.allowedHostsConfigured === true;
+  var on  = !!st.enabled, ver = !!st.verified;
   var dot = document.getElementById('tunnel-status-dot');
-  if(dot) dot.className = 'dot ' + (on ? 'ok' : (allowlisted ? 'bad' : 'warn'));
-  txt.textContent = on ? t('tunnel_active') : (allowlisted ? t('tunnel_inactive') : t('tunnel_allowlist_required'));
-  txt.style.color = on ? 'var(--ok)' : (allowlisted ? 'var(--dg)' : 'var(--wn)');
+  if(dot) dot.className = 'dot ' + (on ? 'ok' : 'bad');
+  txt.textContent = on ? t('tunnel_active') : t('tunnel_inactive');
+  txt.style.color = on ? 'var(--ok)' : 'var(--dg)';
 
   var sub = document.getElementById('tunnel-status-sub');
-  if(sub) sub.textContent = _tunnelUrl || st.workerUrl || '';
+  if(sub) sub.textContent = st.gasUrl || (on ? 'Google Apps Script · direct' : '');
 
   var bE = document.getElementById('tunnel-badge-enabled');
   if(bE){ bE.textContent = on ? t('tunnel_on') : t('tunnel_off'); bE.className = 'tbadge ' + (on ? 'ok' : 'off'); }
@@ -3848,21 +3580,18 @@ function tunnelRender(){
   var enable = document.getElementById('tunnel-enable-btn');
   if(enable){
     if(on){ enable.textContent = '✓ ' + t('tunnel_on'); enable.classList.add('is-disabled'); enable.disabled = true; }
-    else if(!allowlisted){ enable.textContent = t('tunnel_allowlist_required'); enable.classList.add('is-disabled'); enable.disabled = true; }
     else { enable.textContent = t('tunnel_enable'); enable.classList.remove('is-disabled'); enable.disabled = false; }
   }
 
   var env = document.getElementById('tunnel-env-note');
   if(env) env.style.display = (on && st.source === 'env') ? 'flex' : 'none';
-  var allowNote = document.getElementById('tunnel-allowlist-note');
-  if(allowNote) allowNote.style.display = allowlisted ? 'none' : 'flex';
 
   var steps = document.getElementById('tunnel-steps');
   if(steps) steps.style.display = on ? '' : 'none';
 
   if(on){
     var code = document.getElementById('tunnel-script-code');
-    if(code) code.textContent = tunnelScript(_tunnelKey || st.authKey || '', _tunnelUrl || st.workerUrl || '');
+    if(code) code.textContent = tunnelScript(_tunnelKey || st.authKey || '', _tunnelControlUrl || st.controlUrl || '');
     var urlIn = document.getElementById('tunnel-gas-url');
     if(urlIn && !urlIn.value && st.gasUrl) urlIn.value = st.gasUrl;
   }
@@ -3876,18 +3605,18 @@ function tunnelInit(){
     .then(function(r){ return r.json(); })
     .then(function(j){
       if(!j||!j.success){
-        _tunnelState = {enabled:false, allowedHostsConfigured:false, statusUnavailable:true};
+        _tunnelState = {enabled:false, statusUnavailable:true};
         tunnelRender();
         var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
         txt.textContent=(j&&j.error)?('Error: '+j.error):'Error'; txt.style.color='var(--dg)'; return;
       }
       _tunnelState = j.relay || {};
       _tunnelKey = _tunnelState.authKey || _tunnelKey;
-      _tunnelUrl = _tunnelState.workerUrl || _tunnelUrl;
+      _tunnelControlUrl = _tunnelState.controlUrl || _tunnelControlUrl;
       tunnelRender();
     })
     .catch(function(e){
-      _tunnelState = {enabled:false, allowedHostsConfigured:false, statusUnavailable:true};
+      _tunnelState = {enabled:false, statusUnavailable:true};
       tunnelRender();
       var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
       txt.textContent='Connection error'; txt.style.color='var(--dg)';
@@ -3897,10 +3626,6 @@ function tunnelInit(){
 
 /* Step 1: generate a key and enable the relay. */
 function tunnelEnable(){
-  if(!_tunnelState || _tunnelState.allowedHostsConfigured !== true){
-    toast('✕ ' + t('tunnel_allowlist_help'), 1);
-    return;
-  }
   var btn=document.getElementById('tunnel-enable-btn');
   if(btn){ btn.disabled=true; btn.classList.add('is-disabled'); btn.textContent=t('tunnel_enabling'); }
   fetch('/admin/relay-generate', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({})})
@@ -3912,11 +3637,11 @@ function tunnelEnable(){
         return;
       }
       _tunnelKey = j.key || '';
-      _tunnelUrl = j.workerUrl || _tunnelUrl;
+      _tunnelControlUrl = j.controlUrl || _tunnelControlUrl;
       _tunnelState = _tunnelState || {};
       _tunnelState.enabled = true;
       _tunnelState.authKey = _tunnelKey;
-      _tunnelState.workerUrl = _tunnelUrl;
+      _tunnelState.controlUrl = _tunnelControlUrl;
       _tunnelState.source = j.source || 'kv';
       tunnelRender();
       toast('✓ ' + t('tunnel_generated'));
@@ -3977,6 +3702,7 @@ function tunnelDisable(){
       if(btn){ btn.disabled=false; btn.classList.remove('is-disabled'); btn.textContent=t('tunnel_disable'); }
       if(!j||!j.success){ toast('✕ ' + ((j&&(j.message||j.error))||'Error'), 1); return; }
       _tunnelKey='';
+      _tunnelControlUrl='';
       var urlIn=document.getElementById('tunnel-gas-url'); if(urlIn) urlIn.value='';
       var res=document.getElementById('tunnel-verify-result'); if(res) res.style.display='none';
       tunnelInit(); // refetch real state (handles RELAY_AUTH_KEY env override)
