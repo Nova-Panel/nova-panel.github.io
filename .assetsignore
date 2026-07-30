@@ -1,4 +1,5 @@
 .git/
+.gitignore
 .wrangler/
 .DS_Store
 node_modules/
