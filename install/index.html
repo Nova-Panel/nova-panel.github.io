@@ -13,10 +13,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="theme-color" content="#0b0d11" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
 :root{--bg:#f4f6fb;--card:#fff;--c2:#f7f9fc;--bd:#e6eaf1;--bd2:#dde2eb;--tx:#101622;--tx2:#445066;--mu:#8a93a6;--ac:#0ea5c4;--ac2:#7c3aed;--ok:#16a34a;--dg:#e5484d;--grad:linear-gradient(120deg,#0891b2,#7c3aed);--ring:rgba(8,145,178,.2);--shadow:0 1px 2px rgba(20,40,80,.04),0 14px 34px rgba(40,60,110,.1)}
 html[data-theme=dark]{--bg:#070809;--card:#101319;--c2:#0b0d11;--bd:#1c2027;--bd2:#262b34;--tx:#e9edf4;--tx2:#aeb6c4;--mu:#6f7888;--ac:#22d3ee;--ac2:#a855f7;--ok:#34d399;--dg:#f87171;--grad:linear-gradient(120deg,#22d3ee,#7c5cff);--ring:rgba(34,211,238,.25);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 38px rgba(0,0,0,.5)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -147,11 +147,11 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
 </div>
 <div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
 <div style="font-size:13px;font-weight:600;margin-bottom:3px">🔁 If it gets error 1101 · اگر خطای ۱۱۰۱ گرفت</div>
-<div style="font-size:12.5px;color:var(--mu,#8a94a6)">A blocked Worker cannot be revived. Delete it, create a new Worker with a fresh random name, redeploy, then put the new domain in the HOSTS field. · ورکر مسدودشده قابل بازیابی نیست. حذفش کنید، ورکر تازه با نام جدید بسازید، دوباره دیپلوی کنید و دامنه جدید را در فیلد HOSTS بگذارید.</div>
+<div style="font-size:12.5px;color:var(--mu,#8a94a6)">If Cloudflare disables a Worker or account, stop deployment changes and use the official review or appeal process. Do not create replacement resources to bypass a restriction. · اگر Cloudflare ورکر یا حساب را غیرفعال کرد، تغییرات استقرار را متوقف و از مسیر رسمی بررسی یا اعتراض استفاده کنید. برای دورزدن محدودیت منبع جایگزین نسازید.</div>
 </div>
 <div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
 <div style="font-size:13px;font-weight:600;margin-bottom:3px">🆓 Keep it free and personal · رایگان و شخصی نگه دارید</div>
-<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Use a Worker (not Pages) and keep it a free personal service. Reselling or heavy sharing is what trips Cloudflare's review. · از Worker استفاده کنید (نه Pages) و آن را سرویس شخصی رایگان نگه دارید. فروش یا اشتراک سنگین باعث بررسی کلادفلر می‌شود.</div>
+<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Use Cloudflare services only for workloads permitted by your account and Cloudflare’s terms. Pages hosts this static UI; the Worker handles the service API. · از سرویس‌های Cloudflare فقط برای کاربردهای مجاز حساب و شرایط آن استفاده کنید. Pages رابط ثابت را میزبانی می‌کند و Worker API سرویس را اجرا می‌کند.</div>
 </div>
 </div>
 </div>
@@ -161,13 +161,13 @@ td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align
 </div>
 <script>
 var L={
- fa:{dir:'rtl',theme:'تغییر پوسته',intro:'به نصب Nova Proxy خوش آمدید. در نصب یک‌کلیکی، دیتابیس‌های KV و D1 به‌صورت خودکار ساخته و وصل می‌شوند؛ کافی است یک رمز مدیریت بسازید و وارد پنل شوید.',
+ fa:{dir:'rtl',theme:'تغییر پوسته',intro:'به راه‌اندازی Nova Proxy خوش آمدید. وضعیت بایندینگ‌های KV و D1 را بررسی کنید، یک رمز مدیریت بسازید و سپس وارد پنل شوید.',
   s1t:'دیتابیس KV',s2t:'رمز مدیریت',test:'بررسی دوباره',chk:'در حال بررسی…',ok:'متصل',bad:'متصل نیست',already:'تنظیم شده',
-  s1desc:'در نصب یک‌کلیکی این مورد خودکار وصل می‌شود. اگر «متصل نیست» بود، طبق راهنمای زیر یک KV بسازید و با نام متغیر «KV» به ورکر وصل کنید.',
+  s1desc:'اگر «متصل نیست» بود، طبق راهنمای زیر یک KV بسازید و با نام متغیر «KV» به ورکر وصل کنید.',
   s1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b> بروید.','روی <b>Create Namespace</b> بزنید و نامی مثل <span class="mono">NOVA_KV</span> بگذارید.','به Worker خود بروید: <b>Settings → Bindings → KV Namespace</b>.','یک Binding با نام متغیر <span class="mono">KV</span> به آن Namespace اضافه و ذخیره کنید.'],
   s2desc:'یک رمز برای ورود به پنل مدیریت انتخاب کنید. همین‌جا ذخیره می‌شود (نیازی به داشبورد Cloudflare نیست).',
   sd1t:'دیتابیس D1 (الزامی)',
-  sd1desc:'نوا روی D1 اجرا می‌شود: مصرف هر کاربر و پروفایل (جدول usage)، لاگ‌های پروکسی (جدول logs) و همه‌ی تنظیمات/پیکربندی/احراز هویت (جدول kvstore) در D1 ذخیره می‌شوند, حدود ۱۰۰ برابرِ ظرفیتِ نوشتنِ روزانه‌ی KV، پس ورکر روی پلن رایگان خیلی بیشتر دوام می‌آورد. در نصب یک‌کلیکی خودکار ساخته و وصل می‌شود. برای افزودن دستی:',
+  sd1desc:'نوا روی D1 اجرا می‌شود: مصرف هر کاربر و پروفایل (جدول usage)، لاگ‌های عملیاتی (جدول logs) و تنظیمات/پیکربندی/احراز هویت (جدول kvstore) در D1 ذخیره می‌شوند. برای افزودن و اتصال D1:',
   sd1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> بروید و <b>Create</b> را بزنید (هر نامی).','به Worker خود بروید: <b>Settings → Bindings → Add → D1 database</b>.','نام متغیر را <span class="mono">DB</span> بگذارید و همان دیتابیس را انتخاب کنید، سپس <b>Save and Deploy</b>.'],
   sd1note:'الزامی است. اگر هنوز Namespace از KV وصل باشد، فقط برای انتقال یک‌باره به D1، آینه‌ی نوشتن، و پرکردنِ کلیدهای جامانده استفاده می‌شود, نه به‌عنوان ذخیره‌ساز اصلی.',
   d1off:'الزامی',d1unreachable:'به Worker وصل نشد, این صفحه را روی آدرس Worker خود باز کنید (…/install)، نه GitHub Pages.',d1nobind:'بایندینگ «DB» روی Worker دیده نشد, یک دیتابیس D1 با نام متغیر DB وصل کنید و Save and Deploy بزنید.',d1err:'DB وصل است ولی کوئری آزمایشی خطا داد: ',
@@ -183,13 +183,13 @@ var L={
   crnote:'کاملاً اختیاری است و روی عملکرد اصلی پنل (اتصال کاربران) تأثیری ندارد؛ فقط بررسی‌های خودکار پس‌زمینه را فعال می‌کند.',
   crchk:'در حال بررسی…',crok:'فعال (اجرا شده)',crwait:'وصل شده, منتظر اولین اجرا',crno:'وصل نیست',crnoenv:'متغیر ENABLE_CRON تنظیم نشده',
   crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (چند لحظه پیش)';if(mins<60)return' (حدود '+mins+' دقیقه پیش)';var hrs=Math.round(mins/60);return' (حدود '+hrs+' ساعت پیش)';}},
- en:{dir:'ltr',theme:'Toggle theme',intro:'Welcome to Nova Proxy setup. On a one-click deploy the KV and D1 databases are created and bound automatically, just create an admin password and open the panel.',
+ en:{dir:'ltr',theme:'Toggle theme',intro:'Welcome to Nova Proxy setup. Verify the KV and D1 bindings, create an admin password, and then open the panel.',
   s1t:'KV Database',s2t:'Admin password',test:'Re-check',chk:'Checking…',ok:'Connected',bad:'Not connected',already:'Already set',
-  s1desc:'On a one-click deploy this connects automatically. If it shows "Not connected", create a KV namespace and bind it as "KV" using the steps below.',
+  s1desc:'If this shows "Not connected", create a KV namespace and bind it as "KV" using the steps below.',
   s1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Click <b>Create Namespace</b> and name it e.g. <span class="mono">NOVA_KV</span>.','Open your Worker: <b>Settings → Bindings → KV Namespace</b>.','Add a binding with variable name <span class="mono">KV</span> pointing to that namespace, and save.'],
   s2desc:'Choose a password for the admin panel. It is stored right here, no Cloudflare dashboard needed.',
   sd1t:'D1 Database (required)',
-  sd1desc:'Nova runs on D1. Per-user & per-profile bandwidth (usage table), proxy logs (logs table), and all settings, config and auth (kvstore table) are stored in D1, roughly 100x the daily write capacity of KV, so your Worker lasts far longer on the free plan. On a one-click deploy it is created and bound automatically. To add it manually:',
+  sd1desc:'Nova uses D1 for per-user and per-profile usage, operational logs, settings, configuration, and authentication. To create and bind D1:',
   sd1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> and click <b>Create</b> (any name).','Open your Worker: <b>Settings → Bindings → Add → D1 database</b>.','Set the variable name to <span class="mono">DB</span>, pick that database, then <b>Save and Deploy</b>.'],
   sd1note:'Required. If a KV namespace is still bound it is used only for a one-time migration into D1, as a write mirror, and to lazily backfill missing keys, not as the primary store.',
   d1off:'Required',d1unreachable:'Couldn\'t reach the Worker, open this page on your Worker URL (…/install), not GitHub Pages.',d1nobind:'No "DB" binding detected on the Worker, bind a D1 database as variable name DB, then Save and Deploy.',d1err:'DB is bound but the test query failed: ',
@@ -205,13 +205,13 @@ var L={
   crnote:'Fully optional and has no effect on the panel\'s main job (connecting users); it only turns on automatic background checks.',
   crchk:'Checking…',crok:'Active (has run)',crwait:'Connected, waiting for first run',crno:'Not connected',crnoenv:'ENABLE_CRON variable not set',
   crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (moments ago)';if(mins<60)return' (about '+mins+' min ago)';var hrs=Math.round(mins/60);return' (about '+hrs+'h ago)';}},
- ru:{dir:'ltr',theme:'Переключить тему',intro:'Добро пожаловать в установку Nova Proxy. При установке в один клик базы KV и D1 создаются и подключаются автоматически, просто задайте пароль администратора и откройте панель.',
+ ru:{dir:'ltr',theme:'Переключить тему',intro:'Добро пожаловать в настройку Nova Proxy. Проверьте привязки KV и D1, задайте пароль администратора и откройте панель.',
   s1t:'База KV',s2t:'Пароль администратора',test:'Проверить снова',chk:'Проверка…',ok:'Подключено',bad:'Не подключено',already:'Уже задано',
-  s1desc:'При установке в один клик это подключается автоматически. Если показано «Не подключено», создайте пространство имён KV и привяжите его как «KV» по шагам ниже.',
+  s1desc:'Если показано «Не подключено», создайте пространство имён KV и привяжите его как «KV» по шагам ниже.',
   s1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Нажмите <b>Create Namespace</b> и назовите, например <span class="mono">NOVA_KV</span>.','Откройте ваш Worker: <b>Settings → Bindings → KV Namespace</b>.','Добавьте привязку с именем переменной <span class="mono">KV</span>, указывающую на это пространство имён, и сохраните.'],
   s2desc:'Выберите пароль для панели администратора. Он хранится прямо здесь, панель Cloudflare не нужна.',
   sd1t:'База D1 (обязательно)',
-  sd1desc:'Nova работает на D1. Трафик по каждому пользователю и профилю (таблица usage), логи прокси (таблица logs) и все настройки, конфигурация и авторизация (таблица kvstore) хранятся в D1, примерно в 100 раз больше суточной ёмкости записи KV, поэтому ваш Worker дольше живёт на бесплатном плане. При установке в один клик создаётся и привязывается автоматически. Чтобы добавить вручную:',
+  sd1desc:'Nova использует D1 для статистики пользователей и профилей, рабочих журналов, настроек, конфигурации и авторизации. Чтобы создать и подключить D1:',
   sd1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> и нажмите <b>Create</b> (любое имя).','Откройте ваш Worker: <b>Settings → Bindings → Add → D1 database</b>.','Задайте имя переменной <span class="mono">DB</span>, выберите эту базу, затем <b>Save and Deploy</b>.'],
   sd1note:'Обязательно. Если пространство KV всё ещё привязано, оно используется только для разовой миграции в D1, как зеркало записи и для ленивого дозаполнения недостающих ключей, а не как основное хранилище.',
   d1off:'Обязательно',d1unreachable:'Не удалось связаться с Worker, откройте эту страницу по адресу вашего Worker (…/install), а не GitHub Pages.',d1nobind:'Привязка «DB» на Worker не обнаружена, привяжите базу D1 с именем переменной DB, затем Save and Deploy.',d1err:'DB привязана, но тестовый запрос вернул ошибку: ',

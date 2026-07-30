@@ -4,13 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Nova Proxy, Control Panel</title>
-<meta name="nova-panel-version" content="4.1.6" />
+<meta name="nova-panel-version" content="4.1.7-preview.4" />
 <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
 /* ============================================================================
    DESIGN TOKENS, preserved verbatim from the existing Nova Proxy panel.
    Do not rebrand. These are the exact hex codes already in production.
@@ -1235,6 +1234,9 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <span class="section-label" style="margin:0" data-i18n="tunnel_step1_h">Enable relay</span>
             </div>
             <p style="font-size:12px;color:var(--mu);margin-block:0 12px;margin-inline-start:30px" data-i18n="tunnel_step1_s">Generate a strong key and switch the relay on. This Worker becomes your relay endpoint.</p>
+            <div id="tunnel-allowlist-note" class="tnote warn" style="display:none;margin-block:0 12px;margin-inline-start:30px">
+              <span class="ic">🛡️</span><span data-i18n="tunnel_allowlist_help">Before enabling relay, add RELAY_ALLOWED_HOSTS to the Worker variables with explicit destination hostnames separated by commas. Wildcard “*” is not accepted.</span>
+            </div>
             <div style="margin-inline-start:30px">
               <button class="btn primary" id="tunnel-enable-btn" type="button" onclick="tunnelEnable()" data-i18n="tunnel_enable">Enable relay / Generate key</button>
             </div>
@@ -1347,7 +1349,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <div class="fg"><label data-i18n="lbl_frag">TLS fragment (DPI evasion)</label><select class="inp" id="f2-frag"><option value="" data-i18n="frag_off">Off</option><option value="Shadowrocket">Shadowrocket</option><option value="Happ">Happ</option><option value="custom" data-i18n="frag_custom">Custom</option></select></div>
               <div id="f2-frag-custom" style="display:none"><div class="set-grid"><div class="fg"><label data-i18n="frag_len">Fragment length</label><input class="inp" id="f2-frag-len" placeholder="100-200"></div><div class="fg"><label data-i18n="frag_int">Fragment interval</label><input class="inp" id="f2-frag-int" placeholder="10-20"></div><div class="fg"><label data-i18n="frag_pkt">Fragment packets</label><input class="inp" id="f2-frag-pkt" placeholder="tlshello / 1-1 / 1-3"></div></div></div>
               <div class="fg"><label data-i18n="lbl_proxyip">PROXYIP (reverse proxy, optional)</label><input class="inp" id="f2-proxyip" placeholder="host or ip[:port]"></div>
-              <div class="fg"><label data-i18n="lbl_decoy">Decoy / speed-test site (root URL, optional)</label><input class="inp" id="f2-decoy" placeholder="e.g. example.ir  (defaults to Cloudflare speed test)"></div>
               <div class="field-row"><div class="l" data-i18n="userloc_en">Let users pick exit location<small data-i18n="userloc_en_h">shows a country selector on each user's subscription page (Proxy IATA)</small></div><div class="sw" id="t-userloc"><span class="k"></span></div></div>
               <div class="fg"><label data-i18n="lbl_chain">Chain proxy / fix IP (optional)</label><div style="display:flex;gap:8px"><input class="inp" id="f2-chain" placeholder="socks5://user:pass@host:port"><button class="btn ghost sm" id="f2-chain-test" data-i18n="chain_test">Test</button></div><span id="f2-chain-status" style="font-size:11.5px;color:var(--mu);display:inline-block;margin-top:5px"></span></div>
               <div class="fg" style="margin-bottom:0"><label data-i18n="lbl_uuid">UUID (used in your configs)</label><div style="display:flex;gap:8px"><input class="inp" id="f2-uuid" readonly style="font-family:ui-monospace,monospace;font-size:12px"><button class="btn ghost sm" id="f2-uuid-copy" data-i18n="copy">Copy</button></div></div>
@@ -1460,64 +1461,30 @@ html[dir=rtl] .toast{right:auto;left:22px}
           </div>
         </div>
 
-        <div class="section-label" data-i18n="upd_h">Update panel</div>
+        <div class="section-label" data-i18n="upd_h">Worker updates</div>
         <div class="card card-pad">
-          <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="upd_s">Update your Worker to the latest Nova version straight from here, no manual redeploy. It keeps your database, settings, and password. You provide a Cloudflare API token with Workers Scripts → Edit; it is used once and never stored.</p>
+          <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="upd_s">Check your installed version here, then follow Nova's secure guide or use the Telegram bot. Only Worker code is replaced; bindings, settings, users, and D1/KV data stay in place.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
             <button class="btn ghost sm" id="upd-check" data-i18n="upd_check">Check for updates</button>
-            <button class="btn ghost sm" id="upd-checkup" data-i18n="upd_checkup">🩺 Worker Check-up</button>
+            <button class="btn ghost sm" id="upd-checkup" data-i18n="upd_checkup">🩺 Worker check-up</button>
+            <a class="btn primary sm" id="upd-review" href="https://github.com/IRNova/Nova-Proxy/releases" target="_blank" rel="noopener" data-i18n="upd_review">Review latest release</a>
             <span id="upd-msg" class="msg" style="font-size:12.5px"></span>
           </div>
           <div id="upd-progress" style="display:none;height:7px;border-radius:999px;background:color-mix(in srgb,var(--ac) 12%,transparent);overflow:hidden;margin:2px 0 10px"><div id="upd-progress-fill" style="height:100%;width:0;border-radius:999px;background:var(--ac);transition:width .45s ease"></div></div>
-          <div id="upd-box" style="border-top:1px solid var(--bd);margin-top:10px;padding-top:14px">
-            <div id="upd-connected" style="display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:10px 12px;border:1px solid var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent);border-radius:10px;font-size:12.5px"><span style="font-size:15px">☁️</span><span id="upd-connected-txt" style="flex:1;min-width:180px" data-i18n="upd_connected">Cloudflare connected ✓, updates are one-click. Just press “Update now” below.</span><a href="#" id="upd-usetoken" style="font-size:11.5px;color:var(--mu)" data-i18n="upd_usetoken">Use a different token</a></div>
-            <div id="upd-token-area">
-            <p style="font-size:12px;color:var(--mu);margin:0 0 8px" data-i18n="upd_token_help">Create a Cloudflare API token (My Profile → API Tokens → Create Custom Token) with permission: Account → Workers Scripts → Edit. Then paste it below.</p>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-              <a class="btn primary sm" href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=Nova%20Cloudflare" target="_blank" rel="noopener" data-i18n="upd_token_link">Create token (1-click)</a>
-            </div>
-            <div class="fg"><label data-i18n="upd_token_lbl">Cloudflare API token</label><input class="inp" id="upd-token" type="text" autocomplete="off" spellcheck="false" placeholder="••••••••••••••••"></div>
-            <div style="font-size:11px;color:var(--mu);margin:-2px 0 8px" data-i18n="upd_saved_note"></div>
-            </div>
-            <div class="fg" id="upd-scriptname-wrap" style="display:none"><label data-i18n="upd_scriptname_lbl">Worker script name</label><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input class="inp" id="upd-scriptname" type="text" autocomplete="off" placeholder="nova-..." style="flex:1;min-width:160px"><button class="btn ghost sm" id="upd-find-worker" type="button" data-i18n="upd_find_worker">🔍 Find my Worker</button></div><div id="upd-worker-pick" style="display:none;margin-top:8px"></div></div>
-            <div id="upd-acct-wrap" style="display:none;margin-bottom:10px"></div>
-            <button class="btn primary sm" id="upd-now" data-i18n="upd_now">Update now</button>
-          </div>
-        </div>
-
-        <div class="section-label" data-i18n="au_h">Auto-Update (Cron Trigger)</div>
-        <div class="card card-pad">
-          <p style="font-size:12.5px;color:var(--mu);margin-bottom:12px" data-i18n="au_desc">Automatically check for new Nova versions and deploy them via Cron Trigger. Your database, settings, and password are preserved. Requires a Cloudflare API token with Workers Scripts → Edit permission.</p>
-          <div class="field-row"><div class="l" data-i18n="au_en">Enable Auto-Update</div><div class="sw" id="t2-autoupdate"><span class="k"></span></div></div>
-          <div id="autoupdate-settings" style="display:none;margin-top:13px">
-            <div class="set-grid">
-              <div class="fg"><label data-i18n="au_interval">Check interval</label>
-                <select class="inp" id="au-interval">
-                  <option value="1800000" data-i18n="au_30m">Every 30 minutes</option>
-                  <option value="3600000" selected data-i18n="au_1h">Every 1 hour</option>
-                  <option value="7200000" data-i18n="au_2h">Every 2 hours</option>
-                  <option value="21600000" data-i18n="au_6h">Every 6 hours</option>
-                  <option value="43200000" data-i18n="au_12h">Every 12 hours</option>
-                  <option value="86400000" data-i18n="au_24h">Every 24 hours</option>
-                </select>
-              </div>
-              <div class="fg"><label data-i18n="au_fmt">Deploy format</label>
-                <select class="inp" id="au-format">
-                  <option value="normal" selected data-i18n="au_fmt_normal">Normal (plain source)</option>
-                  <option value="obfuscated" data-i18n="au_fmt_obfuscated">Obfuscated (if available)</option>
-                </select>
+          <div style="border-top:1px solid var(--bd);margin-top:10px;padding-top:14px">
+            <div style="display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid var(--bd);background:var(--card2);border-radius:10px">
+              <span style="font-size:18px">🔄</span>
+              <div>
+                <div style="font-weight:700;font-size:13px;margin-bottom:4px" data-i18n="upd_repo_h">Update an existing Nova Worker</div>
+                <p style="font-size:12px;color:var(--mu);line-height:1.7;margin:0 0 9px" data-i18n="upd_repo_s">Open the secure setup guide or Telegram bot, select your Nova Worker, and confirm. The Nova website never asks for a Cloudflare password or API token.</p>
+                <p style="font-size:12px;color:var(--mu);line-height:1.7;margin:0 0 9px" data-i18n="upd_auto_s">The updater changes only the Worker script. Your D1 database, KV namespace, bindings, users, password, and panel settings are preserved.</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <a class="btn primary sm" id="upd-web" href="https://novaproxy.online/setup/#update" target="_blank" rel="noopener" data-i18n="upd_builds">Secure update guide</a>
+                  <a class="btn ghost sm" href="https://t.me/IRNovaProxy_Bot?start=update" target="_blank" rel="noopener" data-i18n="upd_auto">Update with Telegram</a>
+                  <a class="btn ghost sm" href="https://github.com/IRNova/Nova-Proxy/blob/main/UPDATES.md" target="_blank" rel="noopener" data-i18n="upd_source">Advanced: GitHub updates</a>
+                </div>
               </div>
             </div>
-            <div class="set-grid" style="margin-top:10px">
-              <div class="fg"><label data-i18n="au_accid">Cloudflare Account ID</label><input class="inp" id="au-account" type="text" autocomplete="off" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
-              <div class="fg"><label data-i18n="au_token">Cloudflare API Token</label><input class="inp" id="au-token" type="password" autocomplete="off" placeholder="••••••••••••••••"></div>
-              <div class="fg"><label data-i18n="au_script">Worker Script Name</label><input class="inp" id="au-worker" type="text" autocomplete="off" placeholder="nova-..."></div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:12px">
-              <button class="btn primary sm" id="au-save" data-i18n="au_save">Save Auto-Update Settings</button>
-              <span id="au-msg" class="msg" style="font-size:12.5px"></span>
-            </div>
-            <p style="font-size:11px;color:var(--mu);margin-top:8px"><span data-i18n="au_last">Last auto-update:</span> <span id="au-last" data-i18n="au_never">Never</span></p>
           </div>
         </div>
 
@@ -1553,7 +1520,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
               <div style="border-top:1px solid var(--bd);margin-top:16px;padding-top:14px">
                 <div style="font-weight:600;font-size:13px;margin-bottom:4px" data-i18n="cf_h">Live status (Cloudflare API)</div>
                 <div style="font-size:11.5px;color:var(--mu);margin-bottom:10px" data-i18n="cf_sub"></div>
-                <div style="margin-bottom:9px"><a class="btn primary sm" href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%5D&name=Nova%20Cloudflare" target="_blank" rel="noopener" data-i18n="upd_token_link">Create token (1-click)</a></div>
+                <div style="margin-bottom:9px"><a class="btn primary sm" href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&name=Nova%20Usage%20Read%20Only" target="_blank" rel="noopener" data-i18n="usage_token_link">Create read-only token</a></div>
                 <div class="fg"><label data-i18n="cf_token">API token</label><input class="inp" type="password" id="cf-token" placeholder="••••••••••••••••"></div>
                 <div class="fg"><label><span data-i18n="cf_accid">Account ID</span> <span data-i18n="cf_accid_opt" style="color:var(--mu);font-weight:400">(optional, auto-detected)</span></label><input class="inp" id="cf-accid" spellcheck="false" data-i18n-ph="cf_accid_ph" placeholder="leave blank to auto-detect"></div>
                 <div id="cf-acct-wrap" style="display:none;margin-bottom:9px"></div>
@@ -1665,18 +1632,18 @@ html[dir=rtl] .toast{right:auto;left:22px}
       <section class="view" id="view-guide">
 
 <!-- NOVA GUIDE (auto) -->
-<div id="guide-remote-bar" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+<div id="guide-remote-bar" style="display:none" aria-hidden="true">
   <button id="guide-refresh-btn" class="btn ghost" onclick="loadRemoteGuide(true)">🔄 <span data-i18n="guide_refresh">بروزرسانی از گیت‌هاب</span></button>
   <span id="guide-remote-status" class="muted" style="font-size:12px"></span>
 </div>
 <div id="guide-remote" style="display:none"></div>
-<div id="nova-full-guide">
+<div id="nova-full-guide" style="display:none" aria-hidden="true">
 <div class="card"><div class="card-h"><h3>📘 راهنمای کامل پنل نوا پروکسی (⁦Nova Proxy⁩)</h3></div><div class="card-pad" dir="rtl" style="text-align:right"><p style="line-height:1.9;margin:6px 0">پنل نوا پروکسی یک پروکسی شخصی و رایگان است که روی ⁦Worker⁩ خودتان در ⁦Cloudflare⁩ اجرا می‌شود. هیچ سرور مشترکی وجود ندارد؛ هر کس پنل اختصاصی خودش را دارد و هیچ لاگی از ترافیک ذخیره نمی‌شود.</p>
 <p style="line-height:1.9;margin:6px 0">این راهنما شما را قدم‌به‌قدم از نصب تا مدیریت روزانه می‌برد. در انتها یک بخش «سوالات متداول» از ربات پشتیبانی تلگرام هم آمده است.</p></div></div>
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">پیش‌نیازها</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><ul style="margin:6px 18px;line-height:1.9"><li>یک حساب رایگان ⁦Cloudflare⁩ (اگر ندارید: <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">https://dash.cloudflare.com/sign-up</a> ، یک دقیقه).</li><li>(اختیاری) یک دامنه شخصی برای پایداری و سرعت بیشتر، مخصوصاً برای ⁦gRPC/XHTTP⁩ و تماس‌ها.</li></ul></div></details></div>
-<div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">گام ۱ — نصب پنل</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">سه راه برای نصب دارید؛ ساده‌ترین راه ویزارد وب است.</p>
-<ol style="margin:6px 18px;line-height:1.9"><li><b>ویزارد وب (پیشنهادی):</b> به <a href="https://novaproxy.online/install" target="_blank" rel="noopener">https://novaproxy.online/install</a> بروید. فقط یک توکن ⁦Cloudflare⁩ می‌سازید و بقیه (⁦Worker +⁩ دیتابیس) خودکار ساخته می‌شود. توکن شما فقط برای صحبت با ⁦API⁩ کلادفلر استفاده می‌شود و هیچ‌جا ذخیره نمی‌شود.</li><li><b>ربات نصب تلگرام:</b> همان کار ویزارد را داخل تلگرام انجام می‌دهد (توکن را برایش می‌فرستید؛ پیام حاوی توکن بلافاصله پاک می‌شود).</li><li><b>دستی با ⁦wrangler:⁩</b> برای کسانی که می‌خواهند خودشان از مخزن ⁦IRNova/Nova-Proxy⁩ دیپلوی کنند.</li></ol>
-<p style="line-height:1.9;margin:6px 0">نکته توکن: با قالب «⁦Edit Cloudflare Workers⁩» بسازید و کلِ کد را قبل از خروج از صفحه کپی کنید (فقط یک‌بار نشان داده می‌شود). بعد از نصب می‌توانید همان توکن را از بخش ⁦API Tokens⁩ باطل کنید؛ پنل به کارش ادامه می‌دهد.</p></div></details></div>
+<div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">گام ۱ — نصب پنل</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">راهنمای رسمی و امن نصب در صفحهٔ جدید Nova قرار دارد.</p>
+<ol style="margin:6px 18px;line-height:1.9"><li><b>راهنمای رسمی:</b> به <a href="https://novaproxy.online/setup/" target="_blank" rel="noopener">https://novaproxy.online/setup/</a> بروید. سایت Nova هیچ رمز Cloudflare یا API Token از شما دریافت نمی‌کند.</li><li><b>ربات رسمی تلگرام:</b> نام کاربری ⁦@IRNovaProxy_Bot⁩ را دقیقاً بررسی کنید و گزینهٔ نصب یا به‌روزرسانی را بزنید.</li><li><b>دستی با ⁦wrangler:⁩</b> برای کسانی که می‌خواهند خودشان از مخزن ⁦IRNova/Nova-Proxy⁩ دیپلوی کنند.</li></ol>
+<p style="line-height:1.9;margin:6px 0">رمز Cloudflare یا API Token را هرگز در سایت Nova وارد نکنید. ورود و تأیید Cloudflare باید فقط در دامنهٔ رسمی Cloudflare انجام شود.</p></div></details></div>
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">گام ۲ — اولین ورود و تعیین رمز ادمین</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">بعد از نصب، آدرس ⁦Worker⁩ خود را باز کنید؛ ویزارد نصب از شما می‌خواهد یک رمز ادمین بگذارید. این رمز برای ورود به پنل (<code>/admin</code>) لازم است. رمز قوی انتخاب کنید و در جای امن نگه دارید.</p>
 <p style="line-height:1.9;margin:6px 0">اگر «صفحه تست سرعت» باز شد یا وارد پنل نشدید: این صفحه عمداً به‌عنوان پوشش نمایش داده می‌شود. مستقیم به <code>/admin</code> (یا <code>/login</code>) بروید.</p></div></details></div>
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">گام ۳ — نگاهی به داشبورد</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">بالای داشبورد چهار کارت می‌بینید: وضعیت شبکه، حجم دیتابیس، مصرف ⁦Worker⁩ (تعداد ⁦Request⁩ امروز از سقف روزانه ۱۰۰٬۰۰۰) و ترافیک امروز. کارت «⁦What's new⁩» تازه‌ترین قابلیت‌ها را نشان می‌دهد.</p>
@@ -1700,7 +1667,7 @@ html[dir=rtl] .toast{right:auto;left:22px}
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">گام ۱۱ — به‌روزرسانی</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">اگر توکن ⁦Cloudflare⁩ را وصل کرده باشید، در بخش ⁦Notifications⁩ دکمهٔ <b>⁦Update now⁩</b> پنل را به آخرین نسخه می‌رساند (کد جایگزین می‌شود، تنظیمات و کاربران حفظ می‌شوند). روی دامنهٔ اختصاصی، اگر خطای «⁦Script name required⁩» دیدید، نام ⁦Worker⁩ خود را در فیلدی که ظاهر می‌شود وارد کنید.</p></div></details></div>
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">دامنهٔ اختصاصی</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><p style="line-height:1.9;margin:6px 0">لازم نیست، ولی توصیه می‌شود. در ⁦Cloudflare⁩ → ⁦Worker⁩ شما → ⁦Settings⁩ → ⁦Domains⁩ &amp; ⁦Routes⁩ → ⁦Add Custom Domain⁩، دامنه‌تان را به ⁦Worker⁩ وصل کنید، سپس همان را در پنل استفاده کنید. ⁦workers.dev⁩ در ایران فیلتر است؛ دامنهٔ اختصاصی پایدارتر است.</p></div></details></div>
 <div class="card" style="margin-top:12px"><details><summary style="cursor:pointer;font-weight:700;font-size:15px;padding:14px 16px" dir="rtl">عیب‌یابی سریع</summary><div class="card-pad" dir="rtl" style="text-align:right;padding-top:0"><ul style="margin:6px 18px;line-height:1.9"><li><b>پینگ خوب ولی وصل نمی‌شود / دانلود صفر:</b> ⁦Fragment⁩ را روشن/عوض کنید، یا از ⁦Nova Radar⁩ یک ⁦IP⁩ تمیز بگذارید.</li><li><b>قطع‌ووصل مکرر:</b> پروتکل/پورت دیگری امتحان کنید یا پریست ⁦Fragment⁩ را عوض کنید.</li><li><b>بعد از یک روز قطع می‌شود:</b> معمولاً ⁦IP⁩ تمیز نیاز به تازه‌سازی دارد؛ ⁦Radar⁩ بزنید و ⁦Apply⁩ کنید.</li><li><b>رمز پنل را فراموش کردم:</b> از «فراموشی رمز» با ورود یک‌کلیک تلگرام، یا سکرت ⁦ADMIN⁩ در ⁦Cloudflare⁩ استفاده کنید.</li></ul></div></details></div>
-<div class="card" style="margin-top:12px"><div class="card-h"><h3>❓ سوالات متداول</h3></div><div class="card-pad"><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">نوا پروکسی چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نوا پروکسی (Nova Proxy) یک پنل گرافیکی رایگان و قدرتمند مبتنی بر Cloudflare Workers هست که به شما اجازه می‌ده پروکسی شخصی (VLESS، Trojan، Shadowsocks و ...) بسازید.<br>تمام کارها روی حساب رایگان Cloudflare انجام می‌شه و نیازی به VPS یا پرداخت هزینه نیست.<br>لینک گیت‌هاب: <a href="https://github.com/IRNova/Nova-Proxy" target="_blank" rel="noopener">https://github.com/IRNova/Nova-Proxy</a><br>سایت رسمی: <a href="https://novaproxy.online" target="_blank" rel="noopener">https://novaproxy.online</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">منظور از Request چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">هر بار که یک کاربر یا یک برنامه درخواستی به Worker ارسال می‌کند، یک Request ثبت می‌شود.<br><br>به زبان ساده، هر اتصال، هر بار باز کردن یک صفحه، هر فراخوانی API و بسیاری از فعالیت‌های مشابه می‌توانند یک Request ایجاد کنند.<br><br>Cloudflare میزان مصرف Worker را بر اساس تعداد Requestها محاسبه می‌کند.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">گروه/تیم IRNova چیه و هدفش چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">IRNova تیمی ایرانی هست که پروژه Nova Proxy رو توسعه داده. هدف اصلی تیم ارائه اینترنت آزاد و رایگان برای همه مردم ایران در شرایط فیلترینگ شدید هست.<br>تمام پروژه‌ها (پنل، NovaRadar، Nova Client و ...) متن‌باز و رایگان هستن و فقط با حمایت داوطلبانه کاربران ادامه پیدا می‌کنن.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">Cloudflare چیه و مال کیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">Cloudflare یک شرکت آمریکایی بزرگه که خدمات CDN، DNS، امنیت و Workers (اجرای کد سمت سرور) ارائه می‌ده.<br>ما فقط از سرویس رایگان Workersش استفاده می‌کنیم و هیچ ارتباطی با فروش یا پشتیبانی پولی نداریم.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">امنیت Nova Proxy چطوره؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">هیچ لاگی از ترافیک شما ذخیره نمی‌شه (پروکسی شخصی شماست).<br>ارتباط با TLS رمزنگاری می‌شه.<br>امکان احراز هویت دو مرحله‌ای (2FA) وجود داره.<br>تمام کد پروژه متن‌باز و روی گیت‌هاب در دسترسه.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">پنل کجا نصب می‌شه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نل روی Worker شخصی خود شما در حساب Cloudflare نصب می‌شه.<br>هیچ سرور مشترکی وجود نداره — هر نفر پنل اختصاصی خودش رو داره.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور پنل بسازم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">ساده‌ترین راه استفاده از ویزارد سایت و یا همین ربات هست:<br>🔗 <a href="https://novaproxy.online/install" target="_blank" rel="noopener">https://novaproxy.online/install</a><br>مراحل:<br><br>اکانت Cloudflare بساز (رایگان)<br>توکن بگیر<br>Paste کن و پنل رو بساز<br><br>آموزش کامل ویدیو:<br><a href="https://youtu.be/NGywxMUPtio" target="_blank" rel="noopener">https://youtu.be/NGywxMUPtio</a> (قسمت اول)</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">نیاز به دامنه اختصاصی دارم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">خیر. می‌تونی با آدرس workers.dev شروع کنی.<br>اما داشتن دامنه شخصی سرعت و پایداری رو خیلی بیشتر می‌کنه (به خصوص برای gRPC و XHTTP).<br>آموزش اتصال دامنه: <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">ربات تلگرام پنل رو چطور وصل کنم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">آموزش کامل: <a href="https://youtu.be/VPi6VEypJZ8" target="_blank" rel="noopener">https://youtu.be/VPi6VEypJZ8</a><br>شامل:<br><br>ساخت API Token کلادفلر<br>ساخت ربات با BotFather<br>اتصال Chat ID</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بهترین تنظیمات برای همراه اول/ایرانسل چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">پیشنهاد فعلی:<br><br>پروتکل: VLESS<br>Transport: WebSocket<br>TLS Fingerprint: Random<br><br>برای جزئیات بیشتر ویدیو تنظیمات رو ببین: <a href="https://youtu.be/TzGvgBtNTG0" target="_blank" rel="noopener">https://youtu.be/TzGvgBtNTG0</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">لینک‌های آموزشی مهم</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نصب از صفر: <a href="https://youtu.be/NGywxMUPtio" target="_blank" rel="noopener">https://youtu.be/NGywxMUPtio</a><br>تنظیمات کامل پنل: <a href="https://youtu.be/TzGvgBtNTG0" target="_blank" rel="noopener">https://youtu.be/TzGvgBtNTG0</a><br>اتصال دامنه: <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br>API + ربات تلگرام: <a href="https://youtu.be/VPi6VEypJZ8" target="_blank" rel="noopener">https://youtu.be/VPi6VEypJZ8</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">مشکل دارم، چطور کمک بگیرم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">اول آموزش‌های یوتیوب رو چک کن.<br>اگر حل نشد در گروه تلگرام بپرس: <a href="https://t.me/irnovaproxy_group" target="_blank" rel="noopener">https://t.me/irnovaproxy_group</a><br>در نهایت میتونی کل پیغامت رو از طریق همین ربات برامون ارسال کنی و تیم ما همیشه پاسخ شمارو میده</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دیتابیس D1 رو حذف کنم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای حذف کامل دیتابیس D1 در Nova Proxy مراحل زیر را به ترتیب انجام دهید:<br><br>وارد داشبورد Cloudflare شوید: dash.cloudflare.com<br>از منوی سمت چپ روی Storage &amp; Databases کلیک کنید.<br>روی D1 کلیک کنید.<br>دیتابیسی که برای Nova Proxy ساخته‌اید را پیدا کنید (معمولاً نامی مثل nova-db یا مشابه دارد).<br>روی سه‌نقطه (⋯) کنار نام دیتابیس کلیک کنید.<br>گزینه Delete را انتخاب کنید.<br>نام دیتابیس را دقیقاً تایپ کنید تا تأیید شود و روی Delete database بزنید.<br><br><br>بعد از حذف D1:<br><br>Worker شما ممکن است با خطا مواجه شود (چون Binding به D1 قطع شده).<br>پیشنهاد می‌شود Worker را هم حذف کنید و یک نصب جدید انجام دهید (از طریق <a href="https://novaproxy.online/install)." target="_blank" rel="noopener">https://novaproxy.online/install).</a><br>میتونید از همین ربات هم نصب رو انجام بدین</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">موقع ساخت پنل می‌گوید اکانت را وریفای کنید</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">باید اکانت Cloudflare خود را با ایمیل واقعی (ترجیحاً Gmail) وریفای کنید.<br>ایمیل‌های یکبارمصرف (مثل Atomic Mail) گاهی باعث این خطا می‌شوند. یک اکانت جدید با Gmail بسازید و دوباره امتحان کنید.<br>سعی کنید از گزینه ایجاد با حساب گوگل استفاده کنید در غیر این صورت یکبار وارد کلودفلر بشین تا صفحه حساب تایید نیست ظاهر بشه و بعد زدن وریفای ایمیلی از سمت کلودفلر برای شما ارسال میشه بعد تایید اون حسابتون وریفای میشه</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بعد از نصب، صفحه تست سرعت باز می‌شود یا وارد پنل نمی‌شوم</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">این یک صفحه استتار هست <br>به انتهای آدرس Worker خود عبارت /admin اضافه کنید.<br>مثال:<br><a href="https://your-worker.workers.dev/admin" target="_blank" rel="noopener">https://your-worker.workers.dev/admin</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">کانفیگ پینگ خوب می‌دهد اما وصل نمی‌شود / دانلود و آپلود صفر است</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">در پنل بروید به تنظیمات → استتار اثر انگشت (TLS Fingerprint) را روی Random بگذارید.<br>همچنین تعداد IPهای تمیز را روی ۵۰۰ بگذارید و حالت را روی Random تنظیم کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">کانفیگ‌ها هی قطع و وصل می‌شوند</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">Fingerprint را روی Random بگذارید.<br>از Transport WebSocket استفاده کنید.<br>تعداد IPها را کم کنید (مثلاً ۱۰-۵۰ تا).<br>اگر مشکل ادامه داشت، پروتکل را به Trojan تغییر دهید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بعد از یک روز کانفیگ‌ها قطع می‌شوند</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">احتمالاً به محدودیت روزانه Request Cloudflare (۱۰۰ هزار درخواست) رسیده‌اید.<br>راه‌حل:<br><br>یک اکانت Cloudflare جدید بسازید و پنل را دوباره نصب کنید.<br>یا تعداد کاربران/مصرف را محدود کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">اپ Nova Client روی اندروید وصل نمی‌شود</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نسخه فعلی اپ اندروید هنوز در حال رفع باگ است. فعلاً از Karing استفاده کنید و اشتراک پنل را داخل آن ایمپورت کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">اپ Nova Client روی iOS نصب می‌شود؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بله، نسخه iOS در حال انتشار در اپ استور است. فعلاً می‌توانید از مرورگر یا Karing استفاده کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">در زمان قطعی اینترنت (نت ملی) Nova Proxy کار می‌کند؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بله، در زمان قطعی اینترنت ملی، Nova Proxy معمولاً کار می‌کند چون از زیرساخت خارجی Cloudflare استفاده می‌کند. اما ممکن است در برخی اپراتورها سرعت کمتر باشد.<br>داریم شرایط رو اوکی میکنیم ولی اگه ای پی های سفید رو ایران ببنده راهی دیگه پیدا میکنیم</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دامنه اختصاصی رو به Nova Proxy متصل کنیم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای اتصال دامنه به Nova Proxy، آموزش کامل و مرحله‌به‌مرحله در ویدیوی زیر قرار داده شده است:<br><br>🎥 <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br><br>در این آموزش موارد زیر توضیح داده شده:<br><br>• دریافت دامنه رایگان یا خرید دامنه<br>• اضافه کردن دامنه به Cloudflare<br>• تنظیم Name Server ها<br>• اتصال دامنه به Worker<br>• ساخت Subdomain<br>• ورود به پنل از طریق دامنه اختصاصی<br><br>#NovaProxy<br>#Domain<br>#Cloudflare<br>#Tutorial</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">از کجا بفهمم چقدر از سهمیه Request روزانه Cloudflare مصرف شده است؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای مشاهده میزان مصرف Request دو روش وجود دارد.<br><br>روش اول: داخل Cloudflare<br><br>وارد حساب Cloudflare شوید.<br><br>سپس از منوی سمت چپ وارد بخش Workers &amp; Pages شوید.<br><br>در همین صفحه و در سمت راست، آمار مربوط به مصرف Worker نمایش داده می‌شود.<br><br>در این قسمت می‌توانید تعداد Requestهای مصرف‌شده و میزان باقی‌مانده از سهمیه روزانه اکانت خود را مشاهده کنید.<br><br>توجه داشته باشید که این آمار مربوط به کل اکانت Cloudflare است و فقط به یک Worker خاص محدود نمی‌شود.<br><br>روش دوم: داخل پنل Nova Proxy<br><br>در نسخه‌های جدید Nova Proxy می‌توانید میزان مصرف Requestها را مستقیماً از داخل پنل مشاهده کنید.<br><br>برای این قابلیت باید ابتدا Cloudflare API را به پنل متصل کنید.<br><br>پس از اتصال API، اطلاعات مصرف Requestها در بخش «درخواست‌های ورکر» نمایش داده می‌شود.<br><br>🎥 آموزش اتصال Cloudflare API:<br><br><a href="https://youtu.be/" target="_blank" rel="noopener">https://youtu.be/</a><br><br>(لینک ویدیوی آموزش API را اینجا قرار دهید)</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">مزیت اتصال Cloudflare API و راه‌اندازی ربات تلگرام چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">اتصال Cloudflare API و ربات تلگرام اجباری نیست و Nova Proxy بدون آن‌ها هم به‌خوبی کار می‌کند.<br><br>اما با فعال کردن این قابلیت‌ها امکانات بیشتری در اختیار شما قرار می‌گیرد.<br><br>✅ مشاهده میزان مصرف Requestهای Cloudflare از داخل پنل<br><br>✅ مشاهده تعداد Requestهای باقی‌مانده بدون نیاز به ورود به داشبورد Cloudflare<br><br>✅ دریافت اطلاعات Worker به‌صورت مستقیم از حساب Cloudflare<br><br>✅ دریافت اعلان ورود به پنل مدیریت در تلگرام<br><br>✅ دریافت اعلان استفاده از لینک Subscription توسط کاربران<br><br>✅ دسترسی سریع‌تر به وضعیت سرویس از طریق ربات تلگرام<br><br>✅ مدیریت آسان‌تر و نظارت بیشتر روی پنل<br><br>اگر فقط از Nova Proxy برای استفاده شخصی استفاده می‌کنید، اتصال API و ربات تلگرام ضروری نیست.<br><br>اما اگر چند کاربر دارید یا می‌خواهید وضعیت پنل و مصرف Cloudflare را راحت‌تر مدیریت کنید، فعال‌سازی این بخش‌ها توصیه می‌شود.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بخش Proxy / CDN چیست و چه کاربردی دارد؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بخش Proxy / CDN به شما امکان می‌دهد برای دسترسی به سرویس‌هایی که پشت Cloudflare قرار دارند از سرورهای واسط (Proxy IP یا SOCKS5) استفاده کنید.<br><br>این قابلیت باعث می‌شود سایت‌هایی مانند Twitter، ChatGPT و برخی سرویس‌های مشابه که دسترسی مستقیم به آن‌ها از طریق Cloudflare Workers امکان‌پذیر نیست، قابل استفاده شوند.<br><br>#NovaProxy #Cloudflare #ProxyIP #SOCKS5<br><br><br>---<br><br>❓ Proxy IP و SOCKS5 چه تفاوتی دارند؟<br><br>هر دو نقش واسط ارتباطی را دارند اما SOCKS5 معمولاً سازگاری و پایداری بیشتری دارد و برای اکثر کاربران انتخاب بهتری محسوب می‌شود.<br><br>در Nova Proxy پیشنهاد می‌شود از حالت‌های Proxy IP یا SOCKS5 استفاده کنید.<br><br>#NovaProxy #SOCKS5 #ProxyIP #Cloudflare<br><br><br>---<br><br>❓ آیا استفاده از بخش Proxy / CDN اجباری است؟<br><br>خیر.<br><br>اگر فقط از سایت‌ها و سرویس‌های معمولی استفاده می‌کنید، نیازی به فعال‌سازی این بخش ندارید.<br><br>این قابلیت بیشتر برای دسترسی به سرویس‌هایی کاربرد دارد که پشت Cloudflare قرار دارند و بدون پروکسی قابل دسترس نیستند.<br><br>#NovaProxy #CloudflareWorkers #ProxyIP #CDN<br><br><br>---<br><br>❓ آیا Proxy / CDN باعث می‌شود IP ثابت داشته باشم؟<br><br>خیر.<br><br>این بخش برای ارائه IP ثابت طراحی نشده است.<br><br>پروکسی‌های موجود ممکن است در آینده تغییر کنند، از دسترس خارج شوند یا جایگزین شوند.<br><br>اگر به IP ثابت نیاز دارید، باید از راهکارهای اختصاصی دیگر استفاده کنید.<br><br>#NovaProxy #ProxyIP #SOCKS5 #StaticIP<br><br><br>---<br><br>❓ آیا استفاده از Proxy / CDN برای صرافی‌ها مناسب است؟<br><br>خیر.<br><br>به دلیل تغییرپذیر بودن IPها، استفاده از این قابلیت برای صرافی‌ها، حساب‌های مالی، پرداخت‌های بین‌المللی و سرویس‌هایی که روی IP حساس هستند توصیه نمی‌شود.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Exchange<br><br><br>---<br><br>❓ بعد از انتخاب پروکسی چرا تغییری مشاهده نمی‌کنم؟<br><br>بعد از ذخیره تنظیمات Proxy / CDN باید لینک Subscription خود را مجدداً آپدیت کنید.<br><br>تا زمانی که Subscription در برنامه کلاینت به‌روزرسانی نشود، تنظیمات جدید اعمال نخواهد شد.<br><br>#NovaProxy #Subscription #ProxyIP #Cloudflare<br><br><br>---<br><br>❓ کدام کشور را انتخاب کنیم؟<br><br>بهترین کشور برای هر کاربر متفاوت است و به اپراتور، موقعیت جغرافیایی و کیفیت پروکسی بستگی دارد.<br><br>پیشنهاد می‌شود چند کشور مختلف را تست کنید و گزینه‌ای را انتخاب کنید که کمترین تأخیر و بیشترین پایداری را دارد.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Cloudflare<br><br><br>---<br><br>❓ چرا بعد از دریافت فهرست، تعداد زیادی پروکسی نمایش داده می‌شود؟<br><br>Nova Proxy فهرست پروکسی‌ها را از منابع مختلف دریافت می‌کند و آن‌ها را بر اساس کشور دسته‌بندی می‌کند.<br><br>برای مثال ممکن است ۳۰۰ پروکسی در ۳۰ کشور مختلف در دسترس باشد که می‌توانید هر کدام را انتخاب و استفاده کنید.<br><br>#NovaProxy #ProxyIP #SOCKS5 #CDN<br><br><br>---<br><br>❓ اگر پروکسی انتخاب‌شده کار نکند چه باید کرد؟<br><br>کافی است دوباره وارد بخش Proxy / CDN شوید و یک IP دیگر یا یک کشور دیگر را انتخاب کنید.<br><br>پروکسی‌ها عمومی هستند و ممکن است در طول زمان از دسترس خارج شوند.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Troubleshooting<br><br><br>---<br><br>❓ آیا فعال کردن Proxy / CDN روی همه سایت‌ها تأثیر می‌گذارد؟<br><br>خیر.<br><br>این قابلیت عمدتاً زمانی استفاده می‌شود که مقصد نهایی پشت Cloudflare باشد.<br><br>برای سایر سایت‌ها و سرویس‌ها معمولاً مسیر پیش‌فرض Nova Proxy استفاده می‌شود.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">برای استفاده از Nova Proxy نیاز به دامنه دارم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">خیر.<br><br>برای راه‌اندازی اولیه فقط به یک اکانت Cloudflare نیاز دارید و می‌توانید از آدرس workers.dev استفاده کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دامنه اختصاصی رو به Nova Proxy متصل کنیم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای اتصال دامنه به Nova Proxy، آموزش کامل و مرحله‌به‌مرحله در ویدیوی زیر قرار داده شده است:<br><br>🎥 <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br><br>در این آموزش موارد زیر توضیح داده شده:<br><br>• دریافت دامنه رایگان یا خرید دامنه<br>• اضافه کردن دامنه به Cloudflare<br>• تنظیم Name Server ها<br>• اتصال دامنه به Worker<br>• ساخت Subdomain<br>• ورود به پنل از طریق دامنه اختصاصی</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">در بخش شبکه و آیپی، «تست اتصال» اینستاگرام را «مسدود» نشان می‌دهد. مشکل از چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">این تست از مرورگری که پنل را در آن باز کرده‌اید انجام می‌شود، نه از طریق نوا. یعنی فقط نشان می‌دهد همان مرورگر به آن سایت‌ها دسترسی دارد یا نه و ترافیک تست اصلا از پروکسی شما رد نمی‌شود.<br><br>پس اگر پنل را با اینترنت ایران و بدون فیلترشکن باز کرده باشید، اینستاگرام (و معمولا یوتیوب و ایکس) «مسدود» نشان داده می‌شوند، حتی وقتی پنل شما کاملا سالم است. این یعنی «این مرورگر به اینستاگرام نمی‌رسد»، نه «پنل شما خراب است».<br><br>ملاک درست: لینک اشتراک را در اپ کلاینت وارد کنید، اتصال را وصل کنید و اینستاگرام را داخل گوشی باز کنید. اگر باز شد، پنل شما سالم است.<br><br>نکته: تست اینستاگرام از بقیه حساس‌تر است و گاهی حتی با اتصال سالم هم «مسدود» نشان می‌دهد، چون تست فقط یک تصویر کوچک از سایت را ۶ ثانیه امتحان می‌کند و هر خطایی را «مسدود» می‌شمارد. ردیف‌های Google و Cloudflare معیار بهتری برای سالم بودن دسترسی مرورگرتان هستند.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">رمز ورود به پنل را فراموش کرده‌ام، چطور وارد شوم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">چند راه دارید. از بالا به پایین امتحان کنید:<br><br>&lt;b&gt;۱. اگر ربات تلگرام پنل را وصل کرده‌اید (سریع‌ترین راه):&lt;/b&gt;<br>به ربات خودتان &lt;code&gt;/start&lt;/code&gt; بفرستید. اولین دکمه، لینک ورود یک‌کلیکی به پنل است و اصلا به رمز نیاز ندارد.<br><br>&lt;b&gt;۲. از صفحه ورود:&lt;/b&gt;<br>در صفحه &lt;code&gt;/login&lt;/code&gt; روی «رمز را فراموش کردید؟» بزنید، بعد «ارسال لینک ورود از طریق تلگرام». لینک به چت ادمین خود پنل می‌رود (نه به کسی که دکمه را زده)، حدود ۵ تا ۱۰ دقیقه اعتبار دارد و اگر منقضی شد دوباره بزنید. حداکثر ۳ بار در ۱۰ دقیقه.<br><br>&lt;b&gt;۳. اگر تلگرام وصل نیست، با توکن Cloudflare:&lt;/b&gt;<br>در همان بخش، یک Cloudflare API Token از همان اکانتی که ورکر رویش است وارد کنید و «بازیابی با توکن Cloudflare» را بزنید. یک رمز جدید ۱۶ کاراکتری به شما نشان داده می‌شود.<br><br>&lt;b&gt;۴. از داشبورد Cloudflare (آخرین راه):&lt;/b&gt;<br>وارد داشبورد شوید، به KV بروید و کلید &lt;code&gt;admin_pass&lt;/code&gt; را باز کنید. رمز همان‌جا به صورت متن ساده ذخیره شده؛ می‌توانید بخوانید یا عوضش کنید. اگر پنل روی D1 است، همین مقدار در جدول &lt;code&gt;kvstore&lt;/code&gt; است. راه دیگر: سکرت &lt;code&gt;ADMIN&lt;/code&gt; را در Settings → Variables and Secrets ورکر ست کنید. بعد از تغییر تا یک دقیقه صبر کنید تا کش پنل تازه شود.<br><br>اگر ۲FA هم روشن است و به authenticator دسترسی ندارید، فقط راه ۱ و ۲ کار می‌کند؛ در غیر این صورت باید کلید &lt;code&gt;admin_2fa.json&lt;/code&gt; را از KV حذف کنید.<br><br>توجه: دکمه «تنظیم رمز ادمین» و صفحه &lt;code&gt;/install&lt;/code&gt; فقط روی پنل تازه و تنظیم‌نشده کار می‌کنند و برای پنلی که از قبل رمز دارد خطا می‌دهند.</div></details></div></div>
+<div class="card" style="margin-top:12px"><div class="card-h"><h3>❓ سوالات متداول</h3></div><div class="card-pad"><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">نوا پروکسی چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نوا پروکسی (Nova Proxy) یک پنل گرافیکی رایگان و قدرتمند مبتنی بر Cloudflare Workers هست که به شما اجازه می‌ده پروکسی شخصی (VLESS، Trojan، Shadowsocks و ...) بسازید.<br>تمام کارها روی حساب رایگان Cloudflare انجام می‌شه و نیازی به VPS یا پرداخت هزینه نیست.<br>لینک گیت‌هاب: <a href="https://github.com/IRNova/Nova-Proxy" target="_blank" rel="noopener">https://github.com/IRNova/Nova-Proxy</a><br>سایت رسمی: <a href="https://novaproxy.online" target="_blank" rel="noopener">https://novaproxy.online</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">منظور از Request چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">هر بار که یک کاربر یا یک برنامه درخواستی به Worker ارسال می‌کند، یک Request ثبت می‌شود.<br><br>به زبان ساده، هر اتصال، هر بار باز کردن یک صفحه، هر فراخوانی API و بسیاری از فعالیت‌های مشابه می‌توانند یک Request ایجاد کنند.<br><br>Cloudflare میزان مصرف Worker را بر اساس تعداد Requestها محاسبه می‌کند.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">گروه/تیم IRNova چیه و هدفش چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">IRNova تیمی ایرانی هست که پروژه Nova Proxy رو توسعه داده. هدف اصلی تیم ارائه اینترنت آزاد و رایگان برای همه مردم ایران در شرایط فیلترینگ شدید هست.<br>تمام پروژه‌ها (پنل، NovaRadar، Nova Client و ...) متن‌باز و رایگان هستن و فقط با حمایت داوطلبانه کاربران ادامه پیدا می‌کنن.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">Cloudflare چیه و مال کیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">Cloudflare یک شرکت آمریکایی بزرگه که خدمات CDN، DNS، امنیت و Workers (اجرای کد سمت سرور) ارائه می‌ده.<br>ما فقط از سرویس رایگان Workersش استفاده می‌کنیم و هیچ ارتباطی با فروش یا پشتیبانی پولی نداریم.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">امنیت Nova Proxy چطوره؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">هیچ لاگی از ترافیک شما ذخیره نمی‌شه (پروکسی شخصی شماست).<br>ارتباط با TLS رمزنگاری می‌شه.<br>امکان احراز هویت دو مرحله‌ای (2FA) وجود داره.<br>تمام کد پروژه متن‌باز و روی گیت‌هاب در دسترسه.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">پنل کجا نصب می‌شه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نل روی Worker شخصی خود شما در حساب Cloudflare نصب می‌شه.<br>هیچ سرور مشترکی وجود نداره — هر نفر پنل اختصاصی خودش رو داره.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور پنل بسازم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">راهنمای رسمی و امن نصب و به‌روزرسانی:<br>🔗 <a href="https://novaproxy.online/setup/" target="_blank" rel="noopener">https://novaproxy.online/setup/</a><br>مراحل:<br><br>اکانت Cloudflare بساز (رایگان)<br>روش امن نصب را انتخاب کن<br>بعد از نصب، آدرس Worker را باز کن<br><br>آموزش کامل ویدیو:<br><a href="https://youtu.be/NGywxMUPtio" target="_blank" rel="noopener">https://youtu.be/NGywxMUPtio</a> (قسمت اول)</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">نیاز به دامنه اختصاصی دارم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">خیر. می‌تونی با آدرس workers.dev شروع کنی.<br>اما داشتن دامنه شخصی سرعت و پایداری رو خیلی بیشتر می‌کنه (به خصوص برای gRPC و XHTTP).<br>آموزش اتصال دامنه: <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">ربات تلگرام پنل رو چطور وصل کنم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">آموزش کامل: <a href="https://youtu.be/VPi6VEypJZ8" target="_blank" rel="noopener">https://youtu.be/VPi6VEypJZ8</a><br>شامل:<br><br>ساخت API Token کلادفلر<br>ساخت ربات با BotFather<br>اتصال Chat ID</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بهترین تنظیمات برای همراه اول/ایرانسل چیه؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">پیشنهاد فعلی:<br><br>پروتکل: VLESS<br>Transport: WebSocket<br>TLS Fingerprint: Random<br><br>برای جزئیات بیشتر ویدیو تنظیمات رو ببین: <a href="https://youtu.be/TzGvgBtNTG0" target="_blank" rel="noopener">https://youtu.be/TzGvgBtNTG0</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">لینک‌های آموزشی مهم</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نصب از صفر: <a href="https://youtu.be/NGywxMUPtio" target="_blank" rel="noopener">https://youtu.be/NGywxMUPtio</a><br>تنظیمات کامل پنل: <a href="https://youtu.be/TzGvgBtNTG0" target="_blank" rel="noopener">https://youtu.be/TzGvgBtNTG0</a><br>اتصال دامنه: <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br>API + ربات تلگرام: <a href="https://youtu.be/VPi6VEypJZ8" target="_blank" rel="noopener">https://youtu.be/VPi6VEypJZ8</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">مشکل دارم، چطور کمک بگیرم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">اول آموزش‌های یوتیوب رو چک کن.<br>اگر حل نشد در گروه تلگرام بپرس: <a href="https://t.me/irnovaproxy_group" target="_blank" rel="noopener">https://t.me/irnovaproxy_group</a><br>در نهایت میتونی کل پیغامت رو از طریق همین ربات برامون ارسال کنی و تیم ما همیشه پاسخ شمارو میده</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دیتابیس D1 رو حذف کنم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای حذف کامل دیتابیس D1 در Nova Proxy مراحل زیر را به ترتیب انجام دهید:<br><br>وارد داشبورد Cloudflare شوید: dash.cloudflare.com<br>از منوی سمت چپ روی Storage &amp; Databases کلیک کنید.<br>روی D1 کلیک کنید.<br>دیتابیسی که برای Nova Proxy ساخته‌اید را پیدا کنید (معمولاً نامی مثل nova-db یا مشابه دارد).<br>روی سه‌نقطه (⋯) کنار نام دیتابیس کلیک کنید.<br>گزینه Delete را انتخاب کنید.<br>نام دیتابیس را دقیقاً تایپ کنید تا تأیید شود و روی Delete database بزنید.<br><br><br>بعد از حذف D1:<br><br>Worker شما ممکن است با خطا مواجه شود (چون Binding به D1 قطع شده).<br>پیشنهاد می‌شود Worker را هم حذف کنید و یک نصب جدید انجام دهید (از طریق <a href="https://novaproxy.online/setup/" target="_blank" rel="noopener">https://novaproxy.online/setup/</a>).<br>میتونید از همین ربات هم نصب رو انجام بدین</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">موقع ساخت پنل می‌گوید اکانت را وریفای کنید</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">باید اکانت Cloudflare خود را با ایمیل واقعی (ترجیحاً Gmail) وریفای کنید.<br>ایمیل‌های یکبارمصرف (مثل Atomic Mail) گاهی باعث این خطا می‌شوند. یک اکانت جدید با Gmail بسازید و دوباره امتحان کنید.<br>سعی کنید از گزینه ایجاد با حساب گوگل استفاده کنید در غیر این صورت یکبار وارد کلودفلر بشین تا صفحه حساب تایید نیست ظاهر بشه و بعد زدن وریفای ایمیلی از سمت کلودفلر برای شما ارسال میشه بعد تایید اون حسابتون وریفای میشه</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بعد از نصب، صفحه تست سرعت باز می‌شود یا وارد پنل نمی‌شوم</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">این یک صفحه استتار هست <br>به انتهای آدرس Worker خود عبارت /admin اضافه کنید.<br>مثال:<br><a href="https://your-worker.workers.dev/admin" target="_blank" rel="noopener">https://your-worker.workers.dev/admin</a></div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">کانفیگ پینگ خوب می‌دهد اما وصل نمی‌شود / دانلود و آپلود صفر است</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">در پنل بروید به تنظیمات → استتار اثر انگشت (TLS Fingerprint) را روی Random بگذارید.<br>همچنین تعداد IPهای تمیز را روی ۵۰۰ بگذارید و حالت را روی Random تنظیم کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">کانفیگ‌ها هی قطع و وصل می‌شوند</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">Fingerprint را روی Random بگذارید.<br>از Transport WebSocket استفاده کنید.<br>تعداد IPها را کم کنید (مثلاً ۱۰-۵۰ تا).<br>اگر مشکل ادامه داشت، پروتکل را به Trojan تغییر دهید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بعد از یک روز کانفیگ‌ها قطع می‌شوند</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">احتمالاً به محدودیت روزانه Request Cloudflare (۱۰۰ هزار درخواست) رسیده‌اید.<br>راه‌حل:<br><br>یک اکانت Cloudflare جدید بسازید و پنل را دوباره نصب کنید.<br>یا تعداد کاربران/مصرف را محدود کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">اپ Nova Client روی اندروید وصل نمی‌شود</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">نسخه فعلی اپ اندروید هنوز در حال رفع باگ است. فعلاً از Karing استفاده کنید و اشتراک پنل را داخل آن ایمپورت کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">اپ Nova Client روی iOS نصب می‌شود؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بله، نسخه iOS در حال انتشار در اپ استور است. فعلاً می‌توانید از مرورگر یا Karing استفاده کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">در زمان قطعی اینترنت (نت ملی) Nova Proxy کار می‌کند؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بله، در زمان قطعی اینترنت ملی، Nova Proxy معمولاً کار می‌کند چون از زیرساخت خارجی Cloudflare استفاده می‌کند. اما ممکن است در برخی اپراتورها سرعت کمتر باشد.<br>داریم شرایط رو اوکی میکنیم ولی اگه ای پی های سفید رو ایران ببنده راهی دیگه پیدا میکنیم</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دامنه اختصاصی رو به Nova Proxy متصل کنیم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای اتصال دامنه به Nova Proxy، آموزش کامل و مرحله‌به‌مرحله در ویدیوی زیر قرار داده شده است:<br><br>🎥 <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br><br>در این آموزش موارد زیر توضیح داده شده:<br><br>• دریافت دامنه رایگان یا خرید دامنه<br>• اضافه کردن دامنه به Cloudflare<br>• تنظیم Name Server ها<br>• اتصال دامنه به Worker<br>• ساخت Subdomain<br>• ورود به پنل از طریق دامنه اختصاصی<br><br>#NovaProxy<br>#Domain<br>#Cloudflare<br>#Tutorial</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">از کجا بفهمم چقدر از سهمیه Request روزانه Cloudflare مصرف شده است؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای مشاهده میزان مصرف Request دو روش وجود دارد.<br><br>روش اول: داخل Cloudflare<br><br>وارد حساب Cloudflare شوید.<br><br>سپس از منوی سمت چپ وارد بخش Workers &amp; Pages شوید.<br><br>در همین صفحه و در سمت راست، آمار مربوط به مصرف Worker نمایش داده می‌شود.<br><br>در این قسمت می‌توانید تعداد Requestهای مصرف‌شده و میزان باقی‌مانده از سهمیه روزانه اکانت خود را مشاهده کنید.<br><br>توجه داشته باشید که این آمار مربوط به کل اکانت Cloudflare است و فقط به یک Worker خاص محدود نمی‌شود.<br><br>روش دوم: داخل پنل Nova Proxy<br><br>در نسخه‌های جدید Nova Proxy می‌توانید میزان مصرف Requestها را مستقیماً از داخل پنل مشاهده کنید.<br><br>برای این قابلیت باید ابتدا Cloudflare API را به پنل متصل کنید.<br><br>پس از اتصال API، اطلاعات مصرف Requestها در بخش «درخواست‌های ورکر» نمایش داده می‌شود.<br><br>🎥 آموزش اتصال Cloudflare API:<br><br><a href="https://youtu.be/" target="_blank" rel="noopener">https://youtu.be/</a><br><br>(لینک ویدیوی آموزش API را اینجا قرار دهید)</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">مزیت اتصال Cloudflare API و راه‌اندازی ربات تلگرام چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">اتصال Cloudflare API و ربات تلگرام اجباری نیست و Nova Proxy بدون آن‌ها هم به‌خوبی کار می‌کند.<br><br>اما با فعال کردن این قابلیت‌ها امکانات بیشتری در اختیار شما قرار می‌گیرد.<br><br>✅ مشاهده میزان مصرف Requestهای Cloudflare از داخل پنل<br><br>✅ مشاهده تعداد Requestهای باقی‌مانده بدون نیاز به ورود به داشبورد Cloudflare<br><br>✅ دریافت اطلاعات Worker به‌صورت مستقیم از حساب Cloudflare<br><br>✅ دریافت اعلان ورود به پنل مدیریت در تلگرام<br><br>✅ دریافت اعلان استفاده از لینک Subscription توسط کاربران<br><br>✅ دسترسی سریع‌تر به وضعیت سرویس از طریق ربات تلگرام<br><br>✅ مدیریت آسان‌تر و نظارت بیشتر روی پنل<br><br>اگر فقط از Nova Proxy برای استفاده شخصی استفاده می‌کنید، اتصال API و ربات تلگرام ضروری نیست.<br><br>اما اگر چند کاربر دارید یا می‌خواهید وضعیت پنل و مصرف Cloudflare را راحت‌تر مدیریت کنید، فعال‌سازی این بخش‌ها توصیه می‌شود.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">بخش Proxy / CDN چیست و چه کاربردی دارد؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">بخش Proxy / CDN به شما امکان می‌دهد برای دسترسی به سرویس‌هایی که پشت Cloudflare قرار دارند از سرورهای واسط (Proxy IP یا SOCKS5) استفاده کنید.<br><br>این قابلیت باعث می‌شود سایت‌هایی مانند Twitter، ChatGPT و برخی سرویس‌های مشابه که دسترسی مستقیم به آن‌ها از طریق Cloudflare Workers امکان‌پذیر نیست، قابل استفاده شوند.<br><br>#NovaProxy #Cloudflare #ProxyIP #SOCKS5<br><br><br>---<br><br>❓ Proxy IP و SOCKS5 چه تفاوتی دارند؟<br><br>هر دو نقش واسط ارتباطی را دارند اما SOCKS5 معمولاً سازگاری و پایداری بیشتری دارد و برای اکثر کاربران انتخاب بهتری محسوب می‌شود.<br><br>در Nova Proxy پیشنهاد می‌شود از حالت‌های Proxy IP یا SOCKS5 استفاده کنید.<br><br>#NovaProxy #SOCKS5 #ProxyIP #Cloudflare<br><br><br>---<br><br>❓ آیا استفاده از بخش Proxy / CDN اجباری است؟<br><br>خیر.<br><br>اگر فقط از سایت‌ها و سرویس‌های معمولی استفاده می‌کنید، نیازی به فعال‌سازی این بخش ندارید.<br><br>این قابلیت بیشتر برای دسترسی به سرویس‌هایی کاربرد دارد که پشت Cloudflare قرار دارند و بدون پروکسی قابل دسترس نیستند.<br><br>#NovaProxy #CloudflareWorkers #ProxyIP #CDN<br><br><br>---<br><br>❓ آیا Proxy / CDN باعث می‌شود IP ثابت داشته باشم؟<br><br>خیر.<br><br>این بخش برای ارائه IP ثابت طراحی نشده است.<br><br>پروکسی‌های موجود ممکن است در آینده تغییر کنند، از دسترس خارج شوند یا جایگزین شوند.<br><br>اگر به IP ثابت نیاز دارید، باید از راهکارهای اختصاصی دیگر استفاده کنید.<br><br>#NovaProxy #ProxyIP #SOCKS5 #StaticIP<br><br><br>---<br><br>❓ آیا استفاده از Proxy / CDN برای صرافی‌ها مناسب است؟<br><br>خیر.<br><br>به دلیل تغییرپذیر بودن IPها، استفاده از این قابلیت برای صرافی‌ها، حساب‌های مالی، پرداخت‌های بین‌المللی و سرویس‌هایی که روی IP حساس هستند توصیه نمی‌شود.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Exchange<br><br><br>---<br><br>❓ بعد از انتخاب پروکسی چرا تغییری مشاهده نمی‌کنم؟<br><br>بعد از ذخیره تنظیمات Proxy / CDN باید لینک Subscription خود را مجدداً آپدیت کنید.<br><br>تا زمانی که Subscription در برنامه کلاینت به‌روزرسانی نشود، تنظیمات جدید اعمال نخواهد شد.<br><br>#NovaProxy #Subscription #ProxyIP #Cloudflare<br><br><br>---<br><br>❓ کدام کشور را انتخاب کنیم؟<br><br>بهترین کشور برای هر کاربر متفاوت است و به اپراتور، موقعیت جغرافیایی و کیفیت پروکسی بستگی دارد.<br><br>پیشنهاد می‌شود چند کشور مختلف را تست کنید و گزینه‌ای را انتخاب کنید که کمترین تأخیر و بیشترین پایداری را دارد.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Cloudflare<br><br><br>---<br><br>❓ چرا بعد از دریافت فهرست، تعداد زیادی پروکسی نمایش داده می‌شود؟<br><br>Nova Proxy فهرست پروکسی‌ها را از منابع مختلف دریافت می‌کند و آن‌ها را بر اساس کشور دسته‌بندی می‌کند.<br><br>برای مثال ممکن است ۳۰۰ پروکسی در ۳۰ کشور مختلف در دسترس باشد که می‌توانید هر کدام را انتخاب و استفاده کنید.<br><br>#NovaProxy #ProxyIP #SOCKS5 #CDN<br><br><br>---<br><br>❓ اگر پروکسی انتخاب‌شده کار نکند چه باید کرد؟<br><br>کافی است دوباره وارد بخش Proxy / CDN شوید و یک IP دیگر یا یک کشور دیگر را انتخاب کنید.<br><br>پروکسی‌ها عمومی هستند و ممکن است در طول زمان از دسترس خارج شوند.<br><br>#NovaProxy #ProxyIP #SOCKS5 #Troubleshooting<br><br><br>---<br><br>❓ آیا فعال کردن Proxy / CDN روی همه سایت‌ها تأثیر می‌گذارد؟<br><br>خیر.<br><br>این قابلیت عمدتاً زمانی استفاده می‌شود که مقصد نهایی پشت Cloudflare باشد.<br><br>برای سایر سایت‌ها و سرویس‌ها معمولاً مسیر پیش‌فرض Nova Proxy استفاده می‌شود.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">برای استفاده از Nova Proxy نیاز به دامنه دارم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">خیر.<br><br>برای راه‌اندازی اولیه فقط به یک اکانت Cloudflare نیاز دارید و می‌توانید از آدرس workers.dev استفاده کنید.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">چطور دامنه اختصاصی رو به Nova Proxy متصل کنیم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">برای اتصال دامنه به Nova Proxy، آموزش کامل و مرحله‌به‌مرحله در ویدیوی زیر قرار داده شده است:<br><br>🎥 <a href="https://youtu.be/liu9j1yf_8o" target="_blank" rel="noopener">https://youtu.be/liu9j1yf_8o</a><br><br>در این آموزش موارد زیر توضیح داده شده:<br><br>• دریافت دامنه رایگان یا خرید دامنه<br>• اضافه کردن دامنه به Cloudflare<br>• تنظیم Name Server ها<br>• اتصال دامنه به Worker<br>• ساخت Subdomain<br>• ورود به پنل از طریق دامنه اختصاصی</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">در بخش شبکه و آیپی، «تست اتصال» اینستاگرام را «مسدود» نشان می‌دهد. مشکل از چیست؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">این تست از مرورگری که پنل را در آن باز کرده‌اید انجام می‌شود، نه از طریق نوا. یعنی فقط نشان می‌دهد همان مرورگر به آن سایت‌ها دسترسی دارد یا نه و ترافیک تست اصلا از پروکسی شما رد نمی‌شود.<br><br>پس اگر پنل را با اینترنت ایران و بدون فیلترشکن باز کرده باشید، اینستاگرام (و معمولا یوتیوب و ایکس) «مسدود» نشان داده می‌شوند، حتی وقتی پنل شما کاملا سالم است. این یعنی «این مرورگر به اینستاگرام نمی‌رسد»، نه «پنل شما خراب است».<br><br>ملاک درست: لینک اشتراک را در اپ کلاینت وارد کنید، اتصال را وصل کنید و اینستاگرام را داخل گوشی باز کنید. اگر باز شد، پنل شما سالم است.<br><br>نکته: تست اینستاگرام از بقیه حساس‌تر است و گاهی حتی با اتصال سالم هم «مسدود» نشان می‌دهد، چون تست فقط یک تصویر کوچک از سایت را ۶ ثانیه امتحان می‌کند و هر خطایی را «مسدود» می‌شمارد. ردیف‌های Google و Cloudflare معیار بهتری برای سالم بودن دسترسی مرورگرتان هستند.</div></details><details style="border-bottom:1px solid var(--bd);padding:9px 0"><summary style="cursor:pointer;font-weight:600" dir="rtl">رمز ورود به پنل را فراموش کرده‌ام، چطور وارد شوم؟</summary><div dir="rtl" style="text-align:right;color:var(--mu);font-size:13px;line-height:1.9;margin-top:6px">چند راه دارید. از بالا به پایین امتحان کنید:<br><br>&lt;b&gt;۱. اگر ربات تلگرام پنل را وصل کرده‌اید (سریع‌ترین راه):&lt;/b&gt;<br>به ربات خودتان &lt;code&gt;/start&lt;/code&gt; بفرستید. اولین دکمه، لینک ورود یک‌کلیکی به پنل است و اصلا به رمز نیاز ندارد.<br><br>&lt;b&gt;۲. از صفحه ورود:&lt;/b&gt;<br>در صفحه &lt;code&gt;/login&lt;/code&gt; روی «رمز را فراموش کردید؟» بزنید، بعد «ارسال لینک ورود از طریق تلگرام». لینک به چت ادمین خود پنل می‌رود (نه به کسی که دکمه را زده)، حدود ۵ تا ۱۰ دقیقه اعتبار دارد و اگر منقضی شد دوباره بزنید. حداکثر ۳ بار در ۱۰ دقیقه.<br><br>&lt;b&gt;۳. اگر تلگرام وصل نیست، با توکن Cloudflare:&lt;/b&gt;<br>در همان بخش، یک Cloudflare API Token از همان اکانتی که ورکر رویش است وارد کنید و «بازیابی با توکن Cloudflare» را بزنید. یک رمز جدید ۱۶ کاراکتری به شما نشان داده می‌شود.<br><br>&lt;b&gt;۴. از داشبورد Cloudflare (آخرین راه):&lt;/b&gt;<br>وارد داشبورد شوید، به KV بروید و کلید &lt;code&gt;admin_pass&lt;/code&gt; را باز کنید. رمز همان‌جا به صورت متن ساده ذخیره شده؛ می‌توانید بخوانید یا عوضش کنید. اگر پنل روی D1 است، همین مقدار در جدول &lt;code&gt;kvstore&lt;/code&gt; است. راه دیگر: سکرت &lt;code&gt;ADMIN&lt;/code&gt; را در Settings → Variables and Secrets ورکر ست کنید. بعد از تغییر تا یک دقیقه صبر کنید تا کش پنل تازه شود.<br><br>اگر ۲FA هم روشن است و به authenticator دسترسی ندارید، فقط راه ۱ و ۲ کار می‌کند؛ در غیر این صورت باید کلید &lt;code&gt;admin_2fa.json&lt;/code&gt; را از KV حذف کنید.<br><br>توجه: دکمه «تنظیم رمز ادمین» و صفحه &lt;code&gt;/install&lt;/code&gt; فقط روی پنل تازه و تنظیم‌نشده کار می‌کنند و برای پنلی که از قبل رمز دارد خطا می‌دهند.</div></details></div></div>
 </div>
 
         <div class="card">
@@ -2242,9 +2209,74 @@ const I18N = {
   }
 };
 
+// V4.1.7 hardening copy: deployments are repository-based and relay requires an allowlist.
+Object.assign(I18N.en, {
+  upd_h:'Worker updates',
+  upd_s:'Check your installed version here, then follow Nova’s secure guide or use the Telegram bot. Only Worker code is replaced; bindings, settings, users, and D1/KV data stay in place.',
+  upd_check:'Check for updates',
+  upd_checkup:'🩺 Worker check-up',
+  upd_review:'Review latest release',
+  upd_repo_h:'Update an existing Nova Worker',
+  upd_repo_s:'Open the secure setup guide or Telegram bot, select your Nova Worker, and confirm. The Nova website never asks for a Cloudflare password or API token.',
+  upd_auto_s:'The updater changes only the Worker script. Your D1 database, KV namespace, bindings, users, password, and panel settings are preserved.',
+  upd_auto:'Update with Telegram',
+  upd_builds:'Secure update guide',
+  upd_source:'Advanced: GitHub updates',
+  usage_token_link:'Create read-only token',
+  cf_sub:'Connect a Cloudflare API token with Account Analytics: Read permission to show live request usage. The token is stored in this panel until you disconnect it; it is never used to deploy code.',
+  wn_secfix:'🔒 Hardening preview: reviewed repository updates, safer relay controls, bounded requests, and clearer diagnostics.',
+  wn_relay:'🔗 Google Relay now requires an explicit destination-host allowlist before it can be enabled.',
+  tunnel_intro:'Google Apps Script can provide an alternate relay path. The Worker accepts only authenticated requests to explicitly allowlisted destination hosts.',
+  tunnel_allowlist_required:'Relay allowlist required',
+  tunnel_allowlist_help:'Before enabling relay, add RELAY_ALLOWED_HOSTS to the Worker variables with explicit destination hostnames separated by commas. Wildcard “*” is not accepted.',
+  tunnel_unverified_help:'Review the permissions shown by Google before authorizing your own script. If the requested access is broader than connecting to external services, stop and inspect the script and deployment settings.'
+});
+Object.assign(I18N.fa, {
+  upd_h:'به‌روزرسانی ورکر',
+  upd_s:'نسخهٔ نصب‌شده را اینجا بررسی کنید و سپس راهنمای امن Nova را دنبال کنید یا از ربات تلگرام استفاده کنید. فقط کد Worker جایگزین می‌شود و اتصال‌ها، تنظیمات، کاربران و داده‌های D1/KV حفظ می‌شوند.',
+  upd_check:'بررسی نسخه',
+  upd_checkup:'🩺 بررسی سلامت ورکر',
+  upd_review:'بررسی آخرین نسخه',
+  upd_repo_h:'به‌روزرسانی Nova نصب‌شده',
+  upd_repo_s:'راهنمای امن یا ربات تلگرام را باز کنید، Worker نوا را انتخاب و تأیید کنید. سایت Nova هیچ‌وقت رمز Cloudflare یا API Token از شما نمی‌خواهد.',
+  upd_auto_s:'به‌روزرسان فقط اسکریپت Worker را عوض می‌کند. دیتابیس D1، فضای KV، اتصال‌ها، کاربران، رمز عبور و تنظیمات پنل حفظ می‌شوند.',
+  upd_auto:'به‌روزرسانی با تلگرام',
+  upd_builds:'راهنمای امن به‌روزرسانی',
+  upd_source:'پیشرفته: به‌روزرسانی GitHub',
+  usage_token_link:'ساخت توکن فقط‌خواندنی',
+  cf_sub:'برای نمایش زندهٔ مصرف درخواست‌ها، یک توکن Cloudflare با دسترسی Account Analytics: Read وصل کنید. توکن تا زمان قطع اتصال در همین پنل ذخیره می‌شود و هرگز برای استقرار کد استفاده نمی‌شود.',
+  wn_secfix:'🔒 پیش‌نمایش سخت‌سازی: به‌روزرسانی بررسی‌شده از مخزن، کنترل امن‌تر رله، محدودیت درخواست‌ها و عیب‌یابی شفاف‌تر.',
+  wn_relay:'🔗 رله Google اکنون پیش از فعال‌شدن به فهرست صریح میزبان‌های مقصد مجاز نیاز دارد.',
+  tunnel_intro:'Google Apps Script می‌تواند یک مسیر جایگزین برای رله فراهم کند. Worker فقط درخواست‌های احرازشده به میزبان‌های مقصدِ صریحاً مجاز را می‌پذیرد.',
+  tunnel_allowlist_required:'فهرست مجاز رله لازم است',
+  tunnel_allowlist_help:'پیش از فعال‌سازی رله، متغیر RELAY_ALLOWED_HOSTS را با نام‌های مقصد مجاز و جداشده با ویرگول به Worker اضافه کنید. علامت * پذیرفته نمی‌شود.',
+  tunnel_unverified_help:'پیش از تأیید اسکریپت خودتان، دسترسی‌هایی را که Google نمایش می‌دهد بررسی کنید. اگر دسترسی درخواستی گسترده‌تر از اتصال به سرویس‌های بیرونی است، متوقف شوید و کد و تنظیمات استقرار را بررسی کنید.'
+});
+Object.assign(I18N.ru, {
+  upd_h:'Обновления Worker',
+  upd_s:'Проверьте установленную версию здесь, затем следуйте безопасной инструкции Nova или используйте Telegram-бот. Заменяется только код Worker; привязки, настройки, пользователи и данные D1/KV сохраняются.',
+  upd_check:'Проверить обновления',
+  upd_checkup:'🩺 Проверка Worker',
+  upd_review:'Проверить последний выпуск',
+  upd_repo_h:'Обновить существующий Nova Worker',
+  upd_repo_s:'Откройте безопасную инструкцию или Telegram-бот, выберите Nova Worker и подтвердите. Сайт Nova никогда не запрашивает пароль Cloudflare или API-токен.',
+  upd_auto_s:'Обновляется только скрипт Worker. База D1, KV, привязки, пользователи, пароль и настройки панели сохраняются.',
+  upd_auto:'Обновить через Telegram',
+  upd_builds:'Безопасная инструкция',
+  upd_source:'Для опытных: GitHub',
+  usage_token_link:'Создать токен только для чтения',
+  cf_sub:'Подключите токен Cloudflare API с разрешением Account Analytics: Read для отображения статистики запросов. Токен хранится в этой панели до отключения и никогда не используется для развертывания кода.',
+  wn_secfix:'🔒 Предварительная версия усиления: проверяемые обновления из репозитория, безопасные ограничения relay и более ясная диагностика.',
+  wn_relay:'🔗 Google Relay теперь требует явный список разрешенных хостов назначения.',
+  tunnel_intro:'Google Apps Script может предоставить альтернативный маршрут relay. Worker принимает только аутентифицированные запросы к явно разрешенным хостам.',
+  tunnel_allowlist_required:'Нужен список разрешенных адресов',
+  tunnel_allowlist_help:'Перед включением relay добавьте переменную Worker RELAY_ALLOWED_HOSTS с явными именами разрешенных хостов через запятую. Символ * не принимается.',
+  tunnel_unverified_help:'Перед авторизацией собственного скрипта проверьте разрешения, показанные Google. Если запрашивается больше, чем доступ к внешним сервисам, остановитесь и проверьте код и настройки развертывания.'
+});
+
 let lang = localStorage.getItem('nova-lang') || 'en';
 // Bump this when the "What's new" card content changes so a previously-dismissed card reappears.
-const WN_VER = 'wn-2026-07-26';
+const WN_VER = 'wn-2026-07-30-hardening-preview-2';
 const t = (k) => (I18N[lang] && I18N[lang][k]) || (I18N.en[k]) || k;
 
 /* ============================================================================
@@ -3231,18 +3263,16 @@ async function twofaDisable(){ const msg=document.getElementById('twofa-dmsg'); 
     if(r.ok && j && j.success!==false){ toast(lang==='fa'?'۲FA خاموش شد':'2FA turned off'); set2faUI(false); } else { msg.textContent='⚠️ '+((j&&j.error)||(lang==='fa'?'کد اشتباه است':'Wrong code')); }
   }catch(e){ msg.textContent='⚠️ '+e.message; } }
 
-/* ---- In-panel self-update ---- */
+/* ---- Repository-based update checks ---- */
+const NOVA_RELEASES_URL='https://github.com/IRNova/Nova-Proxy/releases';
 function updMsgOldWorker(){
   var msg=document.getElementById('upd-msg'); if(!msg) return;
   msg.className='msg warn';
-  var url='https://github.com/IRNova/Nova-Proxy/blob/main/worker.js';
   msg.innerHTML=(lang==='fa'
-    ?'⚠️ این ورکر نسخهٔ قدیمی است و هنوز به‌روزرسانی درون‌برنامه‌ای ندارد. یک‌بار در کلودفلر فایل <a href="'+url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">آخرین نسخهٔ worker.js</a> را جای‌گذاری و Deploy کن؛ پس از آن همهٔ به‌روزرسانی‌های بعدی این‌جا یک‌کلیکی می‌شوند.'
-    :'⚠️ This worker is an older version without in-app updates yet. Open Cloudflare once and paste/deploy <a href="'+url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">the latest worker.js</a>, after that, every future update here is one-click.');
+    ?'⚠️ این ورکر قدیمی است. آخرین نسخه را در گیت‌هاب بررسی کنید و از مسیر Git و Cloudflare Workers Builds مستقر کنید.'
+    :'⚠️ This Worker is old. Review the latest GitHub release and deploy it through Git and Cloudflare Workers Builds.');
 }
 async function updateCheck(){
-  // Only REPORTS status. The token box + Update button are always visible, so the user can update
-  // (or re-install the same version) regardless of whether this check succeeds or says up-to-date.
   var msg=document.getElementById('upd-msg');
   if(!LIVE) return previewToast();
   if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'در حال بررسی…':'Checking…'); }
@@ -3255,19 +3285,18 @@ async function updateCheck(){
       return;
     }
     var j=await r.json();
-    applyUpdEnv(j);
     var cur=j.current||'?', latest=j.latest||'?';
     if(j.updateAvailable){
-      if(msg){ msg.className='msg warn'; msg.textContent='⬆ '+(lang==='fa'?('نسخهٔ جدید موجود است, فعلی '+cur+' ← جدید '+latest):('Update available, current '+cur+' → latest '+latest))+(j.hasCfToken?(lang==='fa'?', فقط Update now را بزن':', just press Update now'):''); }
+      if(msg){ msg.className='msg warn'; msg.textContent='⬆ '+(lang==='fa'?('نسخهٔ جدید موجود است: '+cur+' ← '+latest+'. پیش از ادغام تغییرات را در گیت‌هاب بررسی کنید.'):('Update available: '+cur+' → '+latest+'. Review the changes in GitHub before merging.')); }
+      var review=document.getElementById('upd-review'); if(review){ review.href=NOVA_RELEASES_URL; review.style.display='inline-flex'; }
     } else if(j.latest){
-      if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('روی آخرین نسخه هستی ('+cur+').'+(j.hasCfToken?' برای نصب دوباره فقط Update now را بزن.':' می‌توانی برای نصب دوباره از توکن زیر استفاده کنی.')):('You are on the latest version ('+cur+').'+(j.hasCfToken?' Press Update now to re-install.':' You can still re-install with the token below.'))); }
+      if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('روی آخرین نسخه هستید ('+cur+').'):('You are on the latest version ('+cur+').')); }
     } else {
       if(msg){ msg.className='msg warn'; msg.textContent='⚠️ '+(lang==='fa'?'سرور بروزرسانی در دسترس نیست, هنوز version.json روی IRNova/Nova-Proxy منتشر نشده؟':'Couldn\'t reach the update server, is version.json published on IRNova/Nova-Proxy?'); }
     }
-  }catch(e){ if(msg){ msg.className='msg warn'; msg.textContent='⚠️ '+(lang==='fa'?('بررسی نسخه ممکن نشد ('+e.message+'). با توکن زیر می‌توانی به‌روزرسانی کنی.'):('Version check failed ('+e.message+'). You can still update with the token below.')); } }
+  }catch(e){ if(msg){ msg.className='msg warn'; msg.textContent='⚠️ '+(lang==='fa'?('بررسی نسخه ممکن نشد ('+e.message+').'):('Version check failed ('+e.message+').')); } }
 }
-// Worker Check-up: run a quick health report, then reinstall the latest worker code (applies fixes
-// pushed without a version bump). This is what the operator tells a complaining user to run.
+// Health-only check. Deployment is intentionally handled outside the Worker.
 async function checkupNow(){
   var msg=document.getElementById('upd-msg'); if(!LIVE) return previewToast();
   var pb=document.getElementById('upd-progress'), pf=document.getElementById('upd-progress-fill');
@@ -3279,151 +3308,14 @@ async function checkupNow(){
     var r=await fetch('/admin/checkup.json',{cache:'no-store'});
     if((r.headers.get('content-type')||'').indexOf('application/json')<0){ hideBar(0); updMsgOldWorker(); return; }
     var j=await r.json();
-    applyUpdEnv(j);
     await step(t('cu_version')+' v'+(j.version||'?'), 34);
     await step(t('cu_ips')+' '+(j.cleanIpCount||0)+' · '+t('cu_users')+' '+(j.userCount||0), 52);
     await step(t('cu_store')+' '+(j.kvOk?'✓':'✗')+' · WARP '+(j.warpRegistered?'✓':'—'), 70);
-    if(!j.canRepair){
-      // No Cloudflare token yet: guide them to the same 1-click token flow the auto-update uses.
-      prog(70); setUpdConnected(false); // reveals the token area (with the "Create token (1-click)" button)
-      if(msg){ msg.className='msg bad'; msg.textContent='🩺 '+t('cu_need_token'); }
-      var tl=document.getElementById('upd-token-link')||document.getElementById('upd-token');
-      if(tl){ try{ (tl.closest('.card')||tl).scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} tl.style.transition='box-shadow .2s'; tl.style.boxShadow='0 0 0 3px color-mix(in srgb,var(--ac) 45%,transparent)'; setTimeout(function(){ try{ tl.style.boxShadow=''; }catch(e){} },2000); }
-      hideBar(600); return;
-    }
-    await step(t('cu_apply'), 88);
-    await updateNow({ checkup: true });   // reinstall the latest worker code (repair), reuses token/auto-detect
-    prog(100); hideBar(1400);
+    prog(100);
+    if(msg){ msg.className=j.kvOk?'msg ok':'msg warn'; msg.textContent=(j.kvOk?'✓ ':'⚠️ ')+(lang==='fa'?'بررسی سلامت کامل شد. به‌روزرسانی‌ها از مخزن Git انجام می‌شوند.':'Health check complete. Updates are deployed from the Git repository.'); }
+    hideBar(1400);
   }catch(e){ hideBar(0); if(msg){ msg.className='msg warn'; msg.textContent='⚠️ '+t('cu_failed'); } }
 }
-// Custom-domain helper: list the account's Workers (via the entered/saved token) so the user picks
-// their Worker from a list instead of having to know the exact script name.
-async function findMyWorker(acctId){
-  var msg=document.getElementById('upd-msg'), pick=document.getElementById('upd-worker-pick');
-  if(!LIVE) return previewToast();
-  var token=((document.getElementById('upd-token')||{}).value||'').trim();
-  var body={}; if(token) body.token=token; if(acctId) body.accountId=acctId;
-  if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'در حال یافتن ورکرها…':'Finding your Workers…'); }
-  if(pick){ pick.style.display='none'; pick.innerHTML=''; }
-  try{
-    var r=await fetch('/admin/cf-workers.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    var j=await r.json();
-    if(j && j.error==='no_token'){ if(msg){ msg.className='msg bad'; msg.textContent=(lang==='fa'?'اول توکن کلودفلر را در کادر بالا وارد کن.':'Enter your Cloudflare token above first.'); } return; }
-    if(j && j.error==='token_invalid'){ if(msg){ msg.className='msg bad'; msg.textContent=(lang==='fa'?'توکن نامعتبر است, یک توکن تازه بساز و در کادر بالا بچسبان.':'Token is invalid, create a fresh one and paste it above.'); } return; }
-    if(j && j.error==='multiple_accounts' && Array.isArray(j.accounts)){
-      if(pick){ pick.style.display='block'; pick.innerHTML='<div style="font-size:12px;color:var(--mu);margin-bottom:6px">'+(lang==='fa'?'حساب را انتخاب کن:':'Pick your account:')+'</div>'+j.accounts.map(function(a){ return '<button class="btn ghost sm upd-wacct" type="button" data-acct="'+String(a.id).replace(/"/g,'&quot;')+'" style="margin:0 6px 6px 0">'+String(a.name||a.id).replace(/</g,'&lt;')+'</button>'; }).join(''); }
-      if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'حساب را انتخاب کن.':'Choose your account.'); }
-      return;
-    }
-    if(j && j.ok){
-      // Best case: the worker identified itself by matching this panel's hostname to its custom domain.
-      if(j.detected){ var snd=document.getElementById('upd-scriptname'); if(snd) snd.value=j.detected; if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('ورکر این پنل شناسایی شد: '+j.detected+'. حالا «به‌روزرسانی اکنون» را بزن.'):('Detected this panel’s Worker: '+j.detected+'. Now press Update now.')); } return; }
-      var ws=Array.isArray(j.workers)?j.workers:[];
-      if(!ws.length){ if(msg){ msg.className='msg warn'; msg.textContent=(lang==='fa'?'ورکری روی این حساب پیدا نشد.':'No Workers found on this account.'); } return; }
-      if(ws.length===1){ var sn=document.getElementById('upd-scriptname'); if(sn) sn.value=ws[0]; if(msg){ msg.className='msg ok'; msg.textContent='✓ '+(lang==='fa'?('ورکر پیدا شد: '+ws[0]+'. حالا «به‌روزرسانی اکنون» را بزن.'):('Found your Worker: '+ws[0]+'. Now press Update now.')); } return; }
-      if(pick){ pick.style.display='block'; pick.innerHTML='<div style="font-size:12px;color:var(--mu);margin-bottom:6px">'+(lang==='fa'?'ورکر خود را انتخاب کن:':'Pick your Worker:')+'</div>'+ws.map(function(w){ return '<button class="btn ghost sm upd-wpick" type="button" data-w="'+String(w).replace(/"/g,'&quot;')+'" style="margin:0 6px 6px 0">'+String(w).replace(/</g,'&lt;')+'</button>'; }).join(''); }
-      if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'ورکر خود را از پایین انتخاب کن.':'Pick your Worker below.'); }
-      return;
-    }
-    if(msg){ msg.className='msg warn'; msg.textContent=(lang==='fa'?'یافتن ورکرها ممکن نشد.':'Could not list Workers.'); }
-  }catch(e){ if(msg){ msg.className='msg warn'; msg.textContent='⚠️ '+(lang==='fa'?'خطا در ارتباط با کلودفلر.':'Error contacting Cloudflare.'); } }
-}
-async function updateNow(extra){
-  var msg=document.getElementById('upd-msg'); if(!LIVE) return previewToast();
-  var token=((document.getElementById('upd-token')||{}).value||'').trim();
-  // Empty token is fine: the worker reuses the saved Cloudflare token (set once via the usage card).
-  var body={}; if(token) body.token=token;
-  var sn=((document.getElementById('upd-scriptname')||{}).value||'').trim(); if(sn) body.scriptName=sn;
-  if(extra && extra.accountId) body.accountId=extra.accountId;
-  if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'در حال به‌روزرسانی…':'Updating…'); }
-  try{
-    var r=await fetch('/admin/self-update.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    var j=await r.json();
-    if(j && (j.error==='unsupportedPostPath' || j.error==='not_found')){ updMsgOldWorker(); return; }
-    if(j.success){
-      if(msg){ msg.className='msg ok'; msg.textContent='✅ '+(lang==='fa'?('به‌روزرسانی شروع شد'+(j.version?(' (نسخهٔ '+j.version+')'):'')+'. پنل در حال جایگزینی است, حدود ۳۰ ثانیه صبر کن و صفحه را تازه کن. سپس توکن را در Cloudflare باطل کن.'):('Update started'+(j.version?(' (v'+j.version+')'):'')+'. Your panel is being replaced, wait ~30s and refresh. Then revoke the token in Cloudflare.')); }
-      var t=document.getElementById('upd-token'); if(t) t.value='';
-      return;
-    }
-    if(j.error==='multiple_accounts' && Array.isArray(j.accounts)){
-      var wrap=document.getElementById('upd-acct-wrap');
-      if(wrap){ wrap.style.display='block';
-        wrap.innerHTML='<div style="font-size:12px;color:var(--mu);margin-bottom:6px">'+(lang==='fa'?'چند حساب پیدا شد, یکی را انتخاب کن:':'Multiple accounts found, pick one:')+'</div>'+
-          j.accounts.map(function(a){ return '<button class="btn ghost sm upd-acct" data-acct="'+String(a.id).replace(/"/g,'&quot;')+'" style="margin:0 6px 6px 0">'+String(a.name||a.id).replace(/</g,'&lt;')+'</button>'; }).join('');
-      }
-      if(msg){ msg.className='msg'; msg.textContent=(lang==='fa'?'حساب را انتخاب کن.':'Choose your account.'); }
-      return;
-    }
-    if(j.error==='need_script_name'){
-      var w=document.getElementById('upd-scriptname-wrap'); if(w) w.style.display='block';
-      if(msg){ msg.className='msg bad'; msg.textContent=(lang==='fa'?'نام اسکریپت ورکر را وارد کن (برای دامنهٔ اختصاصی لازم است).':'Enter your Worker script name (needed on a custom domain).'); }
-      return;
-    }
-    if(j.error==='token_invalid' || j.error==='no_token'){
-      // Saved token was rotated/removed: reveal the token field so they can paste a fresh one. The
-      // panel may still show "Cloudflare connected" from the old token, which is what confuses people.
-      var _a=document.getElementById('upd-token-area'), _c=document.getElementById('upd-connected');
-      if(_a) _a.style.display=''; if(_c) _c.style.display='none';
-      var _t=document.getElementById('upd-token'); if(_t){ _t.value=''; try{ _t.focus(); _t.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} }
-      if(msg){ msg.className='msg bad'; msg.textContent=(lang==='fa'?'توکن کلودفلر نامعتبر است یا عوض شده, یک توکن جدید بساز، در کادر بالا بچسبان و دوباره «به‌روزرسانی» را بزن.':'Cloudflare token is invalid or was rotated, create a new token, paste it in the field above, then press Update now again.'); }
-      return;
-    }
-    var emap={ no_token:(lang==='fa'?'اول کلودفلر را وصل کن (کارت «مصرف ورکر») یا توکن را اینجا بچسبان':'Connect Cloudflare first (Worker-usage card) or paste a token here'), token_invalid:(lang==='fa'?'توکن نامعتبر است':'Token is invalid'), no_accounts:(lang==='fa'?'هیچ حسابی برای این توکن دیده نشد':'No accounts for this token'), cannot_read_bindings:(lang==='fa'?'نتوانستم تنظیمات فعلی ورکر را بخوانم, به‌روزرسانی برای جلوگیری از پاک شدن دیتابیس متوقف شد':'Could not read the worker\'s current bindings, update stopped to avoid wiping your database'), fetch_worker_failed:(lang==='fa'?'دریافت نسخهٔ جدید ناموفق بود':'Failed to download the new version'), bad_worker_source:(lang==='fa'?'فایل ورکر دریافت‌شده معتبر نبود':'Downloaded worker file was invalid'), upload_failed:(lang==='fa'?'آپلود ناموفق بود':'Upload failed') };
-    var em=emap[j.error]||(j.error||'error');
-    if(msg){ msg.className='msg bad'; msg.textContent='✗ '+em+(j.detail?(', '+j.detail):''); }
-  }catch(e){ if(msg){ msg.className='msg bad'; msg.textContent='⚠️ '+e.message; } }
-}
-
-/* ---- Auto-Update (Cron Trigger) ---- */
-async function loadAutoUpdateSettings(){
-  try{
-    var r=await fetch('/admin/auto-update?_t='+Date.now());
-    var s=await r.json();
-    var sw=document.getElementById('t2-autoupdate');
-    if(sw){ if(s.autoUpdate) sw.classList.add('on'); else sw.classList.remove('on'); }
-    var wrap=document.getElementById('autoupdate-settings');
-    if(wrap) wrap.style.display=s.autoUpdate?'':'none';
-    var sel=document.getElementById('au-interval');
-    if(sel) sel.value=String(s.autoUpdateInterval||3600000);
-    var fsel=document.getElementById('au-format');
-    if(fsel) fsel.value=s.autoUpdateFormat||'normal';
-    var ai=document.getElementById('au-account');
-    if(ai) ai.value=s.cfAccountId||'';
-    var at=document.getElementById('au-token');
-    if(at) at.value=s.cfApiToken||'';
-    var aw=document.getElementById('au-worker');
-    if(aw) aw.value=s.cfWorkerName||'';
-    var last=document.getElementById('au-last');
-    if(last) last.textContent=s.lastAutoUpdate?new Date(s.lastAutoUpdate).toLocaleString():'Never';
-  }catch(e){}
-}
-async function saveAutoUpdateSettings(){
-  var msg=document.getElementById('au-msg');
-  if(!LIVE){ if(msg) msg.textContent='Preview mode'; return; }
-  var sw=document.getElementById('t2-autoupdate');
-  var enabled=sw?sw.classList.contains('on'):false;
-  var body={
-    autoUpdate:enabled,
-    autoUpdateFormat:((document.getElementById('au-format')||{}).value||'normal'),
-    cfAccountId:((document.getElementById('au-account')||{}).value||'').trim(),
-    cfApiToken:((document.getElementById('au-token')||{}).value||'').trim(),
-    cfWorkerName:((document.getElementById('au-worker')||{}).value||'').trim(),
-    autoUpdateInterval:parseInt(((document.getElementById('au-interval')||{}).value||'3600000'),10)
-  };
-  if(msg){ msg.className='msg'; msg.textContent='Saving…'; }
-  try{
-    var r=await fetch('/admin/auto-update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    var j=await r.json();
-    if(j&&j.success){
-      if(msg){ msg.className='msg ok'; msg.textContent='✓ Saved'; }
-      var wrap=document.getElementById('autoupdate-settings');
-      if(wrap) wrap.style.display=enabled?'':'none';
-    } else {
-      if(msg){ msg.className='msg bad'; msg.textContent='✗ '+(j.error||'Failed'); }
-    }
-  }catch(e){ if(msg){ msg.className='msg bad'; msg.textContent='⚠ '+e.message; } }
-}
-
 /* ---- Backup & restore (config + network) ---- */
 async function backupExport(){ const msg=document.getElementById('backup-msg'); if(!LIVE) return previewToast(); msg.textContent=lang==='fa'?'در حال آماده‌سازی…':'Preparing…';
   try{ const [c,n]=await Promise.all([API.get('config.json'), API.get('network-settings.json').catch(()=>({}))]);
@@ -3453,7 +3345,7 @@ const GUIDE = {
       '<b>Routing</b> (Network & IPs): block malware/phishing/QUIC and route China/Russia/sanctioned sites directly.',
       '<b>Smart clean IPs (per-ISP):</b> in Network → Clean IPs → Smart, point the source at a folder of per-carrier files (mci.txt, mtn.txt, rightel.txt, …). Each user is auto-served the IPs for their operator; missing files fall back to ir.txt then all.txt. Refresh the files with Nova Radar and the panel pulls them automatically.',
       '<b>Disguise (advanced):</b> in Network → Disguise you can move the panel, login and subscription to secret paths. Probing the default /admin or /login then returns a generic page. Write down your secret path first, afterwards the panel is only reachable there (recovery: set an ADMIN_PATH variable on the Worker).',
-      'Manage everything from the <b>Telegram bot</b> too, status, users, settings, kill-switch, and even one-command Cloudflare install (<code>/install</code>).',
+      'Use the <b>Telegram bot</b> for status, users, settings, and the kill-switch. Worker installation and updates are handled through the reviewed Git repository.',
       'Turn on <b>two-factor authentication</b> in Settings to protect this panel.' ] },
   ru:{ qs:'Быстрый старт', tips:'Советы',
     steps:[
@@ -3470,7 +3362,7 @@ const GUIDE = {
       '<b>Routing</b> (Сеть и IP): блокируйте вредоносное ПО/фишинг/QUIC и направляйте сайты Китая/России/подсанкционных ресурсов напрямую.',
       '<b>Умные чистые IP (по операторам):</b> в разделе Сеть → Clean IPs → Smart укажите в качестве источника папку с файлами по операторам (mci.txt, mtn.txt, rightel.txt, …). Каждому пользователю автоматически выдаются IP его оператора; при отсутствии файла используется ir.txt, затем all.txt. Обновляйте файлы с помощью Nova Radar, и панель подтянет их автоматически.',
       '<b>Маскировка (для опытных):</b> в разделе Сеть → Disguise можно перенести панель, вход и подписку на секретные пути. Тогда при обращении к стандартным /admin или /login возвращается обычная страница. Сначала запишите свой секретный путь, после этого панель доступна только по нему (восстановление: задайте переменную ADMIN_PATH на Worker).',
-      'Управляйте всем и через <b>Telegram-бота</b>: статус, пользователи, настройки, аварийное отключение и даже установка на Cloudflare одной командой (<code>/install</code>).',
+      'Используйте <b>Telegram-бота</b> для статуса, пользователей, настроек и аварийного отключения. Установка и обновления Worker выполняются через проверенный Git-репозиторий.',
       'Включите <b>двухфакторную аутентификацию</b> в настройках, чтобы защитить эту панель.' ] },
   fa:{ qs:'شروع سریع', tips:'نکته‌ها',
     steps:[
@@ -3487,7 +3379,7 @@ const GUIDE = {
       '<b>مسیریابی</b> (شبکه و آی‌پی): مسدودسازی بدافزار/فیشینگ/QUIC و عبور مستقیم سایت‌های چین/روسیه/تحریم.',
       '<b>آی‌پی تمیز هوشمند (هر اپراتور):</b> در شبکه ← آی‌پی‌های تمیز ← هوشمند، منبع را روی پوشه‌ای از فایل‌های هر اپراتور تنظیم کن (mci.txt، mtn.txt، rightel.txt، …). به هر کاربر به‌طور خودکار آی‌پی‌های اپراتور خودش داده می‌شود؛ اگر فایلی نبود، به ir.txt و سپس all.txt برمی‌گردد. فایل‌ها را با Nova Radar تازه کن و پنل خودکار می‌خواندشان.',
       '<b>استتار (پیشرفته):</b> در شبکه ← استتار می‌توانی پنل، ورود و اشتراک را به مسیرهای مخفی منتقل کنی. آن‌وقت درخواست به /admin یا /login پیش‌فرض یک صفحهٔ عمومی برمی‌گرداند. اول مسیر مخفی را یادداشت کن, بعد از آن پنل فقط از همان‌جا در دسترس است (بازیابی: یک متغیر ADMIN_PATH روی ورکر تنظیم کن).',
-      'همه‌چیز را از <b>ربات تلگرام</b> هم می‌توانی مدیریت کنی, وضعیت، کاربران، تنظیمات، کیل‌سوییچ، و حتی نصب یک‌دستوریِ Cloudflare (<code>/install</code>).',
+      'از <b>ربات تلگرام</b> برای وضعیت، کاربران، تنظیمات و کیل‌سوییچ استفاده کنید. نصب و به‌روزرسانی Worker از مخزن Git بررسی‌شده انجام می‌شود.',
       'برای محافظت از این پنل، <b>احراز هویت دومرحله‌ای</b> را در تنظیمات روشن کن.' ] },
 };
 function renderGuide(){ const g=GUIDE[lang]||GUIDE.en;
@@ -3532,37 +3424,13 @@ function mdToHtml(md, idx){
 }
 let _guideLoaded=false;
 async function loadRemoteGuide(force){
-  const box=document.getElementById('guide-remote');
-  const st=document.getElementById('guide-remote-status');
-  const stat=document.getElementById('nova-full-guide');
-  if(!box) return;
-  if(_guideLoaded && !force) return;
-  if(st) st.textContent = t('guide_loading');
-  try{
-    const r = await fetch('/admin/guide-md'+(force?'?refresh=1&_t='+Date.now():'?_t='+Date.now()), {cache:'no-store'});
-    const j = await r.json();
-    if(j && j.ok && j.md){
-      window.__guideIndex = [];
-      box.innerHTML = mdToHtml(j.md, window.__guideIndex);
-      box.style.display='';
-      if(stat) stat.style.display='none';
-      _guideLoaded=true;
-      const dt = j.fetchedAt ? new Date(j.fetchedAt) : null;
-      if(st) st.textContent = t('guide_src') + (dt ? ' • '+dt.toLocaleString(lang==='fa'?'fa-IR':(lang||'en')) : '');
-      return;
-    }
-    throw new Error('empty');
-  }catch(e){
-    box.style.display='none';
-    if(stat) stat.style.display='';           // fall back to the bundled guide
-    if(st) st.textContent = t('guide_fallback');
-  }
+  _guideLoaded=true;
+  renderGuide();
 }
 /* ===== Menu search: settings + live guide (auto-updates from GUIDE.md) ===== */
 const MENU_SEARCH_INDEX = [
   {view:'network', el:'f2-hosts', label:{fa:'دامنه اختصاصی',en:'Custom domain',ru:'Свой домен'}, kw:'domain custom domain hostname host دامنه دامنه اختصاصی هاست домен хост'},
   {view:'network', el:'warp-card', label:{fa:'WARP و تماس‌ها',en:'WARP & calls',ru:'WARP и звонки'}, kw:'warp calls udp facetime whatsapp تماس وارپ варп звонки'},
-  {view:'network', el:'f2-decoy', label:{fa:'صفحه پوششی (Decoy)',en:'Decoy / speed-test page',ru:'Обманная страница'}, kw:'decoy speed test cover صفحه پوششی обманная'},
   {view:'network', el:'t-disguise', label:{fa:'استتار / مسیر مخفی',en:'Disguise / secret paths',ru:'Маскировка / скрытые пути'}, kw:'disguise secret path admin login استتار مسیر مخفی скрытый'},
   {view:'network', el:null, label:{fa:'DNS امن / DoH',en:'Secure DNS / DoH',ru:'Безопасный DNS / DoH'}, kw:'dns doh secure encrypted دی‌ان‌اس днс'},
   {view:'network', el:null, label:{fa:'Fragment / ECH',en:'Fragment / ECH',ru:'Fragment / ECH'}, kw:'fragment ech tls fingerprint فرگمنت انگشت‌نگاری фрагмент'},
@@ -3577,8 +3445,7 @@ const MENU_SEARCH_INDEX = [
   {view:'settings', el:null, label:{fa:'تنظیمات / امنیت / رمز',en:'Settings / security / password',ru:'Настройки / безопасность / пароль'}, kw:'settings password 2fa security تنظیمات رمز امنیت دومرحله настройки пароль'},
 ];
 async function ensureGuideIndex(){
-  if(Array.isArray(window.__guideIndex) && window.__guideIndex.length) return;
-  try{ const r=await fetch('/admin/guide-md?_t='+Date.now(),{cache:'no-store'}); const j=await r.json(); if(j&&j.md){ window.__guideIndex=[]; mdToHtml(j.md, window.__guideIndex); } }catch(e){}
+  window.__guideIndex=[];
 }
 function menuSearchRun(q){
   const box=document.getElementById('menu-search-results');
@@ -3964,11 +3831,11 @@ function tunnelRender(){
   var st  = _tunnelState || {};
   var txt = document.getElementById('tunnel-status-text');
   if(!txt) return;
-  var on  = !!st.enabled, ver = !!st.verified;
+  var on  = !!st.enabled, ver = !!st.verified, allowlisted = st.allowedHostsConfigured === true;
   var dot = document.getElementById('tunnel-status-dot');
-  if(dot) dot.className = 'dot ' + (on ? 'ok' : 'bad');
-  txt.textContent = on ? t('tunnel_active') : t('tunnel_inactive');
-  txt.style.color = on ? 'var(--ok)' : 'var(--dg)';
+  if(dot) dot.className = 'dot ' + (on ? 'ok' : (allowlisted ? 'bad' : 'warn'));
+  txt.textContent = on ? t('tunnel_active') : (allowlisted ? t('tunnel_inactive') : t('tunnel_allowlist_required'));
+  txt.style.color = on ? 'var(--ok)' : (allowlisted ? 'var(--dg)' : 'var(--wn)');
 
   var sub = document.getElementById('tunnel-status-sub');
   if(sub) sub.textContent = _tunnelUrl || st.workerUrl || '';
@@ -3981,11 +3848,14 @@ function tunnelRender(){
   var enable = document.getElementById('tunnel-enable-btn');
   if(enable){
     if(on){ enable.textContent = '✓ ' + t('tunnel_on'); enable.classList.add('is-disabled'); enable.disabled = true; }
-    else  { enable.textContent = t('tunnel_enable'); enable.classList.remove('is-disabled'); enable.disabled = false; }
+    else if(!allowlisted){ enable.textContent = t('tunnel_allowlist_required'); enable.classList.add('is-disabled'); enable.disabled = true; }
+    else { enable.textContent = t('tunnel_enable'); enable.classList.remove('is-disabled'); enable.disabled = false; }
   }
 
   var env = document.getElementById('tunnel-env-note');
   if(env) env.style.display = (on && st.source === 'env') ? 'flex' : 'none';
+  var allowNote = document.getElementById('tunnel-allowlist-note');
+  if(allowNote) allowNote.style.display = allowlisted ? 'none' : 'flex';
 
   var steps = document.getElementById('tunnel-steps');
   if(steps) steps.style.display = on ? '' : 'none';
@@ -4006,6 +3876,8 @@ function tunnelInit(){
     .then(function(r){ return r.json(); })
     .then(function(j){
       if(!j||!j.success){
+        _tunnelState = {enabled:false, allowedHostsConfigured:false, statusUnavailable:true};
+        tunnelRender();
         var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
         txt.textContent=(j&&j.error)?('Error: '+j.error):'Error'; txt.style.color='var(--dg)'; return;
       }
@@ -4015,6 +3887,8 @@ function tunnelInit(){
       tunnelRender();
     })
     .catch(function(e){
+      _tunnelState = {enabled:false, allowedHostsConfigured:false, statusUnavailable:true};
+      tunnelRender();
       var dot=document.getElementById('tunnel-status-dot'); if(dot) dot.className='dot bad';
       txt.textContent='Connection error'; txt.style.color='var(--dg)';
       var sub=document.getElementById('tunnel-status-sub'); if(sub) sub.textContent=String(e);
@@ -4023,6 +3897,10 @@ function tunnelInit(){
 
 /* Step 1: generate a key and enable the relay. */
 function tunnelEnable(){
+  if(!_tunnelState || _tunnelState.allowedHostsConfigured !== true){
+    toast('✕ ' + t('tunnel_allowlist_help'), 1);
+    return;
+  }
   var btn=document.getElementById('tunnel-enable-btn');
   if(btn){ btn.disabled=true; btn.classList.add('is-disabled'); btn.textContent=t('tunnel_enabling'); }
   fetch('/admin/relay-generate', {method:'POST', headers:{'Content-Type':'application/json'}, credentials:'same-origin', body:JSON.stringify({})})
@@ -4457,7 +4335,6 @@ function syncFormValues(){
   on('t2-directconfigs', !!c.enableDirectConfigs); on('t2-opt1', !!c.enableOpt1); on('t2-opt2', !!c.enableOpt2);
   // subUserAgent + fakeConfigs (network-settings)
   set('f2-subuseragent', n.subUserAgent||'');
-  set('f2-decoy', n.decoyUrl||'');
   on('t-userloc', n.userLocationEnabled !== false); // default ON unless the operator turned it off
   set('f2-telegram-channel', 'https://t.me/irnova_proxy'); // locked, server-side is the source of truth
   const _fc = Array.isArray(n.fakeConfigs) ? n.fakeConfigs : [];
@@ -4588,7 +4465,6 @@ async function saveNetwork(silent){
   n.autoRotatePath=isOn('t-autorotatepath'); n.autoRotatePathDays=Math.max(1, Number(g('n-autorotatepath-days'))||30);
   // subUserAgent + fakeConfigs (network-settings)
   n.subUserAgent=(g('f2-subuseragent')||'').trim();
-  n.decoyUrl=(g('f2-decoy')||'').trim();
   n.userLocationEnabled=isOn('t-userloc');
   n.telegramChannel='https://t.me/irnova_proxy'; // LOCKED: worker ignores this and always uses the official channel
   // Editable fake entries, one per line. The Telegram channel line is immutable: the worker
@@ -4898,13 +4774,6 @@ document.addEventListener('click', (e)=>{
   if(e.target.closest('#factory-reset')){ factoryReset(); return; }
   if(e.target.closest('#upd-check')){ updateCheck(); return; }
   if(e.target.closest('#upd-checkup')){ checkupNow(); return; }
-  if(e.target.closest('#upd-now')){ updateNow(); return; }
-  if(e.target.closest('#upd-find-worker')){ findMyWorker(); return; }
-  { var _ua=e.target.closest('.upd-acct'); if(_ua){ updateNow({ accountId: _ua.getAttribute('data-acct') }); return; } }
-  { var _wa=e.target.closest('.upd-wacct'); if(_wa){ findMyWorker(_wa.getAttribute('data-acct')); return; } }
-  { var _wp=e.target.closest('.upd-wpick'); if(_wp){ var _sn=document.getElementById('upd-scriptname'); if(_sn) _sn.value=_wp.getAttribute('data-w'); var _pk=document.getElementById('upd-worker-pick'); if(_pk){ _pk.style.display='none'; _pk.innerHTML=''; } var _m=document.getElementById('upd-msg'); if(_m){ _m.className='msg ok'; _m.textContent='✓ '+(lang==='fa'?('انتخاب شد: '+_wp.getAttribute('data-w')+'. حالا «به‌روزرسانی اکنون» را بزن.'):('Selected: '+_wp.getAttribute('data-w')+'. Now press Update now.')); } return; } }
-  if(e.target.closest('#t2-autoupdate')){ var el=document.getElementById('t2-autoupdate'); if(el) el.classList.toggle('on'); var w=document.getElementById('autoupdate-settings'); if(w) w.style.display=el&&el.classList.contains('on')?'':'none'; return; }
-  if(e.target.closest('#au-save')){ saveAutoUpdateSettings(); return; }
   { var _ca=e.target.closest('.cf-acct'); if(_ca){ cfConnect({ accountId: _ca.getAttribute('data-acct') }); return; } }
   if(e.target.closest('#t2-kill')){ toggleKill(); return; }
   if(e.target.closest('#doh-copy')){ copy(location.origin+'/dns-query'); return; }
@@ -5017,43 +4886,16 @@ const DEMO_USAGE={ u1:31*1073741824, u2:8*1073741824, u3:10*1073741824 };
 
 /* ---- boot ---- */
 let _updVer='';
-// Update banner: shows ONLY when the running worker is older than the latest published version.
-// The "Update" button takes the user straight to Settings → Update panel (in-panel self-update),
-// not to a raw GitHub URL. Dismiss is remembered per-version so it doesn't nag.
-function setUpdConnected(connected){
-  var c=document.getElementById('upd-connected'), a=document.getElementById('upd-token-area');
-  if(c) c.style.display=connected?'flex':'none';
-  if(a) a.style.display=connected?'none':'';
-  var ut=document.getElementById('upd-usetoken');
-  if(ut && !ut._wired){ ut._wired=1; ut.onclick=function(ev){ if(ev) ev.preventDefault(); if(a) a.style.display=''; if(c) c.style.display='none'; var t=document.getElementById('upd-token'); if(t) t.focus(); }; }
-}
-// On a custom domain the worker can't derive its own script name from the host. Surface the script-name
-// field up front (prefilled if we saved it from a previous update), and make the connect banner honest
-// instead of promising a misleading "one-click".
-function applyUpdEnv(j){
-  try{
-    if(!j) return;
-    if(typeof j.hasCfToken!=='undefined') setUpdConnected(!!j.hasCfToken);
-    var snIn=document.getElementById('upd-scriptname'), snWrap=document.getElementById('upd-scriptname-wrap');
-    var savedSn=String(j.savedScriptName||'').trim();
-    if(snIn && savedSn && !snIn.value) snIn.value=savedSn;
-    // Keep data-i18n set to the RIGHT key so the banner stays correct on repeat checks and language switches.
-    var cspan=document.getElementById('upd-connected-txt');
-    if(cspan){
-      var key = (j.isWorkersDev===false) ? (savedSn ? 'upd_connected_cd_saved' : 'upd_connected_cd') : 'upd_connected';
-      cspan.setAttribute('data-i18n', key); cspan.textContent = t(key);
-    }
-    if(j.isWorkersDev===false && !savedSn && snWrap) snWrap.style.display='block';
-  }catch(e){}
-}
+// Update banner: shows only when the running Worker is older than the published release.
+// Deployment remains in Git/Workers Builds, where the source and rollback history are visible.
 function showCfBar(show){
   var bar=document.getElementById('cf-connect-bar'); if(!bar) return;
   if(!show){ bar.style.display='none'; return; }
   var dm=''; try{ dm=localStorage.getItem('nova-cf-dismiss')||''; }catch(e){} if(dm==='1'){ bar.style.display='none'; return; }
   var txt=document.getElementById('cf-bar-txt');
   if(txt) txt.textContent=(lang==='fa')
-    ?'برای «به‌روزرسانی خودکار» و نمایش «مصرف ورکر»، یک‌بار توکن Cloudflare را وصل کن, کمتر از یک دقیقه.'
-    :'Connect a Cloudflare token once to unlock auto-updates and live Worker usage, takes under a minute.';
+    ?'برای نمایش آمار مصرف ورکر، یک توکن فقط‌خواندنی Cloudflare وصل کنید. به‌روزرسانی‌ها از Git انجام می‌شوند.'
+    :'Connect a read-only Cloudflare token for live Worker usage. Updates are handled through Git.';
   var go=document.getElementById('cf-bar-go');
   if(go){ go.textContent=(lang==='fa')?'اتصال توکن':'Connect token';
     go.onclick=function(ev){ if(ev) ev.preventDefault();
@@ -5073,10 +4915,9 @@ async function checkUpdate(){ try{
   try{
     const r=await fetch('/admin/update-check.json',{cache:'no-store'});
     if((r.headers.get('content-type')||'').indexOf('application/json')>=0) j=await r.json();
-  }catch(e){}
- // Cloudflare-connect banner: when the worker reports no saved token, prompt the one-time connect.
+ }catch(e){}
+ // Cloudflare-connect banner is only for optional usage analytics.
  try{ if(j && typeof j.hasCfToken!=='undefined') showCfBar(!j.hasCfToken); }catch(e){}
- applyUpdEnv(j);
  if(!j || !j.latest){
    let cur='';
    try{ const sr=await API.get('system.json'); cur=_vnorm(sr&&sr.version); }catch(e){}
@@ -5089,15 +4930,11 @@ async function checkUpdate(){ try{
  _updVer=verStr;
  const bar=document.getElementById('update-bar'); if(!bar) return;
  document.getElementById('update-txt').textContent=(lang==='fa')
-   ?('نسخهٔ جدید V'+verStr+' در دسترس است, می‌توانی از تنظیمات پنل به‌روزرسانی کنی'+(j.notes?('. '+j.notes):''))
-   :('Update available: V'+verStr+', you can update from the panel Settings'+(j.notes?('. '+j.notes):''));
+   ?('نسخهٔ جدید V'+verStr+' در دسترس است. پیش از ادغام، تغییرات را در گیت‌هاب بررسی کنید'+(j.notes?('. '+j.notes):''))
+   :('Update available: V'+verStr+'. Review the changes in GitHub before merging'+(j.notes?('. '+j.notes):''));
  const lk=document.getElementById('update-link');
- lk.textContent=(lang==='fa')?'به‌روزرسانی':'Update'; lk.style.display='';
- lk.removeAttribute('target'); lk.setAttribute('href','#');
- lk.onclick=function(ev){ if(ev) ev.preventDefault();
-   try{ showView('settings'); }catch(e){}
-   setTimeout(function(){ try{ var el=document.getElementById('upd-box'); var card=el?el.closest('.card'):null; (card||el||{scrollIntoView:function(){}}).scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} }, 120);
- };
+ lk.textContent=(lang==='fa')?'بررسی نسخه':'Review release'; lk.style.display='';
+ lk.setAttribute('target','_blank'); lk.setAttribute('rel','noopener'); lk.setAttribute('href',NOVA_RELEASES_URL);
  const x=document.getElementById('update-x'); if(x) x.onclick=function(){ bar.style.display='none'; try{ localStorage.setItem('nova-upd-dismiss',_updVer); }catch(e){} };
  bar.style.display='flex';
 }catch(e){} }
@@ -5259,9 +5096,16 @@ function grelayDashStatus(){
 
 (async function init(){
   applyTheme(localStorage.getItem('nova-theme') || 'light');
+  try{
+    var updateLink=document.getElementById('upd-web');
+    if(updateLink){
+      var updateUrl='https://novaproxy.online/setup/#update';
+      updateLink.href=updateUrl;
+    }
+  }catch(e){}
   await loadLive();   // pull real /admin data when served by the Worker; falls back to MOCK otherwise
   try{ loadVersions(); }catch(e){}
-  if(LIVE){ loadSecurity(); loadWarpStatus(); loadAutoUpdateSettings(); grelayDashStatus(); }
+  if(LIVE){ loadSecurity(); loadWarpStatus(); grelayDashStatus(); }
   else { STATE.users=DEMO_USERS.map(u=>({...u})); STATE.usage=DEMO_USAGE; STATE.multiUser=true; }
   applyLang(lang);    // renders everything (incl. syncFormValues) in the chosen language
   try{ var _sv=localStorage.getItem('nova-view'); if(_sv && _sv!=='dashboard' && document.getElementById('view-'+_sv)) showView(_sv); }catch(e){} // stay on the same view after a refresh
