@@ -1,195 +1,151 @@
 ﻿<!doctype html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="fa" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Nova Proxy</title>
-<link rel="icon" type="image/svg+xml" href="/logo-mark.svg" /><link rel="alternate icon" href="/logo.png" />
-<link rel="apple-touch-icon" href="/logo.png" />
+<title>Nova Proxy · ورود</title>
+<link rel="icon" type="image/svg+xml" href="../logo-mark.svg" /><link rel="alternate icon" href="../logo.png" />
+<link rel="apple-touch-icon" href="../logo.png" />
 <meta name="apple-mobile-web-app-title" content="Nova Proxy" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="theme-color" content="#0b0d11" />
-<link rel="manifest" href="/manifest.json" />
-
+<meta name="theme-color" content="#05070b" />
+<link rel="manifest" href="../manifest.json" />
+<script>
+  try{ var th=localStorage.getItem('nova-theme'); document.documentElement.dataset.theme=(th==='light')?'light':'dark'; }catch(e){}
+</script>
 <style>
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
 :root{
- --bg:#f4f6fb;--card:#ffffff;--c2:#f7f9fc;--bd:#e6eaf1;--bd2:#dde2eb;--tx:#101622;--tx2:#445066;--mu:#8a93a6;
- --ac:#0ea5c4;--ac2:#7c3aed;--grad:linear-gradient(120deg,#0891b2,#7c3aed);--ring:rgba(8,145,178,.22);--dg:#e5484d;
- --shadow:0 1px 2px rgba(20,40,80,.04),0 18px 40px rgba(40,60,110,.12)}
-html[data-theme=dark]{
- --bg:#070809;--card:#101319;--c2:#0b0d11;--bd:#1c2027;--bd2:#262b34;--tx:#e9edf4;--tx2:#aeb6c4;--mu:#6f7888;
- --ac:#22d3ee;--ac2:#a855f7;--grad:linear-gradient(120deg,#22d3ee,#7c5cff);--ring:rgba(34,211,238,.28);--dg:#f87171;
- --shadow:0 1px 0 rgba(255,255,255,.02),0 18px 44px rgba(0,0,0,.5)}
+  --nv-void:#05070b; --nv-panel:#0d1119; --nv-card:#10141d; --nv-input:#0a0e15;
+  --nv-line:#1e2532; --nv-line2:#2c3547;
+  --nv-tx:#f0f4fa; --nv-tx2:#a3aec2; --nv-mu:#69738a;
+  --nv-teal:#2dd4ee; --nv-violet:#a78bfa;
+  --nv-grad:linear-gradient(120deg,#2dd4ee,#818cf8 55%,#c084fc);
+  --nv-glow:0 0 0 1px rgba(45,212,238,.25),0 0 22px rgba(45,212,238,.18);
+  --nv-danger:#fb7185;
+}
+html[data-theme="light"]{
+  --nv-void:#eef1f7; --nv-panel:#ffffff; --nv-card:#ffffff; --nv-input:#eef2f8;
+  --nv-line:#dfe5ef; --nv-line2:#c9d1e1;
+  --nv-tx:#0c1220; --nv-tx2:#333e56; --nv-mu:#5b6579;
+  --nv-teal:#0ea5c4; --nv-violet:#7c3aed;
+  --nv-grad:linear-gradient(120deg,#0891b2,#6366f1 55%,#9333ea);
+  --nv-danger:#dc2626;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip}
-body{font-family:'Vazirmatn','Inter',system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:var(--tx);
- background:radial-gradient(820px 420px at 50% -6%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 60%),radial-gradient(720px 420px at 88% 8%,color-mix(in srgb,var(--ac2) 14%,transparent),transparent 55%),var(--bg)}
-.box{width:100%;max-width:392px}
+body{font-family:'Vazirmatn','Inter',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;color:var(--nv-tx);background:var(--nv-void);position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(820px 420px at 50% -80px,rgba(45,212,238,.13),transparent 65%),radial-gradient(620px 340px at 85% 110%,rgba(124,58,237,.11),transparent 60%)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(700px 460px at 50% 20%,#000 25%,transparent 75%)}
+.box{width:100%;max-width:400px}
 .bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:11px}
-.brand .lg{width:40px;height:40px;border-radius:11px;background:var(--c2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.brand .lg{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#0b1220,#101a2c);border:1px solid rgba(45,212,238,.4);box-shadow:0 0 18px rgba(45,212,238,.25);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .brand .lg img{width:30px;height:30px;object-fit:contain;display:block}
-.brand h1{font-size:19px;font-weight:800;letter-spacing:-.3px}
-.tools{display:flex;gap:8px;align-items:center}
-.lang{display:flex;gap:3px;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:3px}
-.lang button{border:none;background:transparent;color:var(--mu);font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer}
-.lang button.on{background:var(--ac);color:#fff}
-.tbtn{width:40px;height:34px;background:var(--card);border:1px solid var(--bd);border-radius:10px;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1}
-.tbtn:hover{color:var(--ac);border-color:var(--bd2)}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:26px 24px;box-shadow:var(--shadow)}
-.t{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:1.4px;font-weight:700;margin-bottom:16px}
-label{display:block;font-size:12px;color:var(--tx2);font-weight:500;margin-bottom:7px}
-input{width:100%;background:var(--c2);border:1px solid var(--bd2);border-radius:11px;padding:13px 14px;color:var(--tx);font-size:14px;font-family:inherit;outline:none;transition:.12s}
-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ring)}
+.brand h1{font-size:19px;font-weight:800;letter-spacing:-.2px}
+.brand small{display:block;font-size:11px;color:var(--nv-mu);font-weight:400}
+.tbtn{width:40px;height:36px;background:var(--nv-card);border:1px solid var(--nv-line);border-radius:11px;color:var(--nv-tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;transition:all .18s}
+.tbtn:hover{color:var(--nv-teal);border-color:rgba(45,212,238,.5);box-shadow:0 0 12px rgba(45,212,238,.18)}
+.card{background:color-mix(in srgb,var(--nv-card) 88%,transparent);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--nv-line2);border-radius:22px;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 24px 60px rgba(0,0,0,.35);padding:28px 26px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--nv-grad)}
+.card .t{font-size:17px;font-weight:800;margin-bottom:4px}
+.card .s{font-size:12.5px;color:var(--nv-mu);margin-bottom:20px;line-height:1.9}
+label{display:block;font-size:12.5px;color:var(--nv-tx2);font-weight:600;margin-bottom:7px}
+input{width:100%;background:var(--nv-input);border:1px solid var(--nv-line2);border-radius:12px;padding:13px 14px;color:var(--nv-tx);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus{border-color:var(--nv-teal);box-shadow:var(--nv-glow)}
 .pwwrap{position:relative}
-.pwwrap input{padding-right:46px}
-html[dir=rtl] .pwwrap input{padding-right:14px;padding-left:46px}
-.peek{position:absolute;top:0;bottom:0;right:6px;margin:auto;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:var(--mu);cursor:pointer;padding:0;border-radius:8px;transition:.12s}
-html[dir=rtl] .peek{right:auto;left:6px}
-.peek:hover{color:var(--ac)}
+.pwwrap input{padding-left:48px}
+.peek{position:absolute;top:0;bottom:0;left:6px;margin:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:var(--nv-mu);cursor:pointer;border-radius:9px;transition:color .15s}
+.peek:hover{color:var(--nv-teal)}
 .peek svg{width:19px;height:19px;display:block}
 .peek .off{display:none}.peek.on .on{display:none}.peek.on .off{display:block}
-button.go{width:100%;margin-top:16px;padding:13px;border:none;border-radius:11px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.12s}
-.rec-btn{width:100%;padding:10px;border:none;border-radius:10px;background:var(--ac);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.12s}
-.rec-btn:hover{filter:brightness(1.05)}
-.rec-btn:disabled{opacity:.6;cursor:default}
-.rec-btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--tx)}
-.rec-input{width:100%;background:var(--c2);border:1px solid var(--bd2);border-radius:10px;padding:10px 12px;color:var(--tx);font-size:12.5px;font-family:inherit;outline:none}
-.rec-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ring)}
-.rec-msg{font-size:11.5px;color:var(--tx2);line-height:1.5;min-height:14px}
-.rec-msg.ok{color:#16a34a}
-html[data-theme=dark] .rec-msg.ok{color:#34d399}
-.rec-msg.bad{color:var(--dg)}
-.rec-sep{display:flex;align-items:center;gap:8px;color:var(--mu);font-size:10.5px;margin:1px 0}
-.rec-sep::before,.rec-sep::after{content:"";flex:1;height:1px;background:var(--bd)}
-.rec-box{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-button.go:hover{filter:brightness(1.05)}
-.err{color:var(--dg);font-size:13px;margin-top:13px;display:none}
+.capswarn{display:none;font-size:11.5px;color:#fbbf24;margin-top:7px}
+.capswarn.on{display:block}
+button.go{width:100%;margin-top:16px;padding:13px;border:none;border-radius:12px;background:var(--nv-grad);color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 10px 26px rgba(14,165,196,.35),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .18s,filter .18s,box-shadow .18s;display:flex;align-items:center;justify-content:center;gap:9px}
+button.go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button.go:active{transform:scale(.98)}
+button.go:disabled{opacity:.7;cursor:wait;transform:none}
+.spin{width:17px;height:17px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.err{display:none;color:var(--nv-danger);font-size:13px;margin-top:13px;background:color-mix(in srgb,var(--nv-danger) 10%,transparent);border:1px solid color-mix(in srgb,var(--nv-danger) 40%,transparent);border-radius:11px;padding:10px 14px}
+.err.show{display:block;animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(5px)}50%{transform:translateX(-5px)}75%{transform:translateX(3px)}}
+.rec{margin-top:14px;border:1px dashed var(--nv-line2);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--nv-tx2);line-height:2}
+.rec b{color:var(--nv-tx)}
+.rec code{font-family:ui-monospace,monospace;font-size:11px;direction:ltr;unicode-bidi:embed;background:var(--nv-input);border:1px solid var(--nv-line);border-radius:6px;padding:1px 7px}
 .social{display:flex;gap:9px;margin-top:18px}
-.social a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:42px;background:var(--card);border:1px solid var(--bd);border-radius:11px;color:var(--tx);text-decoration:none;font-size:12.5px;font-weight:600;transition:transform .13s,border-color .13s,box-shadow .13s}
-.social a:hover{border-color:var(--bd2);transform:translateY(-1px);box-shadow:0 7px 18px rgba(40,60,110,.12)}
-html[data-theme=dark] .social a:hover{box-shadow:0 8px 20px rgba(0,0,0,.45)}
-.social a svg{width:20px;height:20px;flex-shrink:0}
-.social a .wb{color:var(--ac)}
-.social a .tg{color:#229ED9}
-.social a .yt{color:#FF0000}
-.social a .ig{color:#E1306C}
-.foot{text-align:center;color:var(--mu);font-size:11.5px;margin-top:18px}
-/* Enterprise mobile polish (additive, mobile-only): bigger tap targets + stop iOS zoom-on-focus */
-@media (max-width:560px){
- input{font-size:16px;padding:14px}
- button.go{padding:15px}
- .social a{height:46px}
- .lang button{min-height:40px}
- .tbtn{height:40px;min-width:40px}
- .card{padding:24px 18px}
-}
+.social a{flex:1;display:flex;align-items:center;justify-content:center;height:42px;background:var(--nv-card);border:1px solid var(--nv-line);border-radius:11px;color:var(--nv-tx2);transition:all .15s}
+.social a:hover{border-color:rgba(45,212,238,.5);box-shadow:0 0 16px rgba(45,212,238,.2);transform:translateY(-1px)}
+.social a svg{width:20px;height:20px}
+.social a .tg{color:#229ED9}.social a .yt{color:#FF0000}.social a .ig{color:#E1306C}
+.foot{text-align:center;color:var(--nv-mu);font-size:11.5px;margin-top:18px}
+@media (max-width:560px){input{font-size:16px}.card{padding:24px 18px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}}
 </style>
 </head>
 <body>
 <div class="box">
-<div class="bar">
-<div class="brand">
-<span class="lg"><img src="/logo-mark.svg" alt="Nova" /></span>
-<h1>Nova Proxy</h1>
-</div>
-<div class="tools">
-<div class="lang" id="lg"><button data-l="en" class="on">EN</button><button data-l="fa">فا</button><button data-l="ru">РУ</button></div>
-<button class="tbtn" id="theme" title="Theme">☾</button>
-</div>
-</div>
-<div class="card">
-<div class="t" id="t1">Sign in to the admin panel</div>
-<label id="lpw" for="pw">Password</label>
-<div class="pwwrap"><input id="pw" type="password" placeholder="password" autocomplete="current-password" /><button type="button" class="peek" id="peek" aria-label="Show password"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
-<div id="tfaWrap" style="display:none;margin-top:14px">
-<label id="lcode" for="code">Authenticator code</label>
-<input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" />
-</div>
-<button class="go" id="go">Login</button>
-<div class="err" id="er" role="alert" aria-live="assertive"></div>
-<details style="margin-top:12px"><summary id="forgot-s" style="cursor:pointer;color:var(--mu);font-size:12.5px;list-style:none">Forgot password?</summary>
-<div class="rec-box">
-<button type="button" class="rec-btn" id="rec-tg-btn">Send login link via Telegram</button>
-<div class="rec-msg" id="rec-tg-msg"></div>
-<div class="rec-sep"><span id="rec-or">or</span></div>
-<input class="rec-input" id="rec-cf-token" type="text" autocomplete="off" placeholder="Cloudflare API Token" />
-<button type="button" class="rec-btn rec-btn-outline" id="rec-cf-btn">Recover with Cloudflare token</button>
-<div class="rec-msg" id="rec-cf-msg"></div>
-<div id="forgot-b" style="color:var(--mu);font-size:11px;line-height:1.6;margin-top:2px"></div>
-</div>
-</details>
-<div class="social">
-<a href="https://novaproxy.online" target="_blank" rel="noopener" title="Web" aria-label="Web"><svg class="wb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
-<a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a>
-<a href="https://www.youtube.com/@novaproxyir" target="_blank" rel="noopener" title="YouTube" aria-label="YouTube"><svg class="yt" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.76-1.77C19.34 5.13 12 5.13 12 5.13s-7.34 0-8.84.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.76 1.77c1.5.4 8.84.4 8.84.4s7.34 0 8.84-.4a2.5 2.5 0 0 0 1.76-1.77C23 15.2 23 12 23 12zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg></a>
-<a href="https://instagram.com/irnova_proxy" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram"><svg class="ig" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></a>
-</div>
-</div>
-<div class="foot" id="ft">Nova Proxy, open-source networking tools</div>
+  <div class="bar">
+    <div class="brand">
+      <span class="lg"><img src="../logo-mark.svg" alt="Nova" /></span>
+      <div><h1>Nova Proxy</h1><small>پنل مدیریت</small></div>
+    </div>
+    <button class="tbtn" id="theme" title="تغییر پوسته" aria-label="تغییر پوسته">☾</button>
+  </div>
+  <div class="card">
+    <div class="t">ورود به پنل مدیریت</div>
+    <div class="s">رمز ادمین ورکر خود را وارد کنید</div>
+    <label for="pw">رمز عبور</label>
+    <div class="pwwrap">
+      <input id="pw" type="password" placeholder="رمز عبور" autocomplete="current-password" />
+      <button type="button" class="peek" id="peek" aria-label="نمایش رمز"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button>
+    </div>
+    <div class="capswarn" id="capswarn">⚠️ Caps Lock روشن است</div>
+    <button class="go" id="go">ورود</button>
+    <div class="err" id="er" role="alert" aria-live="assertive"></div>
+    <div class="rec">رمز را فراموش کردی؟ اگر با صفحه نصب ساخته بودی، از همان‌جا دوباره بساز: <a href="/install" style="color:var(--nv-teal)">صفحه نصب</a>.<br>وگرنه رمز همان <b>ADMIN</b> ورکر توست: داشبورد Cloudflare ← <code>Workers &amp; Pages</code> ← ورکر ← <code>Settings → Variables</code>.</div>
+  </div>
+  <div class="social">
+    <a href="https://novaproxy.online" target="_blank" rel="noopener" title="Web" aria-label="Web"><svg class="wb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+    <a href="https://t.me/irnova_proxy" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><svg class="tg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.6 18.9 19.2c-.23 1.01-.83 1.26-1.68.78l-4.64-3.42-2.24 2.16c-.25.25-.46.46-.94.46l.33-4.73 8.6-7.77c.37-.33-.08-.52-.58-.19l-10.63 6.7-4.58-1.43c-1-.31-1.01-1 .21-1.48l17.9-6.9c.83-.31 1.56.19 1.29 1.45z"/></svg></a>
+    <a href="https://www.youtube.com/@novaproxyir" target="_blank" rel="noopener" title="YouTube" aria-label="YouTube"><svg class="yt" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.76-1.77C19.34 5.13 12 5.13 12 5.13s-7.34 0-8.84.4A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7a2.5 2.5 0 0 0 1.76 1.77c1.5.4 8.84.4 8.84.4s7.34 0 8.84-.4a2.5 2.5 0 0 0 1.76-1.77C23 15.2 23 12 23 12zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg></a>
+    <a href="https://instagram.com/irnova_proxy" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram"><svg class="ig" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6.5-.25a1.25 1.25 0 1 0-2.5 0 1.25 1.25 0 0 0 2.5 0zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg></a>
+  </div>
+  <div class="foot">Nova Proxy · ابزار شبکه متن‌باز</div>
 </div>
 <script>
-var L={
- en:{dir:'ltr',theme:'Toggle theme',showpw:'Show password',hidepw:'Hide password',t1:'Sign in to the admin panel',lpw:'Password',pw:'password',go:'Login',bad:'Wrong password',lcode:'Authenticator code',badcode:'Wrong code',need:'Enter the 6-digit code from your authenticator app',ft:'Nova Proxy, open-source networking tools',forgot:'Forgot password?',forgotb:'Manual fallback: the password is also the ADMIN secret on your Cloudflare Worker (Settings → Variables and Secrets), or the KV key “admin_pass” / D1 “kvstore” table if set via the setup wizard.',recTg:'Send login link via Telegram',recTgSending:'Sending…',recTgSent:'A one-click login link was sent to the admin Telegram chat. Valid for 10 minutes.',recTgNotConfigured:'Telegram bot is not configured for this panel.',recTgFailed:'Could not send. Try again later.',recOr:'or',recCfPh:'Cloudflare API Token',recCfBtn:'Recover with Cloudflare token',recCfChecking:'Verifying…',recCfNeed:'Enter a token first.',recCfNewPw:'New password: ',recCfErr:'Recovery failed',recRate:'Too many attempts. Try again later.'},
- fa:{dir:'rtl',theme:'تغییر پوسته',showpw:'نمایش رمز',hidepw:'پنهان کردن رمز',t1:'ورود به پنل مدیریت',lpw:'رمز عبور',pw:'رمز عبور',go:'ورود',bad:'رمز اشتباه است',lcode:'کد برنامه‌ی احراز هویت',badcode:'کد اشتباه است',need:'کد ۶ رقمی برنامه‌ی احراز هویت را وارد کنید',ft:'Nova Proxy، ابزار شبکه متن‌باز',forgot:'رمز را فراموش کردید؟',forgotb:'راه دستی: رمز همان سکرت ADMIN روی ورکر کلودفلر شماست (Settings → Variables and Secrets)، یا کلید KV با نام «admin_pass» / جدول «kvstore» در D1 اگر با ویزارد نصب تنظیم شده باشد.',recTg:'ارسال لینک ورود از طریق تلگرام',recTgSending:'در حال ارسال…',recTgSent:'یک لینک ورود یک‌کلیکی به چت تلگرام ادمین ارسال شد. تا ۱۰ دقیقه معتبر است.',recTgNotConfigured:'ربات تلگرام برای این پنل تنظیم نشده است.',recTgFailed:'ارسال ناموفق بود. کمی بعد دوباره امتحان کنید.',recOr:'یا',recCfPh:'توکن Cloudflare API',recCfBtn:'بازیابی با توکن Cloudflare',recCfChecking:'در حال بررسی…',recCfNeed:'ابتدا توکن را وارد کنید.',recCfNewPw:'رمز جدید: ',recCfErr:'بازیابی ناموفق بود',recRate:'تعداد تلاش‌ها زیاد است. کمی بعد دوباره امتحان کنید.'},
- ru:{dir:'ltr',theme:'Переключить тему',showpw:'Показать пароль',hidepw:'Скрыть пароль',t1:'Вход в панель администратора',lpw:'Пароль',pw:'пароль',go:'Войти',bad:'Неверный пароль',lcode:'Код аутентификатора',badcode:'Неверный код',need:'Введите 6-значный код из приложения-аутентификатора',ft:'Nova Proxy, сетевые инструменты с открытым кодом',forgot:'Забыли пароль?',forgotb:'Резервный способ: пароль совпадает с секретом ADMIN на вашем Cloudflare Worker (Settings → Variables and Secrets), либо это ключ KV «admin_pass» / таблица «kvstore» в D1, если он задан через мастер установки.',recTg:'Отправить ссылку для входа через Telegram',recTgSending:'Отправка…',recTgSent:'Ссылка для входа в один клик отправлена в Telegram-чат администратора. Действует 10 минут.',recTgNotConfigured:'Telegram-бот не настроен для этой панели.',recTgFailed:'Не удалось отправить. Попробуйте позже.',recOr:'или',recCfPh:'Cloudflare API Token',recCfBtn:'Восстановить с токеном Cloudflare',recCfChecking:'Проверка…',recCfNeed:'Сначала введите токен.',recCfNewPw:'Новый пароль: ',recCfErr:'Восстановление не удалось',recRate:'Слишком много попыток. Попробуйте позже.'}};
-var lang=(function(){var n=(navigator.language||'en').toLowerCase();return n.indexOf('fa')===0?'fa':n.indexOf('ru')===0?'ru':'en';})();
-var theme='light';
-try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;}catch(e){}
+/* file:// preview: backend calls fail silently (no request issued, so no console CORS spam). http(s) behavior unchanged. */
+try{if(location.protocol==='file:'){var _nvf=window.fetch.bind(window);window.fetch=function(u,o){try{var s=String((u&&u.url)||u||'');if(!/^https?:/i.test(s))return Promise.reject(new Error('nova file-preview: no backend'));}catch(_){}return _nvf(u,o);};}}catch(_){}
+var theme=document.documentElement.dataset.theme||'dark';
+function at(){document.documentElement.setAttribute('data-theme',theme);document.getElementById('theme').textContent=theme==='dark'?'☀':'☾';try{localStorage.setItem('nova-theme',theme)}catch(e){}}
+document.getElementById('theme').onclick=function(){theme=theme==='dark'?'light':'dark';at();};
 function $(i){return document.getElementById(i)}
-function ap(){var t=L[lang];document.documentElement.dir=t.dir;document.documentElement.lang=lang;if($('theme'))$('theme').setAttribute('aria-label',t.theme);
- $('t1').textContent=t.t1;$('lpw').textContent=t.lpw;$('pw').placeholder=t.pw;$('go').textContent=t.go;$('ft').textContent=t.ft;$('lcode').textContent=t.lcode;
- if($('forgot-s'))$('forgot-s').textContent=t.forgot; if($('forgot-b'))$('forgot-b').innerHTML=t.forgotb;
- if($('rec-tg-btn'))$('rec-tg-btn').textContent=t.recTg; if($('rec-or'))$('rec-or').textContent=t.recOr;
- if($('rec-cf-token'))$('rec-cf-token').placeholder=t.recCfPh; if($('rec-cf-btn'))$('rec-cf-btn').textContent=t.recCfBtn;
- if($('peek'))$('peek').setAttribute('aria-label',$('pw').type==='password'?t.showpw:t.hidepw);
- [].forEach.call(document.querySelectorAll('#lg button'),function(b){b.classList.toggle('on',b.dataset.l===lang)})}
-function at(){document.documentElement.setAttribute('data-theme',theme);$('theme').textContent=theme==='dark'?'☀':'☾';}
-$('lg').onclick=function(e){var b=e.target.closest('button');if(b){lang=b.dataset.l;try{localStorage.setItem('nova-lang',lang)}catch(e){}ap()}};
-$('theme').onclick=function(){theme=theme==='dark'?'light':'dark';try{localStorage.setItem('nova-theme',theme)}catch(e){}at()};
-async function login(){var body='password='+encodeURIComponent($('pw').value);var cv=$('code').value.trim();if(cv)body+='&code='+encodeURIComponent(cv);
- var r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
- var j={};try{j=await r.json()}catch(e){}
- if(j&&j.success){location.href=(j.adminUrl||'/admin');return}
- if(j&&j.need2fa){$('tfaWrap').style.display='block';$('code').focus();$('er').textContent=(j.error==='bad_code')?L[lang].badcode:L[lang].need;$('er').style.display='block';return}
- $('er').textContent=(j&&j.error==='bad_code')?L[lang].badcode:L[lang].bad;$('er').style.display='block'}
-$('peek').onclick=function(){var i=$('pw');var show=i.type==='password';i.type=show?'text':'password';this.classList.toggle('on',show);this.setAttribute('aria-label',show?L[lang].hidepw:L[lang].showpw);i.focus()};
-async function recoverTelegram(){
- var b=$('rec-tg-btn'),m=$('rec-tg-msg');
- b.disabled=true;m.className='rec-msg';m.textContent=L[lang].recTgSending;
- try{
-  var r=await fetch('/recover-telegram',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
-  var j={};try{j=await r.json()}catch(e){}
-  if(r.status===429){m.className='rec-msg bad';m.textContent=L[lang].recRate;}
-  else if(j&&j.configured===false){m.className='rec-msg bad';m.textContent=L[lang].recTgNotConfigured;}
-  else if(j&&j.success){m.className='rec-msg ok';m.textContent=L[lang].recTgSent;}
-  else{m.className='rec-msg bad';m.textContent=L[lang].recTgFailed;}
- }catch(e){m.className='rec-msg bad';m.textContent=L[lang].recTgFailed;}
- b.disabled=false;
+function fail(msg){var e=$('er');e.textContent=msg;e.classList.remove('show');void e.offsetWidth;e.classList.add('show');}
+async function login(){
+  var pw=$('pw').value;
+  if(!pw){fail('رمز را وارد کن');$('pw').focus();return;}
+  var go=$('go');go.disabled=true;go.innerHTML='<span class="spin"></span> در حال ورود…';
+  try{
+    var r=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'password='+encodeURIComponent(pw)});
+    var ok=false;
+    try{var j=await r.json();if(j&&j.success)ok=true;}catch(e){}
+    if(ok||r.redirected){location.href='/admin';return;}
+    fail('رمز اشتباه است');
+  }catch(e){fail('ارتباط با ورکر برقرار نشد');}
+  go.disabled=false;go.textContent='ورود';
 }
-async function recoverCf(){
- var b=$('rec-cf-btn'),m=$('rec-cf-msg'),tok=$('rec-cf-token').value.trim();
- if(!tok){m.className='rec-msg bad';m.textContent=L[lang].recCfNeed;return;}
- b.disabled=true;m.className='rec-msg';m.textContent=L[lang].recCfChecking;
- try{
-  var r=await fetch('/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({api_token:tok})});
-  var j={};try{j=await r.json()}catch(e){}
-  if(r.status===429){m.className='rec-msg bad';m.textContent=L[lang].recRate;}
-  else if(j&&j.success){m.className='rec-msg ok';m.textContent=L[lang].recCfNewPw+j.password;}
-  else{m.className='rec-msg bad';m.textContent=(j&&j.error)||L[lang].recCfErr;}
- }catch(e){m.className='rec-msg bad';m.textContent=L[lang].recCfErr;}
- b.disabled=false;
-}
-$('rec-tg-btn').onclick=recoverTelegram;
-$('rec-cf-btn').onclick=recoverCf;
-$('rec-cf-token').addEventListener('keydown',function(e){if(e.key==='Enter')recoverCf()});
-$('go').onclick=login;$('pw').addEventListener('keydown',function(e){if(e.key==='Enter')login()});$('code').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
-at();ap();
+$('peek').onclick=function(){var i=$('pw');var show=i.type==='password';i.type=show?'text':'password';this.classList.toggle('on',show);i.focus();};
+$('pw').addEventListener('keydown',function(e){
+  if(e.key==='Enter')login();
+  try{var c=e.getModifierState&&e.getModifierState('CapsLock');$('capswarn').classList.toggle('on',!!c);}catch(_){}
+});
+$('pw').addEventListener('keyup',function(e){try{var c=e.getModifierState&&e.getModifierState('CapsLock');$('capswarn').classList.toggle('on',!!c);}catch(_){}});
+$('go').onclick=login;
+at();$('pw').focus();
 </script>
 </body>
 </html>

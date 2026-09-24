@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Nova Proxy configs</title>
 <meta name="nova-userhub-version" content="4.0.0" />
-<link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+<link rel="icon" type="image/svg+xml" href="../logo-mark.svg" />
 
 <script>
   (function(){ try{
@@ -16,9 +16,10 @@
 </script>
 
 <style>
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
-@font-face{font-family:'Vazirmatn';src:url('/fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
+
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
+@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
 :root{
     --bg:#070809; --panel:#0c0e12; --card:#101319; --card2:#0b0d11;
     --bd:#1c2027; --bd2:#262b34; --tx:#e9edf4; --tx2:#aeb6c4; --mu:#6f7888;
@@ -149,13 +150,25 @@
   .utoken svg{width:13px;height:13px;flex:0 0 13px;opacity:.7}
   .loc-select{width:100%;margin-top:10px;box-sizing:border-box;background:var(--bg);color:var(--tx);border:1px solid var(--ac-line);border-radius:12px;padding:11px 12px;font:inherit;font-size:14px;cursor:pointer;appearance:none;-webkit-appearance:none}
   .loc-select:focus{outline:none;border-color:var(--ac)}
+
+/* Nova Obsidian identity overlay (additive) */
+body{position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(900px 380px at 80% -80px,rgba(45,212,238,.1),transparent 62%),radial-gradient(700px 320px at 8% 110%,rgba(124,58,237,.1),transparent 60%)}
+.brand .mark{background:linear-gradient(135deg,#0b1220,#101a2c)!important;border-color:rgba(45,212,238,.4)!important;box-shadow:0 0 18px rgba(45,212,238,.25)}
+.btn.primary{background:linear-gradient(120deg,#0ea5c4,#6366f1 60%,#9333ea)!important;box-shadow:0 8px 22px rgba(14,165,196,.35),inset 0 1px 0 rgba(255,255,255,.25);color:#fff!important}
+.btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost:hover{border-color:rgba(45,212,238,.5)!important;box-shadow:0 0 14px rgba(45,212,238,.16)}
+.segmented button.on{background:linear-gradient(120deg,#0ea5c4,#7c3aed)!important;color:#fff!important}
+.freebar{box-shadow:0 0 18px rgba(45,212,238,.12)}
+.usage:hover,.sublink:hover{border-color:rgba(45,212,238,.35)}
+.topbar{backdrop-filter:blur(14px)}
 </style>
 </head>
 <body>
   <div class="wrap">
     <header class="topbar">
       <div class="brand">
-        <div class="mark"><img src="/logo-mark.svg" alt="Nova Proxy" /></div>
+        <div class="mark"><img src="../logo-mark.svg" alt="Nova Proxy" /></div>
         <div>
           <div class="name" role="heading" aria-level="1">Nova Proxy</div>
           <div class="env"><span class="d"></span><span id="brandsub">configs</span></div>
@@ -234,8 +247,11 @@
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="/qrcode.min.js"></script>
+  <script src="../qrcode.min.js"></script>
   <script>
+/* file:// preview: backend calls fail silently (no request issued, so no console CORS spam). http(s) behavior unchanged. */
+try{if(location.protocol==='file:'){var _nvf=window.fetch.bind(window);window.fetch=function(u,o){try{var s=String((u&&u.url)||u||'');if(!/^https?:/i.test(s))return Promise.reject(new Error('nova file-preview: no backend'));}catch(_){}return _nvf(u,o);};}}catch(_){}
+
   (function(){
     var I18N = {
       en: { st_active:'Active', st_paused:'Paused', st_disabled:'Disabled', st_expired:'Expired', st_quota:'Quota reached', st_dailyquota:'Daily quota reached', copytoken:'Copy subscription token', tokencopied:'Token copied', brandsub:'configs', free_h:'🎁 Nova is a free service, never pay anyone for it', subtitle:'Pick your app, scan the QR or tap Add. Same servers in every app.', sub_user:'Configs for ', copy:'Copy', copied:'Copied', copyraw:'Copy subscription link', add:'Add to app', scanhint:'or scan this in your app', qmiss:'QR unavailable', foot:'Powered by Nova Proxy', used:'Used', total:'Limit', expires:'Expires', unlimited:'Unlimited', noexpiry:'No expiry', expired:'Expired', days:'d left', today:'today', up:'Up', down:'Down', remaining:'left', radar_ports:'Ports to scan', radar_title:'Nova Radar', radar_sub:'Slow or not connecting? Find the fastest clean IP for your network.', radar_run:'Run scan', radar_prep:'Preparing…', radar_testing:'Testing… ', radar_alive:' alive', radar_done:'Fastest IPs found', radar_none:'No responsive IP found. Try again.', radar_lat:'Latency', radar_copycfg:'📋 Copy best-IP config', radar_notmpl:'Best IPs found. Replace the IP in your current config with one of these.', radar_apply:'📥 Apply these to my config', radar_applying:'Applying…', radar_applied:'✅ Applied. Re-add or refresh your config in your app to use them.', radar_applyerr:'Could not apply, please try again', radar_reset:'↺ Reset to default', radar_resetting:'Resetting…', radar_reset_done:'✅ Reset. Re-add or refresh your config to use the defaults.', radar_reset_err:'Could not reset, please try again', loc_title:'Exit location', loc_sub:'Choose which country your traffic exits from.', loc_auto:'Automatic (best)', loc_saving:'Saving…', loc_saved:'✅ Saved. Reconnect in your app to use it.', loc_err:'Could not save, please try again' },
