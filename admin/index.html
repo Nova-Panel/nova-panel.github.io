@@ -745,23 +745,12 @@ img[src=""],img:not([src]){display:none!important}
 
       <!-- ============ CLEAN IPs ============ -->
       <section class="view" id="view-cleanips">
-        <div class="card" id="dc-card" style="border-color:var(--ac-line)">
-          <div class="card-h"><h3 data-i18n="dc_h">📍 Your datacenter</h3><button class="btn ghost sm" id="dc-refresh" data-i18n="dc_refresh" style="margin-inline-start:auto">Refresh</button></div>
-          <div class="card-pad">
-            <p style="font-size:12.5px;color:var(--mu);margin-bottom:14px" data-i18n="dc_s">Where your connection currently exits Cloudflare's network.</p>
-            <div style="display:flex;align-items:center;gap:14px">
-              <div id="dc-flag" style="font-size:40px;line-height:1">🌐</div>
-              <div style="min-width:0"><div id="dc-place" style="font-size:19px;font-weight:700">…</div>
-              <div id="dc-sub" style="font-size:12px;color:var(--mu);margin-top:3px"></div></div>
-            </div>
-          </div>
-        </div>
-<!-- radar removed -->        <div class="card">
+        <div class="card">
           <div class="card-h"><h3 data-i18n="ci_mode_h">IP selection mode</h3></div>
           <div class="card-pad">
             <div class="modeseg" id="ci-seg"><button data-m="custom" data-i18n="ci_m_custom">Custom list</button><button data-m="random" data-i18n="ci_m_random">Random</button><button data-m="generator">Generator</button></div>
-<div id="ci-custom" style="display:none"><div class="fg"><label data-i18n="ci_custom_ips">Custom clean IPs (ip:port#name)</label><textarea class="inp" id="ci-add" spellcheck="false" style="min-height:150px;font-family:ui-monospace,monospace;font-size:12px"></textarea></div></div>
-            <div id="ci-random" style="display:none"><div class="set-grid"><div class="fg"><label data-i18n="ci_rcount">Random count</label><input class="inp" id="ci-rcount" type="number" min="1" max="999"></div><div class="fg"><label data-i18n="ci_rport">Port (-1 = mixed)</label><input class="inp" id="ci-rport" type="number"><small data-i18n="ci_rport_h">This is the port saved to your configs. -1 = mixed (a spread of 443, 2053, 2083, 2087, 2096, 8443). Enter one number (e.g. 443) to use only that port.</small></div></div></div>
+<div id="ci-custom" style="display:none"><div class="fg"><label data-i18n="ci_custom_ips">Custom clean IPs (ip:port#name)</label><textarea class="inp" id="ci-add" spellcheck="false" style="min-height:150px;font-family:ui-monospace,monospace;font-size:12px"></textarea><small data-i18n="ci_custom_ips_h">One per line. IPv4, IPv6 and domain are all supported — <code>104.16.0.1:443#LA</code>, <code>[2606:4700::1]:443#CMCC</code> or <code>2606:4700::1#CMCC</code>, <code>example.com:2096#Iran</code>. Port is optional (defaults to 443). Without a <code>#name</code> the node is titled "Nova Proxy Free نوا پروکسی رایگان N".</small></div></div>
+            <div id="ci-random" style="display:none"><div class="set-grid"><div class="fg"><label data-i18n="ci_rcount">Random count</label><input class="inp" id="ci-rcount" type="number" min="1" max="500"></div><div class="fg"><label data-i18n="ci_rport">Port (-1 = mixed)</label><input class="inp" id="ci-rport" type="number"><small data-i18n="ci_rport_h">This is the port saved to your configs. -1 = mixed (a spread of 443, 2053, 2083, 2087, 2096, 8443). Enter one number (e.g. 443) to use only that port.</small></div></div></div>
             <div id="ci-generator" style="display:none"><div class="fg"><label data-i18n="ci_gen_url">Generator URL</label><input class="inp" id="ci-generator-url" placeholder="https://generator.example.com/sub"></div></div>
             <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="btn ghost sm" data-mopen="aggmodal">🔗 تجمیع ساب خارجی</button><button class="btn primary" id="ci-save" data-i18n="btn_save">Save</button></div>
           </div>
@@ -3256,10 +3245,17 @@ function syncFormValues(){
   on('t2-localdns', n.enableLocalDNS); set('d2-localip', n.localDNSIP||'8.8.8.8'); set('d2-localport', n.localDNSPort||'53');
   on('t2-fakedns', n.enableFakeDNS); set('d2-fakeip', n.fakeDNSIP||'198.51.100.1'); set('d2-loglevel', n.logLevel||'error');
   // Clean IPs (config), mode + pool API + random params; custom list loaded from ADD.txt
-  const osg=c.optimizedSubGeneration||{}, pool=osg.localIPPool||{};
-  set('ci-poolapi', c.POOL_API||'https://raw.githubusercontent.com/IRNova/Tools/main/clean-ip');
-  set('ci-rcount', pool.randomCount||16); set('ci-rport', pool.fixedPort!=null?pool.fixedPort:-1);
-  setCiMode(pool.randomIP===false ? 'custom' : 'random');
+  const osg=c.optimizedSubGeneration||{};
+  const hpool=((c['יצירת_מנוי_מועדף']||{})['מקומיIPספרייה'])||{};
+  const pool=osg.localIPPool||{};
+  const rcRaw=(pool.randomCount!=null&&pool.randomCount!=='')?pool.randomCount:hpool['עברית_0524'];
+  const rcNum=Math.floor(Number(rcRaw));
+  const rcVal=(rcRaw==null||String(rcRaw).trim()===''||!isFinite(rcNum))?16:Math.max(1,Math.min(rcNum,500));
+  const rpRaw=(pool.fixedPort!=null&&pool.fixedPort!=='')?pool.fixedPort:hpool['עברית_0421'];
+  const rpVal=(rpRaw==null||String(rpRaw).trim()===''||!isFinite(Math.floor(Number(rpRaw))))?-1:Math.floor(Number(rpRaw));
+  const rndIP=(typeof pool.randomIP==='boolean')?pool.randomIP:(typeof hpool['עברית_0708IP']==='boolean'?hpool['עברית_0708IP']:true);
+  set('ci-rcount', rcVal); set('ci-rport', rpVal);
+  setCiMode(rndIP===false ? 'custom' : 'random');
   fetch('/admin/ADD.txt?_t='+Date.now()).then(r=>r.text()).then(txt=>{ const a=document.getElementById('ci-add'); if(a) a.value=(txt==='null'?'':txt); }).catch(()=>{});
   fetch('/admin/whoami').then(r=>r.json()).then(w=>{ const el=document.getElementById('ci-isp'); if(el) el.innerHTML=(lang==='fa'?'شبکهٔ شما: ':'Your network: ')+'<b>AS'+(w.asn||'?')+'</b> '+(w.isp||'')+(w.country?(' · '+w.country):''); }).catch(()=>{});
   // Advanced Settings (config)
@@ -3599,10 +3595,21 @@ async function saveCleanIps(silent){
   if(!LIVE) return previewToast(); const c=STATE.config; c.optimizedSubGeneration=c.optimizedSubGeneration||{}; c.optimizedSubGeneration.local=true;
   c.optimizedSubGeneration.localIPPool=c.optimizedSubGeneration.localIPPool||{}; const p=c.optimizedSubGeneration.localIPPool;
   const v=(id)=>{ const e=document.getElementById(id); return e? e.value : ''; };
-  if(ciMode==='smart'){ const _pe=document.getElementById('ci-poolapi'); if(_pe){ c.POOL_API=(_pe.value||'').trim(); p.randomIP=false; } }
-  else if(ciMode==='custom'){ c.POOL_API=''; p.randomIP=false; await fetch('/admin/ADD.txt',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:v('ci-add')}); }
+  const _rcRaw=String(v('ci-rcount')).trim();
+  const _rcNum=Math.floor(Number(_rcRaw));
+  const _rc=(_rcRaw===''||!isFinite(_rcNum))?16:Math.max(1,Math.min(_rcNum,500));
+  const _rpRaw=String(v('ci-rport')).trim();
+  const _rpNum=Math.floor(Number(_rpRaw));
+  const _rp=(_rpRaw===''||!isFinite(_rpNum))?-1:_rpNum;
+  if(_rcRaw!==''&&_rcNum!==_rc){ const _e=document.getElementById('ci-rcount'); if(_e) _e.value=String(_rc); }
+  p.fixedPort=_rp;
+  if(ciMode==='smart'){ const _pe=document.getElementById('ci-poolapi'); if(_pe){ c.POOL_API=(_pe.value||'').trim(); p.randomIP=false; } p.randomCount=_rc; }
+  else if(ciMode==='custom'){ c.POOL_API=''; p.randomIP=false; p.randomCount=_rc;
+    const _ta=document.getElementById('ci-add');
+    const _txt=((_ta&&_ta.value)||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean).join('\n');
+    await fetch('/admin/ADD.txt',{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:_txt}); }
   else if(ciMode==='generator'){ c.POOL_API=''; c.optimizedSubGeneration.local=false; c.optimizedSubGeneration.SUB=(v('ci-generator-url')||'').trim()||null; c['יצירת_מנוי_מועדף']=c['יצירת_מנוי_מועדף']||{}; c['יצירת_מנוי_מועדף'].local=false; c['יצירת_מנוי_מועדף'].SUB=c.optimizedSubGeneration.SUB; }
-  else { c.POOL_API=''; p.randomIP=true; p.randomCount=Number(v('ci-rcount'))||16; p.fixedPort=Number(v('ci-rport')); }
+  else { c.POOL_API=''; p.randomIP=true; p.randomCount=_rc; }
   const ok=await API.post('config.json', c); if(!silent) toast(savedMsg(ok)); return ok;
 }
 /* ================= Speed Lab (BestCF-style batch tester) ================= */
@@ -3616,7 +3623,7 @@ function labInit(){
   on('lab-export',labExport); on('lab-save',labSave);
 }
 function labSetMsg(s,st){ const m=document.getElementById('lab-msg'); if(m){ m.textContent=s||''; m.style.color=st==='bad'?'var(--dg)':st==='ok'?'var(--ok)':'var(--mu)'; } }
-function labParseCustom(){ const el=document.getElementById('ci-add'); const out=[]; ((el&&el.value)||'').split(/[\r\n,;]+/).map(s=>s.trim().replace(/#.*$/,'')).filter(Boolean).forEach(s=>{ const m=s.match(/^([^:]+)(?::(\d+))?$/); if(m) out.push({ip:m[1],port:+(m[2]||443)}); }); return out; }
+function labParseCustom(){ const el=document.getElementById('ci-add'); const out=[]; ((el&&el.value)||'').split(/[\r\n,;]+/).map(s=>s.trim().replace(/#.*$/,'')).filter(Boolean).forEach(s=>{ let host=s,port=443; const b=s.match(/^\[([^\]]+)\](?::(\d+))?$/); if(b){ host=b[1]; port=b[2]?+b[2]:443; } else if((s.match(/:/g)||[]).length<=1){ const p=s.match(/^([^:]+)(?::(\d+))?$/); if(p){ host=p[1]; port=p[2]?+p[2]:443; } } else { host=s.replace(/^\[|\]$/g,''); } if(/^[\w.:-]+$/.test(host)) out.push({ip:host,port:port}); }); return out; }
 async function labRun(){
   if(labRunning) return; labRunning=true; labStop=false;
   const btn=document.getElementById('lab-run'), stop=document.getElementById('lab-stop');
@@ -3857,29 +3864,6 @@ function coloMapSvg(lat,lon,iata){
     +'<line x1="0" y1="90" x2="360" y2="90" stroke="var(--bd)" stroke-width="0.5" opacity="0.7"/>'
     +'<line x1="180" y1="0" x2="180" y2="180" stroke="var(--bd)" stroke-width="0.5" opacity="0.7"/>'
     +dots+marker+'</svg>';
-}
-async function renderDatacenter(){
-  try{
-    var place=document.getElementById("dc-place"); if(!place) return;
-    var flag=document.getElementById("dc-flag"), sub=document.getElementById("dc-sub"), mw=document.getElementById("dc-map-wrap");
-    var txt=""; try{ txt=await fetch("/cdn-cgi/trace?_t="+Date.now()).then(function(r){return r.text();}); }catch(e){}
-    var o={}; txt.split("\n").forEach(function(l){ var i=l.indexOf("="); if(i>0) o[l.slice(0,i)]=l.slice(i+1); });
-    var colo=(o.colo||"").toUpperCase(); var rec=COLO_DB[colo];
-    if(rec){
-      var lat=rec[0],lon=rec[1],cca2=rec[2],cityFa=rec[3],regionFa=rec[4];
-      var cn=CCA2_EN[cca2]||cca2; var rn=(lang==="fa")?regionFa:(COLO_REGION_EN[regionFa]||regionFa);
-      if(flag) flag.textContent=ccaFlag(cca2);
-      place.textContent=(lang==="fa")?cityFa:cn;
-      if(sub) sub.textContent=(lang==="fa")?(rn+" · "+colo+" · "+cn):(cityFa+" · "+rn+" · "+colo);
-      if(mw) mw.innerHTML=coloMapSvg(lat,lon,colo);
-    } else {
-      var lc=(o.loc||"").toUpperCase();
-      if(flag) flag.textContent=lc?ccaFlag(lc):"🌐";
-      place.textContent=colo?(CCA2_EN[lc]||lc||t("dc_unknown")):t("dc_unknown");
-      if(sub) sub.textContent=colo?("· "+colo):"";
-      if(mw) mw.innerHTML="";
-    }
-  }catch(e){}
 }
 var CT_TARGETS=[{n:"Google",u:"https://www.google.com/favicon.ico"},{n:"Cloudflare",u:"https://www.cloudflare.com/favicon.ico"},{n:"X (Twitter)",u:"https://x.com/favicon.ico"},{n:"YouTube",u:"https://www.youtube.com/favicon.ico"},{n:"Instagram",u:"https://www.instagram.com/favicon.ico"},{n:"Telegram",u:"https://telegram.org/favicon.ico"},{n:"GitHub",u:"https://github.com/favicon.ico"},{n:"ChatGPT",u:"https://chat.openai.com/favicon.ico"}];
 function ctProbe(url,timeout){ return new Promise(function(res){ var done=false,t0=Date.now(),img=new Image(); var tm=setTimeout(function(){ if(done)return; done=true; img.src=""; res({ok:false,ms:0}); },timeout); img.onload=function(){ if(done)return; done=true; clearTimeout(tm); res({ok:true,ms:Date.now()-t0}); }; img.onerror=function(){ if(done)return; done=true; clearTimeout(tm); res({ok:false,ms:0}); }; img.src=url+(url.indexOf("?")<0?"?":"&")+"_t="+Date.now(); }); }
@@ -4198,7 +4182,7 @@ async function checkUpdate(){ try{
  bar.style.display='flex';
 }catch(e){} }
 setTimeout(checkUpdate, 1800);
-setTimeout(function(){ try{ renderDatacenter(); var b=document.getElementById("dc-refresh"); if(b) b.onclick=renderDatacenter; var c=document.getElementById("ct-run"); if(c) c.onclick=runConnTest; }catch(e){} }, 700);
+setTimeout(function(){ try{ var c=document.getElementById("ct-run"); if(c) c.onclick=runConnTest; }catch(e){} }, 700);
 /* ============================================================================
    DAILY TRAFFIC CHART, D1-backed, dependency-free canvas. Up/down split.
    Lazy: only fetches /admin/usage-data when the Dashboard view is shown, and

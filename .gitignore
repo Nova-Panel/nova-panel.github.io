@@ -1,3 +1,4 @@
 .wrangler/
 .DS_Store
 node_modules/
+*.bak*
