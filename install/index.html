@@ -1,304 +1,691 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="fa" dir="rtl" data-theme="light">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="robots" content="noindex, nofollow" />
-<title>Nova Proxy Setup</title>
-<link rel="icon" type="image/svg+xml" href="../logo-mark.svg" /><link rel="alternate icon" href="../logo.png" />
-<link rel="apple-touch-icon" href="../logo.png" />
-<meta name="apple-mobile-web-app-title" content="Nova Proxy" />
+<title>Nova Worker — راه‌اندازی</title>
+<link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+<link rel="alternate icon" href="/logo.png" />
+<link rel="apple-touch-icon" href="/logo.png" />
+<meta name="apple-mobile-web-app-title" content="Nova Worker" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="theme-color" content="#0b0d11" />
-
+<meta name="theme-color" content="#f4f6fb" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
-
-@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-arabic.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
-@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0000-00FF}
-@font-face{font-family:'Vazirmatn';src:url('../fonts/Vazirmatn-latin-ext.woff2') format('woff2');font-weight:400 800;font-style:normal;font-display:swap;unicode-range:U+0100-024F}
-:root{--bg:#f4f6fb;--card:#fff;--c2:#f7f9fc;--bd:#e6eaf1;--bd2:#dde2eb;--tx:#101622;--tx2:#445066;--mu:#8a93a6;--ac:#0ea5c4;--ac2:#7c3aed;--ok:#16a34a;--dg:#e5484d;--grad:linear-gradient(120deg,#0891b2,#7c3aed);--ring:rgba(8,145,178,.2);--shadow:0 1px 2px rgba(20,40,80,.04),0 14px 34px rgba(40,60,110,.1)}
-html[data-theme=dark]{--bg:#070809;--card:#101319;--c2:#0b0d11;--bd:#1c2027;--bd2:#262b34;--tx:#e9edf4;--tx2:#aeb6c4;--mu:#6f7888;--ac:#22d3ee;--ac2:#a855f7;--ok:#34d399;--dg:#f87171;--grad:linear-gradient(120deg,#22d3ee,#7c5cff);--ring:rgba(34,211,238,.25);--shadow:0 1px 0 rgba(255,255,255,.02),0 14px 38px rgba(0,0,0,.5)}
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --c2:#f7f9fc; --bd:#e6eaf1; --bd2:#dde2eb;
+  --tx:#101622; --tx2:#445066; --mu:#8a93a6;
+  --ac:#0ea5c4; --ac2:#7c3aed;
+  --ac-soft:rgba(14,165,196,.10); --ac2-soft:rgba(124,58,237,.10);
+  --grad:linear-gradient(120deg,#0891b2,#7c3aed);
+  --ring:rgba(8,145,178,.22); --dg:#e5484d; --ok:#16a34a; --wn:#b45309;
+  --shadow:0 1px 2px rgba(20,40,80,.04),0 22px 50px rgba(40,60,110,.13);
+  --shadow-sm:0 1px 2px rgba(20,40,80,.05);
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:clip}
-body{font-family:'Vazirmatn','Inter',system-ui,Tahoma,sans-serif;background:radial-gradient(800px 420px at 50% -6%,color-mix(in srgb,var(--ac) 14%,transparent),transparent 60%),var(--bg);color:var(--tx);min-height:100vh;padding:32px 16px;font-size:14px}
-html[lang=en]{font-family:'Inter','Vazirmatn',system-ui,sans-serif}
-.wrap{max-width:680px;margin:0 auto}
-.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.brand{display:flex;align-items:center;gap:11px}
-.brand .lg{width:40px;height:40px;border-radius:11px;background:var(--c2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.brand .lg img,.brand .lg svg{width:30px;height:30px;object-fit:contain;display:block}.brand h1{font-size:19px;font-weight:800}
-.tools{display:flex;gap:8px;align-items:center}
-.lang{display:flex;gap:3px;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:3px}
-.lang button{border:none;background:transparent;color:var(--mu);font:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;cursor:pointer}
-.lang button.on{background:var(--ac);color:#fff}
-.tbtn{width:38px;height:32px;background:var(--card);border:1px solid var(--bd);border-radius:10px;color:var(--tx2);cursor:pointer}
-.intro{color:var(--mu);font-size:13.5px;line-height:1.9;margin:6px 0 22px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow)}
-.ch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.ch .t{font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px}
-.num{width:26px;height:26px;border-radius:8px;background:var(--c2);border:1px solid var(--bd);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--ac)}
-.st{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--mu)}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--mu)}
-.st.ok{color:var(--ok)}.st.ok .dot{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 20%,transparent)}
-.st.bad{color:var(--dg)}.st.bad .dot{background:var(--dg)}
-ol{padding-inline-start:20px;color:var(--tx2);font-size:13.5px;line-height:2}ol code,.mono{background:var(--c2);border:1px solid var(--bd);border-radius:5px;padding:1px 7px;font-family:ui-monospace,monospace;font-size:12px;color:var(--ac);direction:ltr;display:inline-block}
-.desc{color:var(--tx2);font-size:13.5px;line-height:1.9;margin-bottom:12px}
-.field{margin-bottom:11px}
-.field label{display:block;font-size:12px;font-weight:600;color:var(--tx2);margin-bottom:5px}
-.field input{width:100%;background:var(--c2);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);font:inherit;font-size:14px;padding:11px 13px;outline:none;transition:.12s}
-.field input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ring)}
-.msg{font-size:12.5px;font-weight:600;margin-top:4px;min-height:16px}
-.msg.ok{color:var(--ok)}.msg.bad{color:var(--dg)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--bd2);background:var(--c2);color:var(--tx);font:inherit;font-weight:600;font-size:13px;padding:9px 18px;border-radius:10px;cursor:pointer;transition:.12s}
-.btn:hover{border-color:var(--ac);color:var(--ac)}
-.btn.p{background:var(--ac);color:#fff;border:none}.btn.p:hover{filter:brightness(1.05);color:#fff}
-.btn:disabled{opacity:.45;cursor:not-allowed;filter:none;border-color:var(--bd2);color:var(--mu)}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
-th{text-align:start;color:var(--mu);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;padding:7px 8px;border-bottom:1px solid var(--bd)}
-td{padding:8px;border-bottom:1px solid var(--bd);color:var(--tx2);vertical-align:top}tr:last-child td{border-bottom:none}
-.req{color:var(--dg);font-weight:700;font-size:11px}.opt{color:var(--mu);font-size:11px}
-.finish{text-align:center;margin-top:22px}
-.finish .btn{padding:13px 30px;font-size:15px}
-.foot{text-align:center;color:var(--mu);font-size:11.5px;margin-top:18px}
-.hidden{display:none}
-/* Enterprise mobile polish (additive, mobile-only): bigger tap targets, no iOS zoom, safe wrapping */
-@media (max-width:560px){
- .field input{font-size:16px;padding:13px}
- .btn{min-height:44px;padding:11px 18px}
- .finish .btn{min-height:48px}
- .lang button{min-height:40px}
- .tbtn{height:40px;width:40px}
- body{padding:24px 14px}
- .card{padding:18px 16px}
- td,th{word-break:break-word}
- .mono{word-break:break-all;white-space:normal}
+body{
+  min-height:100vh; padding:26px 18px 36px;
+  font-family:'Vazirmatn','Inter',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;
+  color:var(--tx); background:var(--bg);
 }
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(760px 420px at 12% -8%, rgba(14,165,196,.16), transparent 62%),
+    radial-gradient(680px 420px at 92% 2%, rgba(124,58,237,.14), transparent 58%),
+    radial-gradient(900px 520px at 50% 118%, rgba(14,165,196,.10), transparent 60%);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.5;
+  background-image:linear-gradient(rgba(16,22,34,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(16,22,34,.035) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(720px 600px at 50% 36%,#000 18%,transparent 78%);
+          mask-image:radial-gradient(720px 600px at 50% 36%,#000 18%,transparent 78%);
+}
+.wrap{width:100%;max-width:820px;margin:0 auto}
 
-/* Nova Obsidian identity overlay (additive) */
-body{position:relative}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(760px 400px at 50% -100px,rgba(45,212,238,.12),transparent 65%)}
-.card{position:relative;overflow:hidden;border-radius:20px}
-.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(120deg,#2dd4ee,#818cf8 55%,#c084fc)}
-.btn.p{background:linear-gradient(120deg,#0ea5c4,#6366f1 60%,#9333ea)!important;box-shadow:0 8px 22px rgba(14,165,196,.35),inset 0 1px 0 rgba(255,255,255,.25)}
-.btn.p:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.btn:hover{border-color:rgba(45,212,238,.5)}
-.num{background:linear-gradient(120deg,#0ea5c4,#7c3aed)!important;color:#fff!important;border:none!important;box-shadow:0 4px 12px rgba(14,165,196,.4)}
-.field input:focus{box-shadow:0 0 0 3px rgba(45,212,238,.25),0 0 14px rgba(45,212,238,.14)!important}
-.brand .lg{background:linear-gradient(135deg,#0b1220,#101a2c)!important;border-color:rgba(45,212,238,.4)!important;box-shadow:0 0 18px rgba(45,212,238,.25)}
-.lang button.on{background:linear-gradient(120deg,#0ea5c4,#7c3aed)!important}
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;min-width:0}
+.brand .lg{
+  width:44px;height:44px;border-radius:13px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#fff,#f6f9fd);border:1px solid var(--bd);
+  box-shadow:0 6px 16px rgba(40,60,110,.10),inset 0 1px 0 #fff;overflow:hidden;
+}
+.brand .lg img{width:32px;height:32px;object-fit:contain;display:block}
+.brand .bt{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.brand .bt strong{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.brand .bt small{font-size:11px;font-weight:600;color:var(--mu);letter-spacing:.4px}
+.lang{display:flex;gap:3px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:3px;flex:0 0 auto;box-shadow:var(--shadow-sm)}
+.lang button{
+  border:none;background:transparent;color:var(--mu);font:inherit;font-size:12px;font-weight:700;
+  padding:7px 12px;border-radius:9px;cursor:pointer;transition:.14s;letter-spacing:.2px;
+}
+.lang button:hover{color:var(--tx2)}
+.lang button.on{background:var(--grad);color:#fff;box-shadow:0 4px 12px rgba(8,145,178,.28)}
+
+/* hero */
+.hero{margin-bottom:20px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--ac);background:var(--ac-soft);border:1px solid rgba(14,165,196,.18);
+  padding:5px 10px;border-radius:999px;margin-bottom:13px;
+}
+.eyebrow svg{width:13px;height:13px}
+h1{font-size:26px;font-weight:800;letter-spacing:-.5px;line-height:1.25}
+.hero p{margin-top:8px;font-size:13.5px;line-height:1.75;color:var(--tx2);max-width:680px}
+
+/* cards */
+.card{
+  position:relative;background:var(--card);border:1px solid var(--bd);border-radius:18px;
+  padding:22px 22px 20px;box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--grad);opacity:.9;
+}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:10px}
+.ch .t{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;line-height:1.4}
+.num{
+  width:28px;height:28px;border-radius:9px;background:var(--c2);border:1px solid var(--bd);
+  display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--ac);flex:0 0 auto;
+}
+.chip{
+  display:inline-flex;flex:0 0 auto;align-items:center;gap:6px;font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:999px;border:1px solid var(--bd2);background:var(--card2,#f7f9fc);color:var(--mu);white-space:nowrap;
+}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.ok{color:var(--ok);border-color:rgba(22,163,74,.28);background:rgba(22,163,74,.09)}
+.chip.warn{color:var(--wn);border-color:rgba(180,83,9,.28);background:rgba(180,83,9,.09)}
+.chip.err{color:var(--dg);border-color:rgba(229,72,77,.28);background:rgba(229,72,77,.09)}
+.chip.info{color:var(--ac);border-color:rgba(14,165,196,.24);background:var(--ac-soft)}
+.desc{font-size:13px;line-height:1.85;color:var(--tx2);margin-bottom:12px}
+.desc b{color:var(--tx);font-weight:700}
+
+/* steps */
+.steps{border:1px dashed var(--bd2);border-radius:12px;background:var(--c2);padding:12px 14px 12px 14px;margin:0 0 14px}
+.steps ol{padding-inline-start:20px;font-size:12.5px;line-height:2;color:var(--tx2)}
+.steps li::marker{color:var(--ac);font-weight:700}
+code,.mono{
+  background:#fff;border:1px solid var(--bd);border-radius:6px;padding:1px 7px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--ac);direction:ltr;display:inline-block;
+}
+.hidden{display:none!important}
+
+/* form */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;color:var(--tx2);font-weight:700;margin-bottom:7px}
+.field .hint{font-size:11.5px;color:var(--mu);font-weight:500;margin-top:5px;line-height:1.6}
+input[type=password],input[type=text],input[type=url],input[type=number]{
+  width:100%;background:var(--c2);border:1px solid var(--bd2);border-radius:12px;
+  padding:12px 14px;color:var(--tx);font-size:14px;font-family:inherit;outline:none;transition:.14s;
+}
+input::placeholder{color:#a7afbf}
+input:focus{border-color:var(--ac);background:#fff;box-shadow:0 0 0 4px var(--ring)}
+input:disabled{opacity:.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* advanced */
+details.adv{border:1px solid var(--bd);border-radius:12px;background:var(--c2);padding:0;margin:4px 0 16px;overflow:hidden}
+details.adv>summary{
+  cursor:pointer;list-style:none;padding:12px 14px;font-size:12.5px;font-weight:700;color:var(--tx2);
+  display:flex;align-items:center;gap:9px;user-select:none;
+}
+details.adv>summary::-webkit-details-marker{display:none}
+details.adv>summary .ico{width:16px;height:16px;color:var(--ac);flex:0 0 auto}
+details.adv>summary .arr{margin-inline-start:auto;transition:.16s;color:var(--mu)}
+details.adv[open]>summary .arr{transform:rotate(180deg)}
+details.adv .adv-body{padding:2px 14px 14px;border-top:1px solid var(--bd);background:#fff}
+
+/* switches */
+.switch{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px dashed var(--bd)}
+.switch:last-child{border-bottom:none}
+.switch .sl{font-size:12.5px;font-weight:700;color:var(--tx2);line-height:1.5}
+.switch .sh{font-size:11px;color:var(--mu);font-weight:500;margin-top:3px;line-height:1.55}
+.switch input{appearance:none;-webkit-appearance:none;width:42px;height:23px;border-radius:999px;background:#d7deea;position:relative;cursor:pointer;transition:.16s;flex:0 0 auto;border:none;outline:none}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(20,40,80,.28);transition:.16s}
+.switch input:checked{background:var(--ac)}
+.switch input:checked::after{transform:translateX(19px)}
+.switch input:focus-visible{box-shadow:0 0 0 4px var(--ring)}
+[dir=rtl] .switch input::after{left:auto;right:3px}
+[dir=rtl] .switch input:checked::after{transform:translateX(-19px)}
+.adv-sep{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mu);margin:16px 0 2px;padding-top:14px;border-top:1px solid var(--bd)}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--bd2);
+  background:var(--c2);color:var(--tx);font:inherit;font-weight:700;font-size:13px;padding:10px 18px;
+  border-radius:11px;cursor:pointer;transition:.14s;
+}
+.btn:hover{border-color:var(--ac);color:var(--ac)}
+.btn svg{width:17px;height:17px}
+.btn.primary{background:var(--grad);border:none;color:#fff;box-shadow:0 10px 24px rgba(8,145,178,.24)}
+.btn.primary:hover{filter:brightness(1.04);color:#fff;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;filter:none;transform:none;border-color:var(--bd2);color:var(--mu)}
+.btn.block{width:100%;padding:14px;font-size:14.5px;border-radius:12px}
+.spin{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+.btn.loading .spin{display:block}
+.btn.loading .btn-ico{display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.msg{font-size:12.5px;font-weight:600;line-height:1.65;margin-top:9px;min-height:0}
+.msg:empty{display:none}
+.msg.ok{color:var(--ok)}
+.msg.err{color:var(--dg)}
+.msg.warn{color:var(--wn)}
+
+/* done */
+.done{text-align:center;padding:8px 0 2px}
+.done .badge{
+  width:64px;height:64px;border-radius:20px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  background:rgba(22,163,74,.10);border:1px solid rgba(22,163,74,.24);color:var(--ok);
+}
+.done .badge svg{width:32px;height:32px}
+.done.warn .badge{background:rgba(180,83,9,.10);border-color:rgba(180,83,9,.24);color:var(--wn)}
+.done h2{font-size:19px;font-weight:800;margin-bottom:6px}
+.done p{font-size:13px;line-height:1.8;color:var(--tx2);max-width:520px;margin:0 auto 16px}
+.summary{display:flex;flex-direction:column;gap:8px;text-align:start;margin:16px auto 18px;max-width:460px}
+.summary .row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;
+  border:1px solid var(--bd);border-radius:10px;background:var(--c2);font-size:12.5px;
+}
+.summary .row span:first-child{color:var(--mu);font-weight:600}
+.summary .row span:last-child{font-weight:700;color:var(--tx);direction:ltr;text-align:end;word-break:break-all}
+.summary .row .val-ok{color:var(--ok)}
+.summary .row .val-bad{color:var(--dg)}
+
+.foot{text-align:center;color:var(--mu);font-size:11.5px;margin-top:18px;line-height:1.7}
+
+@media (max-width:560px){
+  body{padding:20px 14px 28px}
+  h1{font-size:23px}
+  .card{padding:19px 16px 17px;border-radius:16px}
+  input[type=password],input[type=text],input[type=url],input[type=number]{font-size:16px;padding:13px 14px}
+  .btn{min-height:44px}
+  .lang button{min-height:38px;padding:7px 10px}
+  .summary .row{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<script>/* apply theme before first paint (no flash); fall back to system preference */(function(){try{var t=localStorage.getItem('nova-theme');if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
 <div class="wrap">
-<div class="bar">
-<div class="brand"><span class="lg"><svg viewBox="0 0 1254 1254" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-label="Nova"><defs><linearGradient id="ng" x1="128.06" y1="1122.76" x2="1206.85" y2="43.97" gradientUnits="userSpaceOnUse"><stop offset=".04" stop-color="#9d4efb"/><stop offset="1" stop-color="#02cdf3"/></linearGradient></defs><path d="M1185.57,149.23c0-43.84-27.55-82.6-66.19-100.7-40.83-19.13-87.98-16.85-126.82,6.19-33.3,19.76-56.22,55.99-56.25,95.68l-.38,653.25.09,39.98c.03,13.51-.33,26.37-3.82,39.13-8.12,29.65-30.52,53.04-56.69,62.39-32.53,11.62-65.87,5.5-91.07-15.75-20.65-17.42-33.28-42.64-33.32-70.11l-.35-245.85.07-231.05c.04-148.83-97.26-281.46-240.38-321.81-67.49-19.02-138.62-19.66-204.99,2.42l-13.66,4.55C159.84,114.72,68.42,239.99,68.41,381.43l-.06,712.76c0,68.93,56.48,123.39,124.03,124.15,65.31.73,125.56-52.18,125.64-120.57l.88-712.63c.07-54.62,49.94-96.23,103.56-88.53,43.56,6.25,78.96,43.23,79.08,88.34l1.24,493.92c.16,62.52,24.72,123.29,59.49,174.21,43.7,63.99,108.48,111.28,182.25,133.98,91.72,28.23,190.9,16.68,273.4-31.79,36.89-21.68,68.83-50.13,94.95-83.49l16.54-23.16c31.76-44.47,56.26-119.27,56.25-174.93l-.09-724.43Z" fill="url(#ng)"/></svg></span><h1>Nova Proxy</h1></div>
-<div class="tools"><div class="lang" id="lg"><button data-l="fa" class="on">فا</button><button data-l="en">EN</button><button data-l="ru">РУ</button></div><button class="tbtn" id="theme">☾</button></div>
-</div>
-<p class="intro" id="intro"></p>
 
-<div class="card">
-<div class="ch"><div class="t"><span class="num">1</span><span id="s1-t">KV Database</span></div><div class="st" id="s1-st" role="status" aria-live="polite"><span class="dot"></span><span id="s1-l">…</span></div></div>
-<p class="desc" id="s1-desc"></p>
-<ol id="s1-steps" class="hidden"></ol>
-<button class="btn" id="s1-test"></button>
+  <div class="topbar">
+    <a class="brand" href="/admin" aria-label="Nova Worker">
+      <span class="lg"><img src="/logo-mark.svg" alt="Nova Worker" /></span>
+      <span class="bt"><strong>Nova Worker</strong><small data-i18n="kicker">Setup</small></span>
+    </a>
+    <div class="lang" id="lg" role="group" aria-label="Language">
+      <button type="button" data-l="fa" class="on">فا</button>
+      <button type="button" data-l="en">EN</button>
+      <button type="button" data-l="ru">РУ</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <span class="eyebrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+      <span data-i18n="badge">راه‌اندازی اولیه</span>
+    </span>
+    <h1 data-i18n="title">راه‌اندازی Nova Worker</h1>
+    <p data-i18n="intro">به نصب خوش آمدید. ابتدا اتصال KV را بررسی کنید، سپس رمز مدیریت و اطلاعات اولیه را وارد کنید. همه‌چیز همین‌جا ذخیره می‌شود و نیازی به تنظیم دستی متغیرهای Cloudflare نیست.</p>
+  </header>
+
+  <section class="card" id="kv-card">
+    <div class="ch">
+      <div class="t"><span class="num">1</span><span data-i18n="kv_title">اتصال KV</span></div>
+      <span class="chip" id="kv-chip"><span class="dot"></span><span id="kv-chip-t">…</span></span>
+    </div>
+    <p class="desc" id="kv-desc" data-i18n="kv_desc">تنظیمات، رمز مدیریت و داده‌های پنل در Workers KV ذخیره می‌شوند. برای ادامه باید یک Namespace با نام متغیر <b>KV</b> به Worker وصل باشد.</p>
+    <div class="steps hidden" id="kv-steps">
+      <ol id="kv-steps-list"></ol>
+    </div>
+    <div class="pillrow" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <button class="btn" type="button" id="kv-test">
+        <span class="spin" aria-hidden="true"></span>
+        <svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1"/><polyline points="21 3 21 9 15 9"/></svg>
+        <span data-i18n="kv_test">تست اتصال</span>
+      </button>
+      <span class="msg" id="kv-msg" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="card" id="form-card">
+    <div class="ch">
+      <div class="t"><span class="num">2</span><span data-i18n="pw_title">رمز مدیریت و اطلاعات اولیه</span></div>
+      <span class="chip info" id="form-chip"><span class="dot"></span><span data-i18n="form_chip">اختیاری</span></span>
+    </div>
+    <p class="desc" id="pw-desc" data-i18n="pw_desc">یک رمز برای ورود به پنل انتخاب کنید. این رمز همراه با اطلاعات اولیه در KV ذخیره می‌شود و بعداً از داخل پنل هم قابل تغییر است.</p>
+
+    <form id="install-form" novalidate>
+      <div class="grid2">
+        <div class="field">
+          <label for="pw" data-i18n="pw_label">رمز جدید</label>
+          <input id="pw" type="password" autocomplete="new-password" spellcheck="false" placeholder="••••••••" />
+        </div>
+        <div class="field">
+          <label for="pw2" data-i18n="pw2_label">تکرار رمز</label>
+          <input id="pw2" type="password" autocomplete="new-password" spellcheck="false" placeholder="••••••••" />
+        </div>
+      </div>
+      <div class="field" style="margin-top:-4px">
+        <div class="hint" data-i18n="pw_hint">حداقل ۶ کاراکتر. رمز را در جای امن نگه دارید؛ برای ورود به پنل لازم است.</div>
+      </div>
+
+      <details class="adv">
+        <summary>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span data-i18n="adv_title">تنظیمات اولیه (اختیاری)</span>
+          <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="adv-body">
+          <div class="field">
+            <label for="key" data-i18n="key_label">KEY (کلید رمزنگاری)</label>
+            <input id="key" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="auto" />
+            <div class="hint" data-i18n="key_hint">اگر خالی بماند، ورکر از کلید پیش‌فرض استفاده می‌کند. برای امنیت بیشتر یک مقدار تصادفی وارد کنید.</div>
+          </div>
+          <div class="field">
+            <label for="uuid" data-i18n="uuid_label">UUID</label>
+            <input id="uuid" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="auto" />
+            <div class="hint" data-i18n="uuid_hint">شناسه‌ی نود. اگر خالی بماند از رمز و KEY ساخته می‌شود.</div>
+          </div>
+          <div class="field">
+            <label for="host" data-i18n="host_label">HOST (دامنه‌ی سفارشی)</label>
+            <input id="host" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="worker.example.com" />
+            <div class="hint" data-i18n="host_hint">اختیاری. اگر دامنه‌ی اختصاصی دارید اینجا وارد کنید؛ در غیر این صورت دامنه‌ی Worker استفاده می‌شود.</div>
+          </div>
+          <div class="field">
+            <label for="proxyip" data-i18n="proxyip_label">PROXYIP</label>
+            <input id="proxyip" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="proxy.example.com" />
+            <div class="hint" data-i18n="proxyip_hint">اختیاری. آدرس پروکسی معکوس برای اتصال به مقاصد مسدود.</div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="url" data-i18n="url_label">URL (صفحه‌ی پوششی)</label>
+              <input id="url" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="nginx" />
+              <div class="hint" data-i18n="url_hint">اختیاری. پیش‌فرض nginx است.</div>
+            </div>
+            <div class="field">
+              <label for="path" data-i18n="path_label">PATH</label>
+              <input id="path" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="/" />
+              <div class="hint" data-i18n="path_hint">اختیاری. مسیر WebSocket؛ پیش‌فرض / است.</div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="adv">
+        <summary>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span data-i18n="adv2_title">عملکرد و رفتار (اختیاری)</span>
+          <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="adv-body">
+          <div class="switch">
+            <span>
+              <span class="sl" data-i18n="debug_label">لاگ دیباگ</span>
+              <span class="sh" data-i18n="debug_hint">ثبت جزئیات بیشتر در لاگ Worker برای عیب‌یابی.</span>
+            </span>
+            <input type="checkbox" id="debug" aria-label="debug" />
+          </div>
+          <div class="switch">
+            <span>
+              <span class="sl" data-i18n="offlog_label">غیرفعال کردن لاگ KV</span>
+              <span class="sh" data-i18n="offlog_hint">نوشتن گزارش بازدیدها در KV را متوقف می‌کند (مصرف KV کمتر).</span>
+            </span>
+            <input type="checkbox" id="offlog" aria-label="offlog" />
+          </div>
+          <div class="switch">
+            <span>
+              <span class="sl" data-i18n="bestsub_label">سازنده‌ی اشتراک بهینه (BestCF)</span>
+              <span class="sh" data-i18n="bestsub_hint">درخواست ویژه‌ی BestCF را برای تولید اشتراک بهینه فعال می‌کند.</span>
+            </span>
+            <input type="checkbox" id="bestsub" aria-label="bestsub" />
+          </div>
+          <div class="switch">
+            <span>
+              <span class="sl" data-i18n="preload_label">پیش‌بارگذاری مسابقه‌ی اتصال</span>
+              <span class="sh" data-i18n="preload_hint">اتصال‌ها را از قبل آغاز می‌کند تا تأخیر کمتر شود.</span>
+            </span>
+            <input type="checkbox" id="preloadrace" aria-label="preloadrace" />
+          </div>
+
+          <div class="adv-sep" data-i18n="adv2_net">شبکه</div>
+          <div class="field">
+            <label for="go2socks5" data-i18n="go2_label">GO2SOCKS5 (دامنه‌های اضافی)</label>
+            <input id="go2socks5" type="text" dir="ltr" class="mono" autocomplete="off" spellcheck="false" placeholder="example.com, *.example.net" />
+            <div class="hint" data-i18n="go2_hint">دامنه‌هایی که باید از طریق SOCKS5 به‌صورت مستقیم عبور کنند. با کاما جدا کنید.</div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="proxyDial" data-i18n="proxyDial_label">اتصال همزمان پروکسی</label>
+              <input id="proxyDial" type="number" min="1" max="10" dir="ltr" class="mono" autocomplete="off" placeholder="1" />
+              <div class="hint" data-i18n="proxyDial_hint">تعداد تلاش همزمان برای اتصال به پروکسی معکوس.</div>
+            </div>
+            <div class="field">
+              <label for="tcpDial" data-i18n="tcpDial_label">اتصال همزمان TCP</label>
+              <input id="tcpDial" type="number" min="1" max="10" dir="ltr" class="mono" autocomplete="off" placeholder="2" />
+              <div class="hint" data-i18n="tcpDial_hint">تعداد تلاش همزمان برای اتصال مستقیم TCP.</div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <button class="btn primary block" type="submit" id="install-btn" disabled>
+        <span class="spin" aria-hidden="true"></span>
+        <svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span data-i18n="install_btn">نصب و فعال‌سازی</span>
+      </button>
+      <div class="msg" id="form-msg" role="alert" aria-live="assertive"></div>
+    </form>
+  </section>
+
+  <section class="card done hidden" id="done-card">
+    <div class="done" id="done-inner">
+      <div class="badge" id="done-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 id="done-title" data-i18n="done_title">نصب کامل شد</h2>
+      <p id="done-sub" data-i18n="done_sub">همه‌چیز آماده است. از این پس با رمز مدیریت وارد پنل شوید.</p>
+      <div class="summary" id="done-summary"></div>
+      <a class="btn primary" id="done-btn" href="/admin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span data-i18n="done_btn">ورود به پنل</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="foot" data-i18n="foot">Nova Worker · Beta-0.0.1 · آبان ۱۴۰۵</div>
 </div>
 
-<div class="card">
-<div class="ch"><div class="t"><span class="num">2</span><span id="sd1-t">D1 Database</span></div><div class="st" id="sd1-st" role="status" aria-live="polite"><span class="dot"></span><span id="sd1-l">…</span></div></div>
-<p class="desc" id="sd1-desc"></p>
-<ol id="sd1-steps"></ol>
-<p class="desc" id="sd1-note" style="margin-top:6px;margin-bottom:8px;font-size:12.5px"></p>
-<button class="btn" id="sd1-test"></button>
-<div class="msg" id="sd1-hint" style="margin-top:8px" role="status" aria-live="polite"></div>
-</div>
-
-<div class="card">
-<div class="ch"><div class="t"><span class="num">3</span><span id="s2-t">Admin password</span></div><div class="st" id="s2-st" role="status" aria-live="polite"><span class="dot"></span><span id="s2-l">…</span></div></div>
-<p class="desc" id="s2-desc"></p>
-<div id="s2-form">
-<div class="field"><label id="pw-lbl" for="pw"></label><input id="pw" type="password" autocomplete="new-password" /></div>
-<div class="field"><label id="pw2-lbl" for="pw2"></label><input id="pw2" type="password" autocomplete="new-password" /></div>
-<button class="btn p" id="pw-btn"></button>
-<div class="msg" id="pw-msg" role="alert" aria-live="assertive"></div>
-</div>
-</div>
-
-<div class="card">
-<div class="ch"><div class="t"><span class="num">4</span><span id="cr-t">Cron Trigger</span></div><div class="st" id="cr-st" role="status" aria-live="polite"><span class="dot"></span><span id="cr-l">…</span></div></div>
-<p class="desc" id="cr-desc"></p>
-<ol id="cr-steps"></ol>
-<p class="desc" id="cr-note" style="margin-top:6px;margin-bottom:8px;font-size:12.5px"></p>
-<button class="btn" id="cr-test"></button>
-<div class="msg" id="cr-hint" style="margin-top:8px" role="status" aria-live="polite"></div>
-</div>
-
-<div class="card">
-<div class="t" style="font-size:15px;font-weight:700;margin-bottom:12px" id="vars-t">Worker variables</div>
-<table><thead><tr><th id="v-name">Variable</th><th id="v-need">Required</th><th id="v-desc">What it does</th></tr></thead><tbody id="vars-body"></tbody></table>
-</div>
-
-<div class="card">
-<div class="t" style="font-size:15px;font-weight:700;margin-bottom:4px">📲 Get the app · دریافت برنامه</div>
-<p style="font-size:13px;color:var(--mu,#8a94a6);margin:0 0 12px">Install a client on your device. Hiddify and Karing are recommended. · هیدیفای و کارینگ پیشنهاد می‌شوند.</p>
-<div style="display:flex;flex-wrap:wrap;gap:8px">
-<a href="https://apps.apple.com/us/app/hiddify-proxy-vpn/id6596777532" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;text-decoration:none;color:inherit">Hiddify · 📱 iOS</a>
-<a href="https://play.google.com/store/apps/details?id=app.hiddify.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;text-decoration:none;color:inherit">Hiddify · 🤖 Android</a>
-<a href="https://apps.apple.com/us/app/karing/id6472431552" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;text-decoration:none;color:inherit">Karing · 📱 iOS</a>
-<a href="https://github.com/KaringX/karing/releases" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;border:1px solid color-mix(in srgb,currentColor 22%,transparent);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;text-decoration:none;color:inherit">Karing · 🤖 Android</a>
-</div>
-</div>
-
-<div class="card">
-<div class="t" style="font-size:15px;font-weight:700;margin-bottom:4px">🛡️ Keep your Worker alive · ورکر را زنده نگه دارید</div>
-<p style="font-size:13px;color:var(--mu,#8a94a6);margin:0 0 12px">A few habits keep Cloudflare from blocking your Worker (error 1101). · چند نکته که نمی‌گذارد کلادفلر ورکر شما را ببندد (خطای ۱۱۰۱).</p>
-<div style="display:flex;flex-direction:column;gap:10px">
-<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
-<div style="font-size:13px;font-weight:600;margin-bottom:3px">🔤 Name it plainly · نام ساده بگذارید</div>
-<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Keep the random name Cloudflare gives the Worker (like ancient-forest-038e). Avoid words like proxy, vpn, tunnel, or any protocol name, Cloudflare blocks known names on sight. · همان نام تصادفی کلادفلر را نگه دارید. از کلماتی مثل proxy، vpn، tunnel یا نام پروتکل در نام ورکر پرهیز کنید.</div>
-</div>
-<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
-<div style="font-size:13px;font-weight:600;margin-bottom:3px">🔁 If it gets error 1101 · اگر خطای ۱۱۰۱ گرفت</div>
-<div style="font-size:12.5px;color:var(--mu,#8a94a6)">If Cloudflare disables a Worker or account, stop deployment changes and use the official review or appeal process. Do not create replacement resources to bypass a restriction. · اگر Cloudflare ورکر یا حساب را غیرفعال کرد، تغییرات استقرار را متوقف و از مسیر رسمی بررسی یا اعتراض استفاده کنید. برای دورزدن محدودیت منبع جایگزین نسازید.</div>
-</div>
-<div style="border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:10px;padding:10px 12px">
-<div style="font-size:13px;font-weight:600;margin-bottom:3px">🆓 Keep it free and personal · رایگان و شخصی نگه دارید</div>
-<div style="font-size:12.5px;color:var(--mu,#8a94a6)">Use Cloudflare services only for workloads permitted by your account and Cloudflare’s terms. Pages hosts this static UI; the Worker handles the service API. · از سرویس‌های Cloudflare فقط برای کاربردهای مجاز حساب و شرایط آن استفاده کنید. Pages رابط ثابت را میزبانی می‌کند و Worker API سرویس را اجرا می‌کند.</div>
-</div>
-</div>
-</div>
-
-<div class="finish"><button class="btn p" id="finish" disabled></button></div>
-<div class="foot">Nova Proxy</div>
-</div>
 <script>
-/* file:// preview: backend calls fail silently (no request issued, so no console CORS spam). http(s) behavior unchanged. */
-try{if(location.protocol==='file:'){var _nvf=window.fetch.bind(window);window.fetch=function(u,o){try{var s=String((u&&u.url)||u||'');if(!/^https?:/i.test(s))return Promise.reject(new Error('nova file-preview: no backend'));}catch(_){}return _nvf(u,o);};}}catch(_){}
-
 var L={
- fa:{dir:'rtl',theme:'تغییر پوسته',intro:'به راه‌اندازی Nova Proxy خوش آمدید. اتصال KV را بررسی کنید، یک رمز مدیریت بسازید و سپس وارد پنل شوید.',
-  s1t:'دیتابیس KV',s2t:'رمز مدیریت',test:'بررسی دوباره',chk:'در حال بررسی…',ok:'متصل',bad:'متصل نیست',already:'تنظیم شده',
-  s1desc:'اگر «متصل نیست» بود، طبق راهنمای زیر یک KV بسازید و با نام متغیر «KV» به ورکر وصل کنید.',
-  s1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b> بروید.','روی <b>Create Namespace</b> بزنید و نامی مثل <span class="mono">NOVA_KV</span> بگذارید.','به Worker خود بروید: <b>Settings → Bindings → KV Namespace</b>.','یک Binding با نام متغیر <span class="mono">KV</span> به آن Namespace اضافه و ذخیره کنید.'],
-  s2desc:'یک رمز برای ورود به پنل مدیریت انتخاب کنید. همین‌جا ذخیره می‌شود (نیازی به داشبورد Cloudflare نیست).',
-  sd1t:'دیتابیس D1 (الزامی)',
-  sd1desc:'نوا روی D1 اجرا می‌شود: مصرف هر کاربر و پروفایل (جدول usage)، لاگ‌های عملیاتی (جدول logs) و تنظیمات/پیکربندی/احراز هویت (جدول kvstore) در D1 ذخیره می‌شوند. برای افزودن و اتصال D1:',
-  sd1:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> بروید و <b>Create</b> را بزنید (هر نامی).','به Worker خود بروید: <b>Settings → Bindings → Add → D1 database</b>.','نام متغیر را <span class="mono">DB</span> بگذارید و همان دیتابیس را انتخاب کنید، سپس <b>Save and Deploy</b>.'],
-  sd1note:'الزامی است. اگر هنوز Namespace از KV وصل باشد، فقط برای انتقال یک‌باره به D1، آینه‌ی نوشتن، و پرکردنِ کلیدهای جامانده استفاده می‌شود, نه به‌عنوان ذخیره‌ساز اصلی.',
-  d1off:'الزامی',d1unreachable:'به Worker وصل نشد, این صفحه را روی آدرس Worker خود باز کنید (…/install)، نه GitHub Pages.',d1nobind:'بایندینگ «DB» روی Worker دیده نشد, یک دیتابیس D1 با نام متغیر DB وصل کنید و Save and Deploy بزنید.',d1err:'DB وصل است ولی کوئری آزمایشی خطا داد: ',
-  pwlbl:'رمز جدید',pw2lbl:'تکرار رمز',pwbtn:'ساخت رمز و فعال‌سازی',
-  pwshort:'رمز باید حداقل ۶ کاراکتر باشد.',pwmismatch:'دو رمز یکسان نیستند.',pwsaved:'✅ رمز ساخته شد.',pwexists:'رمز قبلاً تنظیم شده است.',pwnokv:'ابتدا باید KV وصل باشد.',pwerr:'خطا در ذخیره رمز.',pwwait:'در حال ذخیره…',
-  varst:'متغیرهای Worker (اختیاری)',vname:'متغیر',vneed:'الزامی',vdesc:'کاربرد',
-  req:'الزامی',opt:'اختیاری',
-  vars:[['ADMIN','opt','رمز مدیریت؛ اگر اینجا بسازید نیازی نیست'],['KEY','opt','کلید رمزنگاری؛ اگر KV باشد خودکار ساخته می‌شود'],['UUID','opt','شناسه دلخواه؛ در غیر این صورت خودکار محاسبه می‌شود'],['PROXYIP','opt','آی‌پی پروکسی معکوس'],['HOST','opt','دامنه‌ی اختصاصی'],['POOL_API','opt','آدرس آی‌پی هوشمند هر اپراتور (این ورکر نادیده می‌گیرد)'],['ENABLE_CRON','opt','(این ورکر پشتیبانی نمی‌کند)']],
-  finish:'ورود به پنل',finishw:'ابتدا رمز را بسازید',
-  crt:'زمان‌بند خودکار (Cron Trigger)',
-  crdesc:'این بخش یعنی: هر چند وقت یک‌بار، حتی وقتی هیچ‌کس وارد پنل نشده، خود ورکر یک‌سری بررسیِ پشت‌صحنه را برایتان انجام دهد؛ مثل «آیا دامنه/سرور هنوز سالم است؟»، «آیا اکانت WARP هنوز معتبر است؟» و (اگر روشن باشد) «تغییر دوره‌ای مسیر مخفی ادمین». اختیاری است؛ بدون آن هم پنل کامل کار می‌کند، فقط این بررسی‌های پس‌زمینه اجرا نمی‌شوند.',
-  cr:['در داشبورد Cloudflare به Worker خود بروید: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','یک زمان‌بندی انتخاب کنید، مثلاً هر ۳۰ دقیقه: <span class="mono">*/30 * * * *</span> و ذخیره کنید.','به <b>Settings → Variables and Secrets</b> بروید، یک متغیر به نام <span class="mono">ENABLE_CRON</span> با مقدار <span class="mono">1</span> اضافه کنید و <b>Save and Deploy</b> بزنید.'],
-  crnote:'کاملاً اختیاری است و روی عملکرد اصلی پنل (اتصال کاربران) تأثیری ندارد؛ فقط بررسی‌های خودکار پس‌زمینه را فعال می‌کند.',
-  crchk:'در حال بررسی…',crok:'فعال (اجرا شده)',crwait:'وصل شده, منتظر اولین اجرا',crno:'وصل نیست',crnoenv:'متغیر ENABLE_CRON تنظیم نشده',
-  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (چند لحظه پیش)';if(mins<60)return' (حدود '+mins+' دقیقه پیش)';var hrs=Math.round(mins/60);return' (حدود '+hrs+' ساعت پیش)';}},
- en:{dir:'ltr',theme:'Toggle theme',intro:'Welcome to Nova Proxy setup. Verify the KV binding, create an admin password, and then open the panel.',
-  s1t:'KV Database',s2t:'Admin password',test:'Re-check',chk:'Checking…',ok:'Connected',bad:'Not connected',already:'Already set',
-  s1desc:'If this shows "Not connected", create a KV namespace and bind it as "KV" using the steps below.',
-  s1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Click <b>Create Namespace</b> and name it e.g. <span class="mono">NOVA_KV</span>.','Open your Worker: <b>Settings → Bindings → KV Namespace</b>.','Add a binding with variable name <span class="mono">KV</span> pointing to that namespace, and save.'],
-  s2desc:'Choose a password for the admin panel. It is stored right here, no Cloudflare dashboard needed.',
-  sd1t:'D1 Database (required)',
-  sd1desc:'Nova uses D1 for per-user and per-profile usage, operational logs, settings, configuration, and authentication. To create and bind D1:',
-  sd1:['In the Cloudflare dashboard go to <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> and click <b>Create</b> (any name).','Open your Worker: <b>Settings → Bindings → Add → D1 database</b>.','Set the variable name to <span class="mono">DB</span>, pick that database, then <b>Save and Deploy</b>.'],
-  sd1note:'Required. If a KV namespace is still bound it is used only for a one-time migration into D1, as a write mirror, and to lazily backfill missing keys, not as the primary store.',
-  d1off:'Required',d1unreachable:'Couldn\'t reach the Worker, open this page on your Worker URL (…/install), not GitHub Pages.',d1nobind:'No "DB" binding detected on the Worker, bind a D1 database as variable name DB, then Save and Deploy.',d1err:'DB is bound but the test query failed: ',
-  pwlbl:'New password',pw2lbl:'Repeat password',pwbtn:'Create password & activate',
-  pwshort:'Password must be at least 6 characters.',pwmismatch:'Passwords do not match.',pwsaved:'✅ Password created.',pwexists:'A password is already set.',pwnokv:'KV must be connected first.',pwerr:'Could not save the password.',pwwait:'Saving…',
-  varst:'Worker variables (optional)',vname:'Variable',vneed:'Required',vdesc:'What it does',
-  req:'Required',opt:'Optional',
-  vars:[['ADMIN','opt','Admin password; not needed if you create one here'],['KEY','opt','Encryption key; auto-generated if KV is present'],['UUID','opt','Custom UUID; otherwise derived automatically'],['PROXYIP','opt','Reverse-proxy IP'],['HOST','opt','Custom domain'],['POOL_API','opt','Per-ISP smart IP API URL (ignored by this worker)'],['ENABLE_CRON','opt','(not supported by this worker)']],
-  finish:'Open the panel',finishw:'Create a password first',
-  crt:'Cron Trigger (auto maintenance)',
-  crdesc:'This means: every so often, even when nobody is using the panel, the Worker quietly runs some background checks for you, like "is the domain/server still healthy?", "is the WARP account still valid?", and (if you enabled it) "rotate the hidden admin path". It is optional; the panel works fully without it, these background checks simply won\'t run.',
-  cr:['In the Cloudflare dashboard, open your Worker: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','Pick a schedule, e.g. every 30 minutes: <span class="mono">*/30 * * * *</span>, and save.','Go to <b>Settings → Variables and Secrets</b>, add a variable named <span class="mono">ENABLE_CRON</span> with value <span class="mono">1</span>, then <b>Save and Deploy</b>.'],
-  crnote:'Fully optional and has no effect on the panel\'s main job (connecting users); it only turns on automatic background checks.',
-  crchk:'Checking…',crok:'Active (has run)',crwait:'Connected, waiting for first run',crno:'Not connected',crnoenv:'ENABLE_CRON variable not set',
-  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (moments ago)';if(mins<60)return' (about '+mins+' min ago)';var hrs=Math.round(mins/60);return' (about '+hrs+'h ago)';}},
- ru:{dir:'ltr',theme:'Переключить тему',intro:'Добро пожаловать в настройку Nova Proxy. Проверьте привязку KV, задайте пароль администратора и откройте панель.',
-  s1t:'База KV',s2t:'Пароль администратора',test:'Проверить снова',chk:'Проверка…',ok:'Подключено',bad:'Не подключено',already:'Уже задано',
-  s1desc:'Если показано «Не подключено», создайте пространство имён KV и привяжите его как «KV» по шагам ниже.',
-  s1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Нажмите <b>Create Namespace</b> и назовите, например <span class="mono">NOVA_KV</span>.','Откройте ваш Worker: <b>Settings → Bindings → KV Namespace</b>.','Добавьте привязку с именем переменной <span class="mono">KV</span>, указывающую на это пространство имён, и сохраните.'],
-  s2desc:'Выберите пароль для панели администратора. Он хранится прямо здесь, панель Cloudflare не нужна.',
-  sd1t:'База D1 (обязательно)',
-  sd1desc:'Nova использует D1 для статистики пользователей и профилей, рабочих журналов, настроек, конфигурации и авторизации. Чтобы создать и подключить D1:',
-  sd1:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → D1 SQLite Database</b> и нажмите <b>Create</b> (любое имя).','Откройте ваш Worker: <b>Settings → Bindings → Add → D1 database</b>.','Задайте имя переменной <span class="mono">DB</span>, выберите эту базу, затем <b>Save and Deploy</b>.'],
-  sd1note:'Обязательно. Если пространство KV всё ещё привязано, оно используется только для разовой миграции в D1, как зеркало записи и для ленивого дозаполнения недостающих ключей, а не как основное хранилище.',
-  d1off:'Обязательно',d1unreachable:'Не удалось связаться с Worker, откройте эту страницу по адресу вашего Worker (…/install), а не GitHub Pages.',d1nobind:'Привязка «DB» на Worker не обнаружена, привяжите базу D1 с именем переменной DB, затем Save and Deploy.',d1err:'DB привязана, но тестовый запрос вернул ошибку: ',
-  pwlbl:'Новый пароль',pw2lbl:'Повтор пароля',pwbtn:'Создать пароль и активировать',
-  pwshort:'Пароль должен быть не короче 6 символов.',pwmismatch:'Пароли не совпадают.',pwsaved:'✅ Пароль создан.',pwexists:'Пароль уже задан.',pwnokv:'Сначала должна быть подключена KV.',pwerr:'Не удалось сохранить пароль.',pwwait:'Сохранение…',
-  varst:'Переменные Worker (необязательно)',vname:'Переменная',vneed:'Обязательно',vdesc:'Назначение',
-  req:'Обязательно',opt:'Необязательно',
-  vars:[['ADMIN','opt','Пароль администратора; не нужен, если создать его здесь'],['KEY','opt','Ключ шифрования; создаётся автоматически при наличии KV'],['UUID','opt','Свой UUID; иначе вычисляется автоматически'],['PROXYIP','opt','IP обратного прокси'],['HOST','opt','Свой домен'],['POOL_API','opt','URL умного IP для каждого оператора (этот воркер игнорирует)'],['ENABLE_CRON','opt','(этот воркер не поддерживает)']],
-  finish:'Открыть панель',finishw:'Сначала создайте пароль',
-  crt:'Cron Trigger (авто-обслуживание)',
-  crdesc:'Это значит: время от времени, даже когда панелью никто не пользуется, Worker тихо выполняет фоновые проверки, например «домен/сервер всё ещё в порядке?», «аккаунт WARP ещё действителен?» и (если включено) «сменить скрытый путь администратора». Необязательно; панель работает полностью и без этого, просто эти фоновые проверки не запускаются.',
-  cr:['В панели Cloudflare откройте ваш Worker: <b>Settings → Triggers → Cron Triggers → Add Cron Trigger</b>.','Выберите расписание, например каждые 30 минут: <span class="mono">*/30 * * * *</span>, и сохраните.','Перейдите в <b>Settings → Variables and Secrets</b>, добавьте переменную <span class="mono">ENABLE_CRON</span> со значением <span class="mono">1</span>, затем <b>Save and Deploy</b>.'],
-  crnote:'Полностью необязательно и не влияет на основную работу панели (подключение пользователей); включает только автоматические фоновые проверки.',
-  crchk:'Проверка…',crok:'Активно (запускалось)',crwait:'Подключено, ожидание первого запуска',crno:'Не подключено',crnoenv:'Переменная ENABLE_CRON не задана',
-  crago:function(m){if(m<0)return'';var mins=Math.round(m/60000);if(mins<1)return' (только что)';if(mins<60)return' (около '+mins+' мин назад)';var hrs=Math.round(mins/60);return' (около '+hrs+' ч назад)';}}};
-var lang='fa',theme='light';
-try{var sl=localStorage.getItem('nova-lang');if(sl)lang=sl;var st=localStorage.getItem('nova-theme');if(st)theme=st;else if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)theme='dark';}catch(e){}
-function $(i){return document.getElementById(i)}
-function setSt(id,state,txt){var e=$(id);e.className='st'+(state?(' '+state):'');$(id.replace('-st','-l')).textContent=txt;}
-function render(){var t=L[lang];document.documentElement.dir=t.dir;document.documentElement.lang=lang;if($('theme'))$('theme').setAttribute('aria-label',t.theme);
- $('intro').textContent=t.intro;$('s1-t').textContent=t.s1t;$('s2-t').textContent=t.s2t;
- $('s1-test').textContent=t.test;$('s1-desc').innerHTML=t.s1desc;$('s2-desc').textContent=t.s2desc;
- $('s1-steps').innerHTML=t.s1.map(function(x){return '<li>'+x+'</li>'}).join('');
- $('sd1-t').textContent=t.sd1t;$('sd1-desc').innerHTML=t.sd1desc;$('sd1-steps').innerHTML=t.sd1.map(function(x){return '<li>'+x+'</li>'}).join('');$('sd1-note').innerHTML=t.sd1note;$('sd1-test').textContent=t.test;
- $('pw-lbl').textContent=t.pwlbl;$('pw2-lbl').textContent=t.pw2lbl;$('pw-btn').textContent=t.pwbtn;
- $('cr-t').textContent=t.crt;$('cr-desc').textContent=t.crdesc;$('cr-steps').innerHTML=t.cr.map(function(x){return '<li>'+x+'</li>'}).join('');$('cr-note').innerHTML=t.crnote;$('cr-test').textContent=t.test;
- $('vars-t').textContent=t.varst;$('v-name').textContent=t.vname;$('v-need').textContent=t.vneed;$('v-desc').textContent=t.vdesc;
- $('vars-body').innerHTML=t.vars.map(function(r){return '<tr><td><span class="mono">'+r[0]+'</span></td><td><span class="'+(r[1]==='req'?'req':'opt')+'">'+(r[1]==='req'?t.req:t.opt)+'</span></td><td>'+r[2]+'</td></tr>'}).join('');
- [].forEach.call(document.querySelectorAll('#lg button'),function(b){b.classList.toggle('on',b.dataset.l===lang)});
- paint();}
-var last={kv:false,d1:false,admin:false,configured:false,cronEnabled:false,cronAgoMs:-1,_done:false};
-function paint(){var t=L[lang];
- setSt('s1-st',last.kv?'ok':(last._done?'bad':''),last.kv?t.ok:(last._done?t.bad:t.chk));
- setSt('sd1-st',last.d1?'ok':'',last.d1?t.ok:(last._done?t.d1off:t.chk));$('sd1-steps').className=last.d1?'hidden':'';
- { var hint=$('sd1-hint'); if(hint){ var hmsg=''; if(last._done&&!last.d1){ if(!last.reachable) hmsg=t.d1unreachable; else if(!last.d1Bound) hmsg=t.d1nobind; else if((last.d1Probe||'').indexOf('err')===0) hmsg=t.d1err+last.d1Probe.slice(4); } hint.className='msg'+(hmsg?' bad':''); hint.textContent=hmsg; } }
- setSt('s2-st',last.admin?'ok':(last._done?'bad':''),last.admin?t.already:(last._done?t.bad:t.chk));
- { var hasTick=last.cronAgoMs>=0; var crState=hasTick?'ok':''; var crTxt=!last._done?t.crchk:(hasTick?(t.crok+t.crago(last.cronAgoMs)):t.crno);
-   if(last._done && !hasTick && last.cronEnabled) crTxt=t.crwait;
-   if(last._done && !last.cronEnabled) crTxt+=t.crnoenv;
-   setSt('cr-st',crState,crTxt);
-   $('cr-steps').className=hasTick?'hidden':''; }
- // KV steps only matter when KV is missing.
- $('s1-steps').className=last.kv?'hidden':'';
- // Hide the password form once a password already exists.
- $('s2-form').className=last.admin?'hidden':'';
- $('finish').disabled=!last.configured;$('finish').textContent=last.configured?t.finish:t.finishw;}
-async function check(){try{var r=await fetch('/install/status?_t='+Date.now());var j=await r.json();last={kv:!!j.kv,d1:!!j.d1,admin:!!j.admin,configured:!!j.configured,d1Bound:!!j.d1Bound,d1Probe:j.d1Probe||'',cronEnabled:!!j.cronEnabled,cronAgoMs:(typeof j.cronAgoMs==='number'?j.cronAgoMs:-1),reachable:true,_done:true};}catch(e){last={kv:false,d1:false,admin:false,configured:false,d1Bound:false,d1Probe:'',cronEnabled:false,cronAgoMs:-1,reachable:false,_done:true};}paint();}
-async function setPw(){var t=L[lang],m=$('pw-msg');m.className='msg';
- var p=$('pw').value||'',p2=$('pw2').value||'';
- if(p.length<6){m.className='msg bad';m.textContent=t.pwshort;return;}
- if(p!==p2){m.className='msg bad';m.textContent=t.pwmismatch;return;}
- $('pw-btn').disabled=true;m.textContent=t.pwwait;
- try{var r=await fetch('/install/set',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:p})});
-  var j={};try{j=await r.json();}catch(e){}
-  if(r.ok&&j.success){m.className='msg ok';m.textContent=t.pwsaved;$('pw').value='';$('pw2').value='';await check();
-   setTimeout(function(){if(!$('finish').disabled)location.href='/login';},700);}
-  else{m.className='msg bad';m.textContent=j.error==='already_configured'?t.pwexists:(j.error==='no_kv'?t.pwnokv:(j.error==='too_short'?t.pwshort:t.pwerr));}
- }catch(e){m.className='msg bad';m.textContent=t.pwerr;}
- $('pw-btn').disabled=false;}
-$('s1-test').onclick=check;
-$('sd1-test').onclick=check;
-$('cr-test').onclick=check;
-$('pw-btn').onclick=setPw;
-$('pw2').addEventListener('keydown',function(e){if(e.key==='Enter')setPw();});
-$('finish').onclick=function(){if(!$('finish').disabled)location.href='/login';};
-$('lg').onclick=function(e){var b=e.target.closest('button');if(b){lang=b.dataset.l;try{localStorage.setItem('nova-lang',lang)}catch(e){}render();}};
-$('theme').onclick=function(){theme=theme==='dark'?'light':'dark';try{localStorage.setItem('nova-theme',theme)}catch(e){}document.documentElement.setAttribute('data-theme',theme);$('theme').textContent=theme==='dark'?'☀':'☾';};
-document.documentElement.setAttribute('data-theme',theme);$('theme').textContent=theme==='dark'?'☀':'☾';
-try{var _dc=document.getElementById('sd1-t');if(_dc)_dc.closest('.card').classList.add('hidden');var _cc=document.getElementById('cr-t');if(_cc)_cc.closest('.card').classList.add('hidden');}catch(e){}
-render();check();
+  fa:{
+    kicker:'راه‌اندازی',badge:'راه‌اندازی اولیه',
+    title:'راه‌اندازی Nova Worker',tabtitle:'راه‌اندازی',
+    intro:'به نصب خوش آمدید. ابتدا اتصال KV را بررسی کنید، سپس رمز مدیریت و اطلاعات اولیه را وارد کنید. همه‌چیز همین‌جا ذخیره می‌شود و نیازی به تنظیم دستی متغیرهای Cloudflare نیست.',
+    kv_title:'اتصال KV',kv_desc:'تنظیمات، رمز مدیریت و داده‌های پنل در Workers KV ذخیره می‌شوند. برای ادامه باید یک Namespace با نام متغیر <b>KV</b> به Worker وصل باشد.',
+    kv_test:'تست اتصال',kv_checking:'در حال بررسی…',
+    kv_ok:'متصل',kv_bad:'متصل نیست',kv_error:'خطا در اتصال',
+    kv_nobind:'بایندینگ KV روی Worker دیده نشد. یک Namespace بسازید و با نام متغیر KV وصل کنید.',
+    kv_writefail:'KV وصل است اما تست نوشتن ناموفق بود: ',
+    kv_steps:['در داشبورد Cloudflare به <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b> بروید.','روی <b>Create Namespace</b> بزنید و نامی مثل <span class="mono">NOVA_KV</span> بگذارید.','به Worker خود بروید: <b>Settings → Bindings → KV Namespace</b>.','یک Binding با نام متغیر <span class="mono">KV</span> به آن Namespace اضافه کنید و <b>Save and Deploy</b> بزنید.'],
+    pw_title:'رمز مدیریت و اطلاعات اولیه',form_chip:'الزامی',
+    pw_desc:'یک رمز برای ورود به پنل انتخاب کنید. این رمز همراه با اطلاعات اولیه در KV ذخیره می‌شود و بعداً از داخل پنل هم قابل تغییر است.',
+    pw_label:'رمز جدید',pw2_label:'تکرار رمز',pw_hint:'حداقل ۶ کاراکتر. رمز را در جای امن نگه دارید؛ برای ورود به پنل لازم است.',
+    adv_title:'تنظیمات اولیه (اختیاری)',
+    key_label:'KEY (کلید رمزنگاری)',key_hint:'اگر خالی بماند، ورکر از کلید پیش‌فرض استفاده می‌کند. برای امنیت بیشتر یک مقدار تصادفی وارد کنید.',
+    uuid_label:'UUID',uuid_hint:'شناسه‌ی نود. اگر خالی بماند از رمز و KEY ساخته می‌شود.',
+    host_label:'HOST (دامنه‌ی سفارشی)',host_hint:'اختیاری. اگر دامنه‌ی اختصاصی دارید اینجا وارد کنید؛ در غیر این صورت دامنه‌ی Worker استفاده می‌شود.',
+    proxyip_label:'PROXYIP',proxyip_hint:'اختیاری. آدرس پروکسی معکوس برای اتصال به مقاصد مسدود.',
+    url_label:'URL (صفحه‌ی پوششی)',url_hint:'اختیاری. پیش‌فرض nginx است.',
+    path_label:'PATH',path_hint:'اختیاری. مسیر WebSocket؛ پیش‌فرض / است.',
+    adv2_title:'عملکرد و رفتار (اختیاری)',
+    debug_label:'لاگ دیباگ',debug_hint:'ثبت جزئیات بیشتر در لاگ Worker برای عیب‌یابی.',
+    offlog_label:'غیرفعال کردن لاگ KV',offlog_hint:'نوشتن گزارش بازدیدها در KV را متوقف می‌کند (مصرف KV کمتر).',
+    bestsub_label:'سازنده‌ی اشتراک بهینه (BestCF)',bestsub_hint:'درخواست ویژه‌ی BestCF را برای تولید اشتراک بهینه فعال می‌کند.',
+    preload_label:'پیش‌بارگذاری مسابقه‌ی اتصال',preload_hint:'اتصال‌ها را از قبل آغاز می‌کند تا تأخیر کمتر شود.',
+    adv2_net:'شبکه',
+    go2_label:'GO2SOCKS5 (دامنه‌های اضافی)',go2_hint:'دامنه‌هایی که باید از طریق SOCKS5 به‌صورت مستقیم عبور کنند. با کاما جدا کنید.',
+    proxyDial_label:'اتصال همزمان پروکسی',proxyDial_hint:'تعداد تلاش همزمان برای اتصال به پروکسی معکوس.',
+    tcpDial_label:'اتصال همزمان TCP',tcpDial_hint:'تعداد تلاش همزمان برای اتصال مستقیم TCP.',
+    install_btn:'نصب و فعال‌سازی',install_wait:'در حال ذخیره…',
+    err_short:'رمز باید حداقل ۶ کاراکتر باشد.',err_mismatch:'دو رمز یکسان نیستند.',
+    err_nokv:'ابتدا باید KV متصل باشد.',err_exists:'سیستم قبلاً نصب شده است.',
+    err_bad:'اطلاعات ارسالی معتبر نیست.',err_kvwrite:'نوشتن در KV ناموفق بود.',err_net:'ارتباط با Worker برقرار نشد. صفحه را روی دامنه‌ی Worker باز کنید.',
+    done_title:'نصب کامل شد',done_sub:'همه‌چیز آماده است. از این پس با رمز مدیریت وارد پنل شوید.',
+    done_btn:'ورود به پنل',done_warn_title:'رمز تنظیم شده، اما KV وصل نیست',
+    done_warn_sub:'رمز مدیریت از متغیرهای محیطی خوانده می‌شود، اما بدون KV نمی‌توان تنظیمات را ذخیره کرد. ابتدا KV را وصل کنید.',
+    sum_kv:'وضعیت KV',sum_pw:'رمز مدیریت',sum_key:'کلید رمزنگاری',sum_uuid:'UUID',sum_host:'دامنه',
+    set:'تنظیم شده',notset:'تنظیم نشده',yes:'بله',no:'خیر',unknown:'نامشخص',
+    foot:'Nova Worker · Beta-0.0.1 · آبان ۱۴۰۵'
+  },
+  en:{
+    kicker:'Setup',badge:'First-run setup',
+    title:'Set up Nova Worker',tabtitle:'Setup',
+    intro:'Welcome. Check the KV connection first, then choose an admin password and fill in the initial settings. Everything is stored right here, no manual Cloudflare variables required.',
+    kv_title:'KV connection',kv_desc:'Settings, the admin password and panel data are stored in Workers KV. A namespace bound as <b>KV</b> is required to continue.',
+    kv_test:'Test connection',kv_checking:'Checking…',
+    kv_ok:'Connected',kv_bad:'Not connected',kv_error:'Connection error',
+    kv_nobind:'No KV binding was found on this Worker. Create a namespace and bind it as KV.',
+    kv_writefail:'KV is bound but the write test failed: ',
+    kv_steps:['In the Cloudflare dashboard open <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Click <b>Create Namespace</b> and name it e.g. <span class="mono">NOVA_KV</span>.','Open your Worker: <b>Settings → Bindings → KV Namespace</b>.','Add a binding with the variable name <span class="mono">KV</span> pointing to that namespace, then <b>Save and Deploy</b>.'],
+    pw_title:'Admin password and initial settings',form_chip:'Required',
+    pw_desc:'Choose a password for the panel. It is stored in KV together with the initial settings and can be changed later from inside the panel.',
+    pw_label:'New password',pw2_label:'Repeat password',pw_hint:'At least 6 characters. Keep it safe, you need it to sign in.',
+    adv_title:'Initial settings (optional)',
+    key_label:'KEY (encryption key)',key_hint:'If left empty the Worker uses its default key. Enter a random value for better security.',
+    uuid_label:'UUID',uuid_hint:'Node identifier. If empty it is derived from the password and KEY.',
+    host_label:'HOST (custom domain)',host_hint:'Optional. Enter your custom domain, otherwise the Worker domain is used.',
+    proxyip_label:'PROXYIP',proxyip_hint:'Optional. Reverse-proxy address for blocked destinations.',
+    url_label:'URL (camouflage page)',url_hint:'Optional. Defaults to nginx.',
+    path_label:'PATH',path_hint:'Optional. WebSocket path, defaults to /.',
+    adv2_title:'Performance and behaviour (optional)',
+    debug_label:'Debug log',debug_hint:'Log extra detail in the Worker log for troubleshooting.',
+    offlog_label:'Disable KV logging',offlog_hint:'Stops writing visit logs to KV (uses less KV quota).',
+    bestsub_label:'BestCF optimized subscription',bestsub_hint:'Enables the special BestCF request for optimized subscription generation.',
+    preload_label:'Preload connection race',preload_hint:'Starts connections early to reduce latency.',
+    adv2_net:'Network',
+    go2_label:'GO2SOCKS5 (extra domains)',go2_hint:'Domains that should go through SOCKS5 directly. Separate with commas.',
+    proxyDial_label:'Proxy concurrent dials',proxyDial_hint:'Concurrent attempts when connecting to the reverse proxy.',
+    tcpDial_label:'TCP concurrent dials',tcpDial_hint:'Concurrent attempts for direct TCP connections.',
+    install_btn:'Install and activate',install_wait:'Saving…',
+    err_short:'The password must be at least 6 characters.',err_mismatch:'The passwords do not match.',
+    err_nokv:'KV must be connected first.',err_exists:'The system is already installed.',
+    err_bad:'The submitted data is not valid.',err_kvwrite:'Writing to KV failed.',err_net:'Could not reach the Worker. Open this page on your Worker domain.',
+    done_title:'Installation complete',done_sub:'Everything is ready. Sign in to the panel with your admin password from now on.',
+    done_btn:'Open the panel',done_warn_title:'Password set, but KV is not connected',
+    done_warn_sub:'The admin password comes from environment variables, but settings cannot be stored without KV. Connect KV first.',
+    sum_kv:'KV status',sum_pw:'Admin password',sum_key:'Encryption key',sum_uuid:'UUID',sum_host:'Domain',
+    set:'Set',notset:'Not set',yes:'Yes',no:'No',unknown:'Unknown',
+    foot:'Nova Worker · Beta-0.0.1 · Aban 1405'
+  },
+  ru:{
+    kicker:'Установка',badge:'Первичная настройка',
+    title:'Настройка Nova Worker',tabtitle:'Установка',
+    intro:'Добро пожаловать. Сначала проверьте подключение KV, затем задайте пароль администратора и начальные параметры. Всё сохраняется здесь, вручную настраивать переменные Cloudflare не нужно.',
+    kv_title:'Подключение KV',kv_desc:'Настройки, пароль администратора и данные панели хранятся в Workers KV. Для продолжения нужно привязать пространство имён как <b>KV</b>.',
+    kv_test:'Проверить подключение',kv_checking:'Проверка…',
+    kv_ok:'Подключено',kv_bad:'Не подключено',kv_error:'Ошибка подключения',
+    kv_nobind:'Привязка KV на этом Worker не найдена. Создайте пространство имён и привяжите его как KV.',
+    kv_writefail:'KV привязано, но тест записи не удался: ',
+    kv_steps:['В панели Cloudflare откройте <b>Workers &amp; Pages → Storage &amp; databases → Workers KV</b>.','Нажмите <b>Create Namespace</b> и назовите, например, <span class="mono">NOVA_KV</span>.','Откройте ваш Worker: <b>Settings → Bindings → KV Namespace</b>.','Добавьте привязку с именем переменной <span class="mono">KV</span> к этому пространству имён и нажмите <b>Save and Deploy</b>.'],
+    pw_title:'Пароль администратора и начальные параметры',form_chip:'Обязательно',
+    pw_desc:'Выберите пароль для панели. Он сохраняется в KV вместе с начальными параметрами и позже может быть изменён из панели.',
+    pw_label:'Новый пароль',pw2_label:'Повтор пароля',pw_hint:'Не менее 6 символов. Сохраните его, он нужен для входа.',
+    adv_title:'Начальные параметры (необязательно)',
+    key_label:'KEY (ключ шифрования)',key_hint:'Если оставить пустым, Worker использует ключ по умолчанию. Для безопасности введите случайное значение.',
+    uuid_label:'UUID',uuid_hint:'Идентификатор узла. Если пусто, вычисляется из пароля и KEY.',
+    host_label:'HOST (свой домен)',host_hint:'Необязательно. Укажите свой домен, иначе используется домен Worker.',
+    proxyip_label:'PROXYIP',proxyip_hint:'Необязательно. Адрес обратного прокси для заблокированных направлений.',
+    url_label:'URL (страница-прикрытие)',url_hint:'Необязательно. По умолчанию nginx.',
+    path_label:'PATH',path_hint:'Необязательно. Путь WebSocket, по умолчанию /.',
+    adv2_title:'Производительность и поведение (необязательно)',
+    debug_label:'Отладочный лог',debug_hint:'Записывать больше деталей в лог Worker для диагностики.',
+    offlog_label:'Отключить логирование в KV',offlog_hint:'Прекращает запись журнала посещений в KV (меньше расход квоты).',
+    bestsub_label:'Оптимизированная подписка BestCF',bestsub_hint:'Включает специальный запрос BestCF для оптимизированной генерации подписки.',
+    preload_label:'Предзагрузка гонки соединений',preload_hint:'Начинает соединения заранее, чтобы снизить задержку.',
+    adv2_net:'Сеть',
+    go2_label:'GO2SOCKS5 (доп. домены)',go2_hint:'Домены, которые должны проходить напрямую через SOCKS5. Разделяйте запятыми.',
+    proxyDial_label:'Одновременные подключения к прокси',proxyDial_hint:'Число одновременных попыток подключения к обратному прокси.',
+    tcpDial_label:'Одновременные TCP-подключения',tcpDial_hint:'Число одновременных попыток прямых TCP-подключений.',
+    install_btn:'Установить и активировать',install_wait:'Сохранение…',
+    err_short:'Пароль должен быть не короче 6 символов.',err_mismatch:'Пароли не совпадают.',
+    err_nokv:'Сначала должно быть подключено KV.',err_exists:'Система уже установлена.',
+    err_bad:'Отправленные данные недействительны.',err_kvwrite:'Не удалось записать в KV.',err_net:'Не удалось связаться с Worker. Откройте эту страницу на домене Worker.',
+    done_title:'Установка завершена',done_sub:'Всё готово. Теперь входите в панель с паролем администратора.',
+    done_btn:'Открыть панель',done_warn_title:'Пароль задан, но KV не подключено',
+    done_warn_sub:'Пароль администратора берётся из переменных окружения, но без KV настройки сохранить нельзя. Сначала подключите KV.',
+    sum_kv:'Статус KV',sum_pw:'Пароль администратора',sum_key:'Ключ шифрования',sum_uuid:'UUID',sum_host:'Домен',
+    set:'Задано',notset:'Не задано',yes:'Да',no:'Нет',unknown:'Неизвестно',
+    foot:'Nova Worker · Beta-0.0.1 · Абан 1405'
+  }
+};
+
+var lang='fa', S=null, busy=false;
+try{var sl=localStorage.getItem('nova-lang');if(sl&&L[sl])lang=sl;}catch(e){}
+function $(id){return document.getElementById(id)}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+function apply(){
+  var t=L[lang];
+  document.documentElement.lang=lang;
+  document.documentElement.dir=(lang==='fa')?'rtl':'ltr';
+  document.title='Nova Worker — '+(t.tabtitle||t.title);
+  [].forEach.call(document.querySelectorAll('[data-i18n]'),function(el){
+    var k=el.getAttribute('data-i18n'); if(t[k]!=null) el.innerHTML=t[k];
+  });
+  $('kv-steps-list').innerHTML=t.kv_steps.map(function(x){return '<li>'+x+'</li>'}).join('');
+  [].forEach.call(document.querySelectorAll('#lg button'),function(b){b.classList.toggle('on',b.dataset.l===lang)});
+  if(S) paint();
+}
+
+function chip(id,state,text){
+  var c=$(id); if(!c) return;
+  c.className='chip'+(state?(' '+state):'');
+  var label=c.querySelector('span:last-child'); if(label) label.textContent=text;
+}
+
+function setMsg(id,kind,text){
+  var m=$(id); if(!m) return;
+  m.className='msg'+(kind?(' '+kind):'');
+  m.textContent=text||'';
+}
+
+function paint(){
+  var t=L[lang];
+  if(!S) return;
+  var kvState = S.kvOk ? 'ok' : (S.kv ? 'err' : 'err');
+  var kvText = S.kvOk ? t.kv_ok : (S.kv ? t.kv_error : t.kv_bad);
+  chip('kv-chip',kvState,kvText);
+  if(S.netError){
+    $('kv-steps').classList.add('hidden');
+    setMsg('kv-msg','err',t.err_net);
+  }else{
+    $('kv-steps').classList.toggle('hidden',!!S.kvOk);
+    if(!S.kv) setMsg('kv-msg','err',t.kv_nobind);
+    else if(!S.kvOk) setMsg('kv-msg','err',t.kv_writefail+(S.kvError||t.unknown));
+    else setMsg('kv-msg','ok','');
+  }
+
+  var form=$('form-card'), done=$('done-card');
+  if(S.admin){
+    form.classList.add('hidden');
+    done.classList.remove('hidden');
+    var warn=!S.configured;
+    $('done-inner').className='done'+(warn?' warn':'');
+    $('done-title').textContent=warn?t.done_warn_title:t.done_title;
+    $('done-sub').textContent=warn?t.done_warn_sub:t.done_sub;
+    $('done-btn').style.display=warn?'none':'';
+    $('done-badge').innerHTML=warn
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+    var rows=[
+      [t.sum_kv, S.kvOk?t.yes:(S.kv?t.no:t.no), S.kvOk?'val-ok':'val-bad'],
+      [t.sum_pw, t.set, 'val-ok'],
+      [t.sum_key, S.keySet?t.set:t.notset, S.keySet?'val-ok':''],
+      [t.sum_uuid, S.uuid||t.unknown, ''],
+      [t.sum_host, S.host||t.unknown, '']
+    ];
+    $('done-summary').innerHTML=rows.map(function(r){
+      return '<div class="row"><span>'+esc(r[0])+'</span><span class="'+r[2]+'">'+esc(r[1])+'</span></div>';
+    }).join('');
+  }else{
+    form.classList.remove('hidden');
+    done.classList.add('hidden');
+    $('install-btn').disabled=!S.kvOk||busy;
+  }
+}
+
+async function loadStatus(showSpinner){
+  var t=L[lang];
+  if(showSpinner){
+    var b=$('kv-test'); b.disabled=true; b.classList.add('loading');
+    setMsg('kv-msg','',t.kv_checking);
+  }
+  try{
+    var r=await fetch('/install/status?_t='+Date.now(),{credentials:'same-origin',cache:'no-store'});
+    var j=await r.json();
+    S=j;
+  }catch(e){
+    S={kv:false,kvOk:false,kvError:'',admin:false,configured:false,keySet:false,host:'',netError:true};
+  }
+  if(showSpinner){
+    var b2=$('kv-test'); b2.disabled=false; b2.classList.remove('loading');
+  }
+  paint();
+}
+
+async function submitInstall(e){
+  e.preventDefault();
+  if(busy) return;
+  var t=L[lang];
+  setMsg('form-msg','','');
+  var pw=$('pw').value||'', pw2=$('pw2').value||'';
+  if(pw.length<6){setMsg('form-msg','err',t.err_short);$('pw').focus();return;}
+  if(pw!==pw2){setMsg('form-msg','err',t.err_mismatch);$('pw2').focus();return;}
+  if(!S||!S.kvOk){setMsg('form-msg','err',t.err_nokv);return;}
+  busy=true;
+  var btn=$('install-btn'); btn.disabled=true; btn.classList.add('loading');
+  setMsg('form-msg','',t.install_wait);
+  try{
+    var r=await fetch('/install/set',{
+      method:'POST',credentials:'same-origin',
+      headers:{'Content-Type':'application/json','Cache-Control':'no-cache'},
+      body:JSON.stringify({
+        password:pw,
+        key:($('key').value||'').trim(),
+        uuid:($('uuid').value||'').trim(),
+        host:($('host').value||'').trim(),
+        proxyip:($('proxyip').value||'').trim(),
+        url:($('url').value||'').trim(),
+        path:($('path').value||'').trim(),
+        go2socks5:($('go2socks5').value||'').trim(),
+        proxyDial:($('proxyDial').value||'').trim(),
+        tcpDial:($('tcpDial').value||'').trim(),
+        debug:$('debug').checked,
+        offlog:$('offlog').checked,
+        bestsub:$('bestsub').checked,
+        preloadrace:$('preloadrace').checked
+      })
+    });
+    var j=null; try{j=await r.json();}catch(err){j=null;}
+    if(r.ok&&j&&j.success){
+      setMsg('form-msg','ok',t.done_title);
+      location.replace(j.redirect||'/admin');
+      return;
+    }
+    var code=j&&j.error;
+    var msg=code==='too_short'?t.err_short:(code==='no_kv'?t.err_nokv:(code==='already_configured'?t.err_exists:(code==='kv_write_failed'?t.err_kvwrite:(code==='bad_request'?t.err_bad:t.err_net))));
+    if(code==='kv_write_failed'&&j.detail) msg+=' '+j.detail;
+    setMsg('form-msg','err',msg);
+  }catch(err){
+    setMsg('form-msg','err',t.err_net);
+  }
+  busy=false;
+  btn.classList.remove('loading');
+  btn.disabled=!S||!S.kvOk;
+}
+
+$('lg').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  lang=b.dataset.l;
+  try{localStorage.setItem('nova-lang',lang)}catch(err){}
+  apply();
+});
+
+$('kv-test').addEventListener('click',function(){loadStatus(true);});
+$('install-form').addEventListener('submit',submitInstall);
+
+apply();
+loadStatus(false);
 </script>
 </body>
 </html>

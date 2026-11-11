@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="color-scheme" content="light" />
+<title>Nova Worker</title>
+<link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+<link rel="alternate icon" href="/logo.png" />
+<link rel="apple-touch-icon" href="/logo.png" />
+<meta name="apple-mobile-web-app-title" content="Nova Worker" />
+<meta name="theme-color" content="#f4f6fb" />
+<link rel="manifest" href="/manifest.json" />
+<style>
+:root{--bg:#f4f6fb;--card:#ffffff;--tx:#101622;--mu:#8a93a6;--ac:#2f6bff;--bd:#e5e9f2;--err:#e0453e}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;padding:24px;line-height:1.9}
+.card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:30px 26px;text-align:center;box-shadow:0 10px 30px rgba(16,22,34,.06)}
+.logo{width:54px;height:54px;display:block;margin:0 auto 14px}
+h1{margin:0 0 4px;font-size:19px;font-weight:800;letter-spacing:-.2px}
+.sub{margin:0 0 22px;color:var(--mu);font-size:12.5px}
+form{text-align:right}
+label{display:block;font-size:12px;font-weight:700;color:var(--mu);margin:0 0 6px}
+input{width:100%;height:44px;padding:0 13px;border:1px solid var(--bd);border-radius:10px;background:#fbfcfe;color:var(--tx);font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;direction:ltr;text-align:left}
+input:focus{outline:2px solid rgba(47,107,255,.35);outline-offset:1px;border-color:var(--ac)}
+input::placeholder{color:#aab2c2}
+.btn{width:100%;height:44px;margin-top:12px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer}
+.btn:hover{background:#245ae0}
+.btn:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.err{margin:10px 0 0;color:var(--err);font-size:12px;min-height:18px}
+.hint{margin:18px 0 0;color:var(--mu);font-size:11.5px}
+.foot{margin:22px 0 0;padding-top:16px;border-top:1px solid var(--bd);color:var(--mu);font-size:11px;display:flex;flex-direction:column;gap:4px}
+.foot .ltr{direction:ltr}
+</style>
+</head>
+<body>
+<main class="card">
+  <img class="logo" src="/logo-mark.svg" alt="Nova Worker" />
+  <h1>Nova Worker</h1>
+  <p class="sub">ورود به پنل مدیریت</p>
+
+  <form id="form" novalidate>
+    <label for="host">آدرس دامنهٔ ورکر</label>
+    <input id="host" name="host" type="text" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="your-worker.workers.dev" aria-describedby="err" />
+    <button class="btn" type="submit">ورود به پنل</button>
+    <p class="err" id="err" role="status" aria-live="polite"></p>
+  </form>
+
+  <p class="hint">این صفحه فقط میزبان فایل‌های پنل است. پنل و تنظیمات از طریق دامنهٔ ورکر اجرا می‌شوند.</p>
+
+  <div class="foot">
+    <span>Nova Worker · Beta-0.0.1 · آبان ۱۴۰۵</span>
+    <span class="ltr" lang="en">Enter your Worker domain to open the admin panel.</span>
+    <span class="ltr" lang="ru">Введите домен Worker, чтобы открыть панель.</span>
+  </div>
+</main>
+<script>
+(function () {
+  "use strict";
+  /* Only the static host (GitHub Pages) needs this entry page. Anywhere else
+     the panel is served by the Worker, so go straight to /admin. */
+  if (!/\.github\.io$/i.test(location.hostname || "")) { location.replace("/admin"); return; }
+
+  var KEY = "nova_worker_host";
+  var form = document.getElementById("form");
+  var input = document.getElementById("host");
+  var err = document.getElementById("err");
+
+  function read(key) { try { return localStorage.getItem(key) || ""; } catch (e) { return ""; } }
+  function save(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+  function normalize(value) {
+    var v = String(value || "").trim().replace(/\s+/g, "");
+    v = v.replace(/^https?:\/\//i, "").replace(/^\/+/, "");
+    v = v.split(/[\/?#]/)[0];
+    return v.replace(/\/+$/, "");
+  }
+  function valid(host) {
+    if (/\.github\.io(?::\d{1,5})?$/i.test(host)) return false;
+    return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+(?::\d{1,5})?$/i.test(host);
+  }
+
+  var preset = new URLSearchParams(location.search).get("worker") || read(KEY);
+  if (preset) input.value = normalize(preset);
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var host = normalize(input.value);
+    if (!valid(host)) {
+      err.textContent = /\.github\.io$/i.test(host)
+        ? "این دامنه مربوط به خود پنل است. دامنهٔ Worker را وارد کنید."
+        : "آدرس معتبر نیست. نمونه: your-worker.workers.dev";
+      input.focus();
+      return;
+    }
+    err.textContent = "";
+    save(KEY, host);
+    location.href = "https://" + host + "/admin";
+  });
+
+  input.addEventListener("input", function () { if (err.textContent) err.textContent = ""; });
+})();
+</script>
+<noscript><p style="text-align:center;font-size:12px">برای ورود به پنل، دامنهٔ ورکر خود را در انتهای آدرس مرورگر اضافه کنید: <code>/admin</code></p></noscript>
+</body>
+</html>
