@@ -13,17 +13,16 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="theme-color" content="#f4f6fb" />
 <link rel="manifest" href="/manifest.json" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="preload" href="/fonts/vazirmatn-var.woff2" as="font" type="font/woff2" crossorigin />
 <style>
+@font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-var.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
 :root{
   --bg:#f4f6fb; --card:#ffffff; --c2:#f7f9fc; --bd:#e6eaf1; --bd2:#dde2eb;
   --tx:#101622; --tx2:#445066; --mu:#8a93a6;
   --ac:#0ea5c4; --ac2:#7c3aed;
   --ac-soft:rgba(14,165,196,.10); --ac2-soft:rgba(124,58,237,.10);
   --grad:linear-gradient(120deg,#0891b2,#7c3aed);
-  --ring:rgba(8,145,178,.22); --dg:#e5484d; --ok:#16a34a;
+  --ring:rgba(8,145,178,.22); --dg:#e5484d; --ok:#16a34a; --wn:#b45309;
   --shadow:0 1px 2px rgba(20,40,80,.04),0 22px 50px rgba(40,60,110,.13);
   --shadow-sm:0 1px 2px rgba(20,40,80,.05);
 }
@@ -119,6 +118,17 @@ input:disabled{opacity:.65}
 .err.show{display:flex}
 .err svg{width:15px;height:15px;flex:0 0 auto;margin-top:2px}
 
+.exp{
+  display:none;align-items:center;gap:10px;margin-bottom:16px;padding:11px 12px;border-radius:11px;
+  font-size:12.5px;line-height:1.55;color:var(--wn);background:rgba(180,83,9,.07);border:1px solid rgba(180,83,9,.18);
+}
+.exp.show{display:flex}
+.exp svg{width:17px;height:17px;flex:0 0 auto}
+.exp div{display:flex;flex-direction:column;min-width:0}
+.exp b{font-size:12.5px;font-weight:800;color:var(--wn)}
+.exp span{color:var(--tx2);font-size:11.5px}
+.exp .exp-n{margin-inline-start:auto;flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--wn);background:rgba(180,83,9,.1);border:1px solid rgba(180,83,9,.2)}
+
 button.go{
   width:100%;margin-top:18px;padding:14px;border:none;border-radius:13px;
   background:var(--grad);color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;
@@ -187,6 +197,12 @@ button.go.loading .go-ico{display:none}
       <p class="sub" id="sub" data-i18n="sub">برای ادامه، رمز عبور مدیر را وارد کنید.</p>
     </div>
 
+    <div class="exp" id="exp" role="status" aria-live="polite">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div><b data-i18n="exp_t">نشست شما بسته شد</b><span data-i18n="exp_d">برای امنیت، لطفاً دوباره وارد شوید.</span></div>
+      <span class="exp-n" id="exp-n">3</span>
+    </div>
+
     <form id="form" novalidate>
       <div class="field">
         <label id="lpw" for="pw" data-i18n="label">رمز عبور</label>
@@ -245,6 +261,7 @@ var L={
     empty:'رمز عبور را وارد کنید.',bad:'رمز عبور اشتباه است. دوباره تلاش کنید.',
     net:'ارتباط با سرور برقرار نشد. اتصال خود را بررسی کنید.',
     rate:'تلاش‌های زیاد. کمی بعد دوباره امتحان کنید.',
+    exp_t:'نشست شما بسته شد',exp_d:'برای امنیت، لطفاً دوباره وارد شوید.',
     secure:'محافظت‌شده توسط Cloudflare Worker شما',
     ft:'Nova Worker · Beta-0.0.1 · آبان ۱۴۰۵'
   },
@@ -256,6 +273,7 @@ var L={
     empty:'Enter your password.',bad:'Wrong password. Please try again.',
     net:'Could not reach the server. Check your connection.',
     rate:'Too many attempts. Please try again later.',
+    exp_t:'Your session was closed',exp_d:'For security, please sign in again.',
     secure:'Protected by your Cloudflare Worker',
     ft:'Nova Worker · Beta-0.0.1 · Aban 1405'
   },
@@ -267,6 +285,7 @@ var L={
     empty:'Введите пароль.',bad:'Неверный пароль. Попробуйте снова.',
     net:'Не удалось связаться с сервером. Проверьте соединение.',
     rate:'Слишком много попыток. Попробуйте позже.',
+    exp_t:'Сеанс закрыт',exp_d:'В целях безопасности войдите снова.',
     secure:'Защищено вашим Cloudflare Worker',
     ft:'Nova Worker · Beta-0.0.1 · Абан 1405'
   }
@@ -349,6 +368,26 @@ async function login(){
 $('form').addEventListener('submit',function(e){e.preventDefault();login();});
 $('pw').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();login();}});
 apply();
+
+/* session expired notice: show the error with a 3 second countdown, then allow signing in again */
+(function(){
+  if(!/(?:^|[?&])expired=1(?:&|$)/.test(location.search))return;
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  var box=$('exp'),n=$('exp-n'),left=3;
+  if(n)n.textContent=left;
+  if(box)box.classList.add('show');
+  var timer=setInterval(function(){
+    left-=1;
+    if(left<=0){
+      clearInterval(timer);
+      if(box)box.classList.remove('show');
+      try{$('pw').focus()}catch(e){}
+      return;
+    }
+    if(n)n.textContent=left;
+  },1000);
+})();
+
 </script>
 </body>
 </html>

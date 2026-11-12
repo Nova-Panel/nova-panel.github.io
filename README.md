@@ -54,6 +54,7 @@ Panel/
 ├─ login/index.html      ورود
 ├─ manifest.json         PWA
 ├─ logo*.svg|png         نشان برند
+├─ fonts/                فونت Vazirmatn (میزبانی محلی، OFL)
 ├─ admin/vendor/leaflet  نقشه
 └─ .github/workflows     انتشار خودکار GitHub Pages
 ```

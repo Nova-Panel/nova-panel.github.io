@@ -15,10 +15,9 @@
 <meta name="theme-color" content="#f4f6fb" />
 <link rel="manifest" href="/manifest.json" />
 <link rel="stylesheet" href="/admin/vendor/leaflet/leaflet.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="preload" href="/fonts/vazirmatn-var.woff2" as="font" type="font/woff2" crossorigin />
 <style>
+@font-face{font-family:'Vazirmatn';src:url('/fonts/vazirmatn-var.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
 /* ============================================================================
    DESIGN TOKENS, preserved verbatim from the existing Nova Worker panel.
    Do not rebrand. These are the exact hex codes already in production.
@@ -269,8 +268,6 @@ html[dir=rtl] .kpi-sub{text-align:start}
 .kpi-traffic .u{font-size:18px;font-weight:700;letter-spacing:-.3px;line-height:1.15}
 .kpi-traffic .dn{color:var(--ok)} .kpi-traffic .up{color:var(--dg)}
 
-/* ---- Two-column dashboard layout ---- */
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:stretch}
 /* ---- Merged "Network settings" sections ---- */
 .cfg-section{position:relative}
 .cfg-section+.cfg-section{margin-top:26px}
@@ -295,12 +292,6 @@ html[data-theme=light] .cfg-ico{box-shadow:0 4px 10px color-mix(in srgb,var(--ac
 }
 #policy-card{display:flex;flex-direction:column}
 #policy-card #policy-rows{flex:1}
-#qa-card{flex:1;display:flex;flex-direction:column}
-.qa-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.qa-btn{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;text-align:left;transition:border-color .15s ease,background .15s ease,transform .15s ease}
-.qa-btn:hover{border-color:var(--brand);background:var(--surface-2);transform:translateY(-1px)}
-.qa-btn svg{width:20px;height:20px;color:var(--brand)}
-.qa-btn span{font-size:13px;font-weight:600}
 
 /* ---- Policy management card (formerly "Iran Mode") ---- */
 .policy-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 20px;border-top:1px solid var(--bd);font-size:12px;color:var(--mu)}
@@ -559,7 +550,6 @@ html[dir=rtl] .toast{right:auto;left:22px}
 }
 @media(max-width:920px){
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .dash-grid{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   .kpi-grid{grid-template-columns:1fr}
@@ -669,17 +659,12 @@ details.adv>summary:hover{color:var(--ac)}
 .spin{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;vertical-align:-2px;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .fmt-card .btn{height:32px;padding:0 11px;font-size:12px}
-.qa-grid{grid-template-columns:1fr 1fr}
-.qa-btn{border-color:var(--bd);background:var(--card2);color:var(--tx)}
-.qa-btn:hover{border-color:var(--ac);background:var(--card)}
-.qa-btn svg{color:var(--ac)}
 .qrbox>div{background:#fff;padding:12px;border-radius:12px;line-height:0}
 .qrbox img,.qrbox canvas{display:block;width:220px;height:220px}
 .modal-c .ml{max-height:88px}
 @media(max-width:720px){
   .grid2,.grid3{grid-template-columns:1fr}
   .full{grid-column:auto}
-  .qa-grid{grid-template-columns:1fr}
 }
 @media(max-width:680px){
   .sec-actions{padding:12px 16px}
@@ -784,10 +769,31 @@ details.adv>summary:hover{color:var(--ac)}
 .leaflet-marker-icon{filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
 @media(max-width:680px){.map-wrap{height:180px}.map-wrap.tall{height:220px}}
 @media print{.sidebar,.topbar,.sec-actions{display:none!important}}
+/* ---------------- session expiry overlay ---------------- */
+.sess-overlay{position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(16,22,34,.44);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sess-overlay[hidden]{display:none}
+.sess-box{width:100%;max-width:396px;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:28px 26px 24px;text-align:center;box-shadow:0 1px 2px rgba(20,40,80,.04),0 24px 60px rgba(20,40,80,.24)}
+.sess-ic{width:52px;height:52px;margin:0 auto 15px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:var(--dg);background:rgba(220,38,38,.09);border:1px solid rgba(220,38,38,.16)}
+.sess-ic svg{width:26px;height:26px}
+.sess-box h2{font-size:19px;font-weight:800;letter-spacing:-.3px;line-height:1.4}
+.sess-box p{margin-top:8px;font-size:12.5px;line-height:1.7;color:var(--tx2)}
+.sess-count{margin:16px auto 0;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;color:var(--ac);background:rgba(14,165,196,.09);border:1px solid rgba(14,165,196,.2)}
+.sess-box .sess-sub{font-size:11.5px;color:var(--mu)}
+.sess-box .btn{margin-top:16px;width:100%;justify-content:center}
 </style>
 </head>
 <body>
 <a href="#maincontent" class="skip-link" data-i18n="skip">پرش به محتوا</a>
+<div class="sess-overlay" id="sess-overlay" hidden>
+  <div class="sess-box" role="alertdialog" aria-modal="true" aria-labelledby="sess-title">
+    <div class="sess-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <h2 id="sess-title" data-i18n="sess_title">نشست شما منقضی شد</h2>
+    <p data-i18n="sess_desc">برای امنیت، پس از ۳۰ دقیقه بی‌فعالیتی یا بستن مرورگر باید دوباره وارد شوید.</p>
+    <div class="sess-count" id="sess-count">3</div>
+    <p class="sess-sub" data-i18n="sess_sub">خروج خودکار و انتقال به صفحه ورود…</p>
+    <button class="btn primary" type="button" id="sess-now" data-i18n="sess_now">ورود دوباره</button>
+  </div>
+</div>
 <div class="app" id="app">
 
   <aside class="sidebar" id="sidebar">
@@ -951,30 +957,6 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="card-pad">
             <div class="lat-groups" id="lat-groups"></div>
             <div class="hint tight" id="lat-msg" data-i18n="lat_idle">برای شروع، دکمه‌ی آزمایش را بزنید.</div>
-          </div>
-        </div>
-
-        <div class="dash-grid">
-          <div class="card">
-            <div class="card-h"><h3 data-i18n="dash_status">وضعیت</h3></div>
-            <div class="card-pad">
-              <div class="kv"><span class="k" data-i18n="host">میزبان</span><span class="v" id="st-host">-</span></div>
-              <div class="kv"><span class="k">UUID</span><span class="v" id="st-uuid">-</span></div>
-              <div class="kv"><span class="k" data-i18n="worker_ver">نسخه Worker</span><span class="v" id="st-version">-</span></div>
-              <div class="kv"><span class="k" data-i18n="config_time">زمان پیکربندی</span><span class="v" id="st-time">-</span></div>
-            </div>
-          </div>
-
-          <div class="card" id="qa-card">
-            <div class="card-h"><h3 data-i18n="dash_quick">دسترسی سریع</h3></div>
-            <div class="card-pad">
-              <div class="qa-grid">
-                <button class="qa-btn" type="button" data-view="netsettings" data-scroll="sec-sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v4H4z"/><path d="M4 12h16v8H4z"/></svg><span data-i18n="q_sub">اشتراک</span></button>
-                <button class="qa-btn" type="button" data-view="netsettings" data-scroll="sec-node"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span data-i18n="q_node">تنظیمات نود</span></button>
-                <button class="qa-btn" type="button" data-view="netsettings" data-scroll="sec-proxy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg><span data-i18n="q_proxy">CDN و پروکسی</span></button>
-                <button class="qa-btn" type="button" data-view="panelsettings" data-scroll="sec-logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="q_logs">گزارش‌ها</span></button>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1779,9 +1761,11 @@ details.adv>summary:hover{color:var(--ac)}
 
       p_dashboard: "داشبورد", s_dashboard: "وضعیت Worker و اشتراک شما.",
       kpi_proto: "پروتکل", kpi_sub: "اشتراک", kpi_usage: "مصرف امروز", kpi_path: "مسیر نود",
-      dash_status: "وضعیت",
-      dash_quick: "دسترسی سریع",
-      q_sub: "اشتراک", q_node: "تنظیمات نود", q_proxy: "CDN و پروکسی", q_logs: "گزارش‌ها",
+      sess_title: "نشست شما منقضی شد",
+      sess_desc: "برای امنیت، پس از ۳۰ دقیقه بی‌فعالیتی یا بستن مرورگر باید دوباره وارد شوید.",
+      sess_sub: "خروج خودکار و انتقال به صفحه ورود…",
+      sess_now: "ورود دوباره",
+      conn_err: "ارتباط با سرور برقرار نشد. دوباره تلاش کنید.",
 
       p_links: "لینک‌های اتصال", s_links: "لینک نود و همه‌ی قالب‌های اشتراک.",
       node_link: "لینک نود (LINK)", node_link_h: "برای واردکردن مستقیم در کلاینت آماده است.",
@@ -1929,9 +1913,11 @@ details.adv>summary:hover{color:var(--ac)}
 
       p_dashboard: "Dashboard", s_dashboard: "Your Worker and subscription status.",
       kpi_proto: "Protocol", kpi_sub: "Subscription", kpi_usage: "Today's usage", kpi_path: "Node path",
-      dash_status: "Status",
-      dash_quick: "Shortcuts",
-      q_sub: "Subscription", q_node: "Node settings", q_proxy: "CDN & proxy", q_logs: "Logs",
+      sess_title: "Your session has expired",
+      sess_desc: "For security, you must sign in again after 30 minutes of inactivity or when the browser is closed.",
+      sess_sub: "Signing out and redirecting to the login page…",
+      sess_now: "Sign in again",
+      conn_err: "Could not reach the server. Please try again.",
 
       p_links: "Connection links", s_links: "Node link and every subscription format.",
       node_link: "Node link (LINK)", node_link_h: "Ready to import directly into a client.",
@@ -2079,9 +2065,11 @@ details.adv>summary:hover{color:var(--ac)}
 
       p_dashboard: "Панель управления", s_dashboard: "Состояние Worker и подписки.",
       kpi_proto: "Протокол", kpi_sub: "Подписка", kpi_usage: "Использование сегодня", kpi_path: "Путь узла",
-      dash_status: "Состояние",
-      dash_quick: "Быстрый доступ",
-      q_sub: "Подписка", q_node: "Настройки узла", q_proxy: "CDN и прокси", q_logs: "Журналы",
+      sess_title: "Сеанс истёк",
+      sess_desc: "В целях безопасности после 30 минут бездействия или закрытия браузера нужно войти снова.",
+      sess_sub: "Выход и переход на страницу входа…",
+      sess_now: "Войти снова",
+      conn_err: "Не удалось связаться с сервером. Повторите попытку.",
 
       p_links: "Ссылки подключения", s_links: "Ссылка узла и все форматы подписки.",
       node_link: "Ссылка узла (LINK)", node_link_h: "Готово для импорта в клиент.",
@@ -2738,18 +2726,76 @@ details.adv>summary:hover{color:var(--ac)}
     toast(ok ? t("copied") : t("copy_failed"), ok ? "ok" : "err");
   }
 
+  /* --------------------------------------------------------------- session */
+  // 30 دقیقه بی‌فعالیتی = پایان نشست. هر فعالیت تازه، نشست را در Worker تمدید می‌کند.
+  var SESSION_IDLE_MS = 30 * 60 * 1000;
+  var SESSION_PING_MS = 60 * 1000;
+  var SESSION_TICK_MS = 15 * 1000;
+  var sessionEnding = false;
+  var lastActivity = Date.now();
+  var lastPing = Date.now();
+
+  function endSession() {
+    if (sessionEnding) return;
+    sessionEnding = true;
+    var target = "/logout?expired=1";
+    function go() { window.location.replace(target); }
+    var overlay = el("sess-overlay");
+    if (!overlay) { go(); return; }
+    var count = el("sess-count");
+    var left = 3;
+    if (count) count.textContent = left;
+    overlay.hidden = false;
+    var timer = setInterval(function () {
+      left -= 1;
+      if (left <= 0) { clearInterval(timer); go(); return; }
+      if (count) count.textContent = left;
+    }, 1000);
+    var now = el("sess-now");
+    if (now) now.addEventListener("click", function () { clearInterval(timer); go(); });
+  }
+
+  function pingSession() {
+    lastPing = Date.now();
+    fetch("/admin/session", { credentials: "same-origin", cache: "no-store" }).then(function (r) {
+      if (r.status === 401) endSession();
+    }).catch(function () {});
+  }
+
+  function markActivity() {
+    lastActivity = Date.now();
+    if (!sessionEnding && Date.now() - lastPing >= SESSION_PING_MS) pingSession();
+  }
+
+  ["pointerdown", "keydown", "scroll", "touchstart", "mousemove"].forEach(function (ev) {
+    document.addEventListener(ev, markActivity, { passive: true });
+  });
+
+  setInterval(function () {
+    if (!sessionEnding && Date.now() - lastActivity >= SESSION_IDLE_MS) endSession();
+  }, SESSION_TICK_MS);
+
   /* --------------------------------------------------------------- network */
-  function authLost() { window.location.href = "/login"; }
   function isAuthResponse(r, url) {
-    if (!/^\/admin(\/|$)/.test(url || "")) return false;
+    if (r.status === 401) return true;
+    var u = url || r.url || "";
+    if (!/\/admin(\/|$)/.test(u)) return false;
     if (r.redirected && /\/login(\?|$)/.test(r.url)) return true;
     var ct = r.headers.get("content-type") || "";
     return ct.indexOf("text/html") !== -1;
   }
   async function getJSON(url, opts) {
     var o = Object.assign({ credentials: "same-origin", cache: "no-store" }, opts || {});
-    var r = await fetch(url, o);
-    if (isAuthResponse(r, url)) { authLost(); throw new Error("auth"); }
+    var r;
+    try {
+      r = await fetch(url, o);
+    } catch (e) {
+      // یک بار دیگر تلاش می‌کنیم؛ ERR_CONNECTION_RESET روی شبکه‌های موبایل رایج است
+      await new Promise(function (res) { setTimeout(res, 700); });
+      try { r = await fetch(url, o); }
+      catch (e2) { throw new Error(t("conn_err")); }
+    }
+    if (isAuthResponse(r, url)) { endSession(); throw new Error("auth"); }
     var text = await r.text();
     var data = null;
     if (text) {
@@ -2768,7 +2814,7 @@ details.adv>summary:hover{color:var(--ac)}
   }
   async function postRaw(url, body) {
     var r = await fetch(url, { method: "POST", credentials: "same-origin", cache: "no-store", body: body });
-    if (isAuthResponse(r)) { authLost(); throw new Error("auth"); }
+    if (isAuthResponse(r, url)) { endSession(); throw new Error("auth"); }
     var text = await r.text();
     var data = null;
     if (text) { try { data = JSON.parse(text); } catch (e) { data = null; } }
@@ -2777,7 +2823,7 @@ details.adv>summary:hover{color:var(--ac)}
   }
   async function getText(url) {
     var r = await fetch(url, { credentials: "same-origin", cache: "no-store" });
-    if (isAuthResponse(r)) { authLost(); throw new Error("auth"); }
+    if (isAuthResponse(r, url)) { endSession(); throw new Error("auth"); }
     if (!r.ok) throw new Error("HTTP " + r.status);
     return r.text();
   }
@@ -3043,11 +3089,6 @@ details.adv>summary:hover{color:var(--ac)}
     var pathEl = el("kpi-path");
     if (pathEl) pathEl.title = c["完整节点路径"] || c.PATH || "/";
     setText(el("kpi-path-sub"), (c["随机路径"] ? t("random_path") : transport) + " · " + (c["跳过证书验证"] ? "allowInsecure" : "TLS"));
-
-    var stHost = el("st-host"); if (stHost) stHost.textContent = c.HOST || "-";
-    var stUuid = el("st-uuid"); if (stUuid) stUuid.textContent = c.UUID || "-";
-    var stVer = el("st-version"); if (stVer) stVer.textContent = versionText(STATE.version, true);
-    var stTime = el("st-time"); if (stTime) stTime.textContent = c.TIME ? fmtTime(Date.parse(c.TIME) || c.TIME) : "-";
 
     renderUsage();
   }
