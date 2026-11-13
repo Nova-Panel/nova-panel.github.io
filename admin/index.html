@@ -3004,35 +3004,85 @@ details.adv>summary:hover{color:var(--ac)}
 
   var TPL_DEFAULT = {
     "PROXYIP": "proxyip={{IP:PORT}}",
-    "SOCKS5": { "全局": "socks5://{{IP:PORT}}", "标准": "socks5={{IP:PORT}}" },
-    "HTTP": { "全局": "http://{{IP:PORT}}", "标准": "http={{IP:PORT}}" },
-    "HTTPS": { "全局": "https://{{IP:PORT}}", "标准": "https={{IP:PORT}}" },
-    "TURN": { "全局": "turn://{{IP:PORT}}", "标准": "turn={{IP:PORT}}" },
-    "SSTP": { "全局": "sstp://{{IP:PORT}}", "标准": "sstp={{IP:PORT}}" }
+    "SOCKS5": { "global": "socks5://{{IP:PORT}}", "standard": "socks5={{IP:PORT}}" },
+    "HTTP": { "global": "http://{{IP:PORT}}", "standard": "http={{IP:PORT}}" },
+    "HTTPS": { "global": "https://{{IP:PORT}}", "standard": "https={{IP:PORT}}" },
+    "TURN": { "global": "turn://{{IP:PORT}}", "standard": "turn={{IP:PORT}}" },
+    "SSTP": { "global": "sstp://{{IP:PORT}}", "standard": "sstp={{IP:PORT}}" }
   };
+  /* Existing Workers persist config under legacy key names. The panel uses
+     English keys internally and translates only at the API boundary so that
+     old and new configurations keep working. */
+  var WIRE_KEYS = {
+    protocol: "\u534f\u8bae\u7c7b\u578b",
+    transport: "\u4f20\u8f93\u534f\u8bae",
+    grpcMode: "gRPC\u6a21\u5f0f",
+    method: "\u52a0\u5bc6\u65b9\u5f0f",
+    skipCertVerify: "\u8df3\u8fc7\u8bc1\u4e66\u9a8c\u8bc1",
+    enable0RTT: "\u542f\u75280RTT",
+    tlsFragment: "TLS\u5206\u7247",
+    randomPath: "\u968f\u673a\u8def\u5f84",
+    optimizedSub: "\u4f18\u9009\u8ba2\u9605\u751f\u6210",
+    localIPPool: "\u672c\u5730IP\u5e93",
+    randomIP: "\u968f\u673aIP",
+    randomCount: "\u968f\u673a\u6570\u91cf",
+    port: "\u6307\u5b9a\u7aef\u53e3",
+    subConverter: "\u8ba2\u9605\u8f6c\u6362\u914d\u7f6e",
+    proxy: "\u53cd\u4ee3",
+    pathTemplates: "\u8def\u5f84\u6a21\u677f",
+    global: "\u5168\u5c40",
+    standard: "\u6807\u51c6",
+    enabled: "\u542f\u7528",
+    account: "\u8d26\u53f7",
+    whitelist: "\u767d\u540d\u5355",
+    fullPath: "\u5b8c\u6574\u8282\u70b9\u8def\u5f84",
+    loadTime: "\u52a0\u8f7d\u65f6\u95f4"
+  };
+
+  var WIRE = (function () {
+    var legacy = {}, modern = {};
+    Object.keys(WIRE_KEYS).forEach(function (k) {
+      legacy[WIRE_KEYS[k]] = k;
+      modern[k] = WIRE_KEYS[k];
+    });
+    return { legacy: legacy, modern: modern };
+  })();
+
+  function remapKeys(obj, map) {
+    if (Array.isArray(obj)) return obj.map(function (v) { return remapKeys(v, map); });
+    if (!obj || typeof obj !== "object") return obj;
+    var out = {};
+    Object.keys(obj).forEach(function (k) {
+      out[map[k] || k] = remapKeys(obj[k], map);
+    });
+    return out;
+  }
+  function fromWire(c) { return remapKeys(c, WIRE.legacy); }
+  function toWire(c) { return remapKeys(c, WIRE.modern); }
+
 
   function cfg() {
     var c = STATE.cfg || {};
-    c["协议类型"] = c["协议类型"] || "vless";
-    c["传输协议"] = c["传输协议"] || "ws";
-    c["gRPC模式"] = c["gRPC模式"] || "gun";
+    c["protocol"] = c["protocol"] || "vless";
+    c["transport"] = c["transport"] || "ws";
+    c["grpcMode"] = c["grpcMode"] || "gun";
     c["gRPCUserAgent"] = c["gRPCUserAgent"] || (navigator.userAgent || "");
-    c["SS"] = c["SS"] || { "加密方式": "aes-128-gcm", "TLS": true };
+    c["SS"] = c["SS"] || { "method": "aes-128-gcm", "TLS": true };
     c["Fingerprint"] = c["Fingerprint"] || "chrome";
     if (typeof c["ALPN"] === "undefined") c["ALPN"] = "";
-    c["优选订阅生成"] = c["优选订阅生成"] || {};
-    var s = c["优选订阅生成"];
-    s["本地IP库"] = s["本地IP库"] || { "随机IP": true, "随机数量": 16, "指定端口": -1 };
+    c["optimizedSub"] = c["optimizedSub"] || {};
+    var s = c["optimizedSub"];
+    s["localIPPool"] = s["localIPPool"] || { "randomIP": true, "randomCount": 16, "port": -1 };
     // The old UI capped the random IP count at 99; treat a stored 99 as the new 999.
-    if (Number(s["本地IP库"]["随机数量"]) === 99) s["本地IP库"]["随机数量"] = 999;
+    if (Number(s["localIPPool"]["randomCount"]) === 99) s["localIPPool"]["randomCount"] = 999;
     s["SUBNAME"] = s["SUBNAME"] || "Nova Worker";
     if (typeof s["SUBUpdateTime"] === "undefined") s["SUBUpdateTime"] = 3;
-    c["订阅转换配置"] = c["订阅转换配置"] || {};
-    c["反代"] = c["反代"] || {};
-    c["反代"]["PROXYIP"] = c["反代"]["PROXYIP"] || "auto";
-    c["反代"]["SOCKS5"] = c["反代"]["SOCKS5"] || { "启用": null, "全局": false, "账号": "", "白名单": [] };
-    c["反代"]["路径模板"] = c["反代"]["路径模板"] || clone(TPL_DEFAULT);
-    c["TG"] = c["TG"] || { "启用": false, "BotToken": null, "ChatID": null };
+    c["subConverter"] = c["subConverter"] || {};
+    c["proxy"] = c["proxy"] || {};
+    c["proxy"]["PROXYIP"] = c["proxy"]["PROXYIP"] || "auto";
+    c["proxy"]["SOCKS5"] = c["proxy"]["SOCKS5"] || { "enabled": null, "global": false, "account": "", "whitelist": [] };
+    c["proxy"]["pathTemplates"] = c["proxy"]["pathTemplates"] || clone(TPL_DEFAULT);
+    c["TG"] = c["TG"] || { "enabled": false, "BotToken": null, "ChatID": null };
     c["CF"] = c["CF"] || {};
     c["CF"]["Usage"] = c["CF"]["Usage"] || { success: false, pages: 0, workers: 0, total: 0, max: 100000 };
     return c;
@@ -3051,13 +3101,13 @@ details.adv>summary:hover{color:var(--ac)}
   /* --------------------------------------------------------------- saving */
   function configPayload() {
     var payload = clone(STATE.cfg);
-    delete payload["完整节点路径"];
+    delete payload["fullPath"];
     delete payload["LINK"];
-    delete payload["加载时间"];
+    delete payload["loadTime"];
     delete payload.init;
-    if (payload["TG"]) payload["TG"] = { "启用": !!payload["TG"]["启用"] };
+    if (payload["TG"]) payload["TG"] = { "enabled": !!payload["TG"]["enabled"] };
     payload["CF"] = { Email: null, GlobalAPIKey: null, AccountID: null, APIToken: null, UsageAPI: null };
-    return payload;
+    return toWire(payload);
   }
 
   async function saveConfig(mutator, btn) {
@@ -3115,12 +3165,12 @@ details.adv>summary:hover{color:var(--ac)}
 
   async function refreshDynamic() {
     try {
-      var c = await getJSON("/admin/config.json");
+      var c = fromWire(await getJSON("/admin/config.json"));
       if (!c || !c.UUID || !STATE.cfg) return;
       STATE.cfg.LINK = c.LINK;
-      STATE.cfg["完整节点路径"] = c["完整节点路径"];
-      STATE.cfg["加载时间"] = c["加载时间"];
-      if (c["优选订阅生成"]) STATE.cfg["优选订阅生成"].TOKEN = c["优选订阅生成"].TOKEN;
+      STATE.cfg["fullPath"] = c["fullPath"];
+      STATE.cfg["loadTime"] = c["loadTime"];
+      if (c["optimizedSub"]) STATE.cfg["optimizedSub"].TOKEN = c["optimizedSub"].TOKEN;
       if (c.TG) STATE.cfg.TG = c.TG;
       if (c.CF) STATE.cfg.CF = c.CF;
       renderLinks();
@@ -3272,7 +3322,7 @@ details.adv>summary:hover{color:var(--ac)}
   }
 
   function bi(name) {
-    var s = cfg()["优选订阅生成"] || {};
+    var s = cfg()["optimizedSub"] || {};
     return "https://" + (cfg().HOST || "") + "/sub?token=" + (s.TOKEN || "");
   }
   function usage() { return (cfg().CF && cfg().CF.Usage) || { success: false, pages: 0, workers: 0, total: 0, max: 100000 }; }
@@ -3317,19 +3367,19 @@ details.adv>summary:hover{color:var(--ac)}
 
   function renderDashboard() {
     var c = cfg();
-    var s = c["优选订阅生成"];
-    var proto = String(c["协议类型"] || "vless").toUpperCase();
-    var transport = String(c["传输协议"] || "ws");
+    var s = c["optimizedSub"];
+    var proto = String(c["protocol"] || "vless").toUpperCase();
+    var transport = String(c["transport"] || "ws");
     var chip = el("kpi-proto-chip");
     if (chip) chip.textContent = transport.toUpperCase();
     setText(el("kpi-proto"), proto);
     setText(el("kpi-proto-sub"), (c.HOST || "-") + ":443");
     setText(el("kpi-sub"), s.SUBNAME || "-");
     setText(el("kpi-sub-sub"), t("update_h") + ": " + (s.SUBUpdateTime || 3));
-    setText(el("kpi-path"), c["完整节点路径"] || c.PATH || "/");
+    setText(el("kpi-path"), c["fullPath"] || c.PATH || "/");
     var pathEl = el("kpi-path");
-    if (pathEl) pathEl.title = c["完整节点路径"] || c.PATH || "/";
-    setText(el("kpi-path-sub"), (c["随机路径"] ? t("random_path") : transport) + " · " + (c["跳过证书验证"] ? "allowInsecure" : "TLS"));
+    if (pathEl) pathEl.title = c["fullPath"] || c.PATH || "/";
+    setText(el("kpi-path-sub"), (c["randomPath"] ? t("random_path") : transport) + " · " + (c["skipCertVerify"] ? "allowInsecure" : "TLS"));
 
     renderUsage();
   }
@@ -3346,10 +3396,10 @@ details.adv>summary:hover{color:var(--ac)}
 
   function renderLinks() {
     var c = cfg();
-    var s = c["优选订阅生成"];
+    var s = c["optimizedSub"];
     var val = el("l-node-link"); if (val) val.textContent = c.LINK || "-";
     var tok = el("l-token"); if (tok) tok.textContent = s.TOKEN || "-";
-    var fp = el("l-full-path"); if (fp) fp.textContent = c["完整节点路径"] || c.PATH || "/";
+    var fp = el("l-full-path"); if (fp) fp.textContent = c["fullPath"] || c.PATH || "/";
 
     var grid = el("formats-grid");
     if (!grid) return;
@@ -3378,22 +3428,22 @@ details.adv>summary:hover{color:var(--ac)}
   }
 
   function subModeFromCfg() {
-    var s = cfg()["优选订阅生成"];
+    var s = cfg()["optimizedSub"];
     if (s.local === false) return "generator";
-    if (s["本地IP库"] && s["本地IP库"]["随机IP"]) return "random";
+    if (s["localIPPool"] && s["localIPPool"]["randomIP"]) return "random";
     return "custom";
   }
 
   function renderSub() {
     var c = cfg();
-    var s = c["优选订阅生成"];
-    var lib = s["本地IP库"] || {};
+    var s = c["optimizedSub"];
+    var lib = s["localIPPool"] || {};
     if (el("s-name")) el("s-name").value = s.SUBNAME || "";
     if (el("s-update")) el("s-update").value = s.SUBUpdateTime || 3;
     if (el("s-host")) el("s-host").value = c.HOST || "";
     if (el("s-token")) el("s-token").value = s.TOKEN || "";
-    if (el("s-count")) el("s-count").value = lib["随机数量"] || 16;
-    if (el("s-port")) setSelect(el("s-port"), lib["指定端口"] == null ? "-1" : String(lib["指定端口"]));
+    if (el("s-count")) el("s-count").value = lib["randomCount"] || 16;
+    if (el("s-port")) setSelect(el("s-port"), lib["port"] == null ? "-1" : String(lib["port"]));
     if (el("s-gen")) el("s-gen").value = s.SUB || "";
     STATE.ipMode = subModeFromCfg();
     setSubMode(STATE.ipMode, false);
@@ -3453,18 +3503,18 @@ details.adv>summary:hover{color:var(--ac)}
     }
     if (el("n-uuid")) el("n-uuid").value = c.UUID || "";
     if (el("n-path")) el("n-path").value = c.PATH || "/";
-    setSelect(el("n-protocol"), c["协议类型"] || "vless");
-    setSelect(el("n-transport"), c["传输协议"] || "ws");
-    setSelect(el("n-grpc-mode"), c["gRPC模式"] || "gun");
+    setSelect(el("n-protocol"), c["protocol"] || "vless");
+    setSelect(el("n-transport"), c["transport"] || "ws");
+    setSelect(el("n-grpc-mode"), c["grpcMode"] || "gun");
     if (el("n-grpc-ua")) el("n-grpc-ua").value = c["gRPCUserAgent"] || "";
-    setSelect(el("n-ss-method"), (c.SS && c.SS["加密方式"]) || "aes-128-gcm");
+    setSelect(el("n-ss-method"), (c.SS && c.SS["method"]) || "aes-128-gcm");
     setSelect(el("n-ss-tls"), c.SS && c.SS.TLS === false ? "false" : "true");
     setSelect(el("n-fp"), c.Fingerprint || "chrome");
     setSelect(el("n-alpn"), c.ALPN || "");
-    setSw("sw-skip", !!c["跳过证书验证"]);
-    setSw("sw-rtt0", !!c["启用0RTT"]);
-    setSw("sw-randpath", !!c["随机路径"]);
-    setSelect(el("n-frag"), c["TLS分片"] || "");
+    setSw("sw-skip", !!c["skipCertVerify"]);
+    setSw("sw-rtt0", !!c["enable0RTT"]);
+    setSw("sw-randpath", !!c["randomPath"]);
+    setSelect(el("n-frag"), c["tlsFragment"] || "");
     setSw("sw-ech", !!c.ECH);
     if (el("n-ech-dns")) el("n-ech-dns").value = (c.ECHConfig && c.ECHConfig.DNS) || "";
     if (el("n-ech-sni")) el("n-ech-sni").value = (c.ECHConfig && c.ECHConfig.SNI) || "";
@@ -3519,15 +3569,15 @@ details.adv>summary:hover{color:var(--ac)}
   }
 
   function proxyModeFromCfg() {
-    var r = cfg()["反代"];
-    var en = r.SOCKS5 && r.SOCKS5["启用"];
+    var r = cfg()["proxy"];
+    var en = r.SOCKS5 && r.SOCKS5["enabled"];
     if (en && ["socks5", "http", "https", "turn", "sstp"].indexOf(String(en).toLowerCase()) !== -1) return String(en).toLowerCase();
     return "auto";
   }
 
   function renderProxy() {
     var c = cfg();
-    var r = c["反代"];
+    var r = c["proxy"];
     var socks = r.SOCKS5 || {};
     STATE.proxyMode = proxyModeFromCfg();
 
@@ -3535,8 +3585,8 @@ details.adv>summary:hover{color:var(--ac)}
     var proxyip = String(r["PROXYIP"] || "auto");
     if (el("p-proxyip")) el("p-proxyip").value = proxyip === "auto" ? "" : proxyip;
     setSw("sw-autoip", proxyip === "auto");
-    if (el("p-account")) el("p-account").value = socks["账号"] || "";
-    setSw("sw-global", !!socks["全局"]);
+    if (el("p-account")) el("p-account").value = socks["account"] || "";
+    setSw("sw-global", !!socks["global"]);
     updateProxyRows();
     renderTemplates();
   }
@@ -3566,24 +3616,24 @@ details.adv>summary:hover{color:var(--ac)}
   function renderTemplates() {
     var box = el("tpl-grid");
     if (!box) return;
-    var tpl = cfg()["反代"]["路径模板"] || {};
+    var tpl = cfg()["proxy"]["pathTemplates"] || {};
     var groups = ["PROXYIP", "SOCKS5", "HTTP", "HTTPS", "TURN", "SSTP"];
     box.innerHTML = groups.map(function (g) {
       if (g === "PROXYIP") {
-        var v = typeof tpl[g] === "string" ? tpl[g] : (tpl[g] && tpl[g]["全局"]) || TPL_DEFAULT[g];
+        var v = typeof tpl[g] === "string" ? tpl[g] : (tpl[g] && tpl[g]["global"]) || TPL_DEFAULT[g];
         return '<div class="fg full"><label>PROXYIP</label><input class="inp ltr mono" data-tpl="PROXYIP" type="text" dir="ltr" value="' + esc(v) + '"></div>';
       }
       var gv = tpl[g] || {};
       return '<div class="fg"><label>' + esc(g) + "</label>" +
         '<div class="grid2" style="gap:8px">' +
-        '<input class="inp ltr mono" data-tpl="' + g + '.全局" type="text" dir="ltr" placeholder="' + esc(TPL_DEFAULT[g]["全局"]) + '" value="' + esc(gv["全局"] || TPL_DEFAULT[g]["全局"]) + '">' +
-        '<input class="inp ltr mono" data-tpl="' + g + '.标准" type="text" dir="ltr" placeholder="' + esc(TPL_DEFAULT[g]["标准"]) + '" value="' + esc(gv["标准"] || TPL_DEFAULT[g]["标准"]) + '">' +
+        '<input class="inp ltr mono" data-tpl="' + g + '.global" type="text" dir="ltr" placeholder="' + esc(TPL_DEFAULT[g]["global"]) + '" value="' + esc(gv["global"] || TPL_DEFAULT[g]["global"]) + '">' +
+        '<input class="inp ltr mono" data-tpl="' + g + '.standard" type="text" dir="ltr" placeholder="' + esc(TPL_DEFAULT[g]["standard"]) + '" value="' + esc(gv["standard"] || TPL_DEFAULT[g]["standard"]) + '">' +
         "</div></div>";
     }).join("");
   }
 
   function renderConverter() {
-    var c = cfg()["订阅转换配置"];
+    var c = cfg()["subConverter"];
     if (el("c-api")) el("c-api").value = c.SUBAPI || "";
     if (el("c-config")) el("c-config").value = c.SUBCONFIG || "";
     setSw("sw-emoji", !!c.SUBEMOJI);
@@ -3598,7 +3648,7 @@ details.adv>summary:hover{color:var(--ac)}
 
   function renderTelegram() {
     var tg = cfg().TG || {};
-    setSw("sw-tg", !!tg["启用"]);
+    setSw("sw-tg", !!tg["enabled"]);
     var tok = el("tg-token");
     if (tok) {
       tok.value = "";
@@ -3608,8 +3658,8 @@ details.adv>summary:hover{color:var(--ac)}
     var badge = el("tg-badge");
     if (badge) {
       var has = !!(tg.BotToken || tg.ChatID);
-      badge.textContent = has ? (tg["启用"] ? t("enabled") : t("configured")) : t("not_configured");
-      badge.className = "status-badge " + (has ? (tg["启用"] ? "ok" : "warn") : "");
+      badge.textContent = has ? (tg["enabled"] ? t("enabled") : t("configured")) : t("not_configured");
+      badge.className = "status-badge " + (has ? (tg["enabled"] ? "ok" : "warn") : "");
     }
     var note = el("tg-note");
     if (note) note.style.display = isMasked(tg.BotToken) ? "" : "none";
@@ -3699,8 +3749,8 @@ details.adv>summary:hover{color:var(--ac)}
     var v = el("sy-version"); if (v) v.textContent = versionText(STATE.version, false);
     var h = el("sy-host"); if (h) h.textContent = c.HOST || "-";
     var u = el("sy-uuid"); if (u) u.textContent = c.UUID || "-";
-    var p = el("sy-path"); if (p) p.textContent = c["完整节点路径"] || c.PATH || "/";
-    var l = el("sy-load"); if (l) l.textContent = c["加载时间"] || "-";
+    var p = el("sy-path"); if (p) p.textContent = c["fullPath"] || c.PATH || "/";
+    var l = el("sy-load"); if (l) l.textContent = c["loadTime"] || "-";
     var tm = el("sy-time"); if (tm) tm.textContent = c.TIME ? fmtTime(Date.parse(c.TIME) || c.TIME) : "-";
   }
 
@@ -3712,11 +3762,11 @@ details.adv>summary:hover{color:var(--ac)}
     var hasTg = !!(tg.BotToken || tg.ChatID);
     var tgChip = el("ps-tg-chip");
     if (tgChip) {
-      tgChip.textContent = hasTg ? (tg["启用"] ? t("enabled") : t("configured")) : t("not_configured");
-      tgChip.className = "chip" + (hasTg ? (tg["启用"] ? " ok" : " warn") : "");
+      tgChip.textContent = hasTg ? (tg["enabled"] ? t("enabled") : t("configured")) : t("not_configured");
+      tgChip.className = "chip" + (hasTg ? (tg["enabled"] ? " ok" : " warn") : "");
     }
     setText(el("ps-tg-val"), tg.ChatID || "-");
-    setText(el("ps-tg-sub"), hasTg ? (tg["启用"] ? t("enabled") : t("disabled")) : t("not_configured"));
+    setText(el("ps-tg-sub"), hasTg ? (tg["enabled"] ? t("enabled") : t("disabled")) : t("not_configured"));
 
     /* Logs */
     var logs = (STATE.logs || []).slice().sort(function (a, b) { return (b.TIME || 0) - (a.TIME || 0); });
@@ -3747,15 +3797,15 @@ details.adv>summary:hover{color:var(--ac)}
     var name = (el("s-name").value || "").trim();
     var hours = clampInt(el("s-update").value, 1, 168, 3);
     await saveConfig(function (c) {
-      c["优选订阅生成"].SUBNAME = name || "Nova Worker";
-      c["优选订阅生成"].SUBUpdateTime = hours;
+      c["optimizedSub"].SUBNAME = name || "Nova Worker";
+      c["optimizedSub"].SUBUpdateTime = hours;
     }, btn);
   }
 
   async function saveSubMode(btn) {
     var mode = STATE.ipMode;
-    var s = cfg()["优选订阅生成"];
-    var lib = s["本地IP库"] || {};
+    var s = cfg()["optimizedSub"];
+    var lib = s["localIPPool"] || {};
     var count = clampInt(el("s-count") ? el("s-count").value : 16, 1, 999, 16);
     var port = el("s-port") ? parseInt(el("s-port").value, 10) : -1;
     if (!isFinite(port)) port = -1;
@@ -3772,11 +3822,11 @@ details.adv>summary:hover{color:var(--ac)}
     }
 
     await saveConfig(function (c) {
-      var sub = c["优选订阅生成"];
-      sub["本地IP库"] = Object.assign({}, sub["本地IP库"] || {}, {
-        "随机IP": mode === "random",
-        "随机数量": count,
-        "指定端口": port
+      var sub = c["optimizedSub"];
+      sub["localIPPool"] = Object.assign({}, sub["localIPPool"] || {}, {
+        "randomIP": mode === "random",
+        "randomCount": count,
+        "port": port
       });
       sub.local = mode !== "generator";
       sub.SUB = mode === "generator" ? generator : null;
@@ -3792,12 +3842,12 @@ details.adv>summary:hover{color:var(--ac)}
     if (proto === "ss") transport = "ws";
     await saveConfig(function (c) {
       c.PATH = path;
-      c["协议类型"] = proto;
-      c["传输协议"] = transport;
-      if (transport === "grpc") c["gRPC模式"] = el("n-grpc-mode").value || "gun";
+      c["protocol"] = proto;
+      c["transport"] = transport;
+      if (transport === "grpc") c["grpcMode"] = el("n-grpc-mode").value || "gun";
       c.gRPCUserAgent = (el("n-grpc-ua").value || "").trim() || navigator.userAgent;
       c["SS"] = {
-        "加密方式": el("n-ss-method").value || "aes-128-gcm",
+        "method": el("n-ss-method").value || "aes-128-gcm",
         "TLS": el("n-ss-tls").value === "true"
       };
       c.Fingerprint = el("n-fp").value || "chrome";
@@ -3825,7 +3875,7 @@ details.adv>summary:hover{color:var(--ac)}
 
   async function saveHosts(btn) {
     var raw = el("hosts-text") ? el("hosts-text").value : "";
-    var items = raw.split(/[\s,،。]+/).map(cleanHostDomain).filter(function (x) { return x.length > 0; });
+    var items = raw.split(/[\s,،]+/).map(cleanHostDomain).filter(function (x) { return x.length > 0; });
     items = items.filter(function (v, i, a) { return a.indexOf(v) === i; });
     if (!items.length) { toast(t("hosts_empty"), "err"); return; }
     var ok = await saveConfig(function (c) { c.HOSTS = items; }, btn);
@@ -3872,10 +3922,10 @@ details.adv>summary:hover{color:var(--ac)}
     if (ech && fp !== "chrome" && fp !== "firefox") { toast(t("ech_warn"), "err"); return; }
     var rtt = swOn("sw-rtt0") && !(proto === "ss" || transport === "grpc");
     await saveConfig(function (c) {
-      c["跳过证书验证"] = swOn("sw-skip");
-      c["启用0RTT"] = rtt;
-      c["随机路径"] = swOn("sw-randpath");
-      c["TLS分片"] = el("n-frag").value || null;
+      c["skipCertVerify"] = swOn("sw-skip");
+      c["enable0RTT"] = rtt;
+      c["randomPath"] = swOn("sw-randpath");
+      c["tlsFragment"] = el("n-frag").value || null;
       c.ECH = ech;
       c.ECHConfig = {
         "DNS": (el("n-ech-dns").value || "").trim() || "https://dns.alidns.com/dns-query",
@@ -3886,16 +3936,16 @@ details.adv>summary:hover{color:var(--ac)}
 
   async function saveProxy(btn) {
     var mode = el("p-mode").value;
-    var r = cfg()["反代"];
+    var r = cfg()["proxy"];
     var socks = r.SOCKS5 || {};
     if (mode === "auto") {
       var auto = swOn("sw-autoip");
       var proxyip = (el("p-proxyip").value || "").trim();
       if (!auto && !proxyip) { toast(t("proxyip") + " — " + t("select_one"), "err"); return; }
       await saveConfig(function (c) {
-        c["反代"]["PROXYIP"] = auto ? "auto" : proxyip;
-        c["反代"]["SOCKS5"] = Object.assign({}, c["反代"]["SOCKS5"] || {}, {
-          "启用": null, "全局": false, "账号": ""
+        c["proxy"]["PROXYIP"] = auto ? "auto" : proxyip;
+        c["proxy"]["SOCKS5"] = Object.assign({}, c["proxy"]["SOCKS5"] || {}, {
+          "enabled": null, "global": false, "account": ""
         });
       }, btn);
       return;
@@ -3903,11 +3953,11 @@ details.adv>summary:hover{color:var(--ac)}
     var addr = (el("p-account").value || "").trim();
     if (!addr) { toast(t("socks_account") + " — " + t("select_one"), "err"); return; }
     await saveConfig(function (c) {
-      var cur = c["反代"]["SOCKS5"] || {};
-      c["反代"]["SOCKS5"] = Object.assign({}, cur, {
-        "启用": mode,
-        "全局": swOn("sw-global"),
-        "账号": addr
+      var cur = c["proxy"]["SOCKS5"] || {};
+      c["proxy"]["SOCKS5"] = Object.assign({}, cur, {
+        "enabled": mode,
+        "global": swOn("sw-global"),
+        "account": addr
       });
     }, btn);
   }
@@ -3915,7 +3965,7 @@ details.adv>summary:hover{color:var(--ac)}
   async function saveTemplates(btn) {
     if (!validateAllTpl()) { toast(t("tpl_invalid"), "err"); return; }
     await saveConfig(function (c) {
-      var tpl = c["反代"]["路径模板"] || {};
+      var tpl = c["proxy"]["pathTemplates"] || {};
       $$("[data-tpl]").forEach(function (input) {
         var key = input.dataset.tpl;
         var val = input.value;
@@ -3924,13 +3974,41 @@ details.adv>summary:hover{color:var(--ac)}
         if (!tpl[parts[0]] || typeof tpl[parts[0]] !== "object") tpl[parts[0]] = {};
         tpl[parts[0]][parts[1]] = val;
       });
-      c["反代"]["路径模板"] = tpl;
+      c["proxy"]["pathTemplates"] = tpl;
     }, btn);
   }
 
   /* ----------------------------------------------------- path template presets */
-  var PATH_PRESET_URL = "https://raw.githubusercontent.com/cmliu/cmliu/main/json/edt-path-config.json";
-  var pathPresets = null;
+  var pathPresetsBuilt = false;
+  var pathPresets = [
+    {
+      name: "Nova / CM project (default)",
+      message: "Switched to the Nova / CM project configuration.",
+      tpl: {
+        PROXYIP: "proxyip={{IP:PORT}}",
+        SOCKS5: { global: "socks5://{{IP:PORT}}", standard: "socks5={{IP:PORT}}" },
+        HTTP: { global: "http://{{IP:PORT}}", standard: "http={{IP:PORT}}" }
+      }
+    },
+    {
+      name: "Nova Worker (3K project)",
+      message: "Switched to the 3K project configuration.",
+      tpl: {
+        PROXYIP: "proxyip={{IP:PORT}}",
+        SOCKS5: { global: "socks5://{{IP:PORT}}?globalproxy", standard: "socks5://{{IP:PORT}}" },
+        HTTP: { global: "http://{{IP:PORT}}?globalproxy", standard: "http://{{IP:PORT}}" }
+      }
+    },
+    {
+      name: "eooce / Cloudflare-proxy",
+      message: "Note: this project's SOCKS5/HTTP outbound does not support non-global mode.",
+      tpl: {
+        PROXYIP: "proxyip={{IP:PORT}}",
+        SOCKS5: { global: "proxyip=socks5://{{IP:PORT}}", standard: "proxyip=socks5://{{IP:PORT}}" },
+        HTTP: { global: "proxyip=http://{{IP:PORT}}", standard: "proxyip=http://{{IP:PORT}}" }
+      }
+    }
+  ];
 
   function validateTplInput(input) {
     if (!input) return true;
@@ -3944,69 +4022,97 @@ details.adv>summary:hover{color:var(--ac)}
     $$("[data-tpl]").forEach(function (input) { if (!validateTplInput(input)) ok = false; });
     return ok;
   }
-  async function loadPathPresets() {
-    if (pathPresets) return;
-    try {
-      var text = await fetchWithAutoMirror(PATH_PRESET_URL, "path presets");
-      pathPresets = JSON.parse(text);
-      var sel = el("tpl-preset");
-      if (sel && Array.isArray(pathPresets)) {
-        sel.innerHTML = '<option value="">—</option>' + pathPresets.map(function (p) {
-          return '<option value="' + esc(p["项目名"]) + '">' + esc(p["项目名"]) + "</option>";
-        }).join("");
-      }
-    } catch (e) {
-      if (el("tpl-msg")) el("tpl-msg").textContent = t("tpl_preset_fail");
-    }
+  function loadPathPresets() {
+    if (pathPresetsBuilt) return;
+    pathPresetsBuilt = true;
+    var sel = el("tpl-preset");
+    if (!sel) return;
+    sel.innerHTML = '<option value="">—</option>' + pathPresets.map(function (p) {
+      return '<option value="' + esc(p.name) + '">' + esc(p.name) + "</option>";
+    }).join("");
   }
   function applyPathPreset() {
     var sel = el("tpl-preset");
-    if (!sel || !sel.value || !Array.isArray(pathPresets)) return;
-    var preset = pathPresets.filter(function (p) { return p["项目名"] === sel.value; })[0];
-    var tpl = preset && preset["路径模板"];
+    if (!sel || !sel.value) return;
+    var preset = pathPresets.filter(function (p) { return p.name === sel.value; })[0];
+    var tpl = preset && preset.tpl;
     if (!tpl) return;
     var map = {
       "PROXYIP": tpl.PROXYIP,
-      "SOCKS5.标准": tpl.SOCKS5 && tpl.SOCKS5["标准"], "SOCKS5.全局": tpl.SOCKS5 && tpl.SOCKS5["全局"],
-      "HTTP.标准": tpl.HTTP && tpl.HTTP["标准"], "HTTP.全局": tpl.HTTP && tpl.HTTP["全局"],
-      "HTTPS.标准": tpl.HTTPS && tpl.HTTPS["标准"], "HTTPS.全局": tpl.HTTPS && tpl.HTTPS["全局"],
-      "TURN.标准": tpl.TURN && tpl.TURN["标准"], "TURN.全局": tpl.TURN && tpl.TURN["全局"],
-      "SSTP.标准": tpl.SSTP && tpl.SSTP["标准"], "SSTP.全局": tpl.SSTP && tpl.SSTP["全局"]
+      "SOCKS5.standard": tpl.SOCKS5 && tpl.SOCKS5.standard, "SOCKS5.global": tpl.SOCKS5 && tpl.SOCKS5.global,
+      "HTTP.standard": tpl.HTTP && tpl.HTTP.standard, "HTTP.global": tpl.HTTP && tpl.HTTP.global,
+      "HTTPS.standard": tpl.HTTPS && tpl.HTTPS.standard, "HTTPS.global": tpl.HTTPS && tpl.HTTPS.global,
+      "TURN.standard": tpl.TURN && tpl.TURN.standard, "TURN.global": tpl.TURN && tpl.TURN.global,
+      "SSTP.standard": tpl.SSTP && tpl.SSTP.standard, "SSTP.global": tpl.SSTP && tpl.SSTP.global
     };
     $$("[data-tpl]").forEach(function (input) {
       var v = map[input.dataset.tpl];
       if (v !== undefined && v !== null) input.value = String(v);
       validateTplInput(input);
     });
-    if (el("tpl-msg")) el("tpl-msg").textContent = preset["提示消息"] || t("tpl_applied");
+    if (el("tpl-msg")) el("tpl-msg").textContent = preset.message || t("tpl_applied");
   }
 
   /* ------------------------------------------------------ subconfig presets */
-  var SUBCONFIG_URL = "https://raw.githubusercontent.com/cmliu/cmliu/main/SUBCONFIG.json";
-  var subConfigPresets = null;
-  async function loadSubConfigPresets() {
-    if (subConfigPresets) return;
-    try {
-      var text = await fetchWithAutoMirror(SUBCONFIG_URL, "SUBCONFIG presets");
-      subConfigPresets = JSON.parse(text);
-      var sel = el("c-config-preset");
-      if (!sel || !Array.isArray(subConfigPresets)) return;
-      var html = '<option value="">' + esc(t("conv_preset_none")) + "</option>";
-      subConfigPresets.forEach(function (group) {
-        if (!group || !Array.isArray(group.options)) return;
-        html += '<optgroup label="' + esc(group.label || "") + '">';
-        group.options.forEach(function (opt) {
-          html += '<option value="' + esc(opt.value || "") + '">' + esc(opt.label || opt.value || "") + "</option>";
-        });
-        html += "</optgroup>";
-      });
-      sel.innerHTML = html;
-      var cur = el("c-config") ? (el("c-config").value || "").trim() : "";
-      if (cur) sel.value = cur;
-      if (el("c-config-msg")) el("c-config-msg").textContent = "";
-    } catch (e) {
-      if (el("c-config-msg")) el("c-config-msg").textContent = t("conv_preset_fail");
+  var ACL4SSR_BASE = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/config/";
+  var CM_RULES_BASE = "https://raw.githubusercontent.com/cmliu/ACL4SSR/refs/heads/main/Clash/config/";
+  var subConfigPresets = [
+    {
+      label: "ACL4SSR rules",
+      options: [
+        { label: "Default · full groups · ACL4SSR_Online", value: ACL4SSR_BASE + "ACL4SSR_Online.ini" },
+        { label: "More ad blocking · ACL4SSR_Online_AdblockPlus", value: ACL4SSR_BASE + "ACL4SSR_Online_AdblockPlus.ini" },
+        { label: "Multi-country groups · ACL4SSR_Online_MultiCountry", value: ACL4SSR_BASE + "ACL4SSR_Online_MultiCountry.ini" },
+        { label: "No auto speed test · ACL4SSR_Online_NoAuto", value: ACL4SSR_BASE + "ACL4SSR_Online_NoAuto.ini" },
+        { label: "No ad-block rules · ACL4SSR_Online_NoReject", value: ACL4SSR_BASE + "ACL4SSR_Online_NoReject.ini" },
+        { label: "Mini · ACL4SSR_Online_Mini", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini.ini" },
+        { label: "Mini + ad blocking · ACL4SSR_Online_Mini_AdblockPlus", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini_AdblockPlus.ini" },
+        { label: "Mini without auto test · ACL4SSR_Online_Mini_NoAuto", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini_NoAuto.ini" },
+        { label: "Mini with fallback · ACL4SSR_Online_Mini_Fallback", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini_Fallback.ini" },
+        { label: "Mini · auto test + fallback + load balance · ACL4SSR_Online_Mini_MultiMode", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini_MultiMode.ini" },
+        { label: "Mini with HK/US/JP countries · ACL4SSR_Online_Mini_MultiCountry", value: ACL4SSR_BASE + "ACL4SSR_Online_Mini_MultiCountry.ini" },
+        { label: "Full groups · heavy users · ACL4SSR_Online_Full", value: ACL4SSR_BASE + "ACL4SSR_Online_Full.ini" },
+        { label: "Full groups · multi-mode · heavy users · ACL4SSR_Online_Full_MultiMode", value: ACL4SSR_BASE + "ACL4SSR_Online_Full_MultiMode.ini" },
+        { label: "Full groups · no auto test · heavy users · ACL4SSR_Online_Full_NoAuto", value: ACL4SSR_BASE + "ACL4SSR_Online_Full_NoAuto.ini" },
+        { label: "Full groups · heavy users + ad blocking · ACL4SSR_Online_Full_AdblockPlus", value: ACL4SSR_BASE + "ACL4SSR_Online_Full_AdblockPlus.ini" },
+        { label: "Full groups · heavy users · full Netflix · ACL4SSR_Online_Full_Netflix", value: ACL4SSR_BASE + "ACL4SSR_Online_Full_Netflix.ini" },
+        { label: "Full groups · heavy users · Google split · ACL4SSR_Online_Full_Google", value: ACL4SSR_BASE + "ACL4SSR_Online_Full_Google.ini" }
+      ]
+    },
+    {
+      label: "Nova / CM custom rules",
+      options: [
+        { label: "Default · HK/US region detection · CM_Online", value: CM_RULES_BASE + "ACL4SSR_Online.ini" },
+        { label: "Mini · auto test + fallback + load balance · Cloudflare CDN · CM_Online_Mini_MultiMode_CF", value: CM_RULES_BASE + "ACL4SSR_Online_Mini_MultiMode_CF.ini" },
+        { label: "Mini without auto test (fewer -1 results) · Cloudflare CDN · CM_Online_Mini_NoAuto_CF", value: CM_RULES_BASE + "ACL4SSR_Online_Mini_NoAuto_CF.ini" },
+        { label: "HK/US region detection · load balance · CM_Online_MultiCountry", value: CM_RULES_BASE + "ACL4SSR_Online_MultiCountry.ini" },
+        { label: "HK/US + Cloudflare CDN · load balance · CF nodes · CM_Online_MultiCountry_CF", value: CM_RULES_BASE + "ACL4SSR_Online_MultiCountry_CF.ini" },
+        { label: "Multi-region groups · CM_Online_Full", value: CM_RULES_BASE + "ACL4SSR_Online_Full.ini" },
+        { label: "Multi-region + Cloudflare CDN groups · CF nodes · CM_Online_Full_CF", value: CM_RULES_BASE + "ACL4SSR_Online_Full_CF.ini" },
+        { label: "Multi-region · load balance · CM_Online_Full_MultiMode", value: CM_RULES_BASE + "ACL4SSR_Online_Full_MultiMode.ini" },
+        { label: "Multi-region + Cloudflare CDN · load balance · CF nodes · CM_Online_Full_MultiMode_CF", value: CM_RULES_BASE + "ACL4SSR_Online_Full_MultiMode_CF.ini" }
+      ]
     }
+  ];
+  var subConfigPresetsBuilt = false;
+  function loadSubConfigPresets() {
+    if (subConfigPresetsBuilt) return;
+    subConfigPresetsBuilt = true;
+    var sel = el("c-config-preset");
+    if (!sel) return;
+    var html = '<option value="">' + esc(t("conv_preset_none")) + "</option>";
+    subConfigPresets.forEach(function (group) {
+      if (!group || !Array.isArray(group.options)) return;
+      html += '<optgroup label="' + esc(group.label || "") + '">';
+      group.options.forEach(function (opt) {
+        html += '<option value="' + esc(opt.value || "") + '">' + esc(opt.label || opt.value || "") + "</option>";
+      });
+      html += "</optgroup>";
+    });
+    sel.innerHTML = html;
+    var cur = el("c-config") ? (el("c-config").value || "").trim() : "";
+    if (cur) sel.value = cur;
+    if (el("c-config-msg")) el("c-config-msg").textContent = "";
   }
   function applySubConfigPreset() {
     var sel = el("c-config-preset");
@@ -4038,33 +4144,31 @@ details.adv>summary:hover{color:var(--ac)}
     showModal("subapi-modal");
     loadSubApiList(el("c-api") ? el("c-api").value : "");
   }
-  async function loadSubApiList(current) {
+  var subApiList = [
+    { label: "CM load-balanced backend", value: "https://subapi.cmliussss.net" },
+    { label: "CM emergency backup", value: "https://subapi.fxxk.dedyn.io" },
+    { label: "Feiyang enhanced backend", value: "https://api.v1.mk" },
+    { label: "Feiyang backup backend", value: "https://url.v1.mk" },
+    { label: "ZRF backend", value: "https://subapi.zrfme.com" }
+  ];
+  function loadSubApiList(current) {
     var sel = el("subapi-select");
     if (!sel) return;
-    sel.innerHTML = '<option value="">' + esc(t("subapi_loading")) + "</option>";
-    try {
-      var text = await fetchWithAutoMirror("https://raw.githubusercontent.com/cmliu/cmliu/main/SUBAPI.json", "SUBAPI list");
-      var list = JSON.parse(text);
-      sel.innerHTML = list.map(function (item) {
-        return '<option value="' + esc(item.value) + '">' + esc((item.label || item.value) + " [" + item.value + "]") + "</option>";
-      }).join("") + '<option value="custom">' + esc(t("subapi_custom_opt")) + "</option>";
-      var cur = String(current || "").trim().toLowerCase();
-      var match = "";
-      Array.prototype.forEach.call(sel.options, function (o) {
-        if (cur && o.value.toLowerCase() === cur) match = o.value;
-      });
-      if (match) {
-        sel.value = match;
-      } else if (cur) {
-        sel.value = "custom";
-        if (el("subapi-custom")) el("subapi-custom").value = String(current).trim();
-      } else if (sel.options.length) {
-        sel.value = sel.options[0].value;
-      }
-    } catch (e) {
-      sel.innerHTML = '<option value="custom">' + esc(t("subapi_custom_opt")) + "</option>";
+    sel.innerHTML = subApiList.map(function (item) {
+      return '<option value="' + esc(item.value) + '">' + esc((item.label || item.value) + " [" + item.value + "]") + "</option>";
+    }).join("") + '<option value="custom">' + esc(t("subapi_custom_opt")) + "</option>";
+    var cur = String(current || "").trim().toLowerCase();
+    var match = "";
+    Array.prototype.forEach.call(sel.options, function (o) {
+      if (cur && o.value.toLowerCase() === cur) match = o.value;
+    });
+    if (match) {
+      sel.value = match;
+    } else if (cur) {
       sel.value = "custom";
-      if (el("subapi-custom")) el("subapi-custom").value = current || "";
+      if (el("subapi-custom")) el("subapi-custom").value = String(current).trim();
+    } else if (sel.options.length) {
+      sel.value = sel.options[0].value;
     }
     syncSubApiCustom();
   }
@@ -4101,7 +4205,7 @@ details.adv>summary:hover{color:var(--ac)}
 
   async function saveConverter(btn) {
     await saveConfig(function (c) {
-      var v = c["订阅转换配置"];
+      var v = c["subConverter"];
       v.SUBAPI = (el("c-api").value || "").trim();
       v.SUBCONFIG = (el("c-config").value || "").trim();
       v.SUBEMOJI = swOn("sw-emoji");
@@ -4131,7 +4235,7 @@ details.adv>summary:hover{color:var(--ac)}
       try {
         if (hasFull) await postJSON("/admin/tg.json", { BotToken: tokenInput, ChatID: chat });
         var res = await saveConfig(function (c) {
-          c.TG = Object.assign({}, c.TG || {}, { "启用": enable });
+          c.TG = Object.assign({}, c.TG || {}, { "enabled": enable });
         }, null);
         if (!res) return;
         toast(t("saved"));
@@ -4364,7 +4468,7 @@ details.adv>summary:hover{color:var(--ac)}
     if (!(await confirmDlg(t("reset_ask")))) return;
     await withBusy(btn, async function () {
       try {
-        var c = await getJSON("/admin/init?_t=" + Date.now());
+        var c = fromWire(await getJSON("/admin/init?_t=" + Date.now()));
         if (c && c.UUID) STATE.cfg = c;
         toast(t("reset_done"));
         renderAll();
@@ -6087,7 +6191,7 @@ details.adv>summary:hover{color:var(--ac)}
         getJSON("/admin/config.json"),
         getJSON("/admin/log.json?_t=" + Date.now()).catch(function () { return []; })
       ]);
-      var c = res[0], logs = res[1];
+      var c = fromWire(res[0]), logs = res[1];
       if (!c || !c.UUID) throw new Error(t("load_err"));
       STATE.cfg = c;
       STATE.logs = Array.isArray(logs) ? logs : [];
