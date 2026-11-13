@@ -366,6 +366,25 @@ html[dir=rtl] .sw.on .k{left:auto;right:20px}
 .help-body b{color:var(--tx);font-weight:600}
 .help-body code{font-family:ui-monospace,monospace;font-size:12px;background:var(--card2);border:1px solid var(--bd);border-radius:5px;padding:1px 5px}
 .help-body .tip{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12.5px}
+/* ---- First-run user-mode picker ---- */
+.modal-c.mode-c{max-width:780px;text-align:start;padding:24px}
+.mode-head h4{margin:0 0 6px;font-size:17px}
+.mode-head p{margin:0 0 18px;font-size:12.5px;line-height:1.75;color:var(--mu)}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mode-opt{display:flex;flex-direction:column;gap:10px;background:var(--card2);border:1px solid var(--bd);border-radius:14px;padding:16px;transition:border-color .15s,box-shadow .15s}
+.mode-opt:hover{border-color:var(--ac);box-shadow:var(--shadow)}
+.mode-opt .mt{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:var(--tx)}
+.mode-opt .mt .mode-ic{width:32px;height:32px;flex:0 0 32px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--bd);color:var(--ac)}
+.mode-opt .mt .mode-ic svg{width:17px;height:17px}
+.mode-opt .md{font-size:12px;line-height:1.75;color:var(--tx2)}
+.mode-opt ul{margin:0;padding-inline-start:18px;font-size:11.8px;line-height:1.75;color:var(--tx2)}
+.mode-opt li{margin:0 0 5px}
+.mode-opt li:last-child{margin-bottom:0}
+.mode-opt .mx{font-size:11.5px;line-height:1.7;color:var(--mu);border-top:1px dashed var(--bd);padding-top:9px;margin-top:auto}
+.mode-opt .btn{width:100%;margin-top:2px}
+.mode-note{display:flex;gap:8px;align-items:flex-start;margin-top:16px;font-size:11.5px;line-height:1.7;color:var(--mu)}
+.mode-note svg{width:14px;height:14px;flex:0 0 14px;margin-top:2px;color:var(--ac)}
+@media (max-width:640px){.mode-grid{grid-template-columns:1fr}.modal-c.mode-c{padding:18px}}
 /* Free-service notice: locked pill + node box */
 .lockpill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--tx2);background:var(--card2);border:1px solid var(--bd);border-radius:999px;padding:4px 11px}
 .lockpill svg{width:12px;height:12px;flex:0 0 auto;color:var(--mu)}
@@ -847,7 +866,7 @@ details.adv>summary:hover{color:var(--ac)}
       </div>
       <a class="logout" href="/logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span data-i18n="logout">خروج</span></a>
       <div class="ver"><span data-i18n="ver_worker">Worker</span><b id="ver-worker">-</b></div>
-      <div class="ver"><span data-i18n="ver_panel">Panel</span><b>Beta-0.0.1</b></div>
+      <div class="ver"><span data-i18n="ver_panel">Panel</span><b id="ver-panel">Beta-0.0.1</b></div>
     </div>
   </aside>
 
@@ -989,7 +1008,7 @@ details.adv>summary:hover{color:var(--ac)}
             <div class="cfg-copy"><h2 data-i18n="p_sub">تنظیمات اشتراک</h2><p data-i18n="s_sub">منبع IP، نام اشتراک و فهرست دستی.</p></div>
           </div>
 
-        <div class="card">
+        <div class="card" data-card="sub_basic">
           <div class="card-h"><h3 data-i18n="sub_basic">مبانی اشتراک</h3></div>
           <div class="card-pad">
             <div class="grid2">
@@ -1002,7 +1021,7 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="sec-actions"><span class="hint" data-i18n="sub_tip">پس از ذخیره، کلاینت‌ها را به‌روزرسانی کنید.</span><button class="btn primary" type="button" id="save-sub" data-i18n="save">ذخیره</button></div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="sub_source">
           <div class="card-h"><div><h3 data-i18n="sub_source">منبع IP ترجیحی</h3><div class="sub" data-i18n="sub_source_h">نودها با این IPها ساخته می‌شوند.</div></div></div>
           <div class="card-pad">
             <div class="modeseg" id="ip-mode-seg">
@@ -1013,7 +1032,7 @@ details.adv>summary:hover{color:var(--ac)}
 
             <div id="mode-random">
               <div class="grid2">
-                <div class="fg"><label for="s-count" data-i18n="rand_count">تعداد IP تصادفی</label><input class="inp ltr" id="s-count" type="number" min="1" max="99" step="1" /><div class="hint tight" data-i18n="rand_count_h">بین ۱ تا ۹۹.</div></div>
+                <div class="fg"><label for="s-count" data-i18n="rand_count">تعداد IP تصادفی</label><input class="inp ltr" id="s-count" type="number" min="1" max="999" step="1" /><div class="hint tight" data-i18n="rand_count_h">بین ۱ تا ۹۹۹.</div></div>
                 <div class="fg"><label for="s-port" data-i18n="port">پورت</label><select class="inp ltr" id="s-port"><option value="-1" data-i18n="port_auto">خودکار</option><option value="443">443</option><option value="2053">2053</option><option value="2083">2083</option><option value="2087">2087</option><option value="2096">2096</option><option value="8443">8443</option></select></div>
               </div>
             </div>
@@ -1038,7 +1057,7 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="sec-actions"><button class="btn primary" type="button" id="save-sub-mode" data-i18n="save_sub">ذخیره تنظیمات اشتراک</button></div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="token">
           <div class="card-h"><h3 data-i18n="token">توکن اشتراک</h3></div>
           <div class="card-pad">
             <div class="codebox"><span class="lbl">TOKEN</span><code id="l-token">-</code><button class="btn ghost sm" type="button" data-copy="#l-token" data-i18n="copy">کپی</button></div>
@@ -1053,7 +1072,7 @@ details.adv>summary:hover{color:var(--ac)}
             <div class="cfg-copy"><h2 data-i18n="p_node">تنظیمات نود</h2><p data-i18n="s_node">پروتکل، انتقال و لایه‌ی امنیتی.</p></div>
           </div>
 
-        <div class="card">
+        <div class="card" data-card="identity">
           <div class="card-h"><h3 data-i18n="identity">هویت نود</h3></div>
           <div class="card-pad">
             <div class="grid2">
@@ -1064,7 +1083,7 @@ details.adv>summary:hover{color:var(--ac)}
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="protocol_transport">
           <div class="card-h"><h3 data-i18n="protocol_transport">پروتکل و انتقال</h3></div>
           <div class="card-pad">
             <div class="grid2">
@@ -1081,7 +1100,7 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="sec-actions"><button class="btn primary" type="button" id="save-node" data-i18n="save_node">ذخیره تنظیمات نود</button></div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="security">
           <div class="card-h"><h3 data-i18n="security">امنیت و پایداری</h3></div>
           <div class="card-pad">
             <div class="switch-row"><div class="l" data-i18n="skip_verify">نادیده‌گرفتن خطای گواهی<small data-i18n="skip_verify_h">فقط برای گواهی نامعتبر.</small></div><button class="sw" type="button" id="sw-skip" role="switch" aria-checked="false"><span class="k"></span></button></div>
@@ -1098,7 +1117,7 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="sec-actions"><button class="btn primary" type="button" id="save-security" data-i18n="save_security">ذخیره امنیت</button></div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="full_path">
           <div class="card-h"><h3 data-i18n="full_path">مسیر کامل نود</h3></div>
           <div class="card-pad">
             <div class="codebox"><span class="lbl">PATH</span><code id="l-full-path">-</code><button class="btn ghost sm" type="button" data-copy="#l-full-path" data-i18n="copy">کپی</button></div>
@@ -1113,7 +1132,7 @@ details.adv>summary:hover{color:var(--ac)}
             <div class="cfg-copy"><h2 data-i18n="p_proxy">CDN و پروکسی</h2><p data-i18n="s_proxy">PROXYIP، SOCKS5 و آزمون اتصال.</p></div>
           </div>
 
-        <div class="card">
+        <div class="card" data-card="reverse">
           <div class="card-h"><h3 data-i18n="reverse">پروکسی معکوس</h3><span class="status-badge" id="proxy-mode-badge">-</span></div>
           <div class="card-pad">
             <div class="grid2">
@@ -1127,7 +1146,7 @@ details.adv>summary:hover{color:var(--ac)}
           <div class="sec-actions"><button class="btn primary" type="button" id="save-proxy" data-i18n="save_proxy">ذخیره تنظیمات پروکسی</button></div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="check">
           <div class="card-h"><h3 data-i18n="check">آزمون پروکسی</h3></div>
           <div class="card-pad">
             <p class="hint" data-i18n="check_h">اتصال از طریق پروکسی آزمایش می‌شود.</p>
@@ -1140,7 +1159,7 @@ details.adv>summary:hover{color:var(--ac)}
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" data-card="templates">
           <div class="card-h"><h3 data-i18n="templates">قالب‌های مسیر</h3><span class="chip" data-i18n="advanced">پیشرفته</span></div>
           <details class="adv" id="tpl-details"><summary data-i18n="templates_h">قالب هر پروتکل؛ {{IP:PORT}} را نگه دارید.</summary>
             <div class="card-pad">
@@ -1402,7 +1421,7 @@ details.adv>summary:hover{color:var(--ac)}
         <div class="card">
           <div class="card-h"><h3 data-i18n="about_version">نسخه و انتشار</h3><span class="status-badge" id="ver-badge">-</span></div>
           <div class="card-pad">
-            <div class="kv"><span class="k" data-i18n="about_panel">نسخه پنل</span><span class="v">Beta-0.0.1</span></div>
+            <div class="kv"><span class="k" data-i18n="about_panel">نسخه پنل</span><span class="v" id="about-panel">Beta-0.0.1</span></div>
             <div class="kv"><span class="k" data-i18n="about_release">تاریخ عرضه</span><span class="v" data-i18n="about_release_val">آبان ۱۴۰۵</span></div>
             <div class="kv"><span class="k" data-i18n="about_current">نسخه فعلی</span><span class="v" id="about-current">-</span></div>
             <div class="kv"><span class="k" data-i18n="about_latest">آخرین نسخه</span><span class="v" id="about-latest">-</span></div>
@@ -1410,6 +1429,17 @@ details.adv>summary:hover{color:var(--ac)}
               <button class="btn ghost sm" type="button" id="ver-check" data-i18n="ver_check">بررسی نسخه</button>
               <button class="btn ghost sm" type="button" id="ver-log" data-i18n="ver_log">تغییرات</button>
               <span class="hint" id="ver-msg"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3 data-i18n="about_mode">تغییر کاربری</h3><span class="status-badge" id="about-mode">مبتدی</span></div>
+          <div class="card-pad">
+            <p class="hint" data-i18n="about_mode_h">حالت نمایش پنل را تغییر دهید. حالت مبتدی فقط بخش‌های ضروری را نشان می‌دهد و حالت پیشرفته همهٔ تنظیمات را باز می‌کند.</p>
+            <div class="pillrow" style="margin-top:12px">
+              <button class="btn ghost sm" type="button" id="mode-switch" data-i18n="mode_switch_basic">تغییر به مبتدی</button>
+              <span class="hint" id="mode-msg"></span>
             </div>
           </div>
         </div>
@@ -1714,6 +1744,48 @@ details.adv>summary:hover{color:var(--ac)}
   </div>
 </div>
 
+<div class="modal" id="mode-modal" role="dialog" aria-modal="true" aria-labelledby="mode-title">
+  <div class="modal-c mode-c">
+    <div class="mode-head">
+      <h4 id="mode-title" data-i18n="mode_title">حالت استفاده از پنل را انتخاب کنید</h4>
+      <p data-i18n="mode_sub">این انتخاب فقط یک‌بار پرسیده می‌شود و تعیین می‌کند چه بخش‌هایی از پنل نمایش داده شود. هر زمان می‌توانید از «درباره ← حالت کاربری» آن را تغییر دهید.</p>
+    </div>
+    <div class="mode-grid">
+      <div class="mode-opt">
+        <div class="mt">
+          <span class="mode-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          <span data-i18n="mode_basic_t">کاربر معمولی — حالت مبتدی</span>
+        </div>
+        <div class="md" data-i18n="mode_basic_d">برای استفادهٔ شخصی یا خانوادگی؛ حدود ۴ کاربر که هر کدام یک اکانت دارند. پنل فقط بخش‌های لازم برای راه‌اندازی و استفادهٔ روزمره را نشان می‌دهد:</div>
+        <ul>
+          <li data-i18n="mode_basic_l1">داشبورد: وضعیت اتصال، مصرف و خلاصهٔ اشتراک</li>
+          <li data-i18n="mode_basic_l2">لینک‌ها: لینک اشتراک و کانفیگ‌های آمادهٔ اتصال</li>
+          <li data-i18n="mode_basic_l3">تنظیمات شبکه: فقط «مبانی اشتراک»، «منبع IP ترجیحی» و «پروتکل و انتقال»</li>
+          <li data-i18n="mode_basic_l4">درباره: نسخه، راهنماها و تغییر حالت کاربری</li>
+        </ul>
+        <div class="mx" data-i18n="mode_basic_x">تنظیمات پیشرفته مانند امنیت، CDN و پروکسی، قالب مسیر، مبدل، بهینه‌سازی و تنظیمات پنل پنهان می‌شود تا پنل ساده و بدون شلوغی بماند.</div>
+        <button class="btn primary" type="button" data-mode-pick="beginner" data-i18n="mode_pick_basic">انتخاب حالت مبتدی</button>
+      </div>
+      <div class="mode-opt">
+        <div class="mt">
+          <span class="mode-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
+          <span data-i18n="mode_adv_t">کاربر پیشرفته — حالت کامل</span>
+        </div>
+        <div class="md" data-i18n="mode_adv_d">برای کسانی که تنظیمات خاص نیاز دارند یا بیش از ۵ کاربر از دوستان و خانواده را مدیریت می‌کنند. همهٔ بخش‌ها و کارت‌های پنل در دسترس است:</div>
+        <ul>
+          <li data-i18n="mode_adv_l1">همهٔ بخش‌های حالت مبتدی، بدون هیچ محدودیتی</li>
+          <li data-i18n="mode_adv_l2">تنظیمات شبکهٔ کامل: هویت نود، امنیت و پایداری، مسیر کامل، CDN و پروکسی، آزمون پروکسی و قالب‌های مسیر</li>
+          <li data-i18n="mode_adv_l3">مبدل اشتراک، بهینه‌سازی، تنظیمات پنل، گزارش‌ها و وضعیت سیستم</li>
+          <li data-i18n="mode_adv_l4">کنترل کامل پروتکل، انتقال، ECH، SOCKS5، پروکسی معکوس و قالب‌های پیشرفته</li>
+        </ul>
+        <div class="mx" data-i18n="mode_adv_x">اگر بعداً پنل ساده‌تری خواستید، از «درباره ← حالت کاربری» به حالت مبتدی برگردید؛ هیچ تنظیمی از دست نمی‌رود.</div>
+        <button class="btn primary" type="button" data-mode-pick="advanced" data-i18n="mode_pick_adv">انتخاب حالت پیشرفته</button>
+      </div>
+    </div>
+    <div class="mode-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span data-i18n="mode_note">انتخاب شما در تنظیمات Worker (KV) ذخیره می‌شود، فقط یک‌بار پرسیده می‌شود و برای همهٔ مرورگرها اعمال است.</span></div>
+  </div>
+</div>
+
 <button class="btt" id="btt" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1779,7 +1851,7 @@ details.adv>summary:hover{color:var(--ac)}
       sub_token: "توکن (فقط خواندنی)", sub_tip: "پس از ذخیره، کلاینت‌ها را به‌روزرسانی کنید.",
       sub_source: "منبع IP ترجیحی", sub_source_h: "نودها با این IPها ساخته می‌شوند.",
       mode_random: "تصادفی محلی", mode_custom: "فهرست دستی", mode_generator: "مولد اشتراک",
-      rand_count: "تعداد IP تصادفی", rand_count_h: "بین ۱ تا ۹۹.", port: "پورت", port_auto: "خودکار",
+      rand_count: "تعداد IP تصادفی", rand_count_h: "بین ۱ تا ۹۹۹.", port: "پورت", port_auto: "خودکار",
       custom_list: "فهرست IP دستی", custom_h: "هر خط یک IP یا IP:PORT.",
       load_list: "بارگذاری فهرست", save_list: "ذخیره فهرست",
       gen_url: "آدرس مولد", gen_url_h: "یک API سازگار با فرمت ترجیحی.",
@@ -1931,7 +2003,7 @@ details.adv>summary:hover{color:var(--ac)}
       sub_token: "Token (read-only)", sub_tip: "Refresh clients after saving.",
       sub_source: "Preferred IP source", sub_source_h: "Nodes are built with these IPs.",
       mode_random: "Local random", mode_custom: "Manual list", mode_generator: "Subscription generator",
-      rand_count: "Random IP count", rand_count_h: "Between 1 and 99.", port: "Port", port_auto: "Auto",
+      rand_count: "Random IP count", rand_count_h: "Between 1 and 999.", port: "Port", port_auto: "Auto",
       custom_list: "Manual IP list", custom_h: "One IP or IP:PORT per line.",
       load_list: "Load list", save_list: "Save list",
       gen_url: "Generator URL", gen_url_h: "An API compatible with the preferred format.",
@@ -2083,7 +2155,7 @@ details.adv>summary:hover{color:var(--ac)}
       sub_token: "Токен (только чтение)", sub_tip: "Обновите клиенты после сохранения.",
       sub_source: "Источник предпочтительных IP", sub_source_h: "Узлы строятся с этими IP.",
       mode_random: "Локально случайные", mode_custom: "Ручной список", mode_generator: "Генератор подписки",
-      rand_count: "Кол-во случайных IP", rand_count_h: "От 1 до 99.", port: "Порт", port_auto: "Авто",
+      rand_count: "Кол-во случайных IP", rand_count_h: "От 1 до 999.", port: "Порт", port_auto: "Авто",
       custom_list: "Ручной список IP", custom_h: "Один IP или IP:PORT в строке.",
       load_list: "Загрузить список", save_list: "Сохранить список",
       gen_url: "URL генератора", gen_url_h: "API, совместимый с форматом.",
@@ -2327,7 +2399,37 @@ details.adv>summary:hover{color:var(--ac)}
     ech_conflict_title: "ECH و اثر انگشت",
     ech_conflict_p1: "ECH فقط با اثر انگشت chrome یا firefox کار می‌کند. یکی را انتخاب کنید یا ECH را خاموش کنید.",
     ech_conflict_fp: "اثر انگشت فعلی:", ech_conflict_disable: "خاموش‌کردن ECH",
-    cf_reset: "بازنشانی سهمیه در", cf_reset_soon: "کمتر از یک دقیقه"
+    cf_reset: "بازنشانی سهمیه در", cf_reset_soon: "کمتر از یک دقیقه",
+    mode_title: "حالت استفاده از پنل را انتخاب کنید",
+    mode_sub: "این انتخاب فقط یک‌بار پرسیده می‌شود و تعیین می‌کند چه بخش‌هایی از پنل نمایش داده شود. هر زمان می‌توانید از «درباره ← تغییر کاربری» آن را تغییر دهید.",
+    mode_basic_t: "کاربر معمولی — حالت مبتدی",
+    mode_basic_d: "برای استفادهٔ شخصی یا خانوادگی؛ حدود ۴ کاربر که هر کدام یک اکانت دارند. پنل فقط بخش‌های لازم برای راه‌اندازی و استفادهٔ روزمره را نشان می‌دهد:",
+    mode_basic_l1: "داشبورد: وضعیت اتصال، مصرف و خلاصهٔ اشتراک",
+    mode_basic_l2: "لینک‌ها: لینک اشتراک و کانفیگ‌های آمادهٔ اتصال",
+    mode_basic_l3: "تنظیمات شبکه: فقط «مبانی اشتراک»، «منبع IP ترجیحی» و «پروتکل و انتقال»",
+    mode_basic_l4: "درباره: نسخه، راهنماها و تغییر حالت کاربری",
+    mode_basic_x: "تنظیمات پیشرفته مانند امنیت، CDN و پروکسی، قالب مسیر، مبدل، بهینه‌سازی و تنظیمات پنل پنهان می‌شود تا پنل ساده و بدون شلوغی بماند.",
+    mode_adv_t: "کاربر پیشرفته — حالت کامل",
+    mode_adv_d: "برای کسانی که تنظیمات خاص نیاز دارند یا بیش از ۵ کاربر از دوستان و خانواده را مدیریت می‌کنند. همهٔ بخش‌ها و کارت‌های پنل در دسترس است:",
+    mode_adv_l1: "همهٔ بخش‌های حالت مبتدی، بدون هیچ محدودیتی",
+    mode_adv_l2: "تنظیمات شبکهٔ کامل: هویت نود، امنیت و پایداری، مسیر کامل، CDN و پروکسی، آزمون پروکسی و قالب‌های مسیر",
+    mode_adv_l3: "مبدل اشتراک، بهینه‌سازی، تنظیمات پنل، گزارش‌ها و وضعیت سیستم",
+    mode_adv_l4: "کنترل کامل پروتکل، انتقال، ECH، SOCKS5، پروکسی معکوس و قالب‌های پیشرفته",
+    mode_adv_x: "اگر بعداً پنل ساده‌تری خواستید، از «درباره ← تغییر کاربری» به حالت مبتدی برگردید؛ هیچ تنظیمی از دست نمی‌رود.",
+    mode_pick_basic: "انتخاب حالت مبتدی",
+    mode_pick_adv: "انتخاب حالت پیشرفته",
+    mode_note: "انتخاب شما در تنظیمات Worker (KV) ذخیره می‌شود، فقط یک‌بار پرسیده می‌شود و برای همهٔ مرورگرها اعمال است.",
+    about_mode: "تغییر کاربری",
+    about_mode_h: "حالت نمایش پنل را تغییر دهید. این انتخاب در تنظیمات Worker (KV) ذخیره می‌شود و برای همهٔ مرورگرها اعمال است. حالت مبتدی فقط بخش‌های ضروری را نشان می‌دهد و حالت پیشرفته همهٔ تنظیمات را باز می‌کند.",
+    mode_badge_basic: "مبتدی",
+    mode_badge_adv: "پیشرفته",
+    mode_switch_basic: "تغییر به مبتدی",
+    mode_switch_adv: "تغییر به پیشرفته",
+    mode_msg_basic: "بخش‌های اضافی پنهان شده‌اند.",
+    mode_msg_adv: "همهٔ بخش‌ها فعال هستند.",
+    mode_changed_basic: "حالت مبتدی فعال شد.",
+    mode_changed_adv: "حالت پیشرفته فعال شد.",
+    mode_save_failed: "ذخیرهٔ حالت کاربری در تنظیمات Worker ناموفق بود"
   });
   Object.assign(I18N.en, {
     grp_tools: "Tools", nav_optimize: "Optimizer", nav_netsettings: "Network settings", nav_about: "About",
@@ -2454,7 +2556,37 @@ details.adv>summary:hover{color:var(--ac)}
     ech_conflict_title: "ECH and fingerprint",
     ech_conflict_p1: "ECH works only with the chrome or firefox fingerprint. Pick one or turn ECH off.",
     ech_conflict_fp: "Current fingerprint:", ech_conflict_disable: "Turn off ECH",
-    cf_reset: "Quota resets in", cf_reset_soon: "less than a minute"
+    cf_reset: "Quota resets in", cf_reset_soon: "less than a minute",
+    mode_title: "Choose how you want to use the panel",
+    mode_sub: "You are asked only once. Your choice decides which parts of the panel are shown; you can change it any time from About → Change user mode.",
+    mode_basic_t: "Regular user — Beginner mode",
+    mode_basic_d: "For personal or family use with about 4 users, one account each. The panel shows only what is needed to set up and use it day to day:",
+    mode_basic_l1: "Dashboard: connection status, usage and subscription summary",
+    mode_basic_l2: "Links: subscription link and ready-to-use configs",
+    mode_basic_l3: "Network settings: only Subscription basics, Preferred IP source and Protocol & transport",
+    mode_basic_l4: "About: version, guides and switching the user mode",
+    mode_basic_x: "Advanced settings such as security, CDN & proxy, path templates, converter, optimizer and panel settings stay hidden to keep the panel simple.",
+    mode_adv_t: "Advanced user — Full mode",
+    mode_adv_d: "For people who need special settings or manage more than 5 users from friends and family. Every section and card of the panel is available:",
+    mode_adv_l1: "Everything in beginner mode, with no limits",
+    mode_adv_l2: "Full network settings: node identity, security & stability, full path, CDN & proxy, proxy test and path templates",
+    mode_adv_l3: "Subscription converter, optimizer, panel settings, logs and system status",
+    mode_adv_l4: "Full control over protocol, transport, ECH, SOCKS5, reverse proxy and advanced templates",
+    mode_adv_x: "If you want a simpler panel later, switch back to beginner from About → Change user mode. No setting is lost.",
+    mode_pick_basic: "Use beginner mode",
+    mode_pick_adv: "Use advanced mode",
+    mode_note: "Your choice is saved in the Worker settings (KV), asked only once, and applies to every browser.",
+    about_mode: "Change user mode",
+    about_mode_h: "Change how the panel is displayed. This choice is saved in the Worker settings (KV) and applies to every browser. Beginner mode shows only essential sections; advanced mode unlocks every setting.",
+    mode_badge_basic: "Beginner",
+    mode_badge_adv: "Advanced",
+    mode_switch_basic: "Switch to beginner",
+    mode_switch_adv: "Switch to advanced",
+    mode_msg_basic: "Extra sections are hidden.",
+    mode_msg_adv: "All sections are available.",
+    mode_changed_basic: "Beginner mode enabled.",
+    mode_changed_adv: "Advanced mode enabled.",
+    mode_save_failed: "Could not save the user mode in the Worker settings"
   });
   Object.assign(I18N.ru, {
     grp_tools: "Инструменты", nav_optimize: "Оптимизация", nav_netsettings: "Настройки сети", nav_about: "О программе",
@@ -2581,7 +2713,37 @@ details.adv>summary:hover{color:var(--ac)}
     ech_conflict_title: "ECH и отпечаток",
     ech_conflict_p1: "ECH работает только с отпечатком chrome или firefox. Выберите один или отключите ECH.",
     ech_conflict_fp: "Текущий отпечаток:", ech_conflict_disable: "Отключить ECH",
-    cf_reset: "Сброс квоты через", cf_reset_soon: "менее минуты"
+    cf_reset: "Сброс квоты через", cf_reset_soon: "менее минуты",
+    mode_title: "Выберите режим работы панели",
+    mode_sub: "Этот вопрос задаётся один раз. Выбор определяет, какие разделы панели показывать. Изменить его можно в разделе «О программе → Смена режима».",
+    mode_basic_t: "Обычный пользователь — простой режим",
+    mode_basic_d: "Для личного или семейного использования, около 4 пользователей, по одному аккаунту на каждого. Панель показывает только необходимое для настройки и повседневной работы:",
+    mode_basic_l1: "Панель: состояние подключения, расход и сводка подписки",
+    mode_basic_l2: "Ссылки: ссылка подписки и готовые конфигурации",
+    mode_basic_l3: "Настройки сети: только «Основы подписки», «Источник IP» и «Протокол и транспорт»",
+    mode_basic_l4: "О программе: версия, руководства и смена режима",
+    mode_basic_x: "Дополнительные настройки — безопасность, CDN и прокси, шаблоны путей, конвертер, оптимизатор и настройки панели — скрыты, чтобы панель оставалась простой.",
+    mode_adv_t: "Продвинутый пользователь — полный режим",
+    mode_adv_d: "Для тех, кому нужны особые настройки или кто управляет более чем 5 пользователями среди друзей и семьи. Доступны все разделы и карточки панели:",
+    mode_adv_l1: "Всё из простого режима без ограничений",
+    mode_adv_l2: "Полные настройки сети: идентификация узла, безопасность и стабильность, полный путь, CDN и прокси, проверка прокси и шаблоны путей",
+    mode_adv_l3: "Конвертер подписки, оптимизатор, настройки панели, журналы и состояние системы",
+    mode_adv_l4: "Полный контроль над протоколом, транспортом, ECH, SOCKS5, обратным прокси и расширенными шаблонами",
+    mode_adv_x: "Если позже понадобится простая панель, вернитесь в простой режим через «О программе → Смена режима». Настройки не теряются.",
+    mode_pick_basic: "Выбрать простой режим",
+    mode_pick_adv: "Выбрать полный режим",
+    mode_note: "Выбор сохраняется в настройках Worker (KV), запрашивается только один раз и действует во всех браузерах.",
+    about_mode: "Смена режима",
+    about_mode_h: "Измените отображение панели. Выбор сохраняется в настройках Worker (KV) и действует во всех браузерах. Простой режим показывает только основные разделы, полный открывает все настройки.",
+    mode_badge_basic: "Простой",
+    mode_badge_adv: "Полный",
+    mode_switch_basic: "Переключить на простой",
+    mode_switch_adv: "Переключить на полный",
+    mode_msg_basic: "Дополнительные разделы скрыты.",
+    mode_msg_adv: "Все разделы доступны.",
+    mode_changed_basic: "Простой режим включён.",
+    mode_changed_adv: "Полный режим включён.",
+    mode_save_failed: "Не удалось сохранить режим пользователя в настройках Worker"
   });
 
   var LANGS = {
@@ -2830,7 +2992,7 @@ details.adv>summary:hover{color:var(--ac)}
 
   /* ---------------------------------------------------------------- state */
   var STATE = {
-    cfg: null, logs: [], version: null, view: "dashboard",
+    cfg: null, logs: [], version: null, build: null, view: "dashboard", mode: null,
     ipMode: "random", cfMethod: "email", proxyMode: "auto", addLoaded: false,
     tgBase: null,
     toolFilter: "all", tools: [], toolsLoaded: false, toolsLoading: false,
@@ -2861,6 +3023,8 @@ details.adv>summary:hover{color:var(--ac)}
     c["优选订阅生成"] = c["优选订阅生成"] || {};
     var s = c["优选订阅生成"];
     s["本地IP库"] = s["本地IP库"] || { "随机IP": true, "随机数量": 16, "指定端口": -1 };
+    // The old UI capped the random IP count at 99; treat a stored 99 as the new 999.
+    if (Number(s["本地IP库"]["随机数量"]) === 99) s["本地IP库"]["随机数量"] = 999;
     s["SUBNAME"] = s["SUBNAME"] || "Nova Worker";
     if (typeof s["SUBUpdateTime"] === "undefined") s["SUBUpdateTime"] = 3;
     c["订阅转换配置"] = c["订阅转换配置"] || {};
@@ -2885,10 +3049,7 @@ details.adv>summary:hover{color:var(--ac)}
   }
 
   /* --------------------------------------------------------------- saving */
-  async function saveConfig(mutator, btn) {
-    if (!STATE.cfg) return false;
-    var snap = clone(STATE.cfg);
-    mutator(STATE.cfg);
+  function configPayload() {
     var payload = clone(STATE.cfg);
     delete payload["完整节点路径"];
     delete payload["LINK"];
@@ -2896,6 +3057,14 @@ details.adv>summary:hover{color:var(--ac)}
     delete payload.init;
     if (payload["TG"]) payload["TG"] = { "启用": !!payload["TG"]["启用"] };
     payload["CF"] = { Email: null, GlobalAPIKey: null, AccountID: null, APIToken: null, UsageAPI: null };
+    return payload;
+  }
+
+  async function saveConfig(mutator, btn) {
+    if (!STATE.cfg) return false;
+    var snap = clone(STATE.cfg);
+    mutator(STATE.cfg);
+    var payload = configPayload();
     if (!payload.UUID || !payload.HOST) {
       STATE.cfg = snap;
       toast(t("save_failed"), "err");
@@ -2916,6 +3085,23 @@ details.adv>summary:hover{color:var(--ac)}
     });
     if (ok) setTimeout(refreshDynamic, 60);
     return !!ok;
+  }
+
+  async function savePanelMode(mode, btn) {
+    if (!STATE.cfg) return false;
+    var prev = STATE.cfg.PanelMode;
+    STATE.cfg.PanelMode = mode;
+    return await withBusy(btn, async function () {
+      try {
+        await postJSON("/admin/config.json", configPayload());
+        return true;
+      } catch (e) {
+        if (typeof prev === "undefined") delete STATE.cfg.PanelMode;
+        else STATE.cfg.PanelMode = prev;
+        toast(t("mode_save_failed") + ": " + (e.message || ""), "err");
+        return false;
+      }
+    });
   }
 
   async function withBusy(btn, fn) {
@@ -2963,6 +3149,7 @@ details.adv>summary:hover{color:var(--ac)}
   }
   function go(view, silent) {
     view = normalizeView(view);
+    if (STATE.mode === "beginner" && !MODE_BEGINNER_VIEWS[view]) { view = "dashboard"; silent = false; }
     STATE.view = view;
     $$(".view").forEach(function (v) { v.classList.toggle("active", v.id === "view-" + view); });
     $$(".nav-item").forEach(function (n) { n.classList.toggle("active", n.dataset.view === view); });
@@ -2982,6 +3169,59 @@ details.adv>summary:hover{color:var(--ac)}
   function openDrawer() { document.body.style.overflow = "hidden"; el("sidebar").classList.add("open"); el("scrim").classList.add("show"); }
   function closeDrawer() { document.body.style.overflow = ""; el("sidebar").classList.remove("open"); el("scrim").classList.remove("show"); }
 
+  /* ------------------------------------------------------------ user mode */
+  var MODE_BEGINNER_VIEWS = { dashboard: 1, links: 1, netsettings: 1, about: 1 };
+  var MODE_BEGINNER_CARDS = { sub_basic: 1, sub_source: 1, protocol_transport: 1 };
+
+  function modeLabel(mode) {
+    return mode === "advanced" ? t("mode_badge_adv") : t("mode_badge_basic");
+  }
+  function renderModeUI() {
+    var filter = STATE.mode === "beginner" || STATE.mode === "advanced";
+    var beginner = STATE.mode === "beginner";
+    $$(".nav-item[data-view]").forEach(function (n) {
+      n.style.display = (!filter || !beginner || MODE_BEGINNER_VIEWS[n.dataset.view]) ? "" : "none";
+    });
+    $$("#view-netsettings .card[data-card]").forEach(function (c) {
+      c.style.display = (!filter || !beginner || MODE_BEGINNER_CARDS[c.dataset.card]) ? "" : "none";
+    });
+    $$("#view-netsettings .cfg-section").forEach(function (s) {
+      var any = $$(".card[data-card]", s).some(function (c) { return c.style.display !== "none"; });
+      s.style.display = any ? "" : "none";
+    });
+    if (!filter) return;
+    if (el("about-mode")) setText(el("about-mode"), modeLabel(STATE.mode));
+    if (el("mode-switch")) setText(el("mode-switch"), beginner ? t("mode_switch_adv") : t("mode_switch_basic"));
+    if (el("mode-msg")) setText(el("mode-msg"), t(beginner ? "mode_msg_basic" : "mode_msg_adv"));
+    if (beginner && !MODE_BEGINNER_VIEWS[STATE.view]) go("dashboard");
+  }
+  async function setMode(mode, btn) {
+    var next = mode === "advanced" ? "advanced" : "beginner";
+    var prev = STATE.mode;
+    STATE.mode = next;
+    document.body.dataset.mode = next;
+    renderModeUI();
+    var ok = await savePanelMode(next, btn);
+    if (!ok) {
+      STATE.mode = prev;
+      document.body.dataset.mode = prev || "";
+      renderModeUI();
+    }
+    return ok;
+  }
+  function initMode() {
+    var saved = STATE.cfg ? STATE.cfg.PanelMode : null;
+    if (saved === "beginner" || saved === "advanced") {
+      STATE.mode = saved;
+      document.body.dataset.mode = saved;
+      renderModeUI();
+      return;
+    }
+    STATE.mode = null;
+    var m = el("mode-modal");
+    if (m) { m.dataset.first = "1"; showModal("mode-modal"); }
+  }
+
   /* ----------------------------------------------------------------- i18n */
   function applyLang(next) {
     if (!LANGS[next]) next = "fa";
@@ -2994,6 +3234,7 @@ details.adv>summary:hover{color:var(--ac)}
     $$("[data-i18n-html]").forEach(function (n) { n.innerHTML = t(n.dataset.i18nHtml); });
     $$("#lang-seg button").forEach(function (b) { b.classList.toggle("on", b.dataset.lang === LANG); });
     go(STATE.view, true);
+    renderModeUI();
     if (STATE.cfg) renderAll();
     if (STATE.latResults && STATE.latResults.length) paintLatency();
   }
@@ -3515,7 +3756,7 @@ details.adv>summary:hover{color:var(--ac)}
     var mode = STATE.ipMode;
     var s = cfg()["优选订阅生成"];
     var lib = s["本地IP库"] || {};
-    var count = clampInt(el("s-count") ? el("s-count").value : 16, 1, 99, 16);
+    var count = clampInt(el("s-count") ? el("s-count").value : 16, 1, 999, 16);
     var port = el("s-port") ? parseInt(el("s-port").value, 10) : -1;
     if (!isFinite(port)) port = -1;
     var generator = el("s-gen") ? (el("s-gen").value || "").trim() : "";
@@ -4875,29 +5116,52 @@ details.adv>summary:hover{color:var(--ac)}
     var n = Number(digits);
     return Number.isFinite(n) ? n : 0;
   }
-  async function fetchLatestOnlineVersionNumber() {
+  function parseSemver(value) {
+    var m = String(value == null ? "" : value).match(/(\d+)\.(\d+)\.(\d+)/);
+    return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : null;
+  }
+  function compareVersions(a, b) {
+    var x = parseSemver(a), y = parseSemver(b);
+    if (x && y) {
+      for (var i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i] ? 1 : -1;
+      return 0;
+    }
+    var na = parseVersionNumber(a), nb = parseVersionNumber(b);
+    if (na && nb) return na === nb ? 0 : (na > nb ? 1 : -1);
+    return String(a || "") === String(b || "") ? 0 : (a ? 1 : -1);
+  }
+  function highestVersion() {
+    if (!STATE.version) return STATE.latestVersion || null;
+    if (!STATE.latestVersion) return STATE.version;
+    return compareVersions(STATE.latestVersion, STATE.version) > 0 ? STATE.latestVersion : STATE.version;
+  }
+  async function fetchLatestOnlineVersion() {
     var text = await fetchWithAutoMirror(WORKER_VERSION_SOURCE_URL + "?_t=" + Date.now(), "Worker source");
-    var m = text.match(/^\s*const\s+Version\s*=\s*['"]([^'"]+)['"]\s*;?/m);
-    var n = m ? parseVersionNumber(m[1]) : 0;
-    STATE.latestVersion = n || null;
-    return n;
+    var m = text.match(/^\s*const\s+(?:NovaWorkerVersion|Version)\s*=\s*['"]([^'"]+)['"]\s*;?/m);
+    var v = m ? m[1] : "";
+    STATE.latestVersion = v || null;
+    return v;
   }
   function renderAbout() {
-    var current = versionText(STATE.version, false);
+    var current = STATE.version ? versionText(STATE.version, false) : "-";
+    var newest = highestVersion();
+    var panelVer = newest ? versionText(newest, false) : "Beta-0.0.1";
     if (el("about-current")) el("about-current").textContent = current;
-    if (el("about-latest")) el("about-latest").textContent = STATE.latestVersion ? versionText(String(STATE.latestVersion), false) : "-";
-    if (el("ver-badge")) el("ver-badge").textContent = STATE.version ? current : "-";
+    if (el("about-latest")) el("about-latest").textContent = newest ? versionText(newest, false) : "-";
+    if (el("ver-badge")) el("ver-badge").textContent = current;
+    if (el("ver-panel")) el("ver-panel").textContent = panelVer;
+    if (el("about-panel")) el("about-panel").textContent = panelVer;
   }
   async function checkVersion(btn) {
     var msg = el("ver-msg");
     if (msg) msg.textContent = t("ver_checking");
     await withBusy(btn, async function () {
       try {
-        var latest = await fetchLatestOnlineVersionNumber();
+        try { await refreshWorkerVersion(); } catch (e) {}
+        var latest = await fetchLatestOnlineVersion();
         renderAbout();
         if (!latest) throw new Error(t("ver_source_fail"));
-        var current = parseVersionNumber(STATE.version);
-        var text = current >= latest ? t("ver_uptodate") : t("ver_new");
+        var text = compareVersions(latest, STATE.version) > 0 ? t("ver_new") : t("ver_uptodate");
         if (msg) msg.textContent = text;
         toast(text);
       } catch (e) {
@@ -4910,7 +5174,7 @@ details.adv>summary:hover{color:var(--ac)}
     var body = el("vm-body");
     var msg = el("vm-msg");
     if (el("vm-current")) el("vm-current").textContent = versionText(STATE.version, false);
-    if (el("vm-latest")) el("vm-latest").textContent = STATE.latestVersion ? versionText(String(STATE.latestVersion), false) : "-";
+    if (el("vm-latest")) el("vm-latest").textContent = STATE.latestVersion ? versionText(STATE.latestVersion, false) : "-";
     showModal("version-modal");
     if (body) body.textContent = t("ver_loading");
     if (msg) msg.textContent = "";
@@ -4920,7 +5184,7 @@ details.adv>summary:hover{color:var(--ac)}
         var text = await fetchWithAutoMirror(CHANGELOG_URL + "?_t=" + Date.now(), "CHANGELOG");
         if (body) body.textContent = text;
         if (!STATE.latestVersion) {
-          try { await fetchLatestOnlineVersionNumber(); renderAbout(); if (el("vm-latest")) el("vm-latest").textContent = versionText(String(STATE.latestVersion), false); } catch (e) {}
+          try { await fetchLatestOnlineVersion(); renderAbout(); if (el("vm-latest")) el("vm-latest").textContent = STATE.latestVersion ? versionText(STATE.latestVersion, false) : "-"; } catch (e) {}
         }
       } catch (e) {
         if (body) body.textContent = t("ver_changelog_fail");
@@ -5774,6 +6038,7 @@ details.adv>summary:hover{color:var(--ac)}
       if (!STATE.netLoaded) loadNetwork();
     } else if (view === "about") {
       renderAbout();
+      if (!STATE.latestVersion) fetchLatestOnlineVersion().then(renderAbout).catch(function () {});
     } else if (view === "panelsettings") {
       renderPanelsettings();
       updateCfReset();
@@ -5793,15 +6058,22 @@ details.adv>summary:hover{color:var(--ac)}
   }
 
 
+  async function refreshWorkerVersion() {
+    var uuid = cfg().UUID;
+    if (!uuid) return;
+    var d = await getJSON("/version?uuid=" + encodeURIComponent(uuid) + "&_t=" + Date.now());
+    if (!d) return;
+    if (d.Version) STATE.version = d.Version;
+    else if (d.NovaVersion) STATE.version = d.NovaVersion;
+    STATE.build = d.Build || parseVersionNumber(d.Version);
+  }
   async function loadVersion() {
     try {
-      var uuid = cfg().UUID;
-      if (!uuid) return;
-      var d = await getJSON("/version?uuid=" + encodeURIComponent(uuid) + "&_t=" + Date.now());
-      if (d && d.Version) STATE.version = d.Version;
+      await refreshWorkerVersion();
       renderChrome();
       renderDashboard();
       renderSystem();
+      renderAbout();
     } catch (e) {}
   }
 
@@ -5824,6 +6096,7 @@ details.adv>summary:hover{color:var(--ac)}
       renderAll();
       var h = (location.hash || "").replace("#", "");
       go(h, true);
+      initMode();
       checkHostsMismatch();
       loadVersion();
     } catch (e) {
@@ -5869,6 +6142,20 @@ details.adv>summary:hover{color:var(--ac)}
       }
       var qt = tgt.closest("[data-qr-text]");
       if (qt) { openQR(qt.dataset.qrText); return; }
+
+      var modePick = tgt.closest("[data-mode-pick]");
+      if (modePick) {
+        var picked = modePick.dataset.modePick === "advanced" ? "advanced" : "beginner";
+        (async function () {
+          var ok = await setMode(picked, modePick);
+          if (!ok) return;
+          var modeBox = el("mode-modal");
+          if (modeBox) modeBox.dataset.first = "";
+          hideModal("mode-modal");
+          toast(t(picked === "advanced" ? "mode_changed_adv" : "mode_changed_basic"));
+        })();
+        return;
+      }
 
       var close = tgt.closest("[data-close]");
       if (close) { hideModal(close.dataset.close); return; }
@@ -5946,19 +6233,33 @@ details.adv>summary:hover{color:var(--ac)}
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
-        $$(".modal.on").forEach(function (m) { m.classList.remove("on"); });
+        $$(".modal.on").forEach(function (m) {
+          if (m.id === "mode-modal" && m.dataset.first === "1") return;
+          m.classList.remove("on");
+        });
         closeDrawer();
       }
     });
 
     var modalClosers = function (e) {
-      if (e.target.classList && e.target.classList.contains("modal")) e.target.classList.remove("on");
+      if (e.target.classList && e.target.classList.contains("modal")) {
+        if (e.target.id === "mode-modal" && e.target.dataset.first === "1") return;
+        e.target.classList.remove("on");
+      }
     };
     $$(".modal").forEach(function (m) { m.addEventListener("click", modalClosers); });
 
     if (el("menu-btn")) el("menu-btn").addEventListener("click", openDrawer);
     if (el("scrim")) el("scrim").addEventListener("click", closeDrawer);
     if (el("help-link")) el("help-link").addEventListener("click", function (e) { e.preventDefault(); showModal("help-modal"); });
+    if (el("mode-switch")) el("mode-switch").addEventListener("click", function (e) {
+      var btn = e.currentTarget;
+      var next = STATE.mode === "advanced" ? "beginner" : "advanced";
+      (async function () {
+        var ok = await setMode(next, btn);
+        if (ok) toast(t(next === "advanced" ? "mode_changed_adv" : "mode_changed_basic"));
+      })();
+    });
 
     if (el("load-retry")) el("load-retry").addEventListener("click", function () { el("load-error").style.display = "none"; boot(); });
     if (el("dash-refresh")) el("dash-refresh").addEventListener("click", function (e) { refreshUsage(e.currentTarget); });
@@ -6172,7 +6473,7 @@ details.adv>summary:hover{color:var(--ac)}
       }
       syncNodeRows();
     } else if (sw.id === "sw-skip" && on) {
-      var ver = Number(STATE.version || 0);
+      var ver = STATE.build || parseVersionNumber(STATE.version);
       if (ver < 20260601154939) {
         setSw("sw-skip", false);
         showModal("skip-verify-modal");
